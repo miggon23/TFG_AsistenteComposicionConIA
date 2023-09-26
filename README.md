@@ -3,7 +3,7 @@
 ## Autores 
 - Javier Callejo Herrero
 - Miguel González Perez
-- Víctor Manuel Extremera Herranz
+- Víctor Manuel Estremera Herranz
 - Rodrigo Sánchez Torres
 
 ## Propuesta
@@ -18,4 +18,4 @@ Posibles herramientas que usar para la generación de contenido en nuestra aplic
 - Magenta: Generación del **primer paso**
 - Cadenas de Markov: Generación del **primer paso**
 - Heurística/Algoritmia para generar el **segundo paso** (transformaciones a escalas y selección de filtros).
-- IA tradicional para la generación de armónicos
+- IA tradicional para la generación de acordes.
