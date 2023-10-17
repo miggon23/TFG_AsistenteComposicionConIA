@@ -7,8 +7,8 @@ def create_markov_chain(generator):
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1.json")
 
-def generate_melodies(generator):
-    generator.run_markov_chain()
+def generate_melodies(generator, n_notes, n_sims):
+    generator.run_markov_chain(num_notes = n_notes, num_simulations = n_sims)
 
 def main():
     generator = Markov_Generator()
@@ -26,9 +26,32 @@ def main():
         elif (option == "2"):
             load_markov_chain(generator)
         elif (option == "3"):
-            generate_melodies(generator)
+            
+            print("Introduce el numero de notas que deseas generar en cada melodia")
+            notes = get_input_number(4, 4*40)
+
+            print("Introduce el numero de melodias que deseas generar en total")
+            sims = get_input_number(1, 20)
+
+            generate_melodies(generator, notes, sims)
         else:
             exit = True
+
+def get_input_number(a, b):
+
+    valid_number_entered = False
+
+    while not valid_number_entered:
+        try:
+            user_input = int(input(f"Introduce un numero entre {a} y {b}: "))
+            if a <= user_input <= b:
+                valid_number_entered = True 
+            else:
+                print(f"El numero debe de estar entre {a} y {b}")
+        except ValueError:
+            print("Por favor introduce un numero valido")
+
+    return user_input
 
 
 if __name__ == '__main__':

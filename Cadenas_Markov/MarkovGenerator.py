@@ -92,7 +92,8 @@ class Markov_Generator:
             ant = -1
             for note in noteSeq.notes:
                 # if (note.pitch == 0):
-                #     print(noteSeq.notes)
+                #     print(note)
+                #     print("------------------------------------------------")
 
                 serializedNote = str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
                 n = keys.get(serializedNote, -1)
@@ -110,7 +111,7 @@ class Markov_Generator:
 
         print("[MarkovGenerator]: Markov Chain created and trained succesfully")
 
-    def run_markov_chain(self, chain = None, num_simulations = 10, num_notes = 10):
+    def run_markov_chain(self, chain = None, num_simulations = 10, num_notes = 44):
         if chain is None:
             chain = self.mc
             if chain is None:
