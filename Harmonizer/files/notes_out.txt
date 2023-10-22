@@ -1,0 +1,9 @@
+Pitch: 1, Start Time: 120, Duration: 3840
+Pitch: 61, Start Time: 240, Duration: 1920
+Pitch: 60, Start Time: 360, Duration: 480
+Pitch: 62, Start Time: 720, Duration: 240
+Pitch: 65, Start Time: 720, Duration: 240
+Pitch: 66, Start Time: 720, Duration: 240
+Pitch: 59, Start Time: 720, Duration: 16560
+Pitch: 67, Start Time: 840, Duration: 240
+Pitch: 64, Start Time: 960, Duration: 240

@@ -1,0 +1,8 @@
+crear una clase intervalo
+crear la clase escala, la cual es una lista de intervalos
+dada una lista de notas y una tonica, 
+    intercambiar cada nota por su correspondiente intervalo (averiguar el grado de cada nota)
+dada una escala, averiguar todas sus triadas posibles (y cuatriadas)
+dadas una serie de notas y una tónica, averiguar el esqueleto de la escala (si es una escala mayor o menor, por ahoras)
+dada una lista de notas normalizadas (transformadas en grados), dividir la canción en intervalos de tiempo uniformes
+    y averiguar que acorde le corresponde a cada intervalo de tiempo
