@@ -17,16 +17,15 @@ def main():
 
     while not exit:
         option = ""
-        while option != "1" and option != "2" and option != "3" and option != "q":
+        while option != "1" and option != "2" and option != "3" and option != "4" and option != "q":
             option = input(
-                "[1]: Crear cadena de markov \n[2]: Cargar cadena creada previamente \n[3]: Generar melodias \n[q]: Salir \n")
+                "[1]: Crear cadena de markov \n[2]: Cargar cadena creada previamente \n[3]: Generar melodias \n[4]: Dibujar cadenas \n[q]: Salir \n")
 
         if (option == "1"):
             create_markov_chain(generator)
         elif (option == "2"):
             load_markov_chain(generator)
         elif (option == "3"):
-            
             print("Introduce el numero de notas que deseas generar en cada melodia")
             notes = get_input_number(4, 4*40)
 
@@ -34,6 +33,8 @@ def main():
             sims = get_input_number(1, 20)
 
             generate_melodies(generator, notes, sims)
+        elif (option == "4"):
+            generator.print_chain()
         else:
             exit = True
 

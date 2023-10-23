@@ -4,10 +4,20 @@ import numpy as np
 from note_seq import NoteSequence, midi_io
 
 from pydtmc import MarkovChain
+from pydtmc import plot_graph
 import os
 from pathlib import Path
 
+#QPM estandar para pasar a MIDI (1 negra por segundo)
+QPM = 60
+
+#Valor estandar de un step, para normalizar
+STEP_VALUE = 1/4
+
 class Markov_Generator:
+
+    def __init__(self, useSteps = True):
+        self.step_mode = useSteps
 
     #Anade una nota a la NoteSequence "ns" y al diccionario de claves "keys" con el indice "k"
     def append_note(self, keys, k, ns, n_pitch, n_start_time, n_end_time, n_velocity):
@@ -26,6 +36,17 @@ class Markov_Generator:
         
         return k
 
+    #Serializa una nota en formato "pitch_duracion" y devuelve la string serializada
+    def serialize_note(self, note):
+        ser_note = ""
+
+        if (self.step_mode):
+            str(note.pitch) + "_" +  str(note.quantized_end_step - note.quantized_start_step)
+        else:
+            str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
+
+        return ser_note
+
     #Deserializa una secuencia de notas en formato "pitch_duracion" y devuelve el NoteSequence correspondiente
     def deserialize_noteseq(self, note_list):
         start_time = 0
@@ -42,7 +63,18 @@ class Markov_Generator:
 
             if (pitch != 0):
                 #añadimos la nota al NoteSequence
-                note = NoteSequence.Note(pitch=pitch, start_time=start_time, end_time=end_time, velocity=100)
+                note = NoteSequence.Note(pitch=pitch, velocity=100)
+                
+                if (self.step_mode):
+                    note.quantized_start_step = int(start_time)
+                    note.quantized_end_step = int(end_time)
+
+                    note.start_time = (start_time * STEP_VALUE) * (60.0 / QPM)
+                    note.end_time = (end_time * STEP_VALUE) * (60.0 / QPM)
+                else:
+                    note.start_time = start_time
+                    note.end_time = end_time
+
                 ns.notes.append(note)
             
             #el start_time de la siguiente nota es el end_time de la anterior
@@ -74,13 +106,24 @@ class Markov_Generator:
                     ns = NoteSequence()
                     prev_end_time = 0
                     for note_data in notes["notes"]:
-                        #contamos la diferencia de tiempo entre la nota actual y la anterior, para ver si hay silencios
-                        time_diff = note_data.get("startTime", 0) - prev_end_time
-                        if (time_diff > 0.05):
-                            k = self.append_note(keys, k, ns, 0, prev_end_time, note_data["startTime"], 100)
 
-                        k = self.append_note(keys, k, ns, note_data["pitch"], note_data.get("startTime", 0), note_data["endTime"], note_data["velocity"])
-                        prev_end_time = note_data["endTime"]
+                        start_time = 0
+                        end_time = 0
+
+                        if (self.step_mode):
+                            start_time = int(note_data.get("quantizedStartStep", 0))
+                            end_time = int(note_data.get("quantizedEndStep"))
+                        else:
+                            start_time = note_data.get("startTime", 0)
+                            end_time = note_data.get("endTime")
+
+                        #contamos la diferencia de tiempo entre la nota actual y la anterior, para ver si hay silencios
+                        time_diff = start_time - prev_end_time
+                        if (time_diff > 0.05):
+                            k = self.append_note(keys, k, ns, 0, prev_end_time, start_time, 100)
+
+                        k = self.append_note(keys, k, ns, note_data["pitch"], start_time, end_time, note_data["velocity"])
+                        prev_end_time = end_time
 
                     #anadimos la secuencia al training data
                     notes_to_train.append(ns)
@@ -95,7 +138,7 @@ class Markov_Generator:
                 #     print(note)
                 #     print("------------------------------------------------")
 
-                serializedNote = str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
+                serializedNote = self.serialize_note(note)
                 n = keys.get(serializedNote, -1)
 
                 if n != -1 and ant != -1:
@@ -160,7 +203,8 @@ class Markov_Generator:
 
         print("[MarkovGenerator]: Markov Chain saved successfully into a file")
 
-
+    def print_chain(self):
+        plot_graph(self.mc)
 
 # import json
 
