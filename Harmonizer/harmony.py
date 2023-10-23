@@ -15,7 +15,9 @@ allChords = {
 
 class Harmony:
     # Constructor de la clase
-    def __init__(self, scale):
+    def __init__(self, scale, possibleChords = allChords):
+
+        self.possibleChords = possibleChords
 
         self.chords = {}
         self.scale = scale
@@ -26,7 +28,7 @@ class Harmony:
 
             chordList = self.chords[scale.scale[n].get_interval()] = []
 
-            for k, v in allChords.items():
+            for k, v in  self.possibleChords.items():
                 if scale.contains(v, n):
                     chordList.append(k)
 
@@ -44,7 +46,7 @@ class Harmony:
 
                 intervals = []
 
-                for interval in allChords[chord].scale:
+                for interval in self.possibleChords[chord].scale:
                     intervals.append((interval.semitones + offset) % 12)
                 
                 chordList.append(scale.Scale(intervals, False))
