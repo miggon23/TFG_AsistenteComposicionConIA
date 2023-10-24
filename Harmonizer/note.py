@@ -18,8 +18,12 @@ notes_pitch = {
     "B": 11,
 }
 
+def get_pitch(interval, tonic, octave):
+        return tonic.pitch + interval.semitones + 12 * octave
 
 class Note:
 
     def __init__(self, note, octave = 0):
         self.pitch = notes_pitch[note] + 12 * octave
+
+    

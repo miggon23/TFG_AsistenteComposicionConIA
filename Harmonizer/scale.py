@@ -45,6 +45,15 @@ class Scale:
 
     def len(self):
         return len(self.scale)
+    
+    def copy_scale(self):
+        
+        semitones = []
+
+        for interval in self.scale:
+            semitones.append(interval.semitones)
+
+        return Scale(semitones)      
 
     def print_scale(self):      
         for i in self.scale:

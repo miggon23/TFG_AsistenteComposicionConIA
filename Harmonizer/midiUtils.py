@@ -20,7 +20,7 @@ def read_midi_song(midi_file_path, output_file):
         current_time = 0  # Variable para rastrear el tiempo actual
         for track in midi_file.tracks:
             for msg in track:
-                current_time += msg.time
+                current_time += (msg.time / 96.0)
 
                 if msg.type == 'note_on':
                     note = {
@@ -64,37 +64,37 @@ def make_midi_song(midi_file_path, song):
     track.append(mido.MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
     track.append(mido.MetaMessage('set_tempo', tempo=500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
 
-    song = [
-        {"pitch": 1, "start_time": 0.25, "duration": 8.0},
-        {"pitch": 60, "start_time": 0.75, "duration": 1.0},
-        {"pitch": 62, "start_time": 1.5, "duration": 0.5},
-        {"pitch": 65, "start_time": 1.5, "duration": 0.5},
-        {"pitch": 66, "start_time": 1.5, "duration": 0.5},
-        {"pitch": 67, "start_time": 1.75, "duration": 0.5},
-        {"pitch": 59, "start_time": 1.5, "duration": 34.5},
-        {"pitch": 64, "start_time": 2, "duration": 0.5},
-        {"pitch": 61, "start_time": 0.5, "duration": 4},
-    ]
+    # song = [
+    #     {"pitch": 1, "start_time": 0.25, "duration": 8.0},
+    #     {"pitch": 60, "start_time": 0.75, "duration": 1.0},
+    #     {"pitch": 62, "start_time": 1.5, "duration": 0.5},
+    #     {"pitch": 65, "start_time": 1.5, "duration": 0.5},
+    #     {"pitch": 66, "start_time": 1.5, "duration": 0.5},
+    #     {"pitch": 67, "start_time": 1.75, "duration": 0.5},
+    #     {"pitch": 59, "start_time": 1.5, "duration": 34.5},
+    #     {"pitch": 64, "start_time": 2, "duration": 0.5},
+    #     {"pitch": 61, "start_time": 0.5, "duration": 4},
+    # ]
 
     spread_song = {}
     first_note_tick = song[0]["start_time"]
 
-    for item in song:
+    for note in song:
 
-        key = item['start_time']
+        key = note['start_time']
         first_note_tick = min(first_note_tick, key)
 
         if key in spread_song:
-            spread_song[key].append(item['pitch'])
+            spread_song[key].append(note['pitch'])
         else:
-            spread_song[key] = [item['pitch']]
+            spread_song[key] = [note['pitch']]
 
-        key += item['duration']
+        key += note['duration']
 
         if key in spread_song:
-            spread_song[key].append(-item['pitch'])
+            spread_song[key].append(-note['pitch'])
         else:
-            spread_song[key] = [-item['pitch']]
+            spread_song[key] = [-note['pitch']]
 
 
     spread_song = dict(sorted(spread_song.items()))
@@ -105,9 +105,6 @@ def make_midi_song(midi_file_path, song):
     for tick in list(spread_song.keys())[1:]:
         midi_events.append(int((tick - last_tick) * ticks_per_beat))
         last_tick = tick
-
-    print(midi_events) 
-    print(spread_song)  
 
     idx = 0
     for tick, notes in spread_song.items():
@@ -125,5 +122,4 @@ def make_midi_song(midi_file_path, song):
             elif (note < 0):
                 track.append(mido.Message('note_off', note=-note, velocity=64, time=0))
 
-    # Guardar el archivo MIDI
     mid.save(midi_file_path)
