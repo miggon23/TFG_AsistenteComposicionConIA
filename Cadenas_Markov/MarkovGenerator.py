@@ -14,17 +14,31 @@ QPM = 60
 #Valor estandar de un step, para normalizar
 STEP_VALUE = 1/4
 
+MAX_SILENCE_STEPS = 8
+MAX_SILENCE_SECONDS = 2
+
 class Markov_Generator:
 
-    def __init__(self, useSteps = True):
-        self.step_mode = useSteps
+    def __init__(self, use_steps = True, use_silences = True):
+        self.step_mode = use_steps
+        self.has_silences = use_silences
 
     #Anade una nota a la NoteSequence "ns" y al diccionario de claves "keys" con el indice "k"
     def append_note(self, keys, k, ns, n_pitch, n_start_time, n_end_time, n_velocity):
-        note = NoteSequence.Note(pitch=n_pitch, start_time=n_start_time, end_time=n_end_time, velocity=n_velocity)
+        note = NoteSequence.Note(pitch=n_pitch, velocity=n_velocity)
+
+        if (self.step_mode):
+            note.quantized_start_step = n_start_time
+            note.quantized_end_step = n_end_time
+
+        else:
+            note.start_time = n_start_time
+            note.end_time = n_end_time
+
         ns.notes.append(note)
 
-        serializedNote = str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
+        serializedNote = self.serialize_note(note)
+        
         n = keys.get(serializedNote, k)
                 
         #si la key no estaba en el diccionario, n será igual que la k actual
@@ -41,9 +55,9 @@ class Markov_Generator:
         ser_note = ""
 
         if (self.step_mode):
-            str(note.pitch) + "_" +  str(note.quantized_end_step - note.quantized_start_step)
+            ser_note = str(note.pitch) + "_" +  str(note.quantized_end_step - note.quantized_start_step)
         else:
-            str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
+            ser_note = str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
 
         return ser_note
 
@@ -57,6 +71,13 @@ class Markov_Generator:
             data = ser_note.split('_')
             pitch = int(data[0])
             duration = float(data[1])
+
+            #cap de maxima duracion de silencios
+            if  (pitch == 0):
+                if (self.step_mode):
+                    duration = min(duration, MAX_SILENCE_STEPS)
+                else:
+                    duration = min(duration, MAX_SILENCE_SECONDS)
             
             #a partir de la duracion obtenemos el end_time
             end_time = start_time + duration
@@ -119,7 +140,7 @@ class Markov_Generator:
 
                         #contamos la diferencia de tiempo entre la nota actual y la anterior, para ver si hay silencios
                         time_diff = start_time - prev_end_time
-                        if (time_diff > 0.05):
+                        if (self.has_silences and time_diff > 0.05):
                             k = self.append_note(keys, k, ns, 0, prev_end_time, start_time, 100)
 
                         k = self.append_note(keys, k, ns, note_data["pitch"], start_time, end_time, note_data["velocity"])
@@ -204,7 +225,7 @@ class Markov_Generator:
         print("[MarkovGenerator]: Markov Chain saved successfully into a file")
 
     def print_chain(self):
-        plot_graph(self.mc)
+        return plot_graph(self.mc, dpi=300)
 
 # import json
 
