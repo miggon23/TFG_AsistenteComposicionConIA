@@ -1,4 +1,5 @@
 import mido
+import song
 
 def read_midi_file(midi_file_path, output_file):
     try:
@@ -24,7 +25,7 @@ def read_midi_song(midi_file_path, output_file):
 
                 if msg.type == 'note_on':
                     note = {
-                        'pitch': msg.note,        # Tono de la nota
+                        'note': msg.note,        # Tono de la nota
                         'start_time': current_time,  # Tiempo de inicio
                         'duration': 0           # Duración inicial (se actualizará en 'note_off')                        
                     }
@@ -33,14 +34,14 @@ def read_midi_song(midi_file_path, output_file):
                 elif msg.type == 'note_off':
                     # Buscar la nota correspondiente en la lista y actualizar su duración
                     for note in reversed(song):
-                        if note['pitch'] == msg.note:
+                        if note['note'] == msg.note:
                             note['duration'] = current_time - note['start_time']
                             break
 
         # Imprimir las notas extraídas
         with open(output_file, 'w') as f:           
             for note in song:
-                f.write(f"Pitch: {note['pitch']}, Start Time: {note['start_time']}, Duration: {note['duration']}\n")
+                f.write(f"note: {note['note']}, Start Time: {note['start_time']}, Duration: {note['duration']}\n")
 
         return song
 
@@ -49,8 +50,7 @@ def read_midi_song(midi_file_path, output_file):
         return []
     
 
-    
-def make_midi_song(midi_file_path, song):
+def make_midi_song(midi_file_path, note_list):
 
     # Crear un nuevo archivo MIDI
     mid = mido.MidiFile()
@@ -64,40 +64,8 @@ def make_midi_song(midi_file_path, song):
     track.append(mido.MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
     track.append(mido.MetaMessage('set_tempo', tempo=500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
 
-    # song = [
-    #     {"pitch": 1, "start_time": 0.25, "duration": 8.0},
-    #     {"pitch": 60, "start_time": 0.75, "duration": 1.0},
-    #     {"pitch": 62, "start_time": 1.5, "duration": 0.5},
-    #     {"pitch": 65, "start_time": 1.5, "duration": 0.5},
-    #     {"pitch": 66, "start_time": 1.5, "duration": 0.5},
-    #     {"pitch": 67, "start_time": 1.75, "duration": 0.5},
-    #     {"pitch": 59, "start_time": 1.5, "duration": 34.5},
-    #     {"pitch": 64, "start_time": 2, "duration": 0.5},
-    #     {"pitch": 61, "start_time": 0.5, "duration": 4},
-    # ]
-
-    spread_song = {}
-    first_note_tick = song[0]["start_time"]
-
-    for note in song:
-
-        key = note['start_time']
-        first_note_tick = min(first_note_tick, key)
-
-        if key in spread_song:
-            spread_song[key].append(note['pitch'])
-        else:
-            spread_song[key] = [note['pitch']]
-
-        key += note['duration']
-
-        if key in spread_song:
-            spread_song[key].append(-note['pitch'])
-        else:
-            spread_song[key] = [-note['pitch']]
-
-
-    spread_song = dict(sorted(spread_song.items()))
+    spread_song = song.spread_song(note_list)
+    first_note_tick = next(iter(spread_song))
 
     midi_events = [int(first_note_tick * ticks_per_beat)]
     last_tick = first_note_tick
@@ -109,17 +77,21 @@ def make_midi_song(midi_file_path, song):
     idx = 0
     for tick, notes in spread_song.items():
 
-        if (notes[0] > 0):
-            track.append(mido.Message('note_on', note=notes[0], velocity=64, time=midi_events[idx]))
-        elif (notes[0] < 0):
-            track.append(mido.Message('note_off', note=-notes[0], velocity=64, time=midi_events[idx]))
+        x_init = 0
+        y_init = 0
+
+        if (notes[1]):
+            track.append(mido.Message('note_off', note=notes[1][y_init], velocity=64, time=midi_events[idx]))
+            y_init = 1
+        elif (notes[0]):
+            track.append(mido.Message('note_on', note=notes[0][x_init], velocity=64, time=midi_events[idx]))
+            x_init = 1
+            
+        for note in notes[1][y_init:]:
+            track.append(mido.Message('note_off', note=note, velocity=64, time=0))
+        for note in notes[0][x_init:]:
+            track.append(mido.Message('note_on', note=note, velocity=64, time=0))
+        
         idx += 1
-
-        for note in notes[1:]:
-
-            if (note > 0):
-                track.append(mido.Message('note_on', note=note, velocity=64, time=0))
-            elif (note < 0):
-                track.append(mido.Message('note_off', note=-note, velocity=64, time=0))
 
     mid.save(midi_file_path)

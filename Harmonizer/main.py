@@ -21,14 +21,16 @@ if __name__ == "__main__":
     # print()
 
     #read midi funciona del orto (me lo hizo chatGPT 😡)
-    #hay que poner una nota random al principio si no, peta
+    #hay que poner una nota random al final si no, peta
     #te desplaza toda la canción varios compases a la derecha por la polla
     #lo cambiaré en el futuro
-    s = midiUtils.read_midi_song("midi/input_song.mid", "files/notes_out.txt")  
-    song = song.Song(s[:-1], note.Note("C"))
-    song.choose_scale()
-    s = song.armonize(ticksPerSlice=2.0)
-    midiUtils.make_midi_song("midi/temita.mid", s)
+    melody_ = midiUtils.read_midi_song("midi/input_song.mid", "files/notes_out.txt") 
+    song_ = song.Song(melody_[:-1], note.Note("A"))
+    song_.choose_scale() 
+    harmony_ = song_.armonize(ticksPerSlice=1.0)
+    song_.print_chord_analysis()
+    midiUtils.make_midi_song("midi/output_harmony.mid", harmony_)
+    midiUtils.make_midi_song("midi/output_song.mid", song_.melody + harmony_)
 
 
 
