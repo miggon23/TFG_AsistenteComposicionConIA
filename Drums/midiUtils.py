@@ -1,33 +1,48 @@
-from mido import MidiFile, MidiTrack, Message, MetaMessage
+import mido
+import song
 
-def make_midi_drum_song(midi_file_path, drumPattern):
-    # Crea un nuevo archivo MIDI
-    mid = MidiFile()
-    track = MidiTrack()
+def make_midi_song(midi_file_path, note_list):
+
+    # Crear un nuevo archivo MIDI
+    mid = mido.MidiFile()
+
+    # Crear una pista MIDI
+    track = mido.MidiTrack()
     mid.tracks.append(track)
 
-    # Configura los parámetros del archivo MIDI
-    ticks_per_beat = 480  # Número de ticks por tiempo (puedes ajustar esto según tus necesidades)
-    subdivisiones_por_beat = 4  # Para semicorcheas, usa 4 subdivisiones por beat (una subdivisión es una semicorchea)
+    # Configurar el tiempo en el archivo MIDI (puedes ajustar esto según tus necesidades)
+    ticks_per_beat = 480
+    track.append(mido.MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
+    track.append(mido.MetaMessage('set_tempo', tempo=500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
 
-    # Calcula la duración de una semicorchea en ticks
-    ticks_por_subdivision = ticks_per_beat / subdivisiones_por_beat
+    spread_song = song.spread_song(note_list)
+    first_note_tick = next(iter(spread_song))
 
-    # Crea un nuevo archivo MIDI
-    mid = MidiFile()
-    track = MidiTrack()
-    mid.tracks.append(track)
+    midi_events = [int(first_note_tick * ticks_per_beat)]
+    last_tick = first_note_tick
 
-    # Convierte las notas de percusión en mensajes de nota en el archivo MIDI
-    for fila in drumPattern:
-        print(fila)
-        for i, nota in enumerate(fila):
-            # Calcula el tiempo en ticks para colocar la nota en la posición de la n semicorchea
-            tiempo_en_ticks = int(i * ticks_por_subdivision)
-            print(tiempo_en_ticks, i, nota)
-            if nota!=0:
-                # Convierte el tiempo_en_ticks a entero y crea un mensaje de nota en el canal de percusión (canal 9)
-                track.append(Message('note_on', note=nota, velocity=64, channel=9, time=int(tiempo_en_ticks)))
-                track.append(Message('note_off', note=nota, velocity=64, channel=9, time=int(tiempo_en_ticks+ticks_por_subdivision)))  # Duración de la semicorchea
+    for tick in list(spread_song.keys())[1:]:
+        midi_events.append(int((tick - last_tick) * ticks_per_beat))
+        last_tick = tick
+
+    idx = 0
+    for tick, notes in spread_song.items():
+
+        x_init = 0
+        y_init = 0
+
+        if (notes[1]):
+            track.append(mido.Message('note_off', note=notes[1][y_init],channel=9, velocity=64, time=midi_events[idx]))
+            y_init = 1
+        elif (notes[0]):
+            track.append(mido.Message('note_on', note=notes[0][x_init],channel=9, velocity=64, time=midi_events[idx]))
+            x_init = 1
+            
+        for note in notes[1][y_init:]:
+            track.append(mido.Message('note_off', note=note, channel=9, velocity=64, time=0))
+        for note in notes[0][x_init:]:
+            track.append(mido.Message('note_on', note=note,channel=9, velocity=64, time=0))
+        
+        idx += 1
 
     mid.save(midi_file_path)

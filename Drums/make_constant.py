@@ -60,7 +60,7 @@ class Make_Constant:
 
         elif(style == Style.METAL):
             for i in range(16):
-                if((i == skipped1N and skipped1) or (i == skipped2N and skipped2) or (i == skipped3N and skipped3)):
+                if not((i == skipped1N and skipped1) or (i == skipped2N and skipped2) or (i == skipped3N and skipped3)):
                     list[i] = Note.BassDrum.value
 
         return list

@@ -75,7 +75,7 @@ class Make_Engine:
                 if delayed: i += delayedN
                 elif rushed: i -= rushedN
                 list[i] = Note.PedalHiHat.value
-                if double2: list[i + double2N] = Note.PedalHiHat.value
+                if double2 and (i + double2N<16): list[i + double2N] = Note.PedalHiHat.value
 
         elif(style == Style.DISCO):
             for i in range(4):
