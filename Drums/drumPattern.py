@@ -1,7 +1,6 @@
 from make_beat import Make_Beat
 from make_engine import Make_Engine
 from make_constant import Make_Constant
-from enums import Style
 class DrumPattern:
     
     def generatePatterns(style):

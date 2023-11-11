@@ -12,7 +12,7 @@ def read_midi_file(midi_file_path, output_file):
     except Exception as e:
         print(f"Error: {e}")
 
-def read_midi_song(midi_file_path, output_file):
+def read_midi_song(midi_file_path, output_file = None):
     song = []  # Lista para almacenar las notas (tono, duración, tiempo de inicio)
 
     try:
@@ -38,10 +38,11 @@ def read_midi_song(midi_file_path, output_file):
                             note['duration'] = current_time - note['start_time']
                             break
 
-        # Imprimir las notas extraídas
-        with open(output_file, 'w') as f:           
-            for note in song:
-                f.write(f"note: {note['note']}, Start Time: {note['start_time']}, Duration: {note['duration']}\n")
+        if output_file != None:
+            # Imprimir las notas extraídas
+            with open(output_file, 'w') as f:           
+                for note in song:
+                    f.write(f"note: {note['note']}, Start Time: {note['start_time']}, Duration: {note['duration']}\n")
 
         return song
 

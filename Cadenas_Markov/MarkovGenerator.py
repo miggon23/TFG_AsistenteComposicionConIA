@@ -1,4 +1,3 @@
-from IPython.display import display
 import pandas as pd
 import numpy as np
 from note_seq import NoteSequence, midi_io
@@ -187,13 +186,19 @@ class Markov_Generator:
 
         simulations = []
         note_seq_sims = []
+        outputs = []
         for i in range(num_simulations):
             curr_sim = chain.simulate(num_notes)
             simulations.append(curr_sim)
             note_seq_sims.append(self.deserialize_noteseq(curr_sim))
-            midi_io.sequence_proto_to_midi_file(note_seq_sims[i], "./outputs/markov_sim_" + str(i) + ".mid")
+
+            #guarda el output en la lista para devolverlo al final
+            output = "./outputs/markov_sim_" + str(i) + ".mid"
+            outputs.append(output)
+            midi_io.sequence_proto_to_midi_file(note_seq_sims[i], output)
 
         print("[MarkovGenerator]: Melodies generated and placed in 'outputs' folder")
+        return outputs
     
     def load_markov_chain_from_json(self, path):
         silence_string = "_silences"
@@ -237,9 +242,6 @@ class Markov_Generator:
             raise Exception(ex)
 
         print("[MarkovGenerator]: Markov Chain saved successfully into a file")
-
-    def print_chain(self):
-        return plot_graph(self.mc, dpi=300)
 
 # import json
 
