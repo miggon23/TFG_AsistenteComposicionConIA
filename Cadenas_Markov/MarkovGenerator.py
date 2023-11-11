@@ -196,6 +196,13 @@ class Markov_Generator:
         print("[MarkovGenerator]: Melodies generated and placed in 'outputs' folder")
     
     def load_markov_chain_from_json(self, path):
+        silence_string = "_silences"
+
+        if not self.has_silences:
+            silence_string = "_no_silences"
+
+        path += silence_string + ".json"
+
         try:
             self.mc = MarkovChain.from_file(path)
         except Exception as ex:
@@ -205,6 +212,13 @@ class Markov_Generator:
         
 
     def save_markov_chain_to_json(self, path, filename):
+        silence_string = "_silences"
+
+        if not self.has_silences:
+            silence_string = "_no_silences"
+        
+        filename += silence_string
+        
         dir_path = Path(path)
         file_path = Path(path + filename + ".json")
 
