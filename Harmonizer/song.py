@@ -1,7 +1,7 @@
-import scale
-import note
-import harmony
-import interval
+import Scale
+import Note
+import Harmony
+import Interval
 import math
 
 stdWeights = {
@@ -12,8 +12,8 @@ stdWeights = {
 
 
 possibleScales = {
-    "Major": scale.Scale("1 2 3 4 5 6 7"), 
-    "minor": scale.Scale("1 2 b3 4 5 b6 b7") 
+    "Major": Scale.Scale("1 2 3 4 5 6 7"), 
+    "minor": Scale.Scale("1 2 b3 4 5 b6 b7") 
 }
 
 '''
@@ -36,27 +36,37 @@ def spread_song(song):
 
     return dict(sorted(spreadSong.items()))
 
+def debug_song(song, output_file):
+
+    with open(output_file, 'w') as f:           
+        for note in song:
+            f.write(f"note: {note['note']}, Start Time: {note['start_time']}, Duration: {note['duration']}\n")
+
 class Song:
 
-    def __init__(self, melody, tonic):
+    def __init__(self, melody, tonic = None):
 
-        self.tonic = tonic
         self.melody = melody
 
-        p_tonic = -(tonic.pitch - 12) 
+        if tonic == None:
+            self.tonic = Note.Note(self.melody[0]['note']  % 12)
+        else:
+            self.tonic = tonic       
+
+        pTonic = -(self.tonic.pitch - 12) 
 
         intervals = [0]
 
-        for note in melody:
+        for note in self.melody:
 
-            interval = (note["note"] + p_tonic) % 12
+            interval = (note["note"] + pTonic) % 12
 
             if interval not in intervals:
                 intervals.append(interval)
             
         intervals.sort()
 
-        self.scale = scale.Scale(intervals)
+        self.scale = Scale.Scale(intervals) 
 
     def choose_scale(self):
 
@@ -69,7 +79,33 @@ class Song:
             self.scale = possibleScales["minor"].copy_scale()
         else:
             raise Exception("Escala ambigua: no hay escalas coincidentes")
+        
+    def choose_scale_v2(self):
+        if (self.scale.len() >= 7):
+            return
+        
+        if possibleScales["Major"].contains(self.scale):
+            self.scale = possibleScales["Major"].copy_scale()
+        elif possibleScales["minor"].contains(self.scale):
+            self.scale = possibleScales["minor"].copy_scale()
+        else:
+            # self.scale.print_scale()
+            degrees = possibleScales["Major"].copy_scale()
+            degrees.create_degrees()         
+            degrees = degrees.degrees
+   
+            idx = 0
+            for degree in degrees:
+                idx += 1
+                if degree.contains(self.scale):
+                    self.scale = degree.copy_scale()
+                    break
 
+            # Cambio la tónica y cambio a la escala mayor, es realmente necesario?
+            # self.tonic = Note.Note((self.tonic.pitch - possibleScales["Major"].scale[idx].semitones + 12) % 12)
+            # print(Note.get_note(self.tonic.pitch))
+            # self.scale = possibleScales["Major"].copy_scale()
+        
     '''
     Divide la canción en slices (fragmentos) equivalentes para los cuales se busca el acorde más coherente
     Genera la armonía de la canción asignando pesos a los acordes dependiendo de varios factores:
@@ -77,15 +113,12 @@ class Song:
         - El momento en el que suena la nota dentro del fragmento ("tickWeights": [w0, w1, w2, ...])
         - Si la nota acaba de sonar o ya estaba sonando de antes ("notPlayingAtTickPen" = w)
     '''
-    def armonize(self, ticksPerSlice = 4.0, weights = stdWeights):
+    def armonize(self, ticksPerSlice = 4.0, weights = stdWeights, possibleChords = None):
 
-        possibleChords = {
-            "": scale.Scale("1 3 5"),
-            "-": scale.Scale("1 b3 5"),
-            "-b5": scale.Scale("1 b3 b5")
-        }
-
-        self.harmony = harmony.Harmony(self.scale, possibleChords)
+        if possibleChords == None:
+            self.harmony = Harmony.Harmony(self.scale)
+        else:
+            self.harmony = Harmony.Harmony(self.scale, possibleChords)
         self.harmony.relativize_chords()
         self.__relativize_song()
         relativizedSpreadSong = spread_song(self.relativazedSong)
@@ -124,6 +157,7 @@ class Song:
 
             #Notas que abacan de terminar, se eliminan de la lista
             for note in notes[1]:
+                #Si hay un error aquí es posible que haya notas de 0 segundos de duración
                 notesPlaying.remove(note) 
 
             slice = int(tick / ticksPerSlice)
@@ -135,7 +169,7 @@ class Song:
             '''    
             tickWeightNow = 1
             if tick % tickWeightTime == 0:
-                tickWeightNow = weights["tickWeights"][int(tick - slice * ticksPerSlice)]
+                tickWeightNow = weights["tickWeights"][int((tick - slice * ticksPerSlice) / tickWeightTime)]
                 for note in notesPlaying:
                     self.__calculate_chord_weights(note, slice, 
                         weights["chordWeight"], tickWeightNow, weights["notPlayingAtTickPen"])
@@ -145,6 +179,7 @@ class Song:
                 notesPlaying.append(note)
                 self.__calculate_chord_weights(note, slice, weights["chordWeight"], tickWeightNow) 
 
+        self.__choose_best_chords()
         return self.__translate_harmony(ticksPerSlice)
     
     '''
@@ -155,18 +190,21 @@ class Song:
     def __calculate_chord_weights(self, note, slice, 
         chordWeight, tickWeight, notPlayingAtTickPen = 1):
          
-         for degree, chords in self.harmony.relativizedChords.items():
-                        chordIdx = 0
-                        for chord in chords:
-                            intervalIdx = 0
-                            for interval in chord.scale:
-                                if note == interval:       
-                                    key = (degree, chordIdx)  
-                                    if key not in self.chordAnalysis[slice]:
-                                        self.chordAnalysis[slice][key] = 0                       
-                                    self.chordAnalysis[slice][key] += (chordWeight[intervalIdx] * tickWeight * notPlayingAtTickPen)
-                                intervalIdx += 1
-                            chordIdx += 1
+        for degree, chords in self.harmony.relativizedChords.items():
+                    chordIdx = 0
+                    #Recorro todos los acordes de la lista de acordes
+                    for chord in chords:
+                        intervalIdx = 0
+                        #Recorro todos los intervalos del acorde
+                        for interval in chord.scale:
+                            if note == interval:       
+                                value = (degree, chordIdx)  
+                                if value not in self.chordAnalysis[slice]:
+                                    self.chordAnalysis[slice][value] = 0                       
+                                self.chordAnalysis[slice][value] += (chordWeight[intervalIdx] * tickWeight * notPlayingAtTickPen)
+                                break
+                            intervalIdx += 1
+                        chordIdx += 1
 
     def print_chord_analysis(self):
         idx = 0
@@ -174,8 +212,16 @@ class Song:
             print(f"Slice {idx}:")
             idx += 1
             for chord, w in chordList.items():
-                print(chord[0], " ", self.harmony.chords[chord[0]][chord[1]], ": ", w)
+                print(f"{chord[0]} {self.harmony.chords[chord[0]][chord[1]]}: {w}")
 
+    def print_best_chords(self):
+        idx = 0
+        for chord in self.bestChords:
+            if chord is not None:
+                print(f"Slice {idx}: {chord[0]} {self.harmony.chords[chord[0]][chord[1]]}")  
+            else:
+                print(f"Slice {idx}")
+            idx += 1
 
     '''
     Dada la tónica de la canción, se relativizan todas las notas, 
@@ -189,20 +235,18 @@ class Song:
 
         for note in self.melody:
             self.relativazedSong.append({           
-                'note': interval.Interval((note['note'] + pTonic) % 12),  
+                'note': Interval.Interval((note['note'] + pTonic) % 12),  
                 'start_time': note['start_time'], 
                 'duration': note['duration']     
             })
-    
-    '''
-    Elige el acorde con más peso de cada fragmento y a partir de la tónica de la canción,
-    transforma los intervalos en notas reales traduciendo el análisis de armonía en "acordes de misa"
-    '''
-    def __translate_harmony(self, ticksPerSlice):
 
-        songChordNotes = []
+    '''
+    Elige el acorde con más peso de cada fragmento 
+    '''
+    def __choose_best_chords(self):
 
-        idx = 0
+        self.bestChords = []
+
         for slice in self.chordAnalysis:
             maxWeight = 0
             bestChord = None
@@ -211,9 +255,25 @@ class Song:
                     maxWeight = weight
                     bestChord = chord
 
-            if bestChord is not None:
-                for interval in self.harmony.relativizedChords[bestChord[0]][bestChord[1]].scale:
-                    songChordNotes.append({"note": note.get_pitch(interval, self.tonic, 4), "start_time": ticksPerSlice * idx, "duration": ticksPerSlice})
+            self.bestChords.append(bestChord)
+    
+    '''
+    A partir de la tónica de la canción transforma los intervalos
+    en notas reales traduciendo el análisis de armonía en "acordes de misa"
+    '''
+    def __translate_harmony(self, ticksPerSlice):
+
+        songChordNotes = []
+
+        idx = 0
+        for chord in self.bestChords:
+
+            if chord is not None:
+                for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
+                    songChordNotes.append({
+                        "note": Note.get_pitch(interval, self.tonic, 4), 
+                        "start_time": ticksPerSlice * idx, 
+                        "duration": ticksPerSlice})
             
             idx += 1
 

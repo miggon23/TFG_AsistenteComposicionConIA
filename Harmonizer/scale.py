@@ -1,4 +1,4 @@
-import interval
+import Interval
 
 class Scale:
 
@@ -7,7 +7,7 @@ class Scale:
         if type(intervals) == str:
             intervals = intervals.split()
    
-        nextInterval = interval.Interval(intervals[0])
+        nextInterval = Interval.Interval(intervals[0])
         if checker and not nextInterval.is_tonic():
             raise Exception("Escala mal construida")
         
@@ -15,7 +15,7 @@ class Scale:
         idx = 0
         
         for i in intervals[1:]:
-            nextInterval = interval.Interval(i)
+            nextInterval = Interval.Interval(i)
             if checker and nextInterval <= self.scale[idx]:
                 raise Exception("Escala mal construida")
             self.scale.append(nextInterval)

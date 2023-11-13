@@ -21,9 +21,20 @@ notes_pitch = {
 def get_pitch(interval, tonic, octave):
         return tonic.pitch + interval.semitones + 12 * octave
 
+def get_note(pitch):
+        pitch = pitch % 12
+
+        for note, value in notes_pitch.items():
+            if value == pitch:
+                return note
+
 class Note:
 
     def __init__(self, note, octave = 0):
-        self.pitch = notes_pitch[note] + 12 * octave
+        
+        if type(note) == int:
+            self.pitch = note + 12 * octave
+        else:
+            self.pitch = notes_pitch[note] + 12 * octave
 
     

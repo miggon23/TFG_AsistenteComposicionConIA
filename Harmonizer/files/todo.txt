@@ -6,3 +6,8 @@ dada una escala, averiguar todas sus triadas posibles (y cuatriadas)
 dadas una serie de notas y una tónica, averiguar el esqueleto de la escala (si es una escala mayor o menor, por ahoras)
 dada una lista de notas normalizadas (transformadas en grados), dividir la canción en intervalos de tiempo uniformes
     y averiguar que acorde le corresponde a cada intervalo de tiempo
+
+el readMidi funciona mal con notas de 0 de duración
+resolver el siguiente problema: dado un conjunto de menos de 7 notas, 
+    ¿qué escalas de 7 notas contienen ese conjunto?
+    ¿qué escalas de 7 notas relativas a una escala mayor contienen ese conjunto?

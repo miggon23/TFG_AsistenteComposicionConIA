@@ -1,16 +1,25 @@
-import scale
+import Scale
 
 allChords = {
-    "": scale.Scale("1 3 5"),
-    "-": scale.Scale("1 b3 5"),
-    "-b5": scale.Scale("1 b3 b5"),
-    "maj7": scale.Scale("1 3 5 7"),
-    "7": scale.Scale("1 3 5 b7"),
-    "-7": scale.Scale("1 b3 5 b7"),
-    "-maj7": scale.Scale("1 b3 5 7"),  
-    "-7b5": scale.Scale("1 b3 b5 b7"),
-    "º7": scale.Scale("1 b3 b5 bb7"),
-    "+maj7": scale.Scale("1 3 #5 7")   
+    "": Scale.Scale("1 3 5"),  # Mayor
+    "-": Scale.Scale("1 b3 5"),  # Menor
+    "-b5": Scale.Scale("1 b3 b5"),  # Disminuida
+    "+": Scale.Scale("1 3 #5"),  # Aumentada
+    "maj7": Scale.Scale("1 3 5 7"),  # Mayor séptima
+    "7": Scale.Scale("1 3 5 b7"),  # Dominante 
+    "-7": Scale.Scale("1 b3 5 b7"),  # Menor séptima
+    "-maj7": Scale.Scale("1 b3 5 7"),  # Menor mayor séptima  
+    "-7b5": Scale.Scale("1 b3 b5 b7"),  # Menor séptima disminuida (Semidisminuida)
+    "º7": Scale.Scale("1 b3 b5 bb7"),  # Séptima disminuida (Disminuida)
+    "+maj7": Scale.Scale("1 3 #5 7"),  # Aumentada mayor séptima
+    "+7": Scale.Scale("1 3 #5 b7"),  # Aumentada dominante
+}
+
+onlyTriads = {
+    "": Scale.Scale("1 3 5"),  # Mayor
+    "-": Scale.Scale("1 b3 5"),  # Menor
+    "-b5": Scale.Scale("1 b3 b5"),  # Disminuida
+    "+": Scale.Scale("1 3 #5"),  # Aumentada
 }
 
 class Harmony:
@@ -49,7 +58,7 @@ class Harmony:
                 for interval in self.possibleChords[chord].scale:
                     intervals.append((interval.semitones + offset) % 12)
                 
-                chordList.append(scale.Scale(intervals, False))
+                chordList.append(Scale.Scale(intervals, False))
 
             idx += 1
 

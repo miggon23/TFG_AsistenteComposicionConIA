@@ -1,36 +1,34 @@
-import midiUtils
-import song
-import note
-import scale
-import harmony
+import MidiUtils
+import Song
+import Note
+import Scale
+import Harmony
 
 if __name__ == "__main__":
-    # midiUtils.make_midi_song("midi/midi.mid", [])
-    # midiUtils.read_midi_file("midi/midi.mid", "files/midi_out.txt")
-    # extracted_notes = midiUtils.read_midi_song("midi/midi.mid", "files/notes_out.txt") 
-     
-    # scale = scale.Scale("1 2 3 4 5 b6 7")
-    # scale.create_degrees()
-    # scale.print_degrees()
-    # print()
-    # harmony = harmony.Harmony(scale)
-    # harmony.print_chords()
-    # print()
-    # harmony.relativize_chords()
-    # harmony.print_relativized_chords()
-    # print()
 
-    #read midi funciona del orto (me lo hizo chatGPT 😡)
-    #hay que poner una nota random al final si no, peta
-    #te desplaza toda la canción varios compases a la derecha por la polla
-    #lo cambiaré en el futuro
-    melody_ = midiUtils.read_midi_song("midi/input_song.mid", "files/notes_out.txt") 
-    song_ = song.Song(melody_[:-1], note.Note("A"))
-    song_.choose_scale() 
-    harmony_ = song_.armonize(ticksPerSlice=1.0)
-    song_.print_chord_analysis()
-    midiUtils.make_midi_song("midi/output_harmony.mid", harmony_)
-    midiUtils.make_midi_song("midi/output_song.mid", song_.melody + harmony_)
+    someChords = {
+        "": Scale.Scale("1 3 5"),  # Mayor
+        "-": Scale.Scale("1 b3 5"),  # Menor
+        "-b5": Scale.Scale("1 b3 b5"),  # Disminuida
+        "7": Scale.Scale("1 3 5 b7"),  # Dominante 
+    }
+
+    melody = MidiUtils.read_midi_song("midi/input_song.mid") 
+    #Song.debug_song(melody, "files/notes_out.txt")
+    song = Song.Song(melody)
+    song.choose_scale_v2()
+    harmony = song.armonize(ticksPerSlice = 4.0, possibleChords = someChords)
+    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony)
+    MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony)
+
+    song.print_chord_analysis()
+    print()
+    song.print_best_chords()
+    print()
+    song.scale.print_degrees()
+    print()
+    song.harmony.print_chords()
+    
 
 
 
