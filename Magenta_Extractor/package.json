@@ -1,0 +1,13 @@
+{
+  "name": "dependencies",
+  "version": "1.0.0",
+  "description": "Dependencias de Magenta",
+  "main": "magenta_extractor.js",
+  "scripts": {
+    "start": "node magenta_extractor.js"
+  },
+  "author": "",
+  "dependencies": {
+    "@magenta/music": "1.23.1"
+  }
+}
