@@ -3,7 +3,6 @@ import numpy as np
 from note_seq import NoteSequence, midi_io
 
 from pydtmc import MarkovChain
-from pydtmc import plot_graph
 import os
 from pathlib import Path
 
@@ -18,9 +17,10 @@ MAX_SILENCE_SECONDS = 2
 
 class Markov_Generator:
 
-    def __init__(self, use_steps = True, use_silences = True):
+    def __init__(self, use_steps = True, use_silences = True, smooth_ocurrences = True):
         self.step_mode = use_steps
         self.has_silences = use_silences
+        self.smooth_ocurrences = smooth_ocurrences
 
     #Anade una nota a la NoteSequence "ns" y al diccionario de claves "keys" con el indice "k"
     def append_note(self, keys, k, ns, n_pitch, n_start_time, n_end_time, n_velocity):
@@ -168,7 +168,30 @@ class Markov_Generator:
 
         ocurrences_smoothed = ocurrences + 1
 
-        p = np.true_divide(ocurrences_smoothed, ocurrences_smoothed.sum(axis=1, keepdims=True))
+        if (self.smooth_ocurrences):
+            sum = ocurrences_smoothed.sum(axis=1, keepdims=True)
+            p = np.true_divide(ocurrences_smoothed, sum)
+
+        else:
+            # Calcula el sumatorio por fila
+            sum_row = ocurrences.sum(axis=1, keepdims=True)
+
+            # Encuentra las filas cuyo sumatorio es igual a cero
+            zero_sum_rows = np.where(sum_row == 0)[0]
+
+            # Elimina las filas y columnas correspondientes
+            ocurrences = np.delete(ocurrences, zero_sum_rows, axis=0)
+            ocurrences = np.delete(ocurrences, zero_sum_rows, axis=1)
+
+            # Elimina las claves correspondientes a las filas y columnas borradas
+            keys = [key for idx, key in enumerate(keys) if idx not in zero_sum_rows]
+
+            # Calcula el nuevo sumatorio por fila después de la eliminación
+            sum_row = ocurrences.sum(axis=1, keepdims=True)
+
+            print(ocurrences.shape)
+
+            p = np.true_divide(ocurrences, sum_row)
 
         self.mc = MarkovChain(p, list(keys))
 
