@@ -11,7 +11,7 @@ def generate_melodies(generator, n_notes, n_sims):
     generator.run_markov_chain(num_notes = n_notes, num_simulations = n_sims)
 
 def main():
-    generator = Markov_Generator(use_silences=False)
+    generator = Markov_Generator(use_silences=False, smooth_ocurrences=False)
 
     exit = False
 
