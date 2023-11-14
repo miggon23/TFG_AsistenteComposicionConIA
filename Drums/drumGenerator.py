@@ -1,7 +1,7 @@
 import midiUtils
 from drumPattern import DrumPattern
 
-class Drum:
+class DrumGenerator:
     def generate(style):
         drumPatternA, drumPatternB, drumPatternC = DrumPattern.generatePatterns(style)
 
