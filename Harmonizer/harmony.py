@@ -35,7 +35,7 @@ class Harmony:
 
         for n in range(len(scale.scale)):
 
-            chordList = self.chords[scale.scale[n].get_interval()] = []
+            chordList = self.chords[scale.scale[n].get_name()] = []
 
             for k, v in  self.possibleChords.items():
                 if scale.contains(v, n):

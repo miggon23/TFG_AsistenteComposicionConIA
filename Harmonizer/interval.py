@@ -40,7 +40,7 @@ class Interval:
         if self.semitones < 0 or self.semitones > 11:
             raise Exception("Intervalo incorrecto")
     
-    def get_interval(self):
+    def get_name(self):
         return intervals[self.semitones]
     
     def is_tonic(self):

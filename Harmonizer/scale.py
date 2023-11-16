@@ -1,4 +1,5 @@
 import Interval
+import Note
 
 class Scale:
 
@@ -21,16 +22,13 @@ class Scale:
             self.scale.append(nextInterval)
             idx += 1
 
-        self.degrees = []
-
     def create_degrees(self):
 
-        if len(self.degrees) > 0:
-            return
+        self.degrees = []
 
         lastScale = self.scale
 
-        for n in range(len(self.scale) - 1):
+        for _ in range(len(self.scale) - 1):
          
             firstInterval = lastScale[1].semitones
             degree = []
@@ -39,12 +37,45 @@ class Scale:
                 degree.append(i.semitones - firstInterval)
             degree.append(12 - firstInterval)
 
-            s = Scale(degree)
-            self.degrees.append(s)
-            lastScale = s.scale
+            scale = Scale(degree)
+            self.degrees.append(scale)
+            lastScale = scale.scale
 
-    def len(self):
-        return len(self.scale)
+    def absolutize_scale(self, tonic):
+        
+        self.absolutizedScale = []
+
+        allNotes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+        allSounds = ['A', ' ', 'B', 'C', ' ', 'D', ' ', 'E', 'F', ' ', 'G', ' ']
+
+        noteIdx = allNotes.index(tonic.name[0])
+
+        extraSemitones = len(tonic.name) - 1
+        if extraSemitones > 0 and tonic.name[-1] == 'b':
+                extraSemitones *= - 1
+
+        soundIdx = (allSounds.index(tonic.name[0]) + extraSemitones + 12) % 12
+
+
+        for interval in self.scale:
+
+            noteName = allNotes[(int(interval.get_name()[-1]) - 1 + noteIdx) % 7]
+
+
+            srcIdx = (soundIdx + interval.semitones) % 12
+            dstIdx = allSounds.index(noteName)
+
+            if srcIdx != dstIdx:
+                flatDist = (dstIdx - srcIdx + 12) % 12
+                sharpDist = (srcIdx - dstIdx + 12) % 12               
+
+                if flatDist <= sharpDist:
+                    noteName += flatDist * "b"
+                else:
+                    noteName += sharpDist * "#"            
+
+            self.absolutizedScale.append(Note.Note(noteName))
+
     
     def copy_scale(self):
         
@@ -56,8 +87,9 @@ class Scale:
         return Scale(semitones)      
 
     def print_scale(self):      
+
         for i in self.scale:
-            print(i.get_interval() + " ", end='')
+            print(i.get_name() + " ", end='')
         print()
 
     def print_degrees(self):
@@ -67,29 +99,38 @@ class Scale:
 
         idx = 1
         for s in self.degrees:
-            print(self.scale[idx].get_interval(), end=": ")
+            print(self.scale[idx].get_name(), end=": ")
             s.print_scale()
             idx += 1
 
-    def contains(self, chord, degreeIdx = 0):
+    def print_absolutized_scale(self):
+
+        for note in self.absolutizedScale:
+            print(f"{note.name} ", end="")
+        print()
+    
+    def len(self):
+        return len(self.scale)
+
+    def contains(self, scale, degreeIdx = 0):
         
         if degreeIdx == 0:
-            return self.__contains(chord)
+            return self.__contains(scale)
         else:
-            return self.degrees[degreeIdx - 1].__contains(chord)
+            return self.degrees[degreeIdx - 1].__contains(scale)
 
-    def __contains(self, chord):
+    def __contains(self, scale):
 
         ids = 0
         idc = 0
 
-        while ids < len(self.scale) and idc < len(chord.scale):
+        while ids < len(self.scale) and idc < len(scale.scale):
 
-            if self.scale[ids] == chord.scale[idc]:
+            if self.scale[ids] == scale.scale[idc]:
                 idc += 1
             ids += 1
 
-        return idc == len(chord.scale)
+        return idc == len(scale.scale)
     
     
 

@@ -1,4 +1,4 @@
-notes_pitch = {
+name_pitch = {
     "C": 0,
     "C#": 1,
     "Db": 1,  
@@ -21,20 +21,39 @@ notes_pitch = {
 def get_pitch(interval, tonic, octave):
         return tonic.pitch + interval.semitones + 12 * octave
 
-def get_note(pitch):
-        pitch = pitch % 12
-
-        for note, value in notes_pitch.items():
-            if value == pitch:
-                return note
-
 class Note:
 
-    def __init__(self, note, octave = 0):
+    def __init__(self, note):
         
         if type(note) == int:
-            self.pitch = note + 12 * octave
+
+            self.pitch = note
+
+            for name, pitch in reversed(name_pitch.items()):
+                if pitch == self.pitch % 12:
+                    self.name = name
+                
         else:
-            self.pitch = notes_pitch[note] + 12 * octave
+
+            extraSemitones = 0
+            for alteration in note[1:]:
+                if alteration == 'b':
+                    extraSemitones -= 1
+                elif alteration == '#':
+                    extraSemitones += 1
+                else:
+                    raise Exception("La nota tiene un nombre incorrecto")
+                 
+            self.pitch = (name_pitch[note[0]] + extraSemitones + 12) % 12
+            self.name = note[0]
+
+            if extraSemitones > 0:
+                self.name += extraSemitones * '#'
+            elif extraSemitones < 0:
+                self.name += (extraSemitones * -1) * 'b'
+
+
+        
+            
 
     

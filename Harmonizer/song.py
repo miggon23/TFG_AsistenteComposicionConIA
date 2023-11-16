@@ -3,6 +3,7 @@ import Note
 import Harmony
 import Interval
 import math
+import random
 
 stdWeights = {
     "chordWeight": [1, 0.25, 0.5, 0.25],
@@ -84,27 +85,39 @@ class Song:
         if (self.scale.len() >= 7):
             return
         
-        if possibleScales["Major"].contains(self.scale):
-            self.scale = possibleScales["Major"].copy_scale()
-        elif possibleScales["minor"].contains(self.scale):
-            self.scale = possibleScales["minor"].copy_scale()
-        else:
-            # self.scale.print_scale()
-            degrees = possibleScales["Major"].copy_scale()
-            degrees.create_degrees()         
-            degrees = degrees.degrees
-   
-            idx = 0
-            for degree in degrees:
-                idx += 1
-                if degree.contains(self.scale):
-                    self.scale = degree.copy_scale()
-                    break
+        self.scale.create_degrees()
+        degrees = self.scale.degrees
+        degrees.insert(0, self.scale)
 
-            # Cambio la tónica y cambio a la escala mayor, es realmente necesario?
-            # self.tonic = Note.Note((self.tonic.pitch - possibleScales["Major"].scale[idx].semitones + 12) % 12)
-            # print(Note.get_note(self.tonic.pitch))
-            # self.scale = possibleScales["Major"].copy_scale()
+        print(f"Escala base: ", end="")
+        self.scale.print_scale()
+        print(f"Tónica base: {self.tonic.name}")
+
+        fitingScales = []
+
+        idx = 0
+        for degree in degrees:
+            if possibleScales["Major"].contains(degree):
+                tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
+                fitingScales.append((tonic, "Major"))
+                print(f"Escala Mayor coincidente con tónica en {tonic.name}")
+            if possibleScales["minor"].contains(degree):
+                tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
+                fitingScales.append((tonic, "minor"))
+                print(f"Escala menor coincidente con tónica en {tonic.name}")
+            idx += 1
+
+        if not fitingScales:
+            print(f"No hay escalas coincidentes")
+            return
+
+        finalScale = fitingScales[random.randint(0, len(fitingScales) - 1)]
+        self.tonic = finalScale[0]
+        self.scale = possibleScales[finalScale[1]].copy_scale()
+        self.scale.absolutize_scale(self.tonic)
+        print("Escala elegida:")
+        self.scale.print_scale()
+        self.scale.print_absolutized_scale()    
         
     '''
     Divide la canción en slices (fragmentos) equivalentes para los cuales se busca el acorde más coherente
@@ -271,7 +284,7 @@ class Song:
             if chord is not None:
                 for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
                     songChordNotes.append({
-                        "note": Note.get_pitch(interval, self.tonic, 4), 
+                        "note": Note.get_pitch(interval, self.tonic, 3), 
                         "start_time": ticksPerSlice * idx, 
                         "duration": ticksPerSlice})
             
