@@ -6,21 +6,56 @@ from pydtmc import MarkovChain
 import os
 from pathlib import Path
 
+from enum import Enum
+
 #QPM estandar para pasar a MIDI (1 negra por segundo)
 QPM = 60
 
-#Valor estandar de un step, para normalizar
+#Valor estandar de un step, para normalizar#
 STEP_VALUE = 1/4
 
 MAX_SILENCE_STEPS = 8
 MAX_SILENCE_SECONDS = 2
 
+name_pitch = {
+    "C": 0,
+    "C_SHARP": 1,
+    "D_FLAT": 1,
+    "D": 2,
+    "D_SHARP": 3,
+    "E_FLAT": 3,
+    "E": 4,
+    "F": 5,
+    "F_SHARP": 6,
+    "G_FLAT": 6,
+    "G": 7,
+    "G_SHARP": 8,
+    "A_FLAT": 8,
+    "A": 9,
+    "A_SHARP": 10,
+    "B_FLAT": 10,
+    "B": 11,
+}
+
+CMajor_notes = [ 0, 2, 4, 5, 7, 9, 11 ]
+
+is_CMajor_note = [ True, False, True, False, True, True, False, True, False, True, False, True ]
+
 class Markov_Generator:
 
-    def __init__(self, use_steps = True, use_silences = True, smooth_ocurrences = True):
+    def __init__(self, use_steps = True, use_silences = True, smooth_ocurrences = True, normalize_scale = True):
         self.step_mode = use_steps
         self.has_silences = use_silences
         self.smooth_ocurrences = smooth_ocurrences
+        self.normalize_scale = normalize_scale
+
+    def getScale(self, noteSeq):
+        keySignatures = noteSeq.get("keySignatures", 0)
+        
+        if (keySignatures != 0):
+            return keySignatures[0].get("key", "C")
+
+        return "C"
 
     #Anade una nota a la NoteSequence "ns" y al diccionario de claves "keys" con el indice "k"
     def append_note(self, keys, k, ns, n_pitch, n_start_time, n_end_time, n_velocity):
@@ -114,18 +149,24 @@ class Markov_Generator:
         #indice de la nota en keys
         k = 0
         inputs = df["input_sequence"]
-
+            
         for i in range(len(inputs)):
-            #
             for j in range(len(inputs[i])):
                 #solo nos interesan las notas si el feedback es positivo ("2")
                 if (df["feedback"][i][j] == "2"):
-                    notes = inputs[i][j]
+                    noteSeq = inputs[i][j]
                     
                     # Create a NoteSequence
                     ns = NoteSequence()
                     prev_end_time = 0
-                    for note_data in notes["notes"]:
+                    noteList = noteSeq["notes"]
+                        
+                    keySig = self.getScale(noteSeq)
+                    pitchVariation = name_pitch[keySig]
+
+                    useNoteSeq = True
+                        
+                    for note_data in noteList:
 
                         start_time = 0
                         end_time = 0
@@ -142,14 +183,41 @@ class Markov_Generator:
                         if (self.has_silences and time_diff > 0.05):
                             k = self.append_note(keys, k, ns, 0, prev_end_time, start_time, 100)
 
-                        k = self.append_note(keys, k, ns, note_data["pitch"], start_time, end_time, note_data["velocity"])
+                        notePitch = note_data["pitch"]
+
+                        #si queremos normalizar la escala 
+                        if (self.normalize_scale):
+                            notePitch -= pitchVariation
+                            #si la nota no pertenece a la escala la descartamos
+                            if (not is_CMajor_note[notePitch % 12]):
+                                useNoteSeq = False
+                                break
+
+                            notePitch = max(notePitch, notePitch % 12 + 12*4)
+                            notePitch = min(notePitch, notePitch % 12 + 12*5)
+
+                        
+                        k = self.append_note(keys, k, ns, notePitch, start_time, end_time, note_data["velocity"])
                         prev_end_time = end_time
 
                     #anadimos la secuencia al training data
-                    notes_to_train.append(ns)
+                    if (useNoteSeq):
+                        notes_to_train.append(ns)
                     
         differentNotes = len(keys.keys())
         ocurrences = np.zeros(shape=(differentNotes, differentNotes))
+
+        with open("b", "w") as archivo:
+            for key in keys.keys():
+                data = key.split('_')
+
+                noteName = ""
+                for name, pitch in reversed(name_pitch.items()):
+                    if pitch == int(data[0]) % 12:
+                        noteName = name
+                        break
+
+                archivo.write(str(noteName) + "_" + str(int(int(data[0])/12)) + "_" + str(data[1]) + "\n")
 
         for noteSeq in notes_to_train:
             ant = -1
