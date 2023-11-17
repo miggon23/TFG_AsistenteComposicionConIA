@@ -85,14 +85,13 @@ class Song:
 
         idx = 0
         for degree in degrees:
-            if possibleScales['Major'].contains(degree):
-                tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
-                fittingScales.append((tonic, "Major"))
-                print(f"Escala Mayor coincidente con tónica en {tonic.name}")
-            if possibleScales['minor'].contains(degree):
-                tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
-                fittingScales.append((tonic, "minor"))
-                print(f"Escala menor coincidente con tónica en {tonic.name}")
+
+            for name, scale in possibleScales.items():
+
+                if scale.contains(degree):
+                    tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
+                    fittingScales.append((tonic, name))
+                    print(f"Escala {name} coincidente con tónica en {tonic.name}")
             idx += 1
 
         if not fittingScales:
