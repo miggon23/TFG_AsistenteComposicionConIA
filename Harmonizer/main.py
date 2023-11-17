@@ -30,6 +30,11 @@ if __name__ == "__main__":
     song.scale.print_degrees()
     print()
     song.harmony.print_chords()
+
+    # scale = Scale.Scale("1 2 3 4 5 6 7")
+    # for name in Note.name_pitch.keys():
+    #     scale.absolutize_scale(Note.Note(name))
+    #     scale.print_absolutized_scale()
     
 
 
