@@ -68,20 +68,8 @@ class Song:
         intervals.sort()
 
         self.scale = Scale.Scale(intervals) 
-
+        
     def choose_scale(self):
-
-        if (self.scale.len() > 7):
-            raise Exception("Escala ambigua: más de 7 notas distintas")
-        
-        if possibleScales["Major"].contains(self.scale):
-            self.scale = possibleScales["Major"].copy_scale()
-        elif possibleScales["minor"].contains(self.scale):
-            self.scale = possibleScales["minor"].copy_scale()
-        else:
-            raise Exception("Escala ambigua: no hay escalas coincidentes")
-        
-    def choose_scale_v2(self):
         if (self.scale.len() >= 7):
             return
         
@@ -93,25 +81,49 @@ class Song:
         self.scale.print_scale()
         print(f"Tónica base: {self.tonic.name}")
 
-        fitingScales = []
+        fittingScales = []
 
         idx = 0
         for degree in degrees:
-            if possibleScales["Major"].contains(degree):
+            if possibleScales['Major'].contains(degree):
                 tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
-                fitingScales.append((tonic, "Major"))
+                fittingScales.append((tonic, "Major"))
                 print(f"Escala Mayor coincidente con tónica en {tonic.name}")
-            if possibleScales["minor"].contains(degree):
+            if possibleScales['minor'].contains(degree):
                 tonic = Note.Note((self.tonic.pitch + self.scale.scale[idx].semitones) % 12)
-                fitingScales.append((tonic, "minor"))
+                fittingScales.append((tonic, "minor"))
                 print(f"Escala menor coincidente con tónica en {tonic.name}")
             idx += 1
 
-        if not fitingScales:
-            print(f"No hay escalas coincidentes")
-            return
+        if not fittingScales:
 
-        finalScale = fitingScales[random.randint(0, len(fitingScales) - 1)]
+            print(f"No hay escala tonal coincidente cuya tónica sea alguna de las notas de la melodía")
+
+            majorDegrees = possibleScales["Major"].copy_scale()
+            majorDegrees.create_degrees()
+            majorDegrees = majorDegrees.degrees
+
+            idx = 0
+            for degree in degrees:
+
+                degree.print_scale()
+                idj = 1
+                for majorDegree in majorDegrees:
+
+                    if majorDegree.contains(degree):
+                        tonic = Note.Note(self.tonic.pitch + self.scale.scale[idx].semitones)
+                        print(f"Modo {possibleScales['Major'].scale[idj].get_name()} coincidente con tónica en {tonic.name}")
+                        tonic = Note.Note(tonic.pitch - possibleScales['Major'].scale[idj].semitones)
+                        print(f"Se traduce a una escala Mayor con tónica en {tonic.name}")
+                        fittingScales.append((tonic, "Major"))
+                    idj += 1
+                idx += 1
+
+        if not fittingScales:
+             print(f"No hay ninguna escala tonal coincidente")
+             return
+
+        finalScale = fittingScales[random.randint(0, len(fittingScales) - 1)]
         self.tonic = finalScale[0]
         self.scale = possibleScales[finalScale[1]].copy_scale()
         self.scale.absolutize_scale(self.tonic)

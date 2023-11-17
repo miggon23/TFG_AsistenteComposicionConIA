@@ -1,0 +1,111 @@
+Track 0:
+MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8, time=0)
+MetaMessage('end_of_track', time=0)
+Track 1:
+MetaMessage('set_tempo', tempo=461538, time=0)
+MetaMessage('end_of_track', time=0)
+Track 2:
+MetaMessage('track_name', name='Close Grand', time=0)
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+control_change channel=0 control=101 value=0 time=0
+control_change channel=0 control=100 value=0 time=0
+control_change channel=0 control=6 value=12 time=0
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+program_change channel=0 program=0 time=0
+control_change channel=0 control=101 value=0 time=0
+control_change channel=0 control=100 value=0 time=0
+control_change channel=0 control=6 value=12 time=0
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+program_change channel=0 program=0 time=0
+note_on channel=0 note=53 velocity=100 time=0
+control_change channel=0 control=101 value=0 time=0
+control_change channel=0 control=100 value=0 time=0
+control_change channel=0 control=6 value=12 time=0
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+program_change channel=0 program=0 time=0
+note_off channel=0 note=53 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=63 velocity=100 time=0
+note_off channel=0 note=63 velocity=90 time=24
+note_on channel=0 note=68 velocity=100 time=24
+note_off channel=0 note=68 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=63 velocity=100 time=0
+note_off channel=0 note=63 velocity=90 time=24
+note_on channel=0 note=56 velocity=100 time=24
+note_off channel=0 note=56 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=68 velocity=100 time=24
+note_off channel=0 note=68 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=51 velocity=100 time=24
+note_off channel=0 note=51 velocity=90 time=48
+note_on channel=0 note=65 velocity=100 time=0
+note_off channel=0 note=65 velocity=90 time=24
+note_on channel=0 note=62 velocity=100 time=24
+note_off channel=0 note=62 velocity=90 time=48
+note_on channel=0 note=65 velocity=100 time=0
+note_off channel=0 note=65 velocity=90 time=24
+note_on channel=0 note=67 velocity=100 time=24
+note_off channel=0 note=67 velocity=90 time=48
+note_on channel=0 note=65 velocity=100 time=0
+note_off channel=0 note=65 velocity=90 time=24
+note_on channel=0 note=63 velocity=100 time=24
+note_off channel=0 note=63 velocity=90 time=48
+note_on channel=0 note=65 velocity=100 time=0
+note_off channel=0 note=65 velocity=90 time=24
+note_on channel=0 note=56 velocity=100 time=24
+note_off channel=0 note=56 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=68 velocity=100 time=24
+note_off channel=0 note=68 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+note_on channel=0 note=65 velocity=100 time=24
+note_off channel=0 note=65 velocity=90 time=48
+note_on channel=0 note=67 velocity=100 time=0
+note_off channel=0 note=67 velocity=90 time=24
+control_change channel=0 control=101 value=0 time=24
+control_change channel=0 control=100 value=0 time=0
+control_change channel=0 control=6 value=12 time=0
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+program_change channel=0 program=0 time=0
+control_change channel=0 control=101 value=0 time=1
+control_change channel=0 control=100 value=0 time=0
+control_change channel=0 control=6 value=12 time=0
+control_change channel=0 control=10 value=64 time=0
+control_change channel=0 control=7 value=100 time=0
+pitchwheel channel=0 pitch=0 time=0
+program_change channel=0 program=0 time=0
+MetaMessage('end_of_track', time=0)

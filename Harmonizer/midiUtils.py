@@ -10,52 +10,49 @@ def debug_midi_file(midi_file_path, output_file):
             for msg in track:
                 f.write(str(msg) + '\n')
 
-
 def read_midi_song(midi_file_path):
 
     midi_file = mido.MidiFile(midi_file_path)  
 
     notes = []     
 
+    current_time = 0
+
     for track in midi_file.tracks:
         for msg in track:
 
             msgType = msg.type 
             if msgType == 'note_on' or msgType == 'note_off':
+
+                if msgType == 'note_on' and msg.velocity == 0:
+                    msgType = 'note_off'
+
+                current_time += msg.time / midi_file.ticks_per_beat
+
                 notes.append({
                     'type': msgType, 
                     'note': msg.note, 
-                    'time': msg.time / midi_file.ticks_per_beat
-                    })
+                    'time': current_time
+                })
 
     song = []
 
-    current_time = 0
-    n = 0
-    
-    while n < len(notes):
+    for note in notes:
 
-        note = notes[n]
-        current_time += note['time']
+        if note['type'] == 'note_on':
 
-        noteStart = {
-            'note': note['note'], 
-            'start_time': current_time, 
-            'duration': 0
-            }
+            song.append({
+                'note': note['note'], 
+                'start_time': note['time'], 
+                'duration': -1
+            })
 
-        for noteEnd in notes[n + 1:]:
-            noteStart['duration'] += noteEnd['time']
-            if noteEnd['note'] == noteStart['note']:
-                noteEnd['type'] = 'note_off'
-                break
+        elif note['type'] == 'note_off':
 
-        song.append(noteStart)
-        
-        n += 1
-        while n < len(notes) and notes[n]['type'] == 'note_off':
-            current_time += notes[n]['time']
-            n += 1   
+            for previousNote in reversed(song):
+                if previousNote['note'] == note['note'] and previousNote['duration'] == -1:
+                    previousNote['duration'] = note['time'] - previousNote['start_time']
+                    break 
 
     return song
 
@@ -89,17 +86,21 @@ def write_midi_song(midi_file_path, note_list):
         x_init = 0
         y_init = 0
 
+
         if (notes[1]):
             track.append(mido.Message('note_off', note=notes[1][y_init], velocity=64, time=midi_events[idx]))
             y_init = 1
         elif (notes[0]):
             track.append(mido.Message('note_on', note=notes[0][x_init], velocity=64, time=midi_events[idx]))
             x_init = 1
-            
+        
+
         for note in notes[1][y_init:]:
-            track.append(mido.Message('note_off', note=note, velocity=64, time=0))
+            track.append(mido.Message('note_off', note=note, velocity=64, time=0)) 
         for note in notes[0][x_init:]:
             track.append(mido.Message('note_on', note=note, velocity=64, time=0))
+
+
         
         idx += 1
 
