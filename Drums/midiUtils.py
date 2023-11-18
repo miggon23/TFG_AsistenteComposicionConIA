@@ -1,7 +1,7 @@
 import mido
 import song
 
-def make_midi_song(midi_file_path, note_list):
+def write_midi_song(midi_file_path, note_list):
 
     # Crear un nuevo archivo MIDI
     mid = mido.MidiFile()

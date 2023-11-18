@@ -53,7 +53,7 @@ class Make_Beat:
         return skipped, delayed, delayedN, rushed, double1, double2
 
     def beat(list, style, skipped, delayed, delayedN, rushed, rushedN, double1, double1N, double2, double2N):
-        if(style == Style.BASIC or style == Style.KICK or style == Style.CLAP):
+        if(style.value == Style.BASIC.value or style.value == Style.KICK.value or style.value == Style.CLAP.value):
             i = 0
             list[i] = Note.BassDrum.value
             if double1: list[i + double1N] = Note.BassDrum.value
@@ -64,7 +64,7 @@ class Make_Beat:
                 list[i] = Note.BassDrum.value
                 if double2: list[i + double2N] = Note.BassDrum.value
 
-        elif(style == Style.SHAKER):
+        elif(style.value == Style.SHAKER.value):
             for i in range(2):
                 j = (i-1)*4
                 list[j] = Note.ClosedHiHat.value
@@ -77,7 +77,7 @@ class Make_Beat:
                     list[j] = Note.BassDrum.value
                     if double2: list[j + double2N] = Note.BassDrum.value
 
-        elif(style == Style.JAZZ):
+        elif(style.value == Style.JAZZ.value):
             i = 0
             list[i] = Note.OpenHiHat.value
             if double1: list[i + double1N] = Note.OpenHiHat.value
@@ -88,12 +88,12 @@ class Make_Beat:
                 list[i] = Note.OpenHiHat.value
                 if double2: list[i + double2N] = Note.OpenHiHat.value
 
-        elif(style == Style.DISCO):
+        elif(style.value == Style.DISCO.value):
             for i in range(4):
                 j = (i-1)*4
                 list[j] = Note.BassDrum.value
 
-        elif(style == Style.METAL):
+        elif(style.value == Style.METAL.value):
             for i in range(2):
                 j = (i-1)*4
                 list[j] = Note.ClosedHiHat.value
@@ -106,7 +106,7 @@ class Make_Beat:
                     list[j] = Note.ClosedHiHat.value
                     if double2: list[j + double2N] = Note.ClosedHiHat.value
 
-        elif(style == Style.LATIN):
+        elif(style.value == Style.LATIN.value):
             i = 0
             list[i] = Note.BassDrum.value
             if double1: list[i + double1N] = Note.BassDrum.value
@@ -121,7 +121,7 @@ class Make_Beat:
             i = 14
             list[i] = Note.BassDrum.value
 
-        elif(style == Style.ROCK):
+        elif(style.value == Style.ROCK.value):
             for i in range(2):
                 j = (i-1)*4
                 list[j] = Note.AcousticSnare.value

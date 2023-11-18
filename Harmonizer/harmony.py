@@ -1,4 +1,4 @@
-import Scale
+import scale as Scale
 
 allChords = {
     "": Scale.Scale("1 3 5"),  # Mayor

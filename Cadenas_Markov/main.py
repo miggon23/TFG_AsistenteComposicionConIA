@@ -7,8 +7,8 @@ def create_markov_chain(generator):
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
 
-def generate_melodies(generator, n_notes, n_sims):
-    generator.run_markov_chain(num_notes = n_notes, num_simulations = n_sims)
+def generate_melodies(generator, n_compasses, n_sims):
+    generator.run_markov_chain(num_compasses = n_compasses, num_simulations = n_sims)
 
 def main():
     generator = Markov_Generator(use_silences=False, smooth_ocurrences=False)
@@ -26,13 +26,13 @@ def main():
         elif (option == "2"):
             load_markov_chain(generator)
         elif (option == "3"):
-            print("Introduce el numero de notas que deseas generar en cada melodia")
-            notes = get_input_number(4, 4*40)
+            print("Introduce el numero de compases que deseas generar en cada melodia")
+            compasses = get_input_number(2, 4*40)
 
             print("Introduce el numero de melodias que deseas generar en total")
             sims = get_input_number(1, 20)
 
-            generate_melodies(generator, notes, sims)
+            generate_melodies(generator, compasses * 2, sims)
         else:
             exit = True
 

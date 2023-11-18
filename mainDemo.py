@@ -1,4 +1,5 @@
 import sys
+sys.path.append('./Cadenas_Markov/')
 sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
 
@@ -12,8 +13,8 @@ from Harmonizer import harmonyGenerator
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
 
-def generate_melodies(generator, n_notes, n_sims):
-    return generator.run_markov_chain(num_notes = n_notes, num_simulations = n_sims)
+def generate_melodies(generator, n_bar, n_sims):
+    return generator.run_markov_chain(num_bar = n_bar, num_simulations = n_sims)
 
 def main():
     generator = markovGenerator.Markov_Generator(use_silences=False)
@@ -29,10 +30,10 @@ def main():
                 "[g]: Generar melodias \n[q]: Salir \n")
 
         if (option == "g"):
-            print("Introduce el numero de notas que deseas generar en cada melodia")
-            notes = get_input_number(4, 4*40)
+            print("Introduce el numero de compases que deseas generar en cada melodia")
+            bar = get_input_number(2, 4*40)
 
-            outputs = generate_melodies(generator, notes, 1)
+            outputs = generate_melodies(generator, bar * 2, 1)
         else:
             exit = True
 

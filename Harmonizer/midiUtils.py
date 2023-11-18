@@ -1,5 +1,5 @@
 import mido
-import Song
+import song as Song
 
 def debug_midi_file(midi_file_path, output_file):
     

@@ -6,12 +6,10 @@ from pydtmc import MarkovChain
 import os
 from pathlib import Path
 
-from enum import Enum
-
 #QPM estandar para pasar a MIDI (1 negra por segundo)
 QPM = 60
 
-#Valor estandar de un step, para normalizar#
+#Valor estandar de un step, para normalizar
 STEP_VALUE = 1/4
 
 MAX_SILENCE_STEPS = 8
@@ -265,7 +263,7 @@ class Markov_Generator:
 
         print("[MarkovGenerator]: Markov Chain created and trained succesfully")
 
-    def run_markov_chain(self, chain = None, num_simulations = 10, num_notes = 44):
+    def run_markov_chain(self, chain = None, num_simulations = 10, num_bar = 4):
         if chain is None:
             chain = self.mc
             if chain is None:
@@ -279,7 +277,18 @@ class Markov_Generator:
         note_seq_sims = []
         outputs = []
         for i in range(num_simulations):
-            curr_sim = chain.simulate(num_notes)
+
+            #realiza tantos pasos como sean necesarios para llegar al numero de compases pedidos
+            curr_sim = [ "60_2" ]
+            curr_duration = int((curr_sim[0].split('_'))[1])
+            j = 1
+            while curr_duration < num_bar * 4:
+                next_note = chain.next(curr_sim[j-1])
+                curr_duration += int((next_note.split('_'))[1])
+                if curr_duration <= num_bar * 4:
+                    curr_sim.append(next_note)
+                j += 1
+
             simulations.append(curr_sim)
             note_seq_sims.append(self.deserialize_noteseq(curr_sim))
 

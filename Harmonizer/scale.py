@@ -1,5 +1,5 @@
-import Interval
-import Note
+import interval as Interval
+import note as Note
 
 class Scale:
 

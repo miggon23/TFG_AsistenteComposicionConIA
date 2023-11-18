@@ -1,7 +1,7 @@
-import Scale
-import Note
-import Harmony
-import Interval
+import scale as Scale
+import note as Note
+import harmony as Harmony
+import interval as Interval
 import math
 import random
 

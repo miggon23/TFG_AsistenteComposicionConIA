@@ -44,7 +44,7 @@ class Make_Constant:
         return skipped1, skipped2, skipped3
 
     def constant(list, style, sixteenth, skipped1, skipped2, skipped3, skipped1N, skipped2N, skipped3N):
-        if(style == Style.BASIC or style == Style.CLAP or style == Style.SHAKER or style == Style.DISCO or style == Style.LATIN or style == Style.ROCK):
+        if(style.value == Style.BASIC.value or style.value == Style.CLAP.value or style.value == Style.SHAKER.value or style.value == Style.DISCO.value or style.value == Style.LATIN.value or style.value == Style.ROCK.value):
             for i in range(16):
                 if(sixteenth or (i%2 == 0)):
                     if not((i == skipped1N and skipped1) or (i == skipped2N and skipped2) or (i == skipped3N and skipped3)):
@@ -52,13 +52,13 @@ class Make_Constant:
         
         # En Style.KICK no hay constant
         
-        elif(style == Style.JAZZ):                 
+        elif(style.value == Style.JAZZ.value):                 
             list[4] = Note.OpenHiHat.value
             list[7] = Note.OpenHiHat.value
             list[12] = Note.OpenHiHat.value
             list[15] = Note.OpenHiHat.value
 
-        elif(style == Style.METAL):
+        elif(style.value == Style.METAL.value):
             for i in range(16):
                 if not((i == skipped1N and skipped1) or (i == skipped2N and skipped2) or (i == skipped3N and skipped3)):
                     list[i] = Note.BassDrum.value

@@ -53,7 +53,7 @@ class Make_Engine:
         return skipped, delayed, delayedN, rushed, double1, double2
 
     def engine(list, style, skipped, delayed, delayedN, rushed, rushedN, double1, double1N, double2, double2N):
-        if(style == Style.BASIC or style == Style.CLAP or style == Style.METAL):
+        if(style.value == Style.BASIC.value or style.value == Style.CLAP.value or style.value == Style.METAL.value):
             i = 4
             list[i] = Note.AcousticSnare.value
             if double1: list[i + double1N] = Note.AcousticSnare.value
@@ -66,7 +66,7 @@ class Make_Engine:
 
         # En Style.KICK y en Style.SHAKER no hay engine
 
-        elif(style == Style.JAZZ):
+        elif(style.value == Style.JAZZ.value):
             i = 4
             list[i] = Note.PedalHiHat.value
             if double1: list[i + double1N] = Note.PedalHiHat.value
@@ -77,12 +77,12 @@ class Make_Engine:
                 list[i] = Note.PedalHiHat.value
                 if double2 and (i + double2N<16): list[i + double2N] = Note.PedalHiHat.value
 
-        elif(style == Style.DISCO):
+        elif(style.value == Style.DISCO.value):
             for i in range(4):
                 j = (i-1)*4 + 2
                 list[j] = Note.ElectricSnare.value
 
-        elif(style == Style.LATIN):
+        elif(style.value == Style.LATIN.value):
             i = 0
             if(random.randint(1,2)==1):
                 list[i] = Note.OpenHiHat.value
@@ -99,7 +99,7 @@ class Make_Engine:
             list[i] = Note.OpenHiHat.value
             if double2: list[i + double2N] = Note.OpenHiHat.value
 
-        elif(style == Style.ROCK):
+        elif(style.value == Style.ROCK.value):
             i = 0
             list[i] = Note.BassDrum.value
             i = 10
