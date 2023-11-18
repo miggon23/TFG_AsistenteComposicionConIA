@@ -1,8 +1,8 @@
-import MidiUtils
-import Song
-import Note
-import Scale
-import Harmony
+import midiUtils as MidiUtils
+import song as Song
+import note as Note
+import scale as Scale
+import harmony as Harmony
 
 if __name__ == "__main__":
 

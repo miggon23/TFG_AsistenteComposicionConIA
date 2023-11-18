@@ -295,7 +295,7 @@ class Song:
             if chord is not None:
                 for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
                     songChordNotes.append({
-                        "note": Note.get_pitch(interval, self.tonic, 3), 
+                        "note": Note.get_pitch(interval, self.tonic, 4), 
                         "start_time": ticksPerSlice * idx, 
                         "duration": ticksPerSlice})
             
