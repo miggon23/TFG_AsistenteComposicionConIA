@@ -45,29 +45,37 @@ def debug_song(song, output_file):
 
 class Song:
 
-    def __init__(self, melody, tonic = None):
+    def __init__(self, melody):
 
         self.melody = melody
-
-        if tonic == None:
-            self.tonic = Note.Note(self.melody[0]['note']  % 12)
-        else:
-            self.tonic = tonic       
-
+        self.tonic = Note.Note(self.melody[0]['note']  % 12)
+        
         pTonic = -(self.tonic.pitch - 12) 
-
-        intervals = [0]
+        intervals = []
+  
+        self.meanPitch = 0
+        totalSoundDuration = 0
 
         for note in self.melody:
 
-            interval = (note["note"] + pTonic) % 12
+            pitch = note['note']
+            duration = note['duration']
 
+            self.meanPitch += pitch * duration
+            totalSoundDuration += duration
+
+            interval = (pitch + pTonic) % 12
             if interval not in intervals:
                 intervals.append(interval)
-            
+      
         intervals.sort()
-
         self.scale = Scale.Scale(intervals) 
+
+        self.meanPitch /= totalSoundDuration
+        print(self.meanPitch)     
+        self.chordsOctave = max(0, int(self.meanPitch / 12) - 1) 
+        print(self.chordsOctave)
+
         
     def choose_scale(self):
         if (self.scale.len() >= 7):
@@ -123,6 +131,10 @@ class Song:
              return
 
         finalScale = fittingScales[random.randint(0, len(fittingScales) - 1)]
+        self.meanPitch += finalScale[0].pitch - self.tonic.pitch
+        self.chordsOctave = max(0, int(self.meanPitch / 12) - 1)  
+        print(self.meanPitch)
+        print(self.chordsOctave)
         self.tonic = finalScale[0]
         self.scale = possibleScales[finalScale[1]].copy_scale()
         self.scale.absolutize_scale(self.tonic)
@@ -295,7 +307,7 @@ class Song:
             if chord is not None:
                 for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
                     songChordNotes.append({
-                        "note": Note.get_pitch(interval, self.tonic, 4), 
+                        "note": Note.get_pitch(interval, self.tonic, self.chordsOctave), 
                         "start_time": ticksPerSlice * idx, 
                         "duration": ticksPerSlice})
             

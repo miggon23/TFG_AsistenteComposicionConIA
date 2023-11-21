@@ -11,3 +11,7 @@ el readMidi funciona mal con notas de 0 de duración
 resolver el siguiente problema: dado un conjunto de menos de 7 notas, 
     ¿qué escalas de 7 notas contienen ese conjunto?
     ¿qué escalas de 7 notas relativas a una escala mayor contienen ese conjunto?
+
+mirar el pitch medio e imprimir los acordes en una octava inferior, hay que tenr en cuenta el pitch de la tónica para separar
+    las octavas de tónica a tónica y no de do a do
+si hay varias escalas coincidentes valorar cual es la correcta dependiendo de la frcuencia de la tónica
