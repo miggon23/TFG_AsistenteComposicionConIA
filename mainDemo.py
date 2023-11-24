@@ -2,6 +2,7 @@ import sys
 sys.path.append('./Cadenas_Markov/')
 sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
+sys.path.append('./Basslines/')
 
 from Cadenas_Markov import markovGenerator
 
@@ -9,6 +10,8 @@ from Drums import drumGenerator
 from Drums import enums
 
 from Harmonizer import harmonyGenerator
+
+from Basslines import basslineGenerator
 
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
@@ -44,7 +47,8 @@ def main():
                 "[a]: Armonizar \n[q]: Salir \n")
             
         if (option == "a"):
-            harmonyGenerator.HarmonyGenerator.generate(outputs[0])
+            bassline = basslineGenerator.BasslineGenerator.generate()
+            harmonyGenerator.HarmonyGenerator.generate(bassline, outputs[0])
         else:
             exit = True
 

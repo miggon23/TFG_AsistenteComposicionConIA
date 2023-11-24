@@ -4,7 +4,9 @@ import scale as Scale
 import os
 
 class HarmonyGenerator:
-    def generate(input = "midi/input_song.mid", outputDir = "midi/", outputFile = "output_harmony"):
+    def generate(bassLine, input = "midi/input_song.mid", outputDir = "midi/", outputFile = "output_harmony"):
+        
+        print(bassLine)
 
         someChords = {
             "": Scale.Scale("1 3 5"),  # Mayor
