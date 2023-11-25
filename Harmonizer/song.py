@@ -216,7 +216,7 @@ class Song:
                 self.__calculate_chord_weights(note, slice, weights["chordWeight"], tickWeightNow) 
 
         self.__choose_best_chords()
-        return self.__translate_harmony(ticksPerSlice)
+        return self.__absolutize_harmony(ticksPerSlice)
     
     '''
     Dada una nota (y una serie de pesos), recorre toda la lista de acordes posibles para 
@@ -297,7 +297,7 @@ class Song:
     A partir de la tónica de la canción transforma los intervalos
     en notas reales traduciendo el análisis de armonía en "acordes de misa"
     '''
-    def __translate_harmony(self, ticksPerSlice):
+    def __absolutize_harmony(self, ticksPerSlice):
 
         songChordNotes = []
 
@@ -314,6 +314,128 @@ class Song:
             idx += 1
 
         return songChordNotes
+    
+    def process_bassline_4x4(self, bassline):
+        
+        processedBassline = []
+        
+        bar = 0
+        note = None
+        for chord in self.bestChords:
+
+            tonic = Interval.Interval(chord[0])
+            tonicIdx = 0
+            for intrval in self.scale.scale:
+                if tonic == intrval:
+                    break
+                tonicIdx += 1
+
+            tick = 0
+            for i in bassline[bar % len(bassline)]:
+
+                if i >= 0:  
+
+                    if note is not None:
+                        note['duration'] += 0.25
+                        processedBassline.append(note)
+                    
+                    if i > 0:
+                        interval = self.scale.scale[(tonicIdx + (i - 1)) % self.scale.len()]
+                        note  = {
+                            "note": Note.get_pitch(interval, self.tonic, self.chordsOctave - 1), 
+                            "start_time": bar + tick * 0.25, 
+                            "duration": 0 }                       
+                    else:
+                        note = None
+
+                elif i < 0 and note is not None:
+                    note['duration'] += 0.25
+
+                tick += 1
+
+            bar += 1
+
+        if note is not None:
+            note['duration'] += 0.25
+            processedBassline.append(note)
+
+        return processedBassline
+    
+
+    def process_bassline_4x4_v2(self, bassline, harmony):
+        
+        processedBassline = []
+
+        note = None
+
+        chordNoteIdx = 0
+        bar = harmony[chordNoteIdx]['start_time']
+        lowestPitch = harmony[chordNoteIdx]['note']
+        chordNoteIdx += 1
+
+        patternIdx = 0
+
+        while chordNoteIdx < len(harmony):
+
+            while chordNoteIdx < len(harmony) and bar == harmony[chordNoteIdx]['start_time']:
+                lowestPitch = min(lowestPitch, harmony[chordNoteIdx]['note'])
+                chordNoteIdx += 1
+
+            tonic = Interval.Interval(abs((lowestPitch - self.tonic.pitch) % 12))
+            tonicIdx = 0
+            for intrval in self.scale.scale:
+                if tonic == intrval:
+                    break
+                tonicIdx += 1
+
+            tick = 0
+
+            for i in bassline[patternIdx]:
+
+                if i >= 0:  
+
+                    if note is not None:
+                        note['duration'] += 0.25
+                        processedBassline.append(note)
+                    
+                    if i > 0:
+                        interval = self.scale.scale[(tonicIdx + (i - 1)) % self.scale.len()]
+                        note  = {
+                            "note": Note.get_pitch(interval, self.tonic, self.chordsOctave - 1), 
+                            "start_time": bar + tick * 0.25, 
+                            "duration": 0 }                       
+                    else:
+                        note = None
+
+                elif i < 0 and note is not None:
+                    note['duration'] += 0.25
+
+                tick += 1
+
+            if chordNoteIdx < len(harmony):
+                bar = harmony[chordNoteIdx]['start_time']
+                lowestPitch = harmony[chordNoteIdx]['note']
+
+            chordNoteIdx += 1
+            patternIdx = (patternIdx + 1) % len(bassline)
+
+        if note is not None:
+            note['duration'] += 0.25
+            processedBassline.append(note)
+
+        return processedBassline
+                    
+                    
+
+                    
+
+
+                    
+
+
+
+
+    
 
 
 

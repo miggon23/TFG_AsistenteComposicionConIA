@@ -18,9 +18,11 @@ if __name__ == "__main__":
     Song.debug_song(melody, "files/notes_out.txt")
     song = Song.Song(melody)
     song.choose_scale()
-    harmony = song.armonize(ticksPerSlice = 2.0, possibleChords = someChords)
+    harmony = song.armonize(ticksPerSlice = 4.0, possibleChords = someChords)
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony)
     MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony)
+    bassline = song.process_bassline_4x4_v2(None, harmony)
+    MidiUtils.write_midi_song("midi/output_bassline.mid", bassline)
 
     print()
     song.print_chord_analysis()
