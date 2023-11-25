@@ -73,9 +73,6 @@ class Song:
 
         self.meanPitch /= totalSoundDuration
         print(self.meanPitch)     
-        self.chordsOctave = max(0, int(self.meanPitch / 12) - 1) 
-        print(self.chordsOctave)
-
         
     def choose_scale(self):
         if (self.scale.len() >= 7):
@@ -132,9 +129,7 @@ class Song:
 
         finalScale = fittingScales[random.randint(0, len(fittingScales) - 1)]
         self.meanPitch += finalScale[0].pitch - self.tonic.pitch
-        self.chordsOctave = max(0, int(self.meanPitch / 12) - 1)  
         print(self.meanPitch)
-        print(self.chordsOctave)
         self.tonic = finalScale[0]
         self.scale = possibleScales[finalScale[1]].copy_scale()
         self.scale.absolutize_scale(self.tonic)
@@ -307,7 +302,7 @@ class Song:
             if chord is not None:
                 for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
                     songChordNotes.append({
-                        "note": Note.get_pitch(interval, self.tonic, self.chordsOctave), 
+                        "note": Note.get_nearest_pitch(interval, self.tonic, self.meanPitch - 12), 
                         "start_time": ticksPerSlice * idx, 
                         "duration": ticksPerSlice})
             
@@ -342,7 +337,7 @@ class Song:
                     if i > 0:
                         interval = self.scale.scale[(tonicIdx + (i - 1)) % self.scale.len()]
                         note  = {
-                            "note": Note.get_pitch(interval, self.tonic, self.chordsOctave - 1), 
+                            "note": Note.get_nearest_pitch(interval, self.tonic, self.meanPitch - 12 * 2), 
                             "start_time": bar + tick * 0.25, 
                             "duration": 0 }                       
                     else:
@@ -401,7 +396,7 @@ class Song:
                     if i > 0:
                         interval = self.scale.scale[(tonicIdx + (i - 1)) % self.scale.len()]
                         note  = {
-                            "note": Note.get_pitch(interval, self.tonic, self.chordsOctave - 1), 
+                            "note": Note.get_nearest_pitch(interval, self.tonic, self.meanPitch - 12 * 2), 
                             "start_time": bar + tick * 0.25, 
                             "duration": 0 }                       
                     else:

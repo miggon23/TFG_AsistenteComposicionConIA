@@ -21,6 +21,24 @@ name_pitch = {
 def get_pitch(interval, tonic, octave):
         return tonic.pitch + interval.semitones + 12 * octave
 
+def get_nearest_pitch(interval, tonic, meanPitch):
+    
+    pitch = (tonic.pitch + interval.semitones) % 12
+
+    octave = int(meanPitch / 12)
+
+    if pitch + octave * 12 > meanPitch:
+        octave -= 1
+
+    lowerPitch = pitch + octave * 12
+    higherPitch = pitch + (octave + 1) * 12
+
+    if meanPitch - lowerPitch < higherPitch - meanPitch:
+        return lowerPitch
+    else:
+        return higherPitch
+
+
 class Note:
 
     def __init__(self, note):
