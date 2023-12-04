@@ -8,6 +8,6 @@
   },
   "author": "",
   "dependencies": {
-    "@magenta/music": "1.23.1"
+    "@magenta/music": "^1.23.1"
   }
 }
