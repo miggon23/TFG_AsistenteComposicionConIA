@@ -270,8 +270,8 @@ class Markov_Generator:
                 print("[MarkovGenerator][Error]: chain was None in run_markov_chain()")
                 return False
         
-        if not os.path.isdir("./outputs"):
-            os.mkdir("outputs")
+        if not os.path.isdir("./midi"):
+            os.mkdir("midi")
 
         simulations = []
         note_seq_sims = []
@@ -293,7 +293,7 @@ class Markov_Generator:
             note_seq_sims.append(self.deserialize_noteseq(curr_sim))
 
             #guarda el output en la lista para devolverlo al final
-            output = "./outputs/markov_sim_" + str(i) + ".mid"
+            output = "./midi/markov_melody_" + str(i) + ".mid"
             outputs.append(output)
             midi_io.sequence_proto_to_midi_file(note_seq_sims[i], output)
 

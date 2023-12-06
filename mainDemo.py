@@ -39,18 +39,25 @@ def main():
             outputs = generate_melodies(generator, bar * 2, 1)
         else:
             exit = True
+            break
 
         #armonizer
         option = ""
-        while option != "a" and option != "q":
+        while option != "q" and option != "a":
             option = input(
-                "[a]: Armonizar \n[q]: Salir \n")
-            
-        if (option == "a"):
+                "[g]: Generar de nuevo \n[a]: Armonizar \n[q]: Salir \n")
+
+        if (option == "g"):
+            print("Introduce el numero de compases que deseas generar en cada melodia")
+            bar = get_input_number(2, 4*40)
+
+            outputs = generate_melodies(generator, bar * 2, 1)
+        elif (option == "a"):
             bassline = basslineGenerator.BasslineGenerator.generate()
             harmonyGenerator.HarmonyGenerator.generate(bassline, outputs[0])
         else:
             exit = True
+            break
 
         #drums
         option = ""
@@ -63,6 +70,7 @@ def main():
             drumGenerator.DrumGenerator.generate(style)
         else:
             exit = True
+            break
 
 def get_input_number(a, b):
 
