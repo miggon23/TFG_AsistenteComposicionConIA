@@ -13,6 +13,8 @@ from Harmonizer import harmonyGenerator
 
 from Basslines import basslineGenerator
 
+FILE = "./midi/markov_melody_8.mid"
+
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
 
@@ -28,15 +30,19 @@ def main():
     while not exit:
         #markov generator
         option = ""
-        while option != "g" and option != "q":
+        while option != "g" and option != "c" and option != "q":
             option = input(
-                "[g]: Generar melodias \n[q]: Salir \n")
+                "[g]: Generar melodias \n[c]: Cargar melodia de archivo \n[q]: Salir \n")
 
         if (option == "g"):
             print("Introduce el numero de compases que deseas generar en cada melodia")
             bar = get_input_number(2, 4*40)
 
             outputs = generate_melodies(generator, bar * 2, 1)
+
+        elif (option == "c"):
+            outputs = [FILE]
+        
         else:
             exit = True
             break
@@ -47,17 +53,17 @@ def main():
             option = input(
                 "[g]: Generar de nuevo \n[a]: Armonizar \n[q]: Salir \n")
 
-        if (option == "g"):
-            print("Introduce el numero de compases que deseas generar en cada melodia")
-            bar = get_input_number(2, 4*40)
+            if (option == "g"):
+                print("Introduce el numero de compases que deseas generar en cada melodia")
+                bar = get_input_number(2, 4*40)
 
-            outputs = generate_melodies(generator, bar * 2, 1)
-        elif (option == "a"):
-            bassline = basslineGenerator.BasslineGenerator.generate()
-            harmonyGenerator.HarmonyGenerator.generate(bassline, outputs[0])
-        else:
-            exit = True
-            break
+                outputs = generate_melodies(generator, bar * 2, 1)
+            elif (option == "a"):
+                bassline = basslineGenerator.BasslineGenerator.generate()
+                harmonyGenerator.HarmonyGenerator.generate(bassline, outputs[0])
+            elif (option == "q"):
+                exit = True
+                break
 
         #drums
         option = ""

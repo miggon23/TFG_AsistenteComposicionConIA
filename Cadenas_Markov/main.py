@@ -8,7 +8,7 @@ def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
 
 def generate_melodies(generator, n_compasses, n_sims):
-    generator.run_markov_chain(num_compasses = n_compasses, num_simulations = n_sims)
+    generator.run_markov_chain(num_bar = n_compasses, num_simulations = n_sims)
 
 def main():
     generator = Markov_Generator(use_silences=False, smooth_ocurrences=False)
