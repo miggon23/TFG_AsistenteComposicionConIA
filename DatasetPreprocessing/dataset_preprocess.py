@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import collections
 import os
+import json
+
+from sklearn.preprocessing import StandardScaler
 
 #QPM estandar para pasar a MIDI (1 negra por segundo)
 QPM = 60
@@ -72,23 +75,27 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                     noteList = noteSeq["notes"]
                         
                     keySig = get_scale(noteSeq)
+                    # if (keySig != "C"):
+                    #     break
+
                     pitchVariation = name_pitch[keySig]
 
                     curr_note = collections.defaultdict(list)
                         
                     useNoteSeq = True
 
-                    for q in range(len(noteList)-2):
+                    for q in range(len(noteList)):
 
                         note_data = noteList[q]
-                        next_note = noteList[q+1]
+                        if (q < len(noteList)-1):
+                            next_note = noteList[q+1]
 
-                        nextNotePitch = next_note["pitch"]
-
-                        nextNotePitch = max(nextNotePitch, nextNotePitch % 12 + 12*4)
-                        nextNotePitch = min(nextNotePitch, nextNotePitch % 12 + 12*5)
-                        next_start_time = int(next_note.get("quantizedStartStep", 0))
-                        next_end_time = int(next_note.get("quantizedEndStep"))
+                            nextNotePitch = next_note["pitch"]
+                            nextNotePitch -= pitchVariation
+                            nextNotePitch = max(nextNotePitch, nextNotePitch % 12 + 12*4)
+                            nextNotePitch = min(nextNotePitch, nextNotePitch % 12 + 12*5)
+                            next_start_time = int(next_note.get("quantizedStartStep", 0))
+                            next_end_time = int(next_note.get("quantizedEndStep"))
 
                         start_time = 0
                         end_time = 0
@@ -99,7 +106,6 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                         notePitch = note_data["pitch"]
 
                         # Normalizacion de escala
-
                         notePitch -= pitchVariation
                         #si la nota no pertenece a la escala la descartamos
                         if (not is_CMajor_note[notePitch % 12]):
@@ -136,11 +142,13 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                                 #avanzamos k
                                 k += 1
 
-                        curr_note['pitch'].append(notePitch)
-                        curr_note['start'].append(start_time)
-                        curr_note['end'].append(end_time)
-                        curr_note['duration'].append(noteDuration)
-                        curr_note['next_note'].append(str(nextNotePitch) + "_" + str(next_end_time - next_start_time))
+                        if (q < len(noteList)-1):
+                            curr_note['pitch'].append(notePitch)
+                            curr_note['start'].append(start_time)
+                            curr_note['end'].append(end_time)
+                            curr_note['duration'].append(noteDuration)
+                            next_note_serialized = str(nextNotePitch) + "_" + str(next_end_time - next_start_time)
+                            curr_note['next_note'].append(next_note_serialized)
                         
                         serializedNote = str(notePitch) + "_" + str(noteDuration)
         
@@ -173,7 +181,56 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
         for item in keys.keys():
             fp.write("%s " % item)
     
-    cleaned_dataset.to_csv("Datasets/Cleaned/dataset.csv")
+    cleaned_dataset.to_csv("Datasets/Cleaned/dataset.csv", index=False)
+
+def normalize_for_rnn():
+    path = "Datasets/Cleaned/"
+
+    #carga del dataset
+    df = pd.read_csv(path + "dataset.csv")
+
+    # Divide la columna 'next_note' en dos columnas: 'next_note_pitch' y 'next_note_duration'
+    df[['next_note_pitch', 'next_note_duration']] = df['next_note'].str.split('_', expand=True)
+
+    # Convierte las columnas a tipos de datos apropiados si es necesario
+    df['next_note_pitch'] = df['next_note_pitch'].astype(int)
+    df['next_note_duration'] = df['next_note_duration'].astype(int)
+
+    # Elimina la columna original 'next_note' si ya no la necesitas
+    df = df.drop('next_note', axis=1)
+
+    scaling = StandardScaler()
+    scaling.fit(df)
+    df = scaling.transform(df)
+
+    params = {
+    'mean': scaling.mean_.tolist(),
+    'std': scaling.scale_.tolist()
+    }
+
+    with open('Datasets/Cleaned/scaler_params.json', 'w') as file:
+        json.dump(params, file)
+
+    df = pd.DataFrame(df)
+    df.reset_index()
+    df.to_csv("Datasets/Cleaned/dataset_rnn_normalized.csv", index=False, header=["pitch","start","end","duration","next_note_pitch","next_note_duration"])
+
+# Función para obtener la representación de curr_note
+def get_curr_note(row):
+    pitch_duration = f"{row['pitch']}_{row['duration']}"
+    return pitch_duration
+
+def transform_to_label_rnn():
+    path = "Datasets/Cleaned/"
+
+    #carga del dataset
+    df = pd.read_csv(path + "dataset.csv")
+
+    print(df)
+
+    # Combina las columnas 'pitch' y 'duration' en una nueva columna 'curr_note'
+    df['curr_note'] = df['pitch'].astype(str) + '_' + df['duration'].astype(str)
+    df.to_csv("Datasets/Cleaned/dataset_rnn_labeled.csv", index=False)
 
 if __name__ == '__main__':
-    clean_dataset()
+    transform_to_label_rnn()
