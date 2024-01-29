@@ -13,14 +13,14 @@ if __name__ == "__main__":
         "7": Scale.Scale("1 3 5 b7"),  # Dominante 
     }
 
-    melody = MidiUtils.read_midi_song("midi/input_song.mid")
+    melody, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
     MidiUtils.debug_midi_file("midi/input_song.mid", "files/midi_out.txt") 
     Song.debug_song(melody, "files/notes_out.txt")
-    song = Song.Song(melody)
+    song = Song.Song(melody, ticksPerBeat)
     song.choose_scale()
-    harmony = song.armonize(ticksPerSlice = 4.0, possibleChords = someChords)
-    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony)
-    MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony)
+    harmony = song.armonize(type = "win", windowSizes=[1, 2, 4], possibleChords = someChords)
+    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, song.ticksPerBeat)
+    MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony, song.ticksPerBeat)
     # bassline = song.process_bassline_4x4_v2(None, harmony)
     # MidiUtils.write_midi_song("midi/output_bassline.mid", bassline)
 
