@@ -1,8 +1,7 @@
 import mido
-import song as Song
-
-import mido
-import song as Song
+from math import lcm
+from song import spread_song
+from timeSignature import ticksPerQuarter
 
 def debug_midi_file(midiFilePath, outputFile):
     
@@ -15,13 +14,15 @@ def debug_midi_file(midiFilePath, outputFile):
 
 def read_midi_song(midiFilePath):
 
-    midiFile = mido.MidiFile(midiFilePath)  
+    mid = mido.MidiFile(midiFilePath)  
 
     notes = []     
 
-    current_time = 0
+    currentTime = 0
+    ticksPerBeat = lcm(mid.ticks_per_beat, ticksPerQuarter)
+    increment = ticksPerBeat // mid.ticks_per_beat
 
-    for track in midiFile.tracks:
+    for track in mid.tracks:
         for msg in track:
 
             msgType = msg.type 
@@ -30,12 +31,12 @@ def read_midi_song(midiFilePath):
                 if msgType == 'note_on' and msg.velocity == 0:
                     msgType = 'note_off'
 
-                current_time += msg.time
+                currentTime += msg.time * increment
 
                 notes.append({
                     'type': msgType, 
                     'note': msg.note, 
-                    'time': current_time
+                    'time': currentTime
                 })
 
     song = []
@@ -57,7 +58,7 @@ def read_midi_song(midiFilePath):
                     previousNote['duration'] = note['time'] - previousNote['start_time']
                     break 
 
-    return song, midiFile.ticks_per_beat
+    return song, ticksPerBeat
 
 def write_midi_song(midiFilePath, song, ticksPerBeat):
 
@@ -73,18 +74,18 @@ def write_midi_song(midiFilePath, song, ticksPerBeat):
     track.append(mido.MetaMessage('set_tempo', tempo = 500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
     track.append(mido.MetaMessage('time_signature', numerator= 4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
 
-    spread_song = Song.spread_song(song)
-    firstNoteTick = next(iter(spread_song))
+    spreadSong = spread_song(song)
+    firstNoteTick = next(iter(spreadSong))
 
     midi_events = [firstNoteTick]
     lastTick = firstNoteTick
 
-    for tick in list(spread_song.keys())[1:]:
+    for tick in list(spreadSong.keys())[1:]:
         midi_events.append(tick - lastTick)
         lastTick = tick
 
     idx = 0
-    for tick, notes in spread_song.items():
+    for tick, notes in spreadSong.items():
 
         x_init = 0
         y_init = 0

@@ -3,6 +3,7 @@ import song as Song
 import note as Note
 import scale as Scale
 import harmony as Harmony
+from timeSignature import TimeSignature as ts
 
 if __name__ == "__main__":
 
@@ -18,9 +19,10 @@ if __name__ == "__main__":
     Song.debug_song(melody, "files/notes_out.txt")
     song = Song.Song(melody, ticksPerBeat)
     song.choose_scale()
-    harmony = song.armonize(type = "win", offset=2, windowSizes=[1, 2, 4], possibleChords = someChords)
-    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, song.ticksPerBeat)
-    MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony, song.ticksPerBeat)
+    harmony = song.armonize(type = "win", 
+                            possibleChords = someChords)
+    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
+    MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony, ticksPerBeat)
     # bassline = song.process_bassline_4x4_v2(None, harmony)
     # MidiUtils.write_midi_song("midi/output_bassline.mid", bassline)
 
