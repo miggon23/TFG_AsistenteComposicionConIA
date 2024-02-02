@@ -144,13 +144,38 @@ class Song:
             self.__win_armonize(windowSizes, weights)
             self.__combine_best_chords(windowSizes[0])
         elif type == "off":
-            self.__off_arminize(windowSize, offset, weights)
-            self.__combine_best_chords(windowSize)
+            self.__off_armonize(windowSize, offset, weights)
+            self.__combine_best_chords(offset)
         
         return self.__absolutize_harmony()
     
-    def __off_arminize(self, windowSize, offset, weights):
-        return
+    def __off_armonize(self, windowSize, offset, weights):
+
+        lastTick = 0
+        for note in self.melody:
+            lastTick = max(lastTick, note['start_time'] + note['duration'])
+
+        nWindows = math.ceil(lastTick / (offset * self.ticksPerBeat))
+        windowsRelation = windowSize / offset 
+        nWindows = math.ceil(math.ceil(nWindows / windowsRelation) * windowsRelation)
+        combinedChordAnalysis = [{} for _ in range(nWindows)]
+
+        windowOffset = 0
+        while windowOffset < windowSize:
+            self.__armonize(windowSize, weights, windowOffset)
+            for window in range(nWindows):
+                windowIdx = int((window * offset + windowOffset) / (windowsRelation * offset))
+                if windowIdx >= len(self.chordAnalysis):
+                    break
+                chords = self.chordAnalysis[windowIdx]
+                windowAnalysis = combinedChordAnalysis[window]
+                for chord, weight in chords.items():
+                    if chord not in windowAnalysis:
+                        windowAnalysis[chord] = 0
+                    windowAnalysis[chord] += weight                 
+            windowOffset += offset
+
+        self.chordAnalysis = combinedChordAnalysis 
     
     def __win_armonize(self, windowSizes, weights):
 
@@ -165,15 +190,16 @@ class Song:
                 else:
                     advancedTickWeights.append(weights['tickWeights'][:min(windowSize, nWeights)])
 
-        weights['tickWeights'] = weights['advancedTickWeights'][0]
-        self.__armonize(windowSizes[0], weights)
+        lastTick = 0
+        for note in self.melody:
+            lastTick = max(lastTick, note['start_time'] + note['duration'])
+
+        nWindows = math.ceil(lastTick / (windowSizes[0] * self.ticksPerBeat))
+        windowsRelation = windowSizes[-1] / windowSizes[0] 
+        nWindows = math.ceil(math.ceil(nWindows / windowsRelation) * windowsRelation)
+        combinedChordAnalysis = [{} for _ in range(nWindows)]
         
-        combinedChordAnalysis = self.chordAnalysis.copy()
-        # for _ in range(math.ceil(math.ceil(len(combinedChordAnalysis) * windowSizes[0] / windowSizes[-1]) * (windowSizes[-1] / windowSizes[0])) - len(combinedChordAnalysis)):
-        #     combinedChordAnalysis.append({})
-        nWindows = len(combinedChordAnalysis)
-        
-        for windowIdx, windowSize in enumerate(windowSizes[1:], start=1):
+        for windowIdx, windowSize in enumerate(windowSizes):
             weights['tickWeights'] = weights['advancedTickWeights'][windowIdx]
             self.__armonize(windowSize, weights)
             windowsRelation = windowSizes[0] / windowSize
@@ -197,7 +223,7 @@ class Song:
         - El momento en el que suena la nota dentro de la propia ventana ("tickWeights": [w0, w1, w2, ...])
         - Si la nota acaba de sonar o ya estaba sonando de antes ("notPlayingAtTickPen" = w)
     '''
-    def __armonize(self, windowSize, weights):
+    def __armonize(self, windowSize, weights, offset = 0):
 
         '''
         Queremos saber cuántos ticks ocupa una ventana
@@ -225,20 +251,22 @@ class Song:
         if ticksPerWindow % windowSlices != 0:
             ticksPerWindow *= self.__resize_song(windowSlices)
         weightTickIterval = ticksPerWindow // len(weights["tickWeights"])
-
+        
         '''
         La canción ya no sufrirá más reescalados, así que la podemos
         reconvertir en la representación final que utilizará el algoritmo
         Relativizamos toda la canción y cambiamos su formato a canción separada
         '''
-        relativizedSong = self.__relativize_melody()
-        relativizedSpreadSong = spread_song(relativizedSong)
+        song = {0 : ([],[])} 
+        offset = int(offset * self.ticksPerBeat)
+        for tick, notes in spread_song(self.__relativize_melody()).items():
+            song[tick + offset] = notes
 
         '''
         Calculo cuánto dura la canción mirando el tick en el que ocurren los últimos eventos   
         Creo la lista de ventanas, a las cuales les corresponderán un grupo de acordes con diferentes pesos
         '''    
-        lastTick = list(relativizedSpreadSong.keys())[-1]
+        lastTick = list(song.keys())[-1]
         nWindows = math.ceil(lastTick / ticksPerWindow)
         self.chordAnalysis = [{} for _ in range(nWindows)]
 
@@ -253,14 +281,14 @@ class Song:
         '''  
         tick = 0
         while (tick < nWindows * ticksPerWindow):
-            if tick not in relativizedSpreadSong:
-                relativizedSpreadSong[tick] = ([],[])
+            if tick not in song:
+                song[tick] = ([],[])
             tick += weightTickIterval  
-        relativizedSpreadSong = dict(sorted(relativizedSpreadSong.items()))  
+        song = dict(sorted(song.items()))  
 
         notesPlaying = []
 
-        for tick, notes in relativizedSpreadSong.items():
+        for tick, notes in song.items():
 
             #Notas que abacan de terminar, se eliminan de la lista
             for note in notes[1]:

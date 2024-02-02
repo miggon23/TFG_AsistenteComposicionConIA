@@ -18,7 +18,7 @@ if __name__ == "__main__":
     Song.debug_song(melody, "files/notes_out.txt")
     song = Song.Song(melody, ticksPerBeat)
     song.choose_scale()
-    harmony = song.armonize(type = "win", windowSizes=[1, 2, 4], possibleChords = someChords)
+    harmony = song.armonize(type = "win", offset=2, windowSizes=[1, 2, 4], possibleChords = someChords)
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, song.ticksPerBeat)
     MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony, song.ticksPerBeat)
     # bassline = song.process_bassline_4x4_v2(None, harmony)
