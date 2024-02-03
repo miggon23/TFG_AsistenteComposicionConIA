@@ -7,6 +7,7 @@ from timeSignature import TimeSignature as ts
 
 import math
 import random
+import json
 
 possibleScales = {
     "Major": Scale.Scale("1 2 3 4 5 6 7"), 
@@ -367,6 +368,36 @@ class Song:
                 self.bestChords.append([bestChord, ticksPerChord])
 
         self.bestChords = self.bestChords[1:]
+
+    def save_data(self):
+
+        with open('datasets/matrix.json', 'r') as file:
+            data = json.load(file)
+
+        indexes = data['indexes']
+        matrix = data['matrix']
+
+        lastChord = ""
+
+        for chordInfo in self.bestChords:
+            chord = chordInfo[0]
+            chord = chord[0] + "_" + self.harmony.chords[chord[0]][chord[1]]
+
+            if chord not in indexes:
+                n = len(indexes)
+                matrix.append([0] * n)
+                for list in matrix:
+                    list.append(0)
+                indexes[chord] = n
+
+            matrix[indexes[lastChord]][indexes[chord]] += 1
+
+            lastChord = chord
+
+        matrix[indexes[lastChord]][indexes[""]] += 1
+
+        with open('datasets/matrix.json', 'w') as file:
+            json.dump(data, file)
 
     '''
     A partir de la tónica de la canción transforma las notas reales en intervalos 

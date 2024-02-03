@@ -21,6 +21,7 @@ if __name__ == "__main__":
     song.choose_scale()
     harmony = song.armonize(type = "win", 
                             possibleChords = someChords)
+    song.save_data()
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
     MidiUtils.write_midi_song("midi/output_song.mid", song.melody + harmony, ticksPerBeat)
     # bassline = song.process_bassline_4x4_v2(None, harmony)
