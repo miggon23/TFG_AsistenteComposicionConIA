@@ -3,18 +3,18 @@ from math import lcm
 from song import spread_song
 from timeSignature import ticksPerQuarter
 
-def debug_midi_file(midiFilePath, outputFile):
+def debug_midi_file(filePath, outputFile):
     
-    midiFile = mido.MidiFile(midiFilePath)
+    midiFile = mido.MidiFile(filePath)
     with open(outputFile, 'w') as f:
         for i, track in enumerate(midiFile.tracks):
             f.write(f"Track {i}:\n")
             for msg in track:
                 f.write(str(msg) + '\n')
 
-def read_midi_song(midiFilePath):
+def read_midi_song(filePath):
 
-    mid = mido.MidiFile(midiFilePath)  
+    mid = mido.MidiFile(filePath)  
 
     notes = []     
 
@@ -60,7 +60,7 @@ def read_midi_song(midiFilePath):
 
     return song, ticksPerBeat
 
-def write_midi_song(midiFilePath, song, ticksPerBeat):
+def write_midi_song(filePath, song, ticksPerBeat):
 
     # Crear un nuevo archivo MIDI
     mid = mido.MidiFile()
@@ -107,4 +107,4 @@ def write_midi_song(midiFilePath, song, ticksPerBeat):
  
         idx += 1
 
-    mid.save(midiFilePath)
+    mid.save(filePath)
