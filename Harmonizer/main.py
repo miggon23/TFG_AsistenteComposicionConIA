@@ -20,6 +20,10 @@ if __name__ == "__main__":
     song = Song.Song(melody, ticksPerBeat)
     song.choose_scale()
     harmony = song.armonize(type = "win", 
+                            timeSignatures = [
+                                ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+                                ts(2, 4).set_weights([1.4, 1.2]),
+                            ],
                             possibleChords = someChords)
     song.save_data('datasets/matrix.xlsx')
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)

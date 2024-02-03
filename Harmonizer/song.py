@@ -264,12 +264,16 @@ class Song:
 
         for tick, notes in song.items():
 
+            measure = int(tick / ticksPerMeasure)
+            if measure < nMeasures:
+                analysis = self.chordAnalysis[measure]
+            else:
+                break
+
             #Notas que abacan de terminar, se eliminan de la lista
             for note in notes[1]:
                 #Si hay un error aquí es posible que haya notas de 0 segundos de duración
                 notesPlaying.remove(note) 
-
-            measure = int(tick / ticksPerMeasure)
 
             '''
             Comprueba si toca tick clave
@@ -279,16 +283,16 @@ class Song:
             tickWeight = 1
             if tick % ticksBetweenMeasureWeights == 0:
                 weightIdx = (tick - measure * ticksPerMeasure) // ticksBetweenMeasureWeights
-                tickWeight = timeSignature.weights[weightIdx]
-                for note in notesPlaying:
-                    self.__calculate_chord_weights(note, self.chordAnalysis[measure], 
-                        chordWeights, tickWeight, notPlayingAtTickPen)
+                if timeSignature.weights[weightIdx] != None:
+                    tickWeight = timeSignature.weights[weightIdx]
+                    for note in notesPlaying:
+                        self.__calculate_chord_weights(note, analysis, 
+                            chordWeights, tickWeight, notPlayingAtTickPen)
 
             #Notas que acaban de empezar a sonar
             for note in notes[0]:
                 notesPlaying.append(note)
-                self.__calculate_chord_weights(note, self.chordAnalysis[measure], 
-                                               chordWeights, tickWeight) 
+                self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
     
     '''
     Dada una nota (y una serie de pesos), recorre toda la lista de acordes posibles para 
@@ -298,13 +302,13 @@ class Song:
     def __calculate_chord_weights(self, note, analysis, 
         chordWeights, tickWeight, notPlayingAtTickPen = 1):
          
-        for degree, chords in self.harmony.relativizedChords.items():
+        for (degree, chords), chordNames in zip(self.harmony.relativizedChords.items(), self.harmony.chords.values()):
             #Recorro todos los acordes de la lista de acordes
-            for chordIdx, chord in enumerate(chords):
+            for chord, chordName in zip(chords, chordNames):
                 #Recorro todos los intervalos del acorde
                 for intervalIdx, interval in enumerate(chord.scale):
                     if note == interval:       
-                        value = (degree, chordIdx)  
+                        value = (degree, chordName)  
                         if value not in analysis:
                             analysis[value] = 0                       
                         analysis[value] += (chordWeights[intervalIdx] * tickWeight * notPlayingAtTickPen)
@@ -314,7 +318,7 @@ class Song:
         for idx, chordList in enumerate(self.chordAnalysis):
             print(f"Slice {idx}:")
             for chord, w in chordList.items():
-                print(f"{chord[0]} {self.harmony.chords[chord[0]][chord[1]]}: {w}")
+                print(f"{chord[0]} {chord[1]}: {w}")
 
     def print_best_chords(self):
         for idx, chordInfo in enumerate(self.bestChords):
@@ -323,22 +327,22 @@ class Song:
             chordTicks = chordInfo[1]
 
             if chord is not None:
-                print(f"Slice {idx} ({chordTicks} ticks): {chord[0]} {self.harmony.chords[chord[0]][chord[1]]}")  
+                print(f"Slice {idx} ({chordTicks} ticks): {chord[0]} {chord[1]}")  
             else:
                 print(f"Slice {idx}")
 
     '''
-    Elige el acorde con más peso de cada ventana 
+    Elige el acorde con más peso de cada compás 
     '''
-    def __choose_best_chords(self, beatsPerWindow):
+    def __choose_best_chords(self, measureSize):
     
-        ticksPerChord = int(beatsPerWindow * self.ticksPerBeat)
+        ticksPerChord = int(measureSize * self.ticksPerBeat)
         self.bestChords = []
 
-        for slice in self.chordAnalysis:
+        for analysis in self.chordAnalysis:
             maxWeight = 0
             bestChord = None
-            for chord, weight in slice.items():
+            for chord, weight in analysis.items():
                 if weight > maxWeight:
                     maxWeight = weight
                     bestChord = chord
@@ -346,18 +350,18 @@ class Song:
             self.bestChords.append([bestChord, ticksPerChord])
 
     '''
-    Elige el acorde con más peso de cada ventana 
+    Elige el acorde con más peso de cada compás 
     y combina las iguales adyacentes
     '''
-    def __combine_best_chords(self, beatsPerWindow):
+    def __combine_best_chords(self, measureSize):
         
-        ticksPerChord = int(beatsPerWindow * self.ticksPerBeat)
-        self.bestChords = [[(-1, 0), 0]] 
+        ticksPerChord = int(measureSize * self.ticksPerBeat)
+        self.bestChords = [[(0, ""), 0]] 
 
-        for slice in self.chordAnalysis:
+        for analysis in self.chordAnalysis:
             maxWeight = 0
             bestChord = None
-            for chord, weight in slice.items():
+            for chord, weight in analysis.items():
                 if weight > maxWeight:
                     maxWeight = weight
                     bestChord = chord
@@ -379,20 +383,39 @@ class Song:
             initialData = {lastChord: [0]}
             df = pd.DataFrame(initialData, index=[lastChord])
 
+        reorganize = False
+
         for chordInfo in self.bestChords:
+
             chord = chordInfo[0]
-            chord = chord[0] + "_" + self.harmony.chords[chord[0]][chord[1]]
+            chord = chord[0] + "_" + chord[1]
 
             if chord not in df.index:
                 df[chord] = 0
                 df.loc[chord] = 0
+                reorganize = True
 
             df.at[lastChord, chord] += 1
 
             lastChord = chord
 
         df.at[lastChord, "start_end"] += 1
-        
+
+        if reorganize:  
+
+            def foo(chord):
+                chord = str(chord)
+                if chord == "start_end":
+                    return -1
+                else:
+                    degree, chordName = chord.split("_")
+                    v1 = Interval.intervals.index(degree)
+                    v2 = list(Harmony.allChords.keys()).index(chordName)
+                    return v1 * len(Harmony.allChords) + v2
+
+            indexes = sorted(df.index.tolist(), key=foo)
+            df = df.reindex(index=indexes, columns=indexes)       
+
         df.to_excel(filePath)
 
     '''
@@ -427,7 +450,11 @@ class Song:
             chordTicks = chordInfo[1]
 
             if chord is not None:
-                for interval in self.harmony.relativizedChords[chord[0]][chord[1]].scale:
+
+                idx = self.harmony.chords[chord[0]].index(chord[1])
+                relativazedChord = self.harmony.relativizedChords[chord[0]][idx]
+
+                for interval in relativazedChord.scale:
                     absolutizedHarmony.append({
                         "note": Note.get_nearest_pitch(interval, self.tonic, self.meanPitch - 12), 
                         "start_time": startTime, 

@@ -13,7 +13,7 @@ class TimeSignature:
         if len(weights) != self.numerator:
             raise Exception("El número de pesos debe ser igual al numerador")
         for weight in weights:
-            if weight < 1:
+            if weight is not None and weight < 1:
                 raise Exception("Existe al menos un peso cuyo valor es menor que 1")
         self.weights = weights
 
