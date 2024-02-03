@@ -6,7 +6,6 @@ import timeSignature as TimeSignature
 from timeSignature import TimeSignature as ts
 
 import math
-import sys
 import random
 
 possibleScales = {
@@ -327,19 +326,6 @@ class Song:
             else:
                 print(f"Slice {idx}")
 
-    def __resize_song(self, newTicksPerBeat):
-
-        newTicksPerBeat = math.lcm(self.ticksPerBeat, newTicksPerBeat)
-        increment = newTicksPerBeat // self.ticksPerBeat
-
-        for note in self.melody:
-            note['start_time'] *= increment
-            note['duration'] *= increment
-
-        self.ticksPerBeat = newTicksPerBeat
-
-        return increment
-
     '''
     Elige el acorde con más peso de cada ventana 
     '''
@@ -381,7 +367,6 @@ class Song:
                 self.bestChords.append([bestChord, ticksPerChord])
 
         self.bestChords = self.bestChords[1:]
-
 
     '''
     A partir de la tónica de la canción transforma las notas reales en intervalos 
