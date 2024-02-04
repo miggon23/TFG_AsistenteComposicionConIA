@@ -129,7 +129,7 @@ class Song:
     def armonize(self, 
                  type = "std", 
                  possibleChords = Harmony.allChords,
-                 chordWeights = [1, 0.25, 0.5, 0.25], 
+                 chordWeights = [1, 0.25, 0.5, 0.125], 
                  timeSignatures = [
                      ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
                      ts(2, 4).set_weights([1.4, 1.2]),
@@ -271,9 +271,13 @@ class Song:
                 break
 
             #Notas que abacan de terminar, se eliminan de la lista
+            volatileNotes = []      
             for note in notes[1]:
-                #Si hay un error aquí es posible que haya notas de 0 segundos de duración
-                notesPlaying.remove(note) 
+                if note in notesPlaying: 
+                    notesPlaying.remove(note) 
+                else:
+                    notes[0].remove(note)
+                    volatileNotes.append(note)
 
             '''
             Comprueba si toca tick clave
@@ -292,6 +296,9 @@ class Song:
             #Notas que acaban de empezar a sonar
             for note in notes[0]:
                 notesPlaying.append(note)
+                self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
+
+            for note in volatileNotes:
                 self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
     
     '''
@@ -388,16 +395,17 @@ class Song:
         for chordInfo in self.bestChords:
 
             chord = chordInfo[0]
-            chord = chord[0] + "_" + chord[1]
+            if chord is not None:
+                chord = chord[0] + "_" + chord[1]
 
-            if chord not in df.index:
-                df[chord] = 0
-                df.loc[chord] = 0
-                reorganize = True
+                if chord not in df.index:
+                    df[chord] = 0
+                    df.loc[chord] = 0
+                    reorganize = True
 
-            df.at[lastChord, chord] += 1
+                df.at[lastChord, chord] += 1
 
-            lastChord = chord
+                lastChord = chord
 
         df.at[lastChord, "start_end"] += 1
 
