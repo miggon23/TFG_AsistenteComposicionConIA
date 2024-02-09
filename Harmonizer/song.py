@@ -381,6 +381,35 @@ class Song:
         self.bestChords = self.bestChords[1:]
 
     def save_data(self, filePath):
+        self.__save_matrix(filePath + ".xlsx")
+        self.__save_raw(filePath + ".csv")
+
+    def __save_raw(self, filePath):
+
+        try:
+            df = pd.read_csv(filePath)  
+            data = {'chord': [], 'duration': []}       
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=['chord', 'duration'])
+            data = {'chord': ["start_end"], 'duration': [0]} 
+
+        for chordInfo in self.bestChords:
+
+            chord = chordInfo[0]
+            if chord is not None:
+                chord = chord[0] + "_" + chord[1]
+                duration = chordInfo[1]
+
+                data['chord'].append(chord)
+                data['duration'].append(duration)
+
+        data['chord'].append("start_end")
+        data['duration'].append(0)       
+
+        df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
+        df.to_csv(filePath, index=False)
+
+    def __save_matrix(self, filePath):
 
         lastChord = "start_end"
 
