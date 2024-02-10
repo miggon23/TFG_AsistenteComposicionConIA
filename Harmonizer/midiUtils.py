@@ -1,25 +1,34 @@
 import mido
-import song as Song
+from math import lcm
+from song import spread_song
+from timeSignature import ticksPerQuarter
 
-def debug_midi_file(midi_file_path, output_file):
+def debug_midi_file(midiFilePath, outputFile):
     
-    midi_file = mido.MidiFile(midi_file_path)
-    with open(output_file, 'w') as f:
-        for i, track in enumerate(midi_file.tracks):
+    midiFile = mido.MidiFile(midiFilePath)
+    with open(outputFile, 'w') as f:
+        for i, track in enumerate(midiFile.tracks):
             f.write(f"Track {i}:\n")
             for msg in track:
                 f.write(str(msg) + '\n')
 
-def read_midi_song(midi_file_path):
+def read_midi_song(midiFilePath):
 
-    midi_file = mido.MidiFile(midi_file_path)  
+    mid = mido.MidiFile(midiFilePath)  
+ 
+    ticksPerBeat = lcm(mid.ticks_per_beat, ticksPerQuarter)
+    increment = ticksPerBeat // mid.ticks_per_beat
 
-    notes = []     
+    song = []
 
-    current_time = 0
+    for track in mid.tracks:
 
-    for track in midi_file.tracks:
+        notes = []     
+        currentTime = 0
+
         for msg in track:
+
+            currentTime += msg.time * increment
 
             msgType = msg.type 
             if msgType == 'note_on' or msgType == 'note_off':
@@ -27,61 +36,57 @@ def read_midi_song(midi_file_path):
                 if msgType == 'note_on' and msg.velocity == 0:
                     msgType = 'note_off'
 
-                current_time += msg.time / midi_file.ticks_per_beat
-
                 notes.append({
                     'type': msgType, 
                     'note': msg.note, 
-                    'time': current_time
+                    'time': currentTime
                 })
 
-    song = []
+        for note in notes:
 
-    for note in notes:
+            if note['type'] == 'note_on':
 
-        if note['type'] == 'note_on':
+                song.append({
+                    'note': note['note'], 
+                    'start_time': note['time'], 
+                    'duration': -1
+                })
 
-            song.append({
-                'note': note['note'], 
-                'start_time': note['time'], 
-                'duration': -1
-            })
+            elif note['type'] == 'note_off':
 
-        elif note['type'] == 'note_off':
+                for previousNote in reversed(song):
+                    if previousNote['note'] == note['note'] and previousNote['duration'] == -1:
+                        previousNote['duration'] = note['time'] - previousNote['start_time']
+                        break 
 
-            for previousNote in reversed(song):
-                if previousNote['note'] == note['note'] and previousNote['duration'] == -1:
-                    previousNote['duration'] = note['time'] - previousNote['start_time']
-                    break 
+    return song, ticksPerBeat
 
-    return song
-
-def write_midi_song(midi_file_path, note_list):
+def write_midi_song(midiFilePath, song, ticksPerBeat):
 
     # Crear un nuevo archivo MIDI
     mid = mido.MidiFile()
+    mid.ticks_per_beat = ticksPerBeat
 
     # Crear una pista MIDI
     track = mido.MidiTrack()
     mid.tracks.append(track)
 
     # Configurar el tiempo en el archivo MIDI (puedes ajustar esto según tus necesidades)
-    ticks_per_beat = 480
-    track.append(mido.MetaMessage('time_signature', numerator=4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
-    track.append(mido.MetaMessage('set_tempo', tempo=500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
+    track.append(mido.MetaMessage('set_tempo', tempo = 500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
+    track.append(mido.MetaMessage('time_signature', numerator= 4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
 
-    spread_song = Song.spread_song(note_list)
-    first_note_tick = next(iter(spread_song))
+    spreadSong = spread_song(song)
+    firstNoteTick = next(iter(spreadSong))
 
-    midi_events = [int(first_note_tick * ticks_per_beat)]
-    last_tick = first_note_tick
+    midi_events = [firstNoteTick]
+    lastTick = firstNoteTick
 
-    for tick in list(spread_song.keys())[1:]:
-        midi_events.append(int((tick - last_tick) * ticks_per_beat))
-        last_tick = tick
+    for tick in list(spreadSong.keys())[1:]:
+        midi_events.append(tick - lastTick)
+        lastTick = tick
 
     idx = 0
-    for tick, notes in spread_song.items():
+    for tick, notes in spreadSong.items():
 
         x_init = 0
         y_init = 0
@@ -100,8 +105,7 @@ def write_midi_song(midi_file_path, note_list):
         for note in notes[0][x_init:]:
             track.append(mido.Message('note_on', note=note, velocity=64, time=0))
 
-
-        
+ 
         idx += 1
 
-    mid.save(midi_file_path)
+    mid.save(midiFilePath)

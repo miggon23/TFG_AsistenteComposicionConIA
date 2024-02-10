@@ -16,7 +16,7 @@ class HarmonyGenerator:
         melody = MidiUtils.read_midi_song(input)
         song = Song.Song(melody)
         song.choose_scale()
-        harmony = song.armonize(ticksPerSlice = 4.0, possibleChords = someChords)
+        harmony = song.armonize(timeSignature = 4.0, possibleChords = someChords)
 
         #si no existe el directorio de salida lo crea
         if not os.path.isdir(outputDir):

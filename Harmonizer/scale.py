@@ -77,7 +77,7 @@ class Scale:
             self.absolutizedScale.append(Note.Note(noteName))
 
     
-    def copy_scale(self):
+    def copy(self):
         
         semitones = []
 
