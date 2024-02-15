@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 import numpy as np
 
@@ -15,6 +16,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import confusion_matrix
+
+import noteseqConverter as nc
 
 def generate_sequences(X, y, seq_length):
     input_sequences = []
@@ -57,6 +60,15 @@ def train_rnn():
     scaling = StandardScaler()
     scaling.fit(X)
     X = scaling.transform(X)
+    
+    params = {
+    'mean': scaling.mean_.tolist(),
+    'std': scaling.scale_.tolist()
+    }
+
+    with open('Datasets/Cleaned/scaler_params.json', 'w') as file:
+        json.dump(params, file)
+    
     # X = X.values
 
     label_encoder = LabelEncoder()
@@ -112,5 +124,70 @@ def train_rnn():
     # Guardar el modelo en formato keras
     model.save('rnn_entrenado.keras')
 
+def load_model():    
+    return keras.models.load_model('rnn_entrenado.keras')
+
+def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: float = 1.0) -> tuple[int, float, float]:
+    """Generates a note as a tuple of (pitch, step, duration), using a trained sequence model."""
+
+    assert temperature > 0
+
+    # Add batch dimension
+    inputs = tf.expand_dims(notes, 0)
+
+    predictions = model.predict(inputs)
+
+    # Aplicamos el muestreo estocástico con la temperatura dada
+    predictions = np.log(predictions) / temperature
+    exp_predictions = np.exp(predictions)
+    predicted_probs = exp_predictions / np.sum(exp_predictions, axis=1, keepdims=True)
+
+    # Muestreamos la próxima nota según las probabilidades predichas
+    predicted_index = np.random.choice(range(len(predictions[0])), p=predicted_probs[0])
+
+    return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
+
 if __name__ == '__main__':
     train_rnn()
+
+    exit()
+
+    path = "Datasets/Cleaned/"
+
+    keys = []
+    #keys
+    with open(path + "keys.txt", 'r') as file:
+        # Lee el contenido del archivo y divide la cadena en una lista utilizando el espacio como separador
+        keys = file.read().split()
+
+    model = load_model()
+
+    num_bar = 8
+
+    simulations = []
+    note_seq_sims = []
+    outputs = []
+    for i in range(10):
+        #realiza tantos pasos como sean necesarios para llegar al numero de compases pedidos
+        curr_sim = [ "60_2" ]
+        curr_duration = int((curr_sim[0].split('_'))[1])
+        curr_sim_onehot = np.zeros((len(keys)))  # Inicializar con todo ceros
+        curr_sim_onehot[keys.index(curr_sim[0])] = 1  # Establecer el primer paso a 1
+        
+        j = 1
+        while curr_duration < num_bar * 4:
+            next_note_index, _, _ = predict_next_note(curr_sim_onehot, model)
+            next_note = keys[next_note_index]
+            curr_duration += int((next_note.split('_'))[1])
+            if curr_duration <= num_bar * 4:
+                curr_sim.append(next_note)
+                curr_sim_onehot[next_note_index] = 1  # Establecer el siguiente paso a 1
+            j += 1
+
+        simulations.append(curr_sim)
+        note_seq_sims.append(nc.deserialize_noteseq(curr_sim))
+
+        #guarda el output en la lista para devolverlo al final
+        output = "./midi/markov_melody_" + str(i) + ".mid"
+        outputs.append(output)
+        nc.save_to_midi(note_seq_sims[i], output)
