@@ -78,15 +78,6 @@ def main():
             exit = True
             break
 
-def armonice(inputMelody):
-    bassline = basslineGenerator.BasslineGenerator.generate()
-    harmonyGenerator.HarmonyGenerator.generate(bassline, inputMelody)
-    return bassline
-
-def tamborice():
-    style = enums.Style.BASIC
-    drumGenerator.DrumGenerator.generate(style)
-
 def get_input_number(a, b):
 
     valid_number_entered = False
