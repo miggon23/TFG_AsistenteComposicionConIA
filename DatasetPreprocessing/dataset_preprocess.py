@@ -215,11 +215,6 @@ def normalize_for_rnn():
     df.reset_index()
     df.to_csv("Datasets/Cleaned/dataset_rnn_normalized.csv", index=False, header=["pitch","start","end","duration","next_note_pitch","next_note_duration"])
 
-# Función para obtener la representación de curr_note
-def get_curr_note(row):
-    pitch_duration = f"{row['pitch']}_{row['duration']}"
-    return pitch_duration
-
 def transform_to_label_rnn():
     path = "Datasets/Cleaned/"
 

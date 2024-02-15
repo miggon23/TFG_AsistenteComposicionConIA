@@ -1,8 +1,10 @@
+import json
 import pandas as pd
 import numpy as np
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 import tensorflow as tf
 from tensorflow import keras
@@ -14,6 +16,20 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import confusion_matrix
+
+import noteseqConverter as nc
+
+def generate_sequences(X, y, seq_length):
+    input_sequences = []
+    output_sequences = []
+
+    for i in range(len(X) - seq_length):
+        seq_in = X[i:i + seq_length, :]
+        seq_out = y[i + seq_length, :]
+        input_sequences.append(seq_in)
+        output_sequences.append(seq_out)
+
+    return np.array(input_sequences), np.array(output_sequences)
 
 def train_rnn():
     path = "Datasets/Cleaned/"
@@ -38,21 +54,38 @@ def train_rnn():
     # y = df['next_note']
 
     # Aplicar one-hot encoding a las columnas 'curr_note' y 'next_note'
-    encoder = LabelEncoder()
-    X = df['curr_note']
+    X = df.drop(['next_note', 'curr_note'], axis=1)
     y = df['next_note']
+
+    scaling = StandardScaler()
+    scaling.fit(X)
+    X = scaling.transform(X)
+    
+    params = {
+    'mean': scaling.mean_.tolist(),
+    'std': scaling.scale_.tolist()
+    }
+
+    with open('Datasets/Cleaned/scaler_params.json', 'w') as file:
+        json.dump(params, file)
+    
+    # X = X.values
 
     label_encoder = LabelEncoder()
     label_encoder.fit(keys)
-    X_encoded = label_encoder.transform(X)
+    # X_encoded = label_encoder.transform(X)
     y_encoded = label_encoder.transform(y)
 
     # Convertir las notas codificadas a one-hot encoding
-    X_onehot = to_categorical(X_encoded)
+    # X_onehot = to_categorical(X_encoded)
     y_onehot = to_categorical(y_encoded)
 
+    # Generamos secuencias de notas
+    seq_length = 5  # Ajusta según la longitud de la secuencia que desees
+    input_data, output_data = generate_sequences(X, y_onehot, seq_length)
+
     # Split the data into training and test sets
-    x_train, x_val, y_train, y_val = train_test_split(X_onehot, y_onehot, test_size=0.2)
+    x_train, x_val, y_train, y_val = train_test_split(input_data, output_data, test_size=0.2)
 
     early_stopping = EarlyStopping(
         monitor='val_loss',  # Métrica a monitorear (puede ser 'val_accuracy', 'val_loss', etc.)
@@ -62,10 +95,8 @@ def train_rnn():
 
     model = keras.Sequential()
 
-    model.add(layers.Dense(64, activation='relu', input_shape=(n_out,)))
-
-    # Agrega una capa de Reshape para agregar la dimensión de los pasos de tiempo
-    model.add(layers.Reshape((1, 64)))
+    # Capa de entrada
+    model.add(layers.Input(shape=(seq_length, 2)))
 
     # Capa LSTM
     model.add(layers.LSTM(64))
@@ -84,7 +115,7 @@ def train_rnn():
     history = model.fit(
         x_train,
         y_train,
-        batch_size=32,
+        batch_size=256,
         epochs=5000,
         validation_data=(x_val, y_val),
         callbacks=[early_stopping]
@@ -93,5 +124,70 @@ def train_rnn():
     # Guardar el modelo en formato keras
     model.save('rnn_entrenado.keras')
 
+def load_model():    
+    return keras.models.load_model('rnn_entrenado.keras')
+
+def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: float = 1.0) -> tuple[int, float, float]:
+    """Generates a note as a tuple of (pitch, step, duration), using a trained sequence model."""
+
+    assert temperature > 0
+
+    # Add batch dimension
+    inputs = tf.expand_dims(notes, 0)
+
+    predictions = model.predict(inputs)
+
+    # Aplicamos el muestreo estocástico con la temperatura dada
+    predictions = np.log(predictions) / temperature
+    exp_predictions = np.exp(predictions)
+    predicted_probs = exp_predictions / np.sum(exp_predictions, axis=1, keepdims=True)
+
+    # Muestreamos la próxima nota según las probabilidades predichas
+    predicted_index = np.random.choice(range(len(predictions[0])), p=predicted_probs[0])
+
+    return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
+
 if __name__ == '__main__':
     train_rnn()
+
+    exit()
+
+    path = "Datasets/Cleaned/"
+
+    keys = []
+    #keys
+    with open(path + "keys.txt", 'r') as file:
+        # Lee el contenido del archivo y divide la cadena en una lista utilizando el espacio como separador
+        keys = file.read().split()
+
+    model = load_model()
+
+    num_bar = 8
+
+    simulations = []
+    note_seq_sims = []
+    outputs = []
+    for i in range(10):
+        #realiza tantos pasos como sean necesarios para llegar al numero de compases pedidos
+        curr_sim = [ "60_2" ]
+        curr_duration = int((curr_sim[0].split('_'))[1])
+        curr_sim_onehot = np.zeros((len(keys)))  # Inicializar con todo ceros
+        curr_sim_onehot[keys.index(curr_sim[0])] = 1  # Establecer el primer paso a 1
+        
+        j = 1
+        while curr_duration < num_bar * 4:
+            next_note_index, _, _ = predict_next_note(curr_sim_onehot, model)
+            next_note = keys[next_note_index]
+            curr_duration += int((next_note.split('_'))[1])
+            if curr_duration <= num_bar * 4:
+                curr_sim.append(next_note)
+                curr_sim_onehot[next_note_index] = 1  # Establecer el siguiente paso a 1
+            j += 1
+
+        simulations.append(curr_sim)
+        note_seq_sims.append(nc.deserialize_noteseq(curr_sim))
+
+        #guarda el output en la lista para devolverlo al final
+        output = "./midi/markov_melody_" + str(i) + ".mid"
+        outputs.append(output)
+        nc.save_to_midi(note_seq_sims[i], output)
