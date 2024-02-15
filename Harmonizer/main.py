@@ -27,7 +27,8 @@ if __name__ == "__main__":
     harmony = song.armonize(type = "win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-                                ts(2, 4).set_weights([1.4, 1.2])
+                                ts(2, 4).set_weights([1.4, 1.2]),
+                                ts(1, 4).set_weights([1])
                             ],  
                             possibleChords = someChords)
     song.save_data('datasets/chords')

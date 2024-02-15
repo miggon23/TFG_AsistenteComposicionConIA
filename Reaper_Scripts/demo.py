@@ -30,22 +30,24 @@ for i in range(n_tracks):
 
 # Agregar un efecto
 # El número 0 representa el índice del efecto en la lista de efectos disponibles
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 0), "Monster Strings", False, -1)
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 0), "Tal", False, -1)
 RPR_TrackFX_SetPreset(RPR_GetTrack(0, 0), 0, "cuerdas prueba")
 
 RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "BlueArp", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 0, "Intro1")
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "Monster Piano", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 0, "arpegiador")
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "Tal", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 1, "piano")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 2), "Monster Piano", False, -1)
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 2), "Tal", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 2), 0, "piano")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 3), "Abstract Crystal", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 3), 0, "preset prueba demo")
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 3), "Tal", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 3), 0, "pad")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 4), "Ample Bass", False, -1)
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 4), "Tal", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 4), 0, "bass")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 5), "Monster Drum", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 5), 0, "cajon prueba")
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 5), "MT", False, -1)
 
 # Mover el cursor al inicio de la pista
 RPR_SetEditCurPos(0, True, True)

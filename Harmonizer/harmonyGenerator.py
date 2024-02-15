@@ -2,6 +2,7 @@ import midiUtils as MidiUtils
 import song as Song
 import scale as Scale
 import os
+from timeSignature import TimeSignature as ts
 
 class HarmonyGenerator:
     def generate(bassline, input = "midi/input_song.mid", outputDir = "midi/", outputHarmonyFile = "output_harmony", outputBasslineFile = "output_bass"):
@@ -13,10 +14,16 @@ class HarmonyGenerator:
             "7": Scale.Scale("1 3 5 b7"),  # Dominante 
         }
 
-        melody = MidiUtils.read_midi_song(input)
-        song = Song.Song(melody)
+        melody, ticksPerBeat = MidiUtils.read_midi_song(input)
+        song = Song.Song(melody, ticksPerBeat)
         song.choose_scale()
-        harmony = song.armonize(timeSignature = 4.0, possibleChords = someChords)
+        harmony = song.armonize(type = "win",
+                                timeSignatures = [
+                                    ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+                                    ts(2, 4).set_weights([1.4, 1.2]),
+                                    ts(1, 4).set_weights([1])
+                            ],  
+                            possibleChords = someChords)
 
         #si no existe el directorio de salida lo crea
         if not os.path.isdir(outputDir):
@@ -31,6 +38,7 @@ class HarmonyGenerator:
         MidiUtils.write_midi_song(harmonyMidi, harmony)
 
         basslineMidi = outputDir + outputBasslineFile + ".mid"
+        harmony = song.armonize(possibleChords = someChords)
         bassline = song.process_bassline_4x4_v2(bassline, harmony)
         MidiUtils.write_midi_song(basslineMidi, bassline)
 
