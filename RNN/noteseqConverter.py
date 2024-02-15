@@ -1,18 +1,22 @@
 from note_seq import NoteSequence, midi_io
 
-#Serializa una nota en formato "pitch_duracion" y devuelve la string serializada
-def serialize_note(self, note):
-    ser_note = ""
+#QPM estandar para pasar a MIDI (1 negra por segundo)
+QPM = 60
 
-    if (self.step_mode):
-        ser_note = str(note.pitch) + "_" +  str(note.quantized_end_step - note.quantized_start_step)
-    else:
-        ser_note = str(note.pitch) + "_" +  str(round(note.end_time - note.start_time, 2))
+#Valor estandar de un step, para normalizar
+STEP_VALUE = 1/4
+
+MAX_SILENCE_STEPS = 8
+MAX_SILENCE_SECONDS = 2
+
+#Serializa una nota en formato "pitch_duracion" y devuelve la string serializada
+def serialize_note(note):
+    ser_note = str(note.pitch) + "_" +  str(note.quantized_end_step - note.quantized_start_step)
 
     return ser_note
 
 #Deserializa una secuencia de notas en formato "pitch_duracion" y devuelve el NoteSequence correspondiente
-def deserialize_noteseq(self, note_list):
+def deserialize_noteseq(note_list):
     start_time = 0
 
     ns = NoteSequence()
@@ -24,10 +28,7 @@ def deserialize_noteseq(self, note_list):
 
         #cap de maxima duracion de silencios
         if  (pitch == 0):
-            if (self.step_mode):
-                duration = min(duration, MAX_SILENCE_STEPS)
-            else:
-                duration = min(duration, MAX_SILENCE_SECONDS)
+            duration = min(duration, MAX_SILENCE_STEPS)
         
         #a partir de la duracion obtenemos el end_time
         end_time = start_time + duration
@@ -36,15 +37,11 @@ def deserialize_noteseq(self, note_list):
             #añadimos la nota al NoteSequence
             note = NoteSequence.Note(pitch=pitch, velocity=100)
             
-            if (self.step_mode):
-                note.quantized_start_step = int(start_time)
-                note.quantized_end_step = int(end_time)
+            note.quantized_start_step = int(start_time)
+            note.quantized_end_step = int(end_time)
 
-                note.start_time = (start_time * STEP_VALUE) * (60.0 / QPM)
-                note.end_time = (end_time * STEP_VALUE) * (60.0 / QPM)
-            else:
-                note.start_time = start_time
-                note.end_time = end_time
+            note.start_time = (start_time * STEP_VALUE) * (60.0 / QPM)
+            note.end_time = (end_time * STEP_VALUE) * (60.0 / QPM)
 
             ns.notes.append(note)
         

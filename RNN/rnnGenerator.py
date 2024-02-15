@@ -148,9 +148,8 @@ def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: flo
     return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
 
 if __name__ == '__main__':
-    train_rnn()
-
-    exit()
+    # train_rnn()
+    # exit()
 
     path = "Datasets/Cleaned/"
 
@@ -160,28 +159,47 @@ if __name__ == '__main__':
         # Lee el contenido del archivo y divide la cadena en una lista utilizando el espacio como separador
         keys = file.read().split()
 
+    with open(path + "scaler_params.json", 'r') as file:
+        scaler_params = json.load(file)
+
     model = load_model()
 
-    num_bar = 8
+    num_bar = 32
 
     simulations = []
     note_seq_sims = []
     outputs = []
     for i in range(10):
         #realiza tantos pasos como sean necesarios para llegar al numero de compases pedidos
-        curr_sim = [ "60_2" ]
-        curr_duration = int((curr_sim[0].split('_'))[1])
-        curr_sim_onehot = np.zeros((len(keys)))  # Inicializar con todo ceros
-        curr_sim_onehot[keys.index(curr_sim[0])] = 1  # Establecer el primer paso a 1
+        curr_sim = [ "60_2", "60_2", "60_2", "60_2", "60_2" ]
+        curr_sim_int = [tuple(map(float, sim.split('_'))) for sim in curr_sim]
+        curr_sim_array = np.array(curr_sim_int)
+
+        curr_sim_array[: , 0] = (curr_sim_array[: , 0] - scaler_params['mean'][0]) / scaler_params['std'][0]
+        curr_sim_array[: , 1] = (curr_sim_array[: , 1] - scaler_params['mean'][1]) / scaler_params['std'][1]
+
+        print(curr_sim_array)
+        
+        curr_duration = curr_sim_array.sum(axis=1)[1]
         
         j = 1
         while curr_duration < num_bar * 4:
-            next_note_index, _, _ = predict_next_note(curr_sim_onehot, model)
+            #predict de la nota
+            next_note_index, _, _ = predict_next_note(curr_sim_array[-5:,:], model)
+            # next_note_index = 10
             next_note = keys[next_note_index]
+            print(next_note)
+
+            #decodificamos la nota y la escalamos
+            next_note_array = np.array([((float(next_note.split('_')[0]) - scaler_params['mean'][0]) / scaler_params['std'][0]), 
+                                        ((float(next_note.split('_')[1]) - scaler_params['mean'][1]) / scaler_params['std'][1])])
+            #añadimos la nota
+            curr_sim_array = np.vstack([curr_sim_array, next_note_array])
+            
+            #actualizamos duraciones
             curr_duration += int((next_note.split('_'))[1])
             if curr_duration <= num_bar * 4:
                 curr_sim.append(next_note)
-                curr_sim_onehot[next_note_index] = 1  # Establecer el siguiente paso a 1
             j += 1
 
         simulations.append(curr_sim)
