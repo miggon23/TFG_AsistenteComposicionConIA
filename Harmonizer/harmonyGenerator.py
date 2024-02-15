@@ -35,13 +35,8 @@ class HarmonyGenerator:
                 pass
 
         harmonyMidi = outputDir + outputHarmonyFile + ".mid"
-        MidiUtils.write_midi_song(harmonyMidi, harmony)
+        MidiUtils.write_midi_song(harmonyMidi, harmony, ticksPerBeat)
 
-        basslineMidi = outputDir + outputBasslineFile + ".mid"
-        harmony = song.armonize(possibleChords = someChords)
-        bassline = song.process_bassline_4x4_v2(bassline, harmony)
-        MidiUtils.write_midi_song(basslineMidi, bassline)
-
-        return harmonyMidi, basslineMidi
+        return harmonyMidi, harmonyMidi
     
     
