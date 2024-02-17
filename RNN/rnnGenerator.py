@@ -46,7 +46,7 @@ def train_rnn():
     n_out = len(keys)
 
     #quitamos el start y el end, para no ensuciar la generacion
-    df = df.drop('start', axis=1)
+    # df = df.drop('start', axis=1)
     df = df.drop('end', axis=1)
 
     # #separamos los datos entre input y output
@@ -96,7 +96,7 @@ def train_rnn():
     model = keras.Sequential()
 
     # Capa de entrada
-    model.add(layers.Input(shape=(seq_length, 2)))
+    model.add(layers.Input(shape=(seq_length, 3)))
 
     # Capa LSTM
     model.add(layers.LSTM(64))
@@ -148,8 +148,8 @@ def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: flo
     return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
 
 if __name__ == '__main__':
-    # train_rnn()
-    # exit()
+    train_rnn()
+    exit()
 
     path = "Datasets/Cleaned/"
 
