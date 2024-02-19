@@ -54,7 +54,7 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
     #lee el json line desde la url y lo convierte en dataframe de pandas
     notes = collections.defaultdict(list)
 
-    for m in range(2):
+    for m in range(4):
 
         path = "https://storage.googleapis.com/magentadata/datasets/bach-doodle/bach-doodle.jsonl-0000" + str(m) + "-of-00192.gz"
         df = pd.read_json(path, lines=True)
@@ -123,13 +123,16 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
 
                             prev_end_time, start_time
 
-                            noteDuration = start_time - prev_end_time
+                            silenceDur = start_time - prev_end_time
 
                             curr_note['pitch'].append(0)
                             curr_note['start'].append(prev_end_time)
                             curr_note['end'].append(start_time)
-                            curr_note['duration'].append(noteDuration)
-                            curr_note['next_note'].append(str(notePitch) + "_" + str(noteDuration))
+                            curr_note['duration'].append(silenceDur)
+                            # curr_note['next_note'].append(str(notePitch) + "_" + str(noteDuration))
+                            curr_note['next_note_pitch'].append(notePitch)
+                            curr_note['next_note_start'].append(start_time)
+                            curr_note['next_note_duration'].append(noteDuration)
                             
                             serializedNote = str(0) + "_" + str(noteDuration)
         
@@ -147,8 +150,11 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                             curr_note['start'].append(start_time)
                             curr_note['end'].append(end_time)
                             curr_note['duration'].append(noteDuration)
-                            next_note_serialized = str(nextNotePitch) + "_" + str(next_end_time - next_start_time)
-                            curr_note['next_note'].append(next_note_serialized)
+                            # next_note_serialized = str(nextNotePitch) + "_" + str(next_end_time - next_start_time)
+                            # curr_note['next_note'].append(next_note_serialized)
+                            curr_note['next_note_pitch'].append(nextNotePitch)
+                            curr_note['next_note_start'].append(next_start_time)
+                            curr_note['next_note_duration'].append(next_end_time - next_start_time)
                         
                         serializedNote = str(notePitch) + "_" + str(noteDuration)
         
@@ -169,8 +175,11 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                         notes['start'].extend(curr_note['start'])
                         notes['end'].extend(curr_note['end'])
                         notes['duration'].extend(curr_note['duration'])
-                        notes['next_note'].extend(curr_note['next_note'])
-                    
+                        # notes['next_note'].extend(curr_note['next_note'])
+                        notes['next_note_pitch'].extend(curr_note['next_note_pitch'])
+                        notes['next_note_start'].extend(curr_note['next_note_start'])
+                        notes['next_note_duration'].extend(curr_note['next_note_duration'])
+
         print("Dataset " + str(m) + " cleaned")
 
     cleaned_dataset = pd.DataFrame({name: np.array(value) for name, value in notes.items()})
@@ -228,4 +237,5 @@ def transform_to_label_rnn():
     df.to_csv("Datasets/Cleaned/dataset_rnn_labeled.csv", index=False)
 
 if __name__ == '__main__':
-    transform_to_label_rnn()
+    # transform_to_label_rnn()
+    clean_dataset()
