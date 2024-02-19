@@ -125,7 +125,36 @@ class Song:
         self.scale.print_scale()
         self.scale.print_absolutized_scale()    
 
+    """
+    Armoniza la música según ciertos parámetros.
 
+    :param type: Algoritmo para la armonización ("std", "win", "off"). El bueno es el win.
+    :type type: str
+
+    :param possibleChords: Lista de acordes posibles (por ahora utiliza el valor por defecto).
+    :type possibleChords: Lista de acordes
+
+    :param chordWeights: Pesos de las notas de los acordes
+    :type chordWeights: Lista de cuatro floats mayores que 0
+
+    :param timeSignatures: Representan los tamaño de ventana y los pesos de los pulsos fuertes (por ahora utiliza el valor por defecto).
+    :type TimeSignature[]: Lista de TimeSignatures 
+
+    :param notPlayingAtTickPen: penalización por no sonar en un tic fuerte
+    :type notPlayingAtTickPen: float entre 0 y 1
+
+    :param offset: Desplazamiento a partir del cual empieza la armonización (por ahora utiliza el valor por defecto).
+    :type offset: TimeSignature
+
+    :return: Lista con todas las notas de todos los acordes
+    :rtype: [{'note': note, 
+                'start_time': start_time, 
+                'duration': duration]},
+            {'note': note2, 
+                'start_time': start_time, 
+                'duration': duration]}, 
+            ...]
+    """
     def armonize(self, 
                  type = "std", 
                  possibleChords = Harmony.allChords,

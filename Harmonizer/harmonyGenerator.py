@@ -11,7 +11,8 @@ class HarmonyGenerator:
             "": Scale.Scale("1 3 5"),  # Mayor
             "-": Scale.Scale("1 b3 5"),  # Menor
             "-b5": Scale.Scale("1 b3 b5"),  # Disminuida
-            "7": Scale.Scale("1 3 5 b7"),  # Dominante 
+            "7": Scale.Scale("1 3 5 b7"),  # Dominante  
+            "º7": Scale.Scale("1 b3 b5 bb7"),  # Séptima disminuida (Disminuida)
         }
 
         melody, ticksPerBeat = MidiUtils.read_midi_song(input)
