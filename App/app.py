@@ -23,6 +23,9 @@ class App:
     root = None
     mkv_generator = None
 
+    # Widgets
+    SpinBoxVar = None
+
     def __init__(self):
         #Creación de la aplicación raíz
         self.root = Tk()
@@ -44,8 +47,8 @@ class App:
 
 
     def generateMelodies(self):
-        print("Generando...")
-        melody = demo.generate_melodies(self.mkv_generator, 2 * random.randint(5, 15), 1)[0]
+        print("Generando " + str(self.SpinBoxVar.get()) + " compases")
+        melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
 
     def armonice(self):
         if(self.melody == None):
@@ -73,8 +76,14 @@ class App:
         print("Saliendo")
         self.root.destroy()
 
+    def saveCompass(self):
+        print(self.spinButton.get())
+
     def setButtons(self):
         ttk.Button(self.frame, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
+        self.SpinBoxVar = IntVar()
+        self.SpinBoxVar.set(4)
+        ttk.Spinbox(self.frame, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
         ttk.Button(self.frame, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
         ttk.Button(self.frame, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
         ttk.Button(self.frame, text = "Salir", command = self.prueba).grid(column=0, row = 10)
