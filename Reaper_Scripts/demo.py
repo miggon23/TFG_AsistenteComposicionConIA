@@ -18,7 +18,7 @@ def cargarMidi(ruta):
 
 # RPR_ShowMessageBox("Rodrigo", "Rodrigo", 0)
 
-n_tracks = 6
+n_tracks = 7
 
 for i in range(n_tracks):
     RPR_InsertTrackAtIndex(i, True)
@@ -30,24 +30,35 @@ for i in range(n_tracks):
 
 # Agregar un efecto
 # El número 0 representa el índice del efecto en la lista de efectos disponibles
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 0), "Tal", False, -1)
+    
+#Melodía instrumento 1    
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 0), "tal-noiseMaker", False, -1)
 RPR_TrackFX_SetPreset(RPR_GetTrack(0, 0), 0, "cuerdas prueba")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "BlueArp", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 0, "arpegiador")
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "Tal", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 1, "piano")
+#Melodía instrumento 2    
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 1), "tal-noiseMaker", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 1), 0, "cuerdas prueba")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 2), "Tal", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 2), 0, "piano")
+#Acompañamiento arpegiado
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 2), "BlueArp", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 2), 0, "arpegiador")
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 2), "tal-noiseMaker", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 2), 1, "piano")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 3), "Tal", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 3), 0, "pad")
+#Acompañamiento
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 3), "tal-noiseMaker", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 3), 0, "piano")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 4), "Tal", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetTrack(0, 4), 0, "bass")
+#Pads o strings
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 4), "tal-noiseMaker", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 4), 0, "pad")
 
-RPR_TrackFX_AddByName(RPR_GetTrack(0, 5), "MT", False, -1)
+#Bajo
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 5), "tal-noiseMaker", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetTrack(0, 5), 0, "bass")
+
+#Batería
+RPR_TrackFX_AddByName(RPR_GetTrack(0, 6), "DSK DrumZ 8bitZ", False, -1)
 
 # Mover el cursor al inicio de la pista
 RPR_SetEditCurPos(0, True, True)
@@ -59,7 +70,7 @@ RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
 
 
 # Cargar el archivo MIDI en Reaper desde la nueva ubicación
-cargarMidi("ejemploDemo/markov_sim_0.mid")
+cargarMidi("midi/markov_melody_0.mid")
 
 # Cortar el midi
 RPR_SplitMediaItem(RPR_GetMediaItem(0, 0), 2)
@@ -87,34 +98,34 @@ RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 0), 16, False)
 
 
 RPR_SetEditCurPos(0, True, True)
-indice_de_pista = 1
+indice_de_pista = 2
 
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("ejemploDemo/output_harmony.mid")
+cargarMidi("midi/output_harmony.mid")
 RPR_SetMediaItemLength(RPR_GetMediaItem(0, 4), 16, False)
 RPR_SetEditCurPos(0, True, True)
 
 
 RPR_SetEditCurPos(16, True, True)
-indice_de_pista = 2
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("ejemploDemo/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 5), 16, False)
-
-
-RPR_SetEditCurPos(0, True, True)
 indice_de_pista = 3
 
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("ejemploDemo/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 6), 32, False)
+cargarMidi("midi/output_harmony.mid")
+RPR_SetMediaItemLength(RPR_GetMediaItem(0, 5), 16, False)
+
 
 RPR_SetEditCurPos(0, True, True)
 indice_de_pista = 4
 
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("ejemploDemo/output_bass.mid")
+cargarMidi("midi/output_harmony.mid")
+RPR_SetMediaItemLength(RPR_GetMediaItem(0, 6), 32, False)
+
+RPR_SetEditCurPos(0, True, True)
+indice_de_pista = 5
+
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
+cargarMidi("midi/output_bass.mid")
 RPR_SetMediaItemLength(RPR_GetMediaItem(0, 7), 32, False)
 
 tr = RPR_GetTrack(0, indice_de_pista)
@@ -123,19 +134,19 @@ RPR_SetMediaTrackInfo_Value(tr, "D_VOL", 0.2)
 
 
 RPR_SetEditCurPos(16, True, True)
-indice_de_pista = 5
+indice_de_pista = 6
 
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
 
-cargarMidi("output_BASIC_drumPatternA.mid")
-cargarMidi("output_BASIC_drumPatternB.mid")
-cargarMidi("output_BASIC_drumPatternA.mid")
-cargarMidi("output_BASIC_drumPatternC.mid")
+cargarMidi("midi/output_BASIC_drumPatternA.mid")
+cargarMidi("midi/output_BASIC_drumPatternB.mid")
+cargarMidi("midi/output_BASIC_drumPatternA.mid")
+cargarMidi("midi/output_BASIC_drumPatternC.mid")
 
-cargarMidi("output_BASIC_drumPatternA.mid")
-cargarMidi("output_BASIC_drumPatternB.mid")
-cargarMidi("output_BASIC_drumPatternA.mid")
-cargarMidi("output_BASIC_drumPatternC.mid")
+cargarMidi("midi/output_BASIC_drumPatternA.mid")
+cargarMidi("midi/output_BASIC_drumPatternB.mid")
+cargarMidi("midi/output_BASIC_drumPatternA.mid")
+cargarMidi("midi/output_BASIC_drumPatternC.mid")
 
 
 RPR_SetEditCurPos(0, True, True)
