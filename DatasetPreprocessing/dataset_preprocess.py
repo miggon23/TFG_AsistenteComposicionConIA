@@ -1,4 +1,4 @@
-import pandas as pd    
+import pandas as pd
 import numpy as np
 import collections
 import os
@@ -43,7 +43,7 @@ is_CMajor_note = [ True, False, True, False, True, True, False, True, False, Tru
 
 def get_scale(noteSeq):
     keySignatures = noteSeq.get("keySignatures", 0)
-    
+
     if (keySignatures != 0):
         return keySignatures[0].get("key", "C")
 
@@ -64,16 +64,16 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
         #indice de la nota en keys
         k = 0
         inputs = df["input_sequence"]
-                    
+
         for i in range(len(inputs)):
             for j in range(len(inputs[i])):
                 #solo nos interesan las notas si el feedback es positivo ("2")
                 if (df["feedback"][i][j] == "2"):
                     noteSeq = inputs[i][j]
-                    
+
                     prev_end_time = 0
                     noteList = noteSeq["notes"]
-                        
+
                     keySig = get_scale(noteSeq)
                     # if (keySig != "C"):
                     #     break
@@ -81,7 +81,7 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                     pitchVariation = name_pitch[keySig]
 
                     curr_note = collections.defaultdict(list)
-                        
+
                     useNoteSeq = True
 
                     for q in range(len(noteList)):
@@ -129,15 +129,15 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                             curr_note['start'].append(prev_end_time)
                             curr_note['end'].append(start_time)
                             curr_note['duration'].append(silenceDur)
-                            # curr_note['next_note'].append(str(notePitch) + "_" + str(noteDuration))
-                            curr_note['next_note_pitch'].append(notePitch)
+                            curr_note['next_note'].append(str(notePitch) + "_" + str(noteDuration))
+                            # curr_note['next_note_pitch'].append(notePitch)
                             curr_note['next_note_start'].append(start_time)
-                            curr_note['next_note_duration'].append(noteDuration)
-                            
+                            # curr_note['next_note_duration'].append(noteDuration)
+
                             serializedNote = str(0) + "_" + str(noteDuration)
-        
+
                             n = keys.get(serializedNote, k)
-                                    
+
                             #si la key no estaba en el diccionario, n será igual que la k actual
                             if n == k:
                                 #añadimos la key al diccionario con el indice actual
@@ -150,16 +150,16 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                             curr_note['start'].append(start_time)
                             curr_note['end'].append(end_time)
                             curr_note['duration'].append(noteDuration)
-                            # next_note_serialized = str(nextNotePitch) + "_" + str(next_end_time - next_start_time)
-                            # curr_note['next_note'].append(next_note_serialized)
-                            curr_note['next_note_pitch'].append(nextNotePitch)
+                            next_note_serialized = str(nextNotePitch) + "_" + str(next_end_time - next_start_time)
+                            curr_note['next_note'].append(next_note_serialized)
+                            # curr_note['next_note_pitch'].append(nextNotePitch)
                             curr_note['next_note_start'].append(next_start_time)
-                            curr_note['next_note_duration'].append(next_end_time - next_start_time)
-                        
+                            # curr_note['next_note_duration'].append(next_end_time - next_start_time)
+
                         serializedNote = str(notePitch) + "_" + str(noteDuration)
-        
+
                         n = keys.get(serializedNote, k)
-                                
+
                         #si la key no estaba en el diccionario, n será igual que la k actual
                         if n == k:
                             #añadimos la key al diccionario con el indice actual
@@ -168,28 +168,28 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
                             k += 1
 
                         prev_end_time = end_time
-                    
+
                     #anadimos la secuencia al training data
                     if (useNoteSeq):
                         notes['pitch'].extend(curr_note['pitch'])
                         notes['start'].extend(curr_note['start'])
                         notes['end'].extend(curr_note['end'])
                         notes['duration'].extend(curr_note['duration'])
-                        # notes['next_note'].extend(curr_note['next_note'])
-                        notes['next_note_pitch'].extend(curr_note['next_note_pitch'])
+                        notes['next_note'].extend(curr_note['next_note'])
+                        # notes['next_note_pitch'].extend(curr_note['next_note_pitch'])
                         notes['next_note_start'].extend(curr_note['next_note_start'])
-                        notes['next_note_duration'].extend(curr_note['next_note_duration'])
+                        # notes['next_note_duration'].extend(curr_note['next_note_duration'])
 
         print("Dataset " + str(m) + " cleaned")
 
     cleaned_dataset = pd.DataFrame({name: np.array(value) for name, value in notes.items()})
 
-    os.makedirs('Datasets/Cleaned', exist_ok=True)  
+    os.makedirs('Datasets/Cleaned', exist_ok=True)
 
     with open('Datasets/Cleaned/keys.txt', 'w') as fp:
         for item in keys.keys():
             fp.write("%s " % item)
-    
+
     cleaned_dataset.to_csv("Datasets/Cleaned/dataset.csv", index=False)
 
 def normalize_for_rnn():
@@ -230,12 +230,12 @@ def transform_to_label_rnn():
     #carga del dataset
     df = pd.read_csv(path + "dataset.csv")
 
-    print(df)
+    # print(df)
 
     # Combina las columnas 'pitch' y 'duration' en una nueva columna 'curr_note'
-    df['curr_note'] = df['pitch'].astype(str) + '_' + df['duration'].astype(str)
+    df['next_note'] = df['next_note_pitch'].astype(str) + '_' + df['next_note_duration'].astype(str)
     df.to_csv("Datasets/Cleaned/dataset_rnn_labeled.csv", index=False)
 
 if __name__ == '__main__':
-    # transform_to_label_rnn()
-    clean_dataset()
+    transform_to_label_rnn()
+    # clean_dataset()

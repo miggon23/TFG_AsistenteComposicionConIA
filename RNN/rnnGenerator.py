@@ -31,6 +31,11 @@ def generate_sequences(X, y, seq_length):
 
     return np.array(input_sequences), np.array(output_sequences)
 
+def mse_with_positive_pressure(y_true: tf.Tensor, y_pred: tf.Tensor):
+    mse = (y_true - y_pred) ** 2
+    positive_pressure = 10 * tf.maximum(-y_pred, 0.0)
+    return tf.reduce_mean(mse + positive_pressure)
+
 def train_rnn():
     path = "Datasets/Cleaned/"
 
@@ -50,11 +55,7 @@ def train_rnn():
     df = df.drop('end', axis=1)
 
     # #separamos los datos entre input y output
-    # X = df['curr_note']
-    # y = df['next_note']
-
-    # Aplicar one-hot encoding a las columnas 'curr_note' y 'next_note'
-    X = df.drop(['next_note', 'curr_note'], axis=1)
+    X = df.drop(['next_note', 'next_note_start', 'next_note_pitch', 'next_note_duration'], axis=1)
     y = df['next_note']
 
     scaling = StandardScaler()
@@ -73,19 +74,26 @@ def train_rnn():
 
     label_encoder = LabelEncoder()
     label_encoder.fit(keys)
-    # X_encoded = label_encoder.transform(X)
     y_encoded = label_encoder.transform(y)
 
     # Convertir las notas codificadas a one-hot encoding
-    # X_onehot = to_categorical(X_encoded)
     y_onehot = to_categorical(y_encoded)
+    next_note_start  = df[['next_note_start']].to_numpy()
+
+    y_combined = np.concatenate((y_onehot, next_note_start), axis=1)
 
     # Generamos secuencias de notas
     seq_length = 5  # Ajusta según la longitud de la secuencia que desees
-    input_data, output_data = generate_sequences(X, y_onehot, seq_length)
+    input_data, output_data = generate_sequences(X, y_combined, seq_length)
 
     # Split the data into training and test sets
-    x_train, x_val, y_train, y_val = train_test_split(input_data, output_data, test_size=0.2)
+    # x_train, x_val, y_train, y_val = train_test_split(input_data, output_data, test_size=0.2)
+    input_split = int(input_data.shape[0] * 0.8)
+    output_split = int(output_data.shape[0] * 0.8)
+    x_train = input_data[:input_split,:]
+    x_val = input_data[input_split:,:]
+    y_train = output_data[:output_split,:]
+    y_val = output_data[output_split:,:]
 
     early_stopping = EarlyStopping(
         monitor='val_loss',  # Métrica a monitorear (puede ser 'val_accuracy', 'val_loss', etc.)
@@ -93,31 +101,51 @@ def train_rnn():
         restore_best_weights=True  # Restaura los pesos del modelo al mejor logrado durante el entrenamiento
     )
 
-    model = keras.Sequential()
-
     # Capa de entrada
-    model.add(layers.Input(shape=(seq_length, 3)))
+    inputs = tf.keras.Input(shape=(seq_length, 3))
 
     # Capa LSTM
-    model.add(layers.LSTM(64))
+    x = tf.keras.layers.LSTM(128)(inputs)
 
     # Capa de salida
-    model.add(layers.Dense(n_out, activation='softmax'))
+    outputs = {
+        'next_note': tf.keras.layers.Dense(n_out, activation='softmax', name='next_note')(x),
+        'next_note_start': tf.keras.layers.Dense(1, name='next_note_start')(x),
+    }
 
+    model = tf.keras.Model(inputs, outputs)
     model.summary()
 
+    loss = {
+      'next_note': 'categorical_crossentropy',
+      'next_note_start': mse_with_positive_pressure,
+    }
+
     model.compile(
-        loss='categorical_crossentropy',
+        loss=loss,
+        loss_weights={
+        'next_note_start': 0.05,
+        'step': 1.0,
+        },
         optimizer="adam",
         metrics=["accuracy"],
     )
 
+    # history = model.fit(
+    #     x_train,
+    #     y_train,
+    #     batch_size=256,
+    #     epochs=5000,
+    #     validation_data=(x_val, y_val),
+    #     callbacks=[early_stopping]
+    # )
+
     history = model.fit(
         x_train,
-        y_train,
+        {"next_note": y_train[:, :n_out], "next_note_start": y_train[:, n_out:]},
         batch_size=256,
         epochs=5000,
-        validation_data=(x_val, y_val),
+        validation_data=(x_val, {"next_note": y_val[:, :n_out], "next_note_start": y_val[:, n_out:]}),
         callbacks=[early_stopping]
     )
 
