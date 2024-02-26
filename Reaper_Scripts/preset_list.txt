@@ -31,7 +31,7 @@ pista1tematica10_2
 pista1tematica10_3
 
 	ACOMPAÑAMIENTO INSTRUMENTO 3 y 4
-pista3tematica1_1
+pista3tematica1_1 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 pista3tematica1_2
 pista3tematica1_3
 pista3tematica2_1
