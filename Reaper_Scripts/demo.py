@@ -67,8 +67,12 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
 
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        if(preset <= 3):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -218,28 +222,28 @@ for i in range(n_tracks):
 
 
 
-tematica = 1
+tematica = 0
 
 #Melodía instrumento 1    
-crearPista1(1, tematica, random.randint(1, 3))
+crearPista1(1, tematica, random.randint(1, 6))
 
 #Melodía instrumento 2    
-crearPista1(2, tematica, random.randint(1, 3))
+crearPista1(2, tematica, random.randint(1, 6))
 
 #Acompañamiento 1
-crearPista3(3, tematica, random.randint(1, 3), random.randint(1, 3), random.randint(1, 10))
+crearPista3(3, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
 
 #Acompañamiento 2
-crearPista3(4, tematica, random.randint(1, 3), random.randint(1, 3), random.randint(1, 10))
+crearPista3(4, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
 
 #Pads o strings
-crearPista5(5, tematica, random.randint(1, 3))
+crearPista5(5, tematica, random.randint(1, 6))
 
 #Bajo
-crearPista6(6, tematica, random.randint(1, 3), random.randint(1, 3), random.randint(1, 10))
+crearPista6(6, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
 
 #Batería
-crearPista7(7, tematica, random.randint(1, 3))
+crearPista7(7, tematica, random.randint(1, 6))
 
 # Mover el cursor al inicio de la pista
 RPR_SetEditCurPos(0, True, True)
