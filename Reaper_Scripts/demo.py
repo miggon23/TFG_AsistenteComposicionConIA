@@ -26,42 +26,49 @@ def ajustarTempo(tematica):
     RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, tempo, 0, 0, True)
 
 #Melodía instrumento 1 y 2   
-def crearPista1(i, tematica, preset):
+def crearPista1(i, tematica, preset, entorno):
     pista = 1
     i -= 1
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator2") 
+
     if(tematica == 0):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
 
 #Acompañamiento instrumento 3 y 4   
-def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
+def crearPista3(i, tematica, preset, entorno, arpegiado, preset_arpegio):
     pista = 3
     i -= 1
     if(arpegiado == 1):
@@ -81,8 +88,11 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
         if(preset <= 3):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        else:
+        elif(preset <= 7):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Elektrik Keyz (x86) (DSK)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
@@ -112,43 +122,56 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "entorno"+str(entorno)) 
 
 #Pads instrumento 5   
-def crearPista5(pista, tematica, preset):
+def crearPista5(pista, tematica, preset, entorno):
     i = pista-1
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator1") 
+    
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        if(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK ChoirZ (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "VSTi: DSK Strings (x86) (DSK)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
 
 #Bajo instrumento 6   
-def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
+def crearPista6(pista, tematica, preset, entorno, arpegiado, preset_arpegio):
     i = pista-1
     if(arpegiado == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
@@ -158,73 +181,92 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bajo"+str(preset_arpegio)) 
     elif(arpegiado == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bajo0") 
+    
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
+
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        if(preset <= 6):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK BassZ (x86) (DSK MusicSZZ)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "entorno"+str(entorno)) 
 
 #Batería instrumento 7   
-def crearPista7(pista, tematica, preset):
+def crearPista7(pista, tematica, preset, entorno):
     i = pista-1
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator1") 
+    
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        if(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK mini DRUMZ 2 (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK DrumZ 8bitZ (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
 
 n_tracks = 7
 
@@ -236,28 +278,31 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
 tematica = 0
-
+entorno = 0
 
 #Melodía instrumento 1    
-crearPista1(1, tematica, random.randint(1, 6))
+crearPista1(1, tematica, random.randint(0, 9), entorno)
 
 #Melodía instrumento 2    
-crearPista1(2, tematica, random.randint(1, 6))
+crearPista1(2, tematica, random.randint(0, 9), entorno)
 
 #Acompañamiento 1
-crearPista3(3, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
+crearPista3(3, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
 
 #Acompañamiento 2
-crearPista3(4, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
+crearPista3(4, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
 
 #Pads o strings
-crearPista5(5, tematica, random.randint(1, 6))
+crearPista5(5, tematica, random.randint(0, 9), entorno)
 
 #Bajo
-crearPista6(6, tematica, random.randint(1, 6), random.randint(1, 3), random.randint(1, 10))
+crearPista6(6, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
 
 #Batería
-crearPista7(7, tematica, random.randint(1, 6))
+crearPista7(7, tematica, random.randint(0, 9), entorno)
+
+
+
 
 # Mover el cursor al inicio de la pista
 RPR_SetEditCurPos(0, True, True)
@@ -331,7 +376,7 @@ cargarMidi("midi/output_harmony.mid")
 RPR_SetMediaItemLength(RPR_GetMediaItem(0, 7), 32, False)
 
 tr = RPR_GetTrack(0, indice_de_pista)
-RPR_SetMediaTrackInfo_Value(tr, "D_VOL", 0.2)
+#RPR_SetMediaTrackInfo_Value(tr, "D_VOL", 0.2)
 
 
 

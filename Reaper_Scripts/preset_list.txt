@@ -61,12 +61,17 @@ pista1tematica9_5
 pista1tematica9_6
 
 	ACOMPAÑAMIENTO INSTRUMENTO 3 y 4
+pista3tematica0_0 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 pista3tematica0_1 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 pista3tematica0_2 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 pista3tematica0_3 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
-pista3tematica0_4
-pista3tematica0_5
-pista3tematica0_6
+pista3tematica0_4 Spicy Guitar (64 bits) (Keolab)
+pista3tematica0_5 Spicy Guitar (64 bits) (Keolab)
+pista3tematica0_6 Spicy Guitar (64 bits) (Keolab)
+pista3tematica0_7 Spicy Guitar (64 bits) (Keolab)
+pista3tematica0_8 DSK Elektrik Keyz (x86) (DSK)
+pista3tematica0_9 DSK Elektrik Keyz (x86) (DSK)
+
 pista3tematica1_1 
 pista3tematica1_2
 pista3tematica1_3
@@ -123,12 +128,17 @@ pista3tematica9_5
 pista3tematica9_6
 
 	PAD INSTRUMENTO 5
-pista5tematica0_1
-pista5tematica0_2
-pista5tematica0_3
-pista5tematica0_4
-pista5tematica0_5
-pista5tematica0_6
+pista5tematica0_0 DSK ChoirZ (x86) (DSK Music)
+pista5tematica0_1 DSK ChoirZ (x86) (DSK Music)
+pista5tematica0_2 DSK ChoirZ (x86) (DSK Music)
+pista5tematica0_3 DSK Strings (x86) (DSK)
+pista5tematica0_4 DSK Strings (x86) (DSK)
+pista5tematica0_5 DSK Strings (x86) (DSK)
+pista5tematica0_6 DSK Strings (x86) (DSK)
+pista5tematica0_7 DSK Strings (x86) (DSK)
+pista5tematica0_8 DSK Strings (x86) (DSK)
+pista5tematica0_9 DSK Strings (x86) (DSK)
+
 pista5tematica1_1
 pista5tematica1_2
 pista5tematica1_3
@@ -185,12 +195,17 @@ pista5tematica9_5
 pista5tematica9_6
 
 	BAJO INSTRUMENTO 6
-pista6tematica0_1
-pista6tematica0_2
-pista6tematica0_3
-pista6tematica0_4
-pista6tematica0_5
-pista6tematica0_6
+pista6tematica0_0 OMB2 (x86) (Christopher Clews)
+pista6tematica0_1 OMB2 (x86) (Christopher Clews)
+pista6tematica0_2 OMB2 (x86) (Christopher Clews)
+pista6tematica0_3 OMB2 (x86) (Christopher Clews)
+pista6tematica0_4 OMB2 (x86) (Christopher Clews)
+pista6tematica0_5 OMB2 (x86) (Christopher Clews)
+pista6tematica0_6 OMB2 (x86) (Christopher Clews)
+pista6tematica0_7 DSK BassZ (x86) (DSK MusicSZZ)
+pista6tematica0_8 DSK BassZ (x86) (DSK MusicSZZ)
+pista6tematica0_9 DSK BassZ (x86) (DSK MusicSZZ)
+
 pista6tematica1_1
 pista6tematica1_2
 pista6tematica1_3
@@ -247,12 +262,17 @@ pista6tematica9_5
 pista6tematica9_6
 
 	BATERIA INSTRUMENTO 7
-pista7tematica0_1
-pista7tematica0_2
-pista7tematica0_3
-pista7tematica0_4
-pista7tematica0_5
-pista7tematica0_6
+pista7tematica0_0 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_1 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_2 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_3 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_4 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_5 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_6 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_7 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_8 DSK DrumZ 8bitZ (x86) (DSK Music)
+pista7tematica0_9 DSK DrumZ 8bitZ (x86) (DSK Music)
+
 pista7tematica1_1
 pista7tematica1_2
 pista7tematica1_3
@@ -308,7 +328,8 @@ pista7tematica9_4
 pista7tematica9_5
 pista7tematica9_6
 
-	ARPEGIADOR
+	ARPEGIADOR      BlueARP (omg-instruments)
+arpegio0
 arpegio1
 arpegio2
 arpegio3
@@ -318,7 +339,8 @@ arpegio6
 arpegio7
 arpegio8
 arpegio9
-arpegio10
+
+acordes0
 acordes1
 acordes2
 acordes3
@@ -328,7 +350,8 @@ acordes6
 acordes7
 acordes8
 acordes9
-acordes10
+
+bajo0
 bajo1
 bajo2
 bajo3
@@ -338,7 +361,10 @@ bajo6
 bajo7
 bajo8
 bajo9
-bajo10
 
 	HUMANIZADOR       Humanisator (x86) (Tobybear)
-humanisator
+humanisator1      (genérico)
+humanisator2      (melodías)
+
+	REVERB            OrilRiver (Denis Tihanov) 
+entorno0
