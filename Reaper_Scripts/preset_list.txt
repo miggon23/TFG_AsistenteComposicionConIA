@@ -339,3 +339,6 @@ bajo7
 bajo8
 bajo9
 bajo10
+
+	HUMANIZADOR       Humanisator (x86) (Tobybear)
+humanisator
