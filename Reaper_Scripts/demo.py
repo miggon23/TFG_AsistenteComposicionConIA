@@ -26,7 +26,7 @@ def ajustarTempo(tematica):
     RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, tempo, 0, 0, True)
 
 #Melodía instrumento 1 y 2   
-def crearPista1(i, tematica, preset, entorno):
+def crearPista1(i, tematica, preset):
     pista = 1
     i -= 1
 
@@ -34,8 +34,27 @@ def crearPista1(i, tematica, preset, entorno):
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator2") 
 
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        if(preset <= 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Acousti (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Nylon (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Steel (x86) (DSK Music)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK GuitarZ (x86) (DSK MusicSZZ)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 5):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Saxophones (DSK Music) (16 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        else:
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -64,11 +83,8 @@ def crearPista1(i, tematica, preset, entorno):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
-
 #Acompañamiento instrumento 3 y 4   
-def crearPista3(i, tematica, preset, entorno, arpegiado, preset_arpegio):
+def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
     pista = 3
     i -= 1
     if(arpegiado == 1):
@@ -122,11 +138,9 @@ def crearPista3(i, tematica, preset, entorno, arpegiado, preset_arpegio):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "entorno"+str(entorno)) 
 
 #Pads instrumento 5   
-def crearPista5(pista, tematica, preset, entorno):
+def crearPista5(pista, tematica, preset):
     i = pista-1
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
@@ -167,11 +181,9 @@ def crearPista5(pista, tematica, preset, entorno):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
 
 #Bajo instrumento 6   
-def crearPista6(pista, tematica, preset, entorno, arpegiado, preset_arpegio):
+def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
     i = pista-1
     if(arpegiado == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
@@ -221,11 +233,8 @@ def crearPista6(pista, tematica, preset, entorno, arpegiado, preset_arpegio):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "entorno"+str(entorno)) 
-
 #Batería instrumento 7   
-def crearPista7(pista, tematica, preset, entorno):
+def crearPista7(pista, tematica, preset):
     i = pista-1
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator1") 
@@ -265,8 +274,7 @@ def crearPista7(pista, tematica, preset, entorno):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "entorno"+str(entorno)) 
+    
 
 n_tracks = 7
 
@@ -276,32 +284,71 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-
 tematica = 0
 entorno = 0
+lofi = False
+retro = False
+agua = False
 
 #Melodía instrumento 1    
-crearPista1(1, tematica, random.randint(0, 9), entorno)
+crearPista1(1, tematica, random.randint(0, 9))
 
 #Melodía instrumento 2    
-crearPista1(2, tematica, random.randint(0, 9), entorno)
+crearPista1(2, tematica, random.randint(0, 9))
 
 #Acompañamiento 1
-crearPista3(3, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
+crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
 
 #Acompañamiento 2
-crearPista3(4, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
+crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
 
 #Pads o strings
-crearPista5(5, tematica, random.randint(0, 9), entorno)
+crearPista5(5, tematica, random.randint(0, 9))
 
 #Bajo
-crearPista6(6, tematica, random.randint(0, 9), entorno, random.randint(1, 3), random.randint(1, 10))
+crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
 
 #Batería
-crearPista7(7, tematica, random.randint(0, 9), entorno)
+crearPista7(7, tematica, random.randint(0, 9))
 
 
+lofi_preset = random.randint(0, 9)
+
+for i in range (10):
+    RPR_TrackFX_Delete(RPR_GetMasterTrack(0), 0)
+    
+
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Unison Zen Master (Unison)", False, -1)
+if(lofi):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "lofi"+str(lofi_preset)) 
+else:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "bypass") 
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "TAL BitCrusher - TAL (TAL - Togu Audio Line)", False, -1)
+if(retro):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "retro1") 
+else:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "bypass") 
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+if(agua):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "eqAgua1") 
+else:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "bypass") 
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "entorno"+str(entorno)) 
+
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaComp (Cockos)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 4, "comp1") 
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "mastering1") 
 
 
 # Mover el cursor al inicio de la pista
