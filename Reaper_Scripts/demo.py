@@ -83,6 +83,12 @@ def crearPista1(i, tematica, preset):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "gain"+str(pista))
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+
+
 #Acompañamiento instrumento 3 y 4   
 def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
     pista = 3
@@ -138,6 +144,10 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
 
 #Pads instrumento 5   
 def crearPista5(pista, tematica, preset):
@@ -181,6 +191,10 @@ def crearPista5(pista, tematica, preset):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "gain"+str(pista))
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
 
 #Bajo instrumento 6   
 def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
@@ -233,6 +247,11 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
+
 #Batería instrumento 7   
 def crearPista7(pista, tematica, preset):
     i = pista-1
@@ -273,8 +292,13 @@ def crearPista7(pista, tematica, preset):
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-    
-    
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "gain"+str(pista))
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+
+
 
 n_tracks = 7
 

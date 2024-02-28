@@ -371,6 +371,13 @@ bajo9
 humanisator1      (genérico)
 humanisator2      (melodías)
 
+	AUTO GAIN         ReaComp (Cockos)
+			  ReaLimit (Cockos)
+gain1
+gain3
+gain5
+gain6
+gain7
 
 	LOFI              Unison Zen Master (Unison)
 lofi1
