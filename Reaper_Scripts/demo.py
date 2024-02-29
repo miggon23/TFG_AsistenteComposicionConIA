@@ -298,6 +298,28 @@ def crearPista7(pista, tematica, preset):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
 
+def cargarDrums(tematica):
+        
+    estilo = "BASIC"
+
+    if(tematica == 0):
+        rnd = random.randint(0, 2)
+        if(rnd == 0): 
+            estilo = "BASIC"
+        elif(rnd == 1):
+            estilo = "SHAKER"
+        elif(rnd == 2):
+            estilo = "JAZZ"
+
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
+
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
 
 
 n_tracks = 7
@@ -310,7 +332,7 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 tematica = 0
 entorno = 0
-lofi = True
+lofi = False
 retro = False
 agua = False
 
@@ -467,15 +489,8 @@ RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 6), "I_SELECTED", 1)
 for value in arreglo[6]:
     if value:
         RPR_SetEditCurPos(i * 16, True, True)
-        cargarMidi("midi/output_BASIC_drumPatternA.mid")
-        cargarMidi("midi/output_BASIC_drumPatternB.mid")
-        cargarMidi("midi/output_BASIC_drumPatternA.mid")
-        cargarMidi("midi/output_BASIC_drumPatternC.mid")
 
-        cargarMidi("midi/output_BASIC_drumPatternA.mid")
-        cargarMidi("midi/output_BASIC_drumPatternB.mid")
-        cargarMidi("midi/output_BASIC_drumPatternA.mid")
-        cargarMidi("midi/output_BASIC_drumPatternC.mid")
+        cargarDrums(tematica)
 
     i += 1
 

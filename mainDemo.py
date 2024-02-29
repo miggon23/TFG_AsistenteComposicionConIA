@@ -73,7 +73,7 @@ def main():
             
         if (option == "t"):
             style = enums.Style.BASIC
-            drumGenerator.DrumGenerator.generate(style)
+            drumGenerator.DrumGenerator.generateAllStyles()
         else:
             exit = True
             break
