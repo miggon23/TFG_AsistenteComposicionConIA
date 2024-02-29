@@ -20,7 +20,7 @@ def cargarMidi(ruta):
 def ajustarTempo(tematica):
     tempo = 120
     if(tematica == 0):
-        tempo = random.randint(85, 125)
+        tempo = random.randint(80, 110)
     elif(tematica == 1):
         tempo = 120        
     RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, tempo, 0, 0, True)
@@ -310,7 +310,7 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 tematica = 0
 entorno = 0
-lofi = False
+lofi = True
 retro = False
 agua = False
 
@@ -375,21 +375,6 @@ RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", 
 RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "mastering1") 
 
 
-# Mover el cursor al inicio de la pista
-RPR_SetEditCurPos(0, True, True)
-# Obtén el índice de la pista en la que deseas cargar el archivo MIDI
-indice_de_pista = 0  # Cambia esto al índice de la pista que deseas seleccionar
-
-# Establecer la pista seleccionada utilizando RPR_SetMediaTrackInfo_Value()
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-
-
-
-RPR_SetEditCurPos(16, True, True)
-
-# Cargar el archivo MIDI en Reaper desde la nueva ubicación
-cargarMidi("midi/markov_melody_0.mid")
-
 ## Cortar el midi
 #RPR_SplitMediaItem(RPR_GetMediaItem(0, 0), 2)
 #RPR_SetMediaItemLength(RPR_GetMediaItem(0, 0), 4, False)
@@ -413,60 +398,86 @@ cargarMidi("midi/markov_melody_0.mid")
 
 
 
+arreglo = [[False] * 8 for _ in range(7)]
 
+arreglo = [[random.choice([True, False]) for _ in range(8)] for _ in range(7)]
 
+# Nos aseguramos de que no haya ningún espacio de tiempo en silencio
+for col in range(len(arreglo[0])):
+    column_values = [row[col] for row in arreglo]
+    if all(value == False for value in column_values):
+        arreglo[2][col] = True
+
+# Mover el cursor al inicio de la pista
 RPR_SetEditCurPos(0, True, True)
-indice_de_pista = 2
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("midi/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 4), 16, False)
-RPR_SetEditCurPos(0, True, True)
-
-
-RPR_SetEditCurPos(16, True, True)
-indice_de_pista = 3
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("midi/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 5), 16, False)
-
-
-RPR_SetEditCurPos(0, True, True)
-indice_de_pista = 4
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("midi/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 6), 32, False)
-
-RPR_SetEditCurPos(0, True, True)
-indice_de_pista = 5
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-cargarMidi("midi/output_harmony.mid")
-RPR_SetMediaItemLength(RPR_GetMediaItem(0, 7), 32, False)
-
-tr = RPR_GetTrack(0, indice_de_pista)
-#RPR_SetMediaTrackInfo_Value(tr, "D_VOL", 0.2)
 
 
 
-RPR_SetEditCurPos(16, True, True)
-indice_de_pista = 6
-
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, indice_de_pista), "I_SELECTED", 1)
-
-cargarMidi("midi/output_BASIC_drumPatternA.mid")
-cargarMidi("midi/output_BASIC_drumPatternB.mid")
-cargarMidi("midi/output_BASIC_drumPatternA.mid")
-cargarMidi("midi/output_BASIC_drumPatternC.mid")
-
-cargarMidi("midi/output_BASIC_drumPatternA.mid")
-cargarMidi("midi/output_BASIC_drumPatternB.mid")
-cargarMidi("midi/output_BASIC_drumPatternA.mid")
-cargarMidi("midi/output_BASIC_drumPatternC.mid")
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 0), "I_SELECTED", 1)
+i = 0
+for value in arreglo[0]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/markov_melody_0.mid")
+    i += 1
 
 
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 1), "I_SELECTED", 1)
+i = 0
+for value in arreglo[1]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/markov_melody_0.mid")
+    i += 1
+i = 0
+
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 2), "I_SELECTED", 1)
+for value in arreglo[2]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+i = 0
+
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 3), "I_SELECTED", 1)
+for value in arreglo[3]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+i = 0
+
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 4), "I_SELECTED", 1)
+for value in arreglo[4]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+i = 0
+
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 5), "I_SELECTED", 1)
+for value in arreglo[5]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 6), "I_SELECTED", 1)
+for value in arreglo[6]:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_BASIC_drumPatternA.mid")
+        cargarMidi("midi/output_BASIC_drumPatternB.mid")
+        cargarMidi("midi/output_BASIC_drumPatternA.mid")
+        cargarMidi("midi/output_BASIC_drumPatternC.mid")
+
+        cargarMidi("midi/output_BASIC_drumPatternA.mid")
+        cargarMidi("midi/output_BASIC_drumPatternB.mid")
+        cargarMidi("midi/output_BASIC_drumPatternA.mid")
+        cargarMidi("midi/output_BASIC_drumPatternC.mid")
+
+    i += 1
 
 
 ajustarTempo(tematica)
