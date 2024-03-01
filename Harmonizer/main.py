@@ -19,11 +19,13 @@ if __name__ == "__main__":
         "º7": Scale.Scale("1 b3 b5 bb7"),  # Séptima disminuida (Disminuida)
     }
 
-    melody, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
+    notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
     MidiUtils.debug_midi_file("midi/input_song.mid", "files/midi_out.txt") 
-    Song.debug_song(melody, "files/notes_out.txt")
-    song = Song.Song(melody, ticksPerBeat)
-    song.choose_scale()
+    Song.debug_song(notes, "files/notes_out.txt")
+    song = Song.Song(notes, ticksPerBeat)
+    song.choose_sacle(Scale.Scale("1 2 b3 4 5 6 b7"), Note.Note('C'))
+    song.fit_notes()
+
     harmony = song.armonize(type = "win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
@@ -33,7 +35,7 @@ if __name__ == "__main__":
                             possibleChords = someChords)
     song.save_data('datasets/chords')
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
-    MidiUtils.write_midi_song("midi/output_song.mid", melody, ticksPerBeat)
+    MidiUtils.write_midi_song("midi/output_song.mid", song.notes, ticksPerBeat)
     # bassline = song.process_bassline_4x4_v2(None, harmony)
     # MidiUtils.write_midi_song("midi/output_bassline.mid", bassline)
 

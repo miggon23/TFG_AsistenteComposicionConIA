@@ -1,6 +1,6 @@
 import mido
 from math import lcm
-from song import spread_song
+from song import note_seq
 from timeSignature import ticksPerQuarter
 
 def debug_midi_file(midiFilePath, outputFile):
@@ -75,18 +75,18 @@ def write_midi_song(midiFilePath, song, ticksPerBeat):
     track.append(mido.MetaMessage('set_tempo', tempo = 500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
     track.append(mido.MetaMessage('time_signature', numerator= 4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
 
-    spreadSong = spread_song(song)
-    firstNoteTick = next(iter(spreadSong))
+    noteSeq = note_seq(song)
+    firstNoteTick = next(iter(noteSeq))
 
     midi_events = [firstNoteTick]
     lastTick = firstNoteTick
 
-    for tick in list(spreadSong.keys())[1:]:
+    for tick in list(noteSeq.keys())[1:]:
         midi_events.append(tick - lastTick)
         lastTick = tick
 
     idx = 0
-    for tick, notes in spreadSong.items():
+    for tick, notes in noteSeq.items():
 
         x_init = 0
         y_init = 0

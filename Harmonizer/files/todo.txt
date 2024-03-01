@@ -1,17 +1,58 @@
-crear una clase intervalo
-crear la clase escala, la cual es una lista de intervalos
-dada una lista de notas y una tonica, 
-    intercambiar cada nota por su correspondiente intervalo (averiguar el grado de cada nota)
-dada una escala, averiguar todas sus triadas posibles (y cuatriadas)
-dadas una serie de notas y una tónica, averiguar el esqueleto de la escala (si es una escala mayor o menor, por ahoras)
-dada una lista de notas normalizadas (transformadas en grados), dividir la canción en intervalos de tiempo uniformes
-    y averiguar que acorde le corresponde a cada intervalo de tiempo
+implementar la tabla de correspondencia de acordes:
+    una vez armonizado se hará la madia entre los datos de la tabla de correspondencia y los acordes recopilados en best chords:
+        transformar ambos pesos en poncertajes y realizar unaponderacion ajustable por el usuario
+    incognita: hacer esto en la harmonizacion normal, en la harmonzacion estandar o en ambas
 
-el readMidi funciona mal con notas de 0 de duración
-resolver el siguiente problema: dado un conjunto de menos de 7 notas, 
-    ¿qué escalas de 7 notas contienen ese conjunto?
-    ¿qué escalas de 7 notas relativas a una escala mayor contienen ese conjunto?
+modos:
 
-mirar el pitch medio e imprimir los acordes en una octava inferior, hay que tenr en cuenta el pitch de la tónica para separar
-    las octavas de tónica a tónica y no de do a do
-si hay varias escalas coincidentes valorar cual es la correcta dependiendo de la frcuencia de la tónica
+    escala:
+        se resolvera el problema de manera general, la clase song implementara un nuevo metodo
+        choose_sacale, el cual recibira una escala, y buscara la tonica entre las notas de la cancion
+        se puede reutilizar el codigo de fill_scale, incluso hacer este de forma general
+        decisiones:
+            si hay mas de 7 notas diferentes el metodo devuelve error?
+            si no hay escalas coincidentes, es decir sobre alguna nota el algoritmo devuelve error?
+            debría dejar la opcion de elegir la tónica? incomvenientes:
+                si se puede elegir la tonica el resto de notas de la cancion pueden no pertenercer a la escala
+
+    melodia:
+        se truncaran las notas no pertenecientes a la escala a las mas cercanas:
+            idea: priorizar los intercambios a notas del color del modos
+        si esto es así entonces el anterior algoritmo anterior debería:
+            si hay mas de 7 notas:
+                se buscan las tonicas coincidentes:
+                    que pasa en caso de empate? Se elige como tonica la nota mas comun?
+            no hay escalas coincidentes:
+                puede ocurrir que a pesar de que haya mas de 7 notas no haya escalas coincidentes
+                se utiliza la tonica que mejor se adapte al conjunto de notas, para posteriormente truncaralas
+                como lo hago?
+                    quito de la escala la nota menos comun y vuelvo a lanzar el algoritmo
+                    hago esto con todas las notas pero solo quitando una
+                    que pasa si aun quitando solo una no hay escala cojncidente?
+                    las quito de 2 en 2??
+
+    acordes:
+        se creara una tabla de correspondencia por cada modo en el que los acordes de color 
+        tendran mas prioridas en las transicion
+        deberia crear esta tabla a mano o proceduralmente?
+
+Conclusión choose_sacale:
+    recibe una escala y utilizara el conjunto de notas de la cancion
+    su objetivo es encontrar la tónica de la canción tenindo el cuenta la escala dada
+    si detecta más de una escala coincidente:
+        se utilizara de tonica la nota con moyor númro de apariciones en la cancion
+    si no se detecta ninguna escala coincidente:
+        se creara una escala por cada nota que haya en la cancion siendo esta la tónica
+        se observara cuantas notas deja fuera esta escala y como de importante es la tonica respecto al conjunto de notas
+        ¿que pasa si la escala cuya tonica es la mas coincidente deja fuera a más notas fuera de la escala que otra
+        cuya tonica es menos comun pero que deja menos notas fuera de esta?
+        Decision: priorizar la tonica que menos notas deje fuera de la escala, en caso de empate se coge la tonica mas representada
+        reflexion: puedo aplicar este unico criterio (a partir de la 43) al algoritmo y funcionaria igual 
+
+otros objetivos:
+    permitir que la armonizacion empieze en un offset:
+        solo en el algoritmo estandar?
+        habria que ampliar los otros algoritmos
+    ampliar el midiutils aprovechando la informacion extra que ta da este formato:
+        que te devuelva varias listas de notas, junto con un time signature, por cada compas diferente que haya en una cancion
+        que te devuelva la tonica de la cancion a ser posible 

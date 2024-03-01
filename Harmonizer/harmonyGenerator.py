@@ -17,7 +17,7 @@ class HarmonyGenerator:
 
         melody, ticksPerBeat = MidiUtils.read_midi_song(input)
         song = Song.Song(melody, ticksPerBeat)
-        song.choose_scale()
+        song.fill_sacle()
         harmony = song.armonize(type = "win",
                                 timeSignatures = [
                                     ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
@@ -39,5 +39,4 @@ class HarmonyGenerator:
         MidiUtils.write_midi_song(harmonyMidi, harmony, ticksPerBeat)
 
         return harmonyMidi, harmonyMidi
-    
     

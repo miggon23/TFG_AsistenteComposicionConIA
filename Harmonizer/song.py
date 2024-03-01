@@ -18,21 +18,21 @@ possibleScales = {
 Reformatea la representación de la canción para que sea más fácil de operar para los diferentes algoritmos:
     song[tick] = (note_on[], note_off[])
 '''
-def spread_song(song):
-    spreadSong = {}
+def note_seq(song):
+    noteSeq = {}
 
     for note in song:
 
         key = note['start_time']
 
         for i in range(2):
-            if key not in spreadSong:
-                spreadSong[key] = ([],[])
-            spreadSong[key][i].append(note['note'])
+            if key not in noteSeq:
+                noteSeq[key] = ([],[])
+            noteSeq[key][i].append(note['note'])
 
             key += note['duration']
 
-    return dict(sorted(spreadSong.items()))
+    return dict(sorted(noteSeq.items()))
 
 def debug_song(song, output_file):
 
@@ -42,24 +42,27 @@ def debug_song(song, output_file):
 
 class Song:
 
-    def __init__(self, melody, ticksPerBeat):
+    def __init__(self, notes, ticksPerBeat):
 
         self.ticksPerBeat = ticksPerBeat
 
-        self.melody = melody
-        self.tonic = Note.Note(self.melody[0]['note']  % 12)
+        self.notes = notes
+        self.tonic = Note.Note(self.notes[0]['note'] % 12)
         
         pTonic = -(self.tonic.pitch - 12) 
         intervals = []
   
+        self.noteFrequencies = [0] * 12
+  
         self.meanPitch = 0
         totalSoundDuration = 0
 
-        for note in self.melody:
+        for note in self.notes:
 
             pitch = note['note']
             duration = note['duration']
 
+            self.noteFrequencies[pitch % 12] = duration
             self.meanPitch += pitch * duration
             totalSoundDuration += duration
 
@@ -72,8 +75,8 @@ class Song:
 
         self.meanPitch /= totalSoundDuration   
         
-    def choose_scale(self):
-        if (self.scale.len() > 7):
+    def fill_sacle(self):
+        if (self.scale.len() >= 7):
             return
         
         print(f"Escala base: ", end="")
@@ -124,6 +127,90 @@ class Song:
         print("Escala elegida:")
         self.scale.print_scale()
         self.scale.print_absolutized_scale()    
+
+    def choose_sacle(self, scale, tonic = None):
+
+        if tonic is not None:
+            self.tonic = tonic
+            self.scale = scale
+            return
+
+        self.scale.create_degrees()
+        degrees = self.scale.degrees
+        degrees.insert(0, self.scale)
+
+        bestDegrees = []
+        bestResult = scale.len()
+
+        for idx, degree in enumerate(degrees):
+
+            scaleIdx = 0
+            degreeIdx = 0
+
+            cont = scale.len()
+
+            while scaleIdx < scale.len() and degreeIdx < degree.len():
+                if scale.scale[scaleIdx] == degree.scale[degreeIdx]:
+                    cont -= 1
+                    scaleIdx += 1
+                    degreeIdx += 1
+                elif scale.scale[scaleIdx] < degree.scale[degreeIdx]:
+                    scaleIdx += 1
+                else:
+                    degreeIdx += 1
+
+            if cont == bestResult:
+                bestDegrees.append(idx)
+            elif cont < bestResult:
+                bestDegrees = [idx]
+                bestResult = cont
+
+        bestResult = 0
+            
+        for idx in bestDegrees:
+            result = self.noteFrequencies[(self.tonic.pitch + self.scale.scale[idx].semitones) % 12]
+            if result > bestResult:
+                bestResult = result
+                bestDegree = idx
+       
+        self.tonic = Note.Note((self.tonic.pitch + self.scale.scale[bestDegree].semitones) % 12)
+        self.scale = scale
+
+        print(f"Tónica elegida: {self.tonic.name}")
+
+        return   
+
+    def fit_notes(self):
+
+        scalePitch = []
+        for interval in self.scale.scale:
+            scalePitch.append((self.tonic.pitch + interval.semitones) % 12)
+        lowesPitchIdx = scalePitch.index(min(scalePitch))
+
+        for note in self.notes:
+            notePitch = note['note'] % 12
+
+            idx = 0
+            while idx < self.scale.len() and scalePitch[(idx + lowesPitchIdx) % self.scale.len()] < notePitch:
+                idx += 1
+            idx = (idx + lowesPitchIdx) % self.scale.len()
+
+            supPitch = scalePitch[idx]
+            infPitch = scalePitch[(idx - 1 + self.scale.len()) % self.scale.len()] 
+
+            supDiff = min(abs(supPitch - notePitch), abs(notePitch - supPitch))
+            infDiff = min(abs(infPitch - notePitch), abs(notePitch - infPitch))
+
+            if supDiff != 0:
+                if supDiff < infDiff:
+                    note['note'] += supDiff
+                elif supDiff > infDiff:
+                    note['note'] -= infDiff
+                else:
+                    # to do
+                    note['note'] += supDiff
+
+        return
 
     """
     Armoniza la música según ciertos parámetros.
@@ -187,7 +274,7 @@ class Song:
     def __off_armonize(self, chordWeights, timeSignature, notPlayingAtTickPen, offset):
 
         lastTick = 0
-        for note in self.melody:
+        for note in self.notes:
             lastTick = max(lastTick, note['start_time'] + note['duration'])
 
         measureSize = timeSignature.measure_size()
@@ -217,7 +304,7 @@ class Song:
     def __win_armonize(self, chordWeights, timeSignatures, notPlayingAtTickPen):
 
         lastTick = 0
-        for note in self.melody:
+        for note in self.notes:
             lastTick = max(lastTick, note['start_time'] + note['duration'])
 
         shortestMeasure = timeSignatures[-1].measure_size()
@@ -262,7 +349,7 @@ class Song:
         '''
         song = {0 : ([],[])} 
         offset = int(offset * self.ticksPerBeat)
-        for tick, notes in spread_song(self.__relativize_melody()).items():
+        for tick, notes in note_seq(self.__relativized_notes()).items():
             song[tick + offset] = notes
 
         '''
@@ -487,19 +574,19 @@ class Song:
     '''
     A partir de la tónica de la canción transforma las notas reales en intervalos 
     '''
-    def __relativize_melody(self):
+    def __relativized_notes(self):
 
-        relativazedMelody = []
+        relativazedNotes = []
         pTonic = -(self.tonic.pitch - 12)
 
-        for note in self.melody:
-            relativazedMelody.append({           
+        for note in self.notes:
+            relativazedNotes.append({           
                 'note': Interval.Interval((note['note'] + pTonic) % 12),  
                 'start_time': note['start_time'], 
                 'duration': note['duration']     
             })
 
-        return relativazedMelody
+        return relativazedNotes
  
     '''
     A partir de la tónica de la canción transforma los intervalos

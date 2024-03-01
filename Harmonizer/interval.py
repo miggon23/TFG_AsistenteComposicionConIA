@@ -48,6 +48,11 @@ class Interval:
     def __le__(self, otro):
         if isinstance(otro, Interval):
             return self.semitones <= otro.semitones
+        
+    def __lt__(self, otro):
+        if isinstance(otro, Interval):
+            return self.semitones < otro.semitones
+        
     def __eq__(self, otro):
         if isinstance(otro, Interval):
             return self.semitones == otro.semitones

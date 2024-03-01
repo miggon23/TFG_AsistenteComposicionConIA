@@ -23,7 +23,7 @@ onlyTriads = {
 }
 
 class Harmony:
-    # Constructor de la clase
+
     def __init__(self, scale, possibleChords = allChords):
 
         self.possibleChords = possibleChords
