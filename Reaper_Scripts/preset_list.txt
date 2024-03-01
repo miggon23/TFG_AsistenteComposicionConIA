@@ -371,6 +371,13 @@ bajo9
 humanisator1      (genérico)
 humanisator2      (melodías)
 
+	AUTO GAIN         ReaComp (Cockos)
+			  ReaLimit (Cockos)
+gain1
+gain3
+gain5
+gain6
+gain7
 
 	LOFI              Unison Zen Master (Unison)
 lofi1
@@ -392,3 +399,7 @@ limit1
 
 	MASTERING 	  AFTER (x86) (TWest Productions)
 mastering1
+
+	MIDI OCTAVES      JS: MIDI Transpose Notes
+octaveDown
+octaveUp
