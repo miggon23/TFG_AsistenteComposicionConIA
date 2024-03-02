@@ -77,7 +77,7 @@ class Scale:
             self.absolutizedScale.append(Note.Note(noteName))
 
     
-    def copy(self):
+    def __copy__(self):
         
         semitones = []
 
@@ -111,15 +111,23 @@ class Scale:
     
     def len(self):
         return len(self.scale)
+    
+    def containsInterval(self, interval):
 
-    def contains(self, scale, degreeIdx = 0):
+        for scaleInterval in self.scale:
+            if interval == scaleInterval:
+                return True
+            
+        return False
+
+    def containsScale(self, scale, degreeIdx = 0):
         
         if degreeIdx == 0:
-            return self.__contains(scale)
+            return self.__containsScale(scale)
         else:
-            return self.degrees[degreeIdx - 1].__contains(scale)
+            return self.degrees[degreeIdx - 1].__containsScale(scale)
 
-    def __contains(self, scale):
+    def __containsScale(self, scale):
 
         ids = 0
         idc = 0

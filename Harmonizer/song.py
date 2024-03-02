@@ -7,7 +7,8 @@ from timeSignature import TimeSignature as ts
 
 import math
 import random
-import pandas as pd
+import sys
+from itertools import islice
 
 possibleScales = {
     "Major": Scale.Scale("1 2 3 4 5 6 7"), 
@@ -93,7 +94,7 @@ class Song:
 
         for i, degree in enumerate(degrees):
             for name, scale in possibleScales.items():
-                if scale.contains(degree):
+                if scale.containsScale(degree):
                     tonic = Note.Note((self.tonic.pitch + self.scale.scale[i].semitones) % 12)
                     fittingScales.append((tonic, name))
                     print(f"Escala {name} coincidente con tónica en {tonic.name}")
@@ -102,7 +103,7 @@ class Song:
 
             print(f"No hay escala tonal coincidente cuya tónica sea alguna de las notas de la melodía")
 
-            majorDegrees = possibleScales["Major"].copy()
+            majorDegrees = possibleScales["Major"].__copy__()
             majorDegrees.create_degrees()
             majorDegrees = majorDegrees.degrees
 
@@ -121,7 +122,7 @@ class Song:
 
         finalScale = fittingScales[random.randint(0, len(fittingScales) - 1)]
         self.tonic = finalScale[0]
-        self.scale = possibleScales[finalScale[1]].copy()
+        self.scale = possibleScales[finalScale[1]].__copy__()
 
         self.scale.absolutize_scale(self.tonic)
         print("Escala elegida:")
@@ -243,23 +244,26 @@ class Song:
             ...]
     """
     def armonize(self, 
-                 type = "std", 
-                 possibleChords = Harmony.allChords,
-                 chordWeights = [1, 0.25, 0.5, 0.125], 
-                 timeSignatures = [
-                     ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-                     ts(2, 4).set_weights([1.4, 1.2]),
-                     ts(1, 4).set_weights([1])
-                 ],               
-                 notPlayingAtTickPen = 0.75,
-                 offset = ts(1, 4),
-                 ):
+                type = "std", 
+                possibleChords = Harmony.allChords,
+                chordWeights = [1, 0.25, 0.5, 0.125], 
+                timeSignatures = [
+                    ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+                    ts(2, 4).set_weights([1.4, 1.2]),
+                    ts(1, 4).set_weights([1])
+                ],               
+                notPlayingAtTickPen = 0.75,
+                offset = ts(1, 4),
+                model = None
+            ):
         
         self.harmony = Harmony.Harmony(self.scale, possibleChords)
         self.harmony.relativize_chords()
         
         if type == "std":
             self.__armonize(chordWeights, timeSignatures[0], notPlayingAtTickPen)  
+            if model is not None:            
+                self.__bias(model)    
             self.__choose_best_chords(timeSignatures[0].measure_size())               
         elif type == "win":
             timeSignatures = sorted(timeSignatures, key=lambda x: x.measure_size(), reverse=True)
@@ -437,6 +441,21 @@ class Song:
                         analysis[value] += (chordWeights[intervalIdx] * tickWeight * notPlayingAtTickPen)
                         break
 
+    def __bias(self, model, ratio = 0.5, n = sys.maxsize, reverse = False):
+
+        model.load_data(reverse)
+
+        lastChord = None
+
+        for chords in self.chordAnalysis:
+
+            chords = sorted(chords.keys(), key=lambda x: chords[x], reverse=True)
+            chords = dict(islice(chords.items(), min(n, len(chords))))     
+
+            for chord in chords:
+                meanWeight = chords[chord] / 2
+                chords[chord] = 2 * model.predict([lastChord], chord) * meanWeight * ratio + meanWeight * (1 - ratio)
+
     def print_chord_analysis(self):
         for idx, chordList in enumerate(self.chordAnalysis):
             print(f"Slice {idx}:")
@@ -495,81 +514,6 @@ class Song:
                 self.bestChords.append([bestChord, ticksPerChord])
 
         self.bestChords = self.bestChords[1:]
-
-    def save_data(self, filePath):
-        self.__save_matrix(filePath + ".xlsx")
-        self.__save_raw(filePath + ".csv")
-
-    def __save_raw(self, filePath):
-
-        try:
-            df = pd.read_csv(filePath)  
-            data = {'chord': [], 'duration': []}       
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=['chord', 'duration'])
-            data = {'chord': ["start_end"], 'duration': [0]} 
-
-        for chordInfo in self.bestChords:
-
-            chord = chordInfo[0]
-            if chord is not None:
-                chord = chord[0] + "_" + chord[1]
-                duration = chordInfo[1]
-
-                data['chord'].append(chord)
-                data['duration'].append(duration)
-
-        data['chord'].append("start_end")
-        data['duration'].append(0)       
-
-        df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
-        df.to_csv(filePath, index=False)
-
-    def __save_matrix(self, filePath):
-
-        lastChord = "start_end"
-
-        try:
-            df = pd.read_excel(filePath, index_col=0)
-        except FileNotFoundError:
-            initialData = {lastChord: [0]}
-            df = pd.DataFrame(initialData, index=[lastChord])
-
-        reorganize = False
-
-        for chordInfo in self.bestChords:
-
-            chord = chordInfo[0]
-            if chord is not None:
-                chord = chord[0] + "_" + chord[1]
-
-                if chord not in df.index:
-                    df[chord] = 0
-                    df.loc[chord] = 0
-                    reorganize = True
-
-                df.at[lastChord, chord] += 1
-
-                lastChord = chord
-
-        df.at[lastChord, "start_end"] += 1
-
-        if reorganize:  
-
-            def foo(chord):
-                chord = str(chord)
-                if chord == "start_end":
-                    return -1
-                else:
-                    degree, chordName = chord.split("_")
-                    v1 = Interval.intervals.index(degree)
-                    v2 = list(Harmony.allChords.keys()).index(chordName)
-                    return v1 * len(Harmony.allChords) + v2
-
-            indexes = sorted(df.index.tolist(), key=foo)
-            df = df.reindex(index=indexes, columns=indexes)       
-
-        df.to_excel(filePath)
 
     '''
     A partir de la tónica de la canción transforma las notas reales en intervalos 

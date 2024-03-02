@@ -56,6 +56,13 @@ class Interval:
     def __eq__(self, otro):
         if isinstance(otro, Interval):
             return self.semitones == otro.semitones
+        
+    def __ne__(self, otro):
+        if isinstance(otro, Interval):
+            return self.semitones != otro.semitones
+        
+    def __copy__(self):
+        return Interval(self.semitones)
 
 
 

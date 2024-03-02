@@ -38,7 +38,7 @@ class Harmony:
             chordList = self.chords[scale.scale[n].get_name()] = []
 
             for k, v in  self.possibleChords.items():
-                if scale.contains(v, n):
+                if scale.containsScale(v, n):
                     chordList.append(k)
 
     def relativize_chords(self):
