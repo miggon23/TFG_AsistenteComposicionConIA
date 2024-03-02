@@ -375,6 +375,7 @@ n_tracks = 7
 
 for i in range(n_tracks):
     RPR_InsertTrackAtIndex(i, True)
+    RPR_SetTrackColor(RPR_GetTrack(0, i), random.randint(0, 0x1000000))
 
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
@@ -392,16 +393,16 @@ crearPista1(1, tematica, random.randint(0, 9))
 crearPista1(2, tematica, random.randint(0, 9))
 
 #Acompañamiento 1
-crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
+crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
 #Acompañamiento 2
-crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
+crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
 #Pads o strings
 crearPista5(5, tematica, random.randint(0, 9))
 
 #Bajo
-crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(1, 10))
+crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
 #Batería
 crearPista7(7, tematica, random.randint(0, 9))
@@ -564,6 +565,21 @@ for value in arreglo[6]:
         cargarDrums(tematica)
 
     i += 1
+
+
+RPR_SetTrackAutomationMode(RPR_GetTrack(0, 0), 3)
+
+#RPR_SetEditCurPos(0, True, True)
+#RPR_SetTrackUIVolume(RPR_GetTrack(0, 0), 0.0, False, False, 0)
+
+#RPR_SetEditCurPos(12, True, True)
+#RPR_SetTrackUIVolume(RPR_GetTrack(0, 0), 1.0, False, False, 0)
+
+#RPR_SetEditCurPos(39, True, True)
+#RPR_SetTrackUIVolume(RPR_GetTrack(0, 0), 0.0, False, False, 0)
+
+RPR_SetTrackAutomationMode(RPR_GetTrack(0, 0), 1)
+
 
 
 ajustarTempo(tematica)
