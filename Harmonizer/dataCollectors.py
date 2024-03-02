@@ -3,9 +3,9 @@ import song
 import interval as Interval
 import harmony as Harmony
 
-def seave_all(filePath):
-        save_matrix(filePath + ".xlsx")
-        save_raw(filePath + ".csv")
+def seave_all(song, filePath):
+        save_matrix(song, filePath + ".xlsx")
+        save_raw(song, filePath + ".csv")
 
 def save_raw(song, filePath):
 

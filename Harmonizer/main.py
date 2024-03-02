@@ -7,51 +7,93 @@ import dataCollectors as Data
 from models import Chain, ModalPerspective
 from timeSignature import TimeSignature as ts
 
-def main():
-    # MidiUtils.debug_midi_file("midi/input_song.mid", "files/midi_out.txt") 
-    # melody, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
-    # MidiUtils.write_midi_song("midi/output_song.mid", melody, ticksPerBeat)
+def modal(mode):
 
     someChords = {
         "": Scale.Scale("1 3 5"),  # Mayor
         "-": Scale.Scale("1 b3 5"),  # Menor
-        # "-b5": Scale.Scale("1 b3 b5"),
-        # "7": Scale.Scale("1 3 5 b7"),  # Dominante 
-        # "º7": Scale.Scale("1 b3 b5 bb7"),  # Séptima disminuida (Disminuida)
+    }
+
+    modalModel = ModalPerspective(mode, suggestedChords=someChords)
+
+    notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
+    
+    song = Song.Song(notes, ticksPerBeat)
+
+    possibleTonics = [0] * 12
+    for idx, noteFrequency in enumerate(song.noteFrequencies):
+        possibleTonics[idx] += noteFrequency 
+        for colorNote in modalModel.colorNotes:
+            possibleTonics[idx] += song.noteFrequencies[(idx + colorNote.semitones) % 12]
+
+    noteWeights = [1] * 7
+    for colorNote in modalModel.colorNotes:
+        for idx, interval in enumerate(modalModel.modalScale.scale):
+            if colorNote == interval:
+                noteWeights[idx] = 0
+                break
+
+    tonic = Note.Note(possibleTonics.index(max(possibleTonics)))
+    print(f'{mode}: {tonic.name}')
+    print(f'Color note: {Note.Note(tonic.pitch + modalModel.colorNotes[0].semitones).name}')
+    song.choose_sacle(modalModel.modalScale, tonic)
+    song.fit_notes(noteWeights=noteWeights)
+
+    harmony = song.armonize(type="win",
+                            timeSignatures = [
+                                ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+                                ts(2, 4).set_weights([1.4, 1.2]),
+                                ts(1, 4).set_weights([1])                       
+                            ],  
+                            possibleChords = modalModel.possibleChords)
+    
+    # MidiUtils.write_midi_song("midi/" + mode  + "_output_harmony.mid", harmony, ticksPerBeat)
+    # MidiUtils.write_midi_song("midi/" + mode  + "_output_song.mid", song.notes, ticksPerBeat)
+
+    MidiUtils.write_midi_song("midi/" + mode + ".mid", song.notes + harmony, ticksPerBeat)
+
+
+def standar():
+    
+    someChords = {
+        "": Scale.Scale("1 3 5"),  # Mayor
+        "-": Scale.Scale("1 b3 5"),  # Menor
+        "-b5": Scale.Scale("1 b3 b5"),
+        "7": Scale.Scale("1 3 5 b7"),  # Dominante 
+        "º7": Scale.Scale("1 b3 b5 bb7"),  # Séptima disminuida (Disminuida)
     }
 
     notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
     # MidiUtils.debug_midi_file("midi/input_song.mid", "files/midi_out.txt") 
     # Song.debug_song(notes, "files/notes_out.txt")
-    model = ModalPerspective("Phrygian", suggestedChords=someChords)
     song = Song.Song(notes, ticksPerBeat)
-    song.choose_sacle(model.modalScale, Note.Note('C'))
-    song.fit_notes()
-    harmony = song.armonize(type = "std",
+    song.fill_sacle()
+    harmony = song.armonize(type = "win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-                                ts(2, 4).set_weights([1.4, 1.2])
+                                ts(2, 4).set_weights([1.4, 1.2]),
+                                ts(1, 4).set_weights([1])
                             ],  
-                            possibleChords = model.possibleChords,
-                            model = model
+                            possibleChords = someChords
                             )
-    Data.seave_all('datasets/chords')
+    Data.seave_all(song, 'datasets/chords')
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
     MidiUtils.write_midi_song("midi/output_song.mid", song.notes, ticksPerBeat)
-    # bassline = song.process_bassline_4x4_v2(None, harmony)
-    # MidiUtils.write_midi_song("midi/output_bassline.mid", bassline)
 
-    print()
-    song.print_chord_analysis()
-    print()
-    song.print_best_chords()
-    print()
-    song.scale.print_degrees()
-    print()
-    song.harmony.print_chords()
+    # print()
+    # song.print_chord_analysis()
+    # print()
+    # song.print_best_chords()
+    # print()
+    # song.scale.print_degrees()
+    # print()
+    # song.harmony.print_chords()
 
 if __name__ == "__main__":
-    main()
+    standar()
+    for mode in ModalPerspective.modes:
+        if mode is not None:
+            modal(mode)
 
     
 

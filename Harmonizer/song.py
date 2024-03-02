@@ -63,7 +63,7 @@ class Song:
             pitch = note['note']
             duration = note['duration']
 
-            self.noteFrequencies[pitch % 12] = duration
+            self.noteFrequencies[pitch % 12] += duration
             self.meanPitch += pitch * duration
             totalSoundDuration += duration
 
@@ -109,7 +109,7 @@ class Song:
 
             for i, degree in enumerate(degrees):
                 for j, majorDegree in enumerate(majorDegrees, start=1):
-                    if majorDegree.contains(degree):
+                    if majorDegree.containsScale(degree):
                         tonic = Note.Note(self.tonic.pitch + self.scale.scale[i].semitones)
                         print(f"Modo {possibleScales['Major'].scale[j].get_name()} coincidente con tónica en {tonic.name}")
                         tonic = Note.Note(tonic.pitch - possibleScales['Major'].scale[j].semitones)
@@ -181,37 +181,41 @@ class Song:
 
         return   
 
-    def fit_notes(self):
+    def fit_notes(self, pitchDistanceWeight = 1, noteWeights = None):
 
-        scalePitch = []
+        if noteWeights is None:
+            noteWeights = [1] * self.scale.len()
+        elif len(noteWeights) != self.scale.len():
+            raise Exception("La lista de pesos de las notas debe tener el mismo número de elemetos que la escala")
+
+        scalePitches = []
         for interval in self.scale.scale:
-            scalePitch.append((self.tonic.pitch + interval.semitones) % 12)
-        lowesPitchIdx = scalePitch.index(min(scalePitch))
-
+            scalePitches.append((self.tonic.pitch + interval.semitones) % 12)
+ 
         for note in self.notes:
             notePitch = note['note'] % 12
 
-            idx = 0
-            while idx < self.scale.len() and scalePitch[(idx + lowesPitchIdx) % self.scale.len()] < notePitch:
-                idx += 1
-            idx = (idx + lowesPitchIdx) % self.scale.len()
-
-            supPitch = scalePitch[idx]
-            infPitch = scalePitch[(idx - 1 + self.scale.len()) % self.scale.len()] 
-
-            supDiff = min(abs(supPitch - notePitch), abs(notePitch - supPitch))
-            infDiff = min(abs(infPitch - notePitch), abs(notePitch - infPitch))
-
-            if supDiff != 0:
-                if supDiff < infDiff:
-                    note['note'] += supDiff
-                elif supDiff > infDiff:
-                    note['note'] -= infDiff
+            pitchDistances = []
+            for scalePitch in scalePitches:
+                if scalePitch < notePitch:
+                    pitchDistances.append(min(notePitch - scalePitch, scalePitch + 12 - notePitch))
+                elif scalePitch > notePitch:
+                    pitchDistances.append(min(scalePitch - notePitch, notePitch + 12 - scalePitch))
                 else:
-                    # to do
-                    note['note'] += supDiff
+                    pitchDistances.append(0)
 
-        return
+            lowestDistance = sys.maxsize  
+            for pitchIdx, (pitchDistance, noteWeight) in enumerate(zip(pitchDistances, noteWeights)):
+                distance = pitchDistance * pitchDistanceWeight + noteWeight
+                if distance < lowestDistance:
+                    lowestDistance = distance
+                    newPitchIdx = pitchIdx
+
+            if (notePitch + pitchDistances[newPitchIdx]) % 12 == scalePitches[newPitchIdx]:
+                note['note'] += pitchDistances[newPitchIdx]
+            else:
+                note['note'] -= pitchDistances[newPitchIdx]
+
 
     """
     Armoniza la música según ciertos parámetros.
@@ -257,13 +261,13 @@ class Song:
                 model = None
             ):
         
+        self.model = model
+        
         self.harmony = Harmony.Harmony(self.scale, possibleChords)
         self.harmony.relativize_chords()
         
         if type == "std":
-            self.__armonize(chordWeights, timeSignatures[0], notPlayingAtTickPen)  
-            if model is not None:            
-                self.__bias(model)    
+            self.__armonize(chordWeights, timeSignatures[0], notPlayingAtTickPen)     
             self.__choose_best_chords(timeSignatures[0].measure_size())               
         elif type == "win":
             timeSignatures = sorted(timeSignatures, key=lambda x: x.measure_size(), reverse=True)
@@ -420,7 +424,9 @@ class Song:
 
             for note in volatileNotes:
                 self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
-    
+      
+            self.__bias()
+
     '''
     Dada una nota (y una serie de pesos), recorre toda la lista de acordes posibles para 
     comprobar que la nota esté en el acorde y sumarle el correspondiente peso en el correspondiente fragmento
@@ -441,9 +447,12 @@ class Song:
                         analysis[value] += (chordWeights[intervalIdx] * tickWeight * notPlayingAtTickPen)
                         break
 
-    def __bias(self, model, ratio = 0.5, n = sys.maxsize, reverse = False):
+    def __bias(self, ratio = 0.5, n = sys.maxsize, reverse = False):
 
-        model.load_data(reverse)
+        if self.model is None:
+            return
+        
+        self.model.load_model(reverse)
 
         lastChord = None
 
@@ -454,7 +463,7 @@ class Song:
 
             for chord in chords:
                 meanWeight = chords[chord] / 2
-                chords[chord] = 2 * model.predict([lastChord], chord) * meanWeight * ratio + meanWeight * (1 - ratio)
+                chords[chord] = 2 * self.model.predict([lastChord], chord) * meanWeight * ratio + meanWeight * (1 - ratio)
 
     def print_chord_analysis(self):
         for idx, chordList in enumerate(self.chordAnalysis):
