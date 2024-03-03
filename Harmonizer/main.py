@@ -14,38 +14,43 @@ def modal(mode):
         "-": Scale.Scale("1 b3 5"),  # Menor
     }
 
-    modalModel = ModalPerspective(mode, suggestedChords=someChords)
+    modalModel = ModalPerspective(mode, chordWeights=[1, 1, 0.1], suggestedChords=someChords)
+    modalModel.load_model()
 
     notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
     
     song = Song.Song(notes, ticksPerBeat)
 
+    tonicPen = 0.5
     possibleTonics = [0] * 12
     for idx, noteFrequency in enumerate(song.noteFrequencies):
-        possibleTonics[idx] += noteFrequency 
+        possibleTonics[idx] += noteFrequency * tonicPen
         for colorNote in modalModel.colorNotes:
             possibleTonics[idx] += song.noteFrequencies[(idx + colorNote.semitones) % 12]
 
-    noteWeights = [1] * 7
+    notePenalties = [1] * 7
     for colorNote in modalModel.colorNotes:
         for idx, interval in enumerate(modalModel.modalScale.scale):
             if colorNote == interval:
-                noteWeights[idx] = 0
+                notePenalties[idx] = 0
                 break
 
     tonic = Note.Note(possibleTonics.index(max(possibleTonics)))
     print(f'{mode}: {tonic.name}')
-    print(f'Color note: {Note.Note(tonic.pitch + modalModel.colorNotes[0].semitones).name}')
+    print(f'Color note(s):', end=' ')
+    for colorNote in modalModel.colorNotes:
+        print(f'{Note.Note(tonic.pitch + colorNote.semitones).name}', end=' ')
+    print('\n')
     song.choose_sacle(modalModel.modalScale, tonic)
-    song.fit_notes(notePenalties=noteWeights)
+    song.fit_notes(notePenalties=notePenalties)
 
     harmony = song.armonize(type="win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-                                ts(2, 4).set_weights([1.4, 1.2]),
-                                ts(1, 4).set_weights([1])                       
+                                ts(2, 4).set_weights([1.4, 1.2])                      
                             ],  
-                            possibleChords = modalModel.possibleChords)
+                            possibleChords = modalModel.possibleChords,
+                            model=modalModel)
     
     # MidiUtils.write_midi_song("midi/" + mode  + "_output_harmony.mid", harmony, ticksPerBeat)
     # MidiUtils.write_midi_song("midi/" + mode  + "_output_song.mid", song.notes, ticksPerBeat)
@@ -72,8 +77,7 @@ def standar():
     harmony = song.armonize(type = "win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-                                ts(2, 4).set_weights([1.4, 1.2]),
-                                ts(1, 4).set_weights([1])
+                                ts(2, 4).set_weights([1.4, 1.2])
                             ],  
                             possibleChords = someChords
                             )
@@ -92,9 +96,9 @@ def standar():
 
 if __name__ == "__main__":
     standar()
-    # for mode in ModalPerspective.modes:
-    #     if mode is not None:
-    #         modal(mode)
+    for mode in ModalPerspective.modes:
+        if mode is not None:
+            modal(mode)
 
     
 

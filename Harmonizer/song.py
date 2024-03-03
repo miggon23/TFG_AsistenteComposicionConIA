@@ -6,9 +6,7 @@ import timeSignature as TimeSignature
 from timeSignature import TimeSignature as ts
 
 import math
-import random
 import sys
-from itertools import islice
 
 '''
 Reformatea la representación de la canción para que sea más fácil de operar para los diferentes algoritmos:
@@ -492,14 +490,16 @@ class Song:
 
         lastChord = None
 
-        for chords in self.chordAnalysis:
+        for idx, chords in enumerate(self.chordAnalysis):
 
-            chords = sorted(chords.keys(), key=lambda x: chords[x], reverse=True)
-            chords = dict(islice(chords.items(), min(nBestChords, len(chords))))     
+            chords = dict(sorted(chords.items(), key=lambda x: x[1], reverse=True))
+            chords = dict(list(chords.items())[:min(nBestChords, len(chords))])   
 
             for chord in chords:
-                meanWeight = chords[chord] / 2
-                chords[chord] = 2 * self.model.predict([lastChord], chord) * meanWeight * ratio + meanWeight * (1 - ratio)
+                weight = chords[chord]
+                chords[chord] = 2 * self.model.predict([lastChord], chord) * weight * ratio + weight * (1 - ratio)
+
+            self.chordAnalysis[idx] = dict(sorted(chords.items(), key=lambda x: x[1], reverse=True))
 
     def print_chord_analysis(self):
         for idx, chordList in enumerate(self.chordAnalysis):
