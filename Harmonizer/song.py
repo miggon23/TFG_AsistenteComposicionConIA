@@ -459,7 +459,7 @@ class Song:
             for note in volatileNotes:
                 self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
       
-            self.__bias()
+        self.__bias()
 
     '''
     Dada una nota (y una serie de pesos), recorre toda la lista de acordes posibles para 
@@ -481,19 +481,21 @@ class Song:
                         analysis[value] += (chordWeights[intervalIdx] * tickWeight * notPlayingAtTickPen)
                         break
 
-    def __bias(self, ratio = 0.5, n = sys.maxsize, reverse = False):
+    '''
+    Modifica los pesos con el objetivo de hacer una media entre 
+    los datos obtenidos por el algoritmo y lo que dicte el modelo utilizado
+    '''
+    def __bias(self, ratio = 0.5, nChordSequence = 4, nBestChords = sys.maxsize, reverse = False):
 
         if self.model is None:
             return
-        
-        self.model.load_model(reverse)
 
         lastChord = None
 
         for chords in self.chordAnalysis:
 
             chords = sorted(chords.keys(), key=lambda x: chords[x], reverse=True)
-            chords = dict(islice(chords.items(), min(n, len(chords))))     
+            chords = dict(islice(chords.items(), min(nBestChords, len(chords))))     
 
             for chord in chords:
                 meanWeight = chords[chord] / 2
