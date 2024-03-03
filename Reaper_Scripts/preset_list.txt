@@ -303,6 +303,12 @@ pista7tematica9_4
 pista7tematica9_5
 pista7tematica9_6
 
+	TRANSICIONES
+
+riser0 Room Piano v3 (SampleScience) (32 out)
+riser0 Flux Mini 2 (Caelum Audio)
+riser0 ValhallaSupermassive (Valhalla DSP, LLC)
+
 	TEMATICA PIANO
 
 pianoSolo0 Room Piano v3 (SampleScience) (32 out)
