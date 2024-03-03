@@ -248,9 +248,9 @@ pista7tematica0_1 DSK mini DRUMZ 2 (x86) (DSK Music)
 pista7tematica0_2 DSK mini DRUMZ 2 (x86) (DSK Music)
 pista7tematica0_3 DSK mini DRUMZ 2 (x86) (DSK Music)
 pista7tematica0_4 DSK mini DRUMZ 2 (x86) (DSK Music)
-pista7tematica0_5 DSK mini DRUMZ 2 (x86) (DSK Music)
-pista7tematica0_6 DSK mini DRUMZ 2 (x86) (DSK Music)
-pista7tematica0_7 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica0_5 Apari Tenpan (x86) (Apari)
+pista7tematica0_6 Apari Tenpan (x86) (Apari)
+pista7tematica0_7 Apari Tenpan (x86) (Apari)
 pista7tematica0_8 DSK DrumZ 8bitZ (x86) (DSK Music)
 pista7tematica0_9 DSK DrumZ 8bitZ (x86) (DSK Music)
 
@@ -304,13 +304,36 @@ pista7tematica9_5
 pista7tematica9_6
 
 	TRANSICIONES
+riserTematica0_0 Room Piano v3 (SampleScience) (32 out)
+riserTematica0_1 DSK Strings (x86) (DSK)
+riserTematica0_2 DSK Strings (x86) (DSK)
+riserTematica0_3 DSK Strings (x86) (DSK)
+riserTematica0_4 DSK Strings (x86) (DSK)
+riserTematica0_5 DSK Strings (x86) (DSK)
+riserTematica0_6 Spicy Guitar (64 bits) (Keolab)
+riserTematica0_7 Spicy Guitar (64 bits) (Keolab)
+riserTematica0_8 Spicy Guitar (64 bits) (Keolab)
+riserTematica0_9 Spicy Guitar (64 bits) (Keolab)
 
-riser0 Room Piano v3 (SampleScience) (32 out)
-riser0 Flux Mini 2 (Caelum Audio)
-riser0 ValhallaSupermassive (Valhalla DSP, LLC)
+riser0 - riser9 Flux Mini 2 (Caelum Audio)
+riser0 - riser9 ValhallaSupermassive (Valhalla DSP, LLC)
+
+downriserTematica0_0 Room Piano v3 (SampleScience) (32 out)
+downriserTematica0_1 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_2 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_3 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_4 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_5 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_6 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_7 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_8 TAL-NoiseMaker (TAL-Togu Audio Line)
+downriserTematica0_9 TAL-NoiseMaker (TAL-Togu Audio Line)
+
+downriser0 - downriser9 Flux Mini 2 (Caelum Audio)
+downriser0 - downriser9 ValhallaSupermassive (Valhalla DSP, LLC)
+
 
 	TEMATICA PIANO
-
 pianoSolo0 Room Piano v3 (SampleScience) (32 out)
 pianoSolo1
 
@@ -348,6 +371,17 @@ bajo7
 bajo8
 bajo9
 
+fill0
+fill1
+fill2
+fill3
+fill4
+fill5
+fill6
+fill7
+fill8
+fill9
+
 	HUMANIZADOR       Humanisator (x86) (Tobybear)
 humanisator1      (genérico)
 humanisator2      (melodías)
@@ -363,7 +397,7 @@ gain7
 	LOFI              Unison Zen Master (Unison)
 lofi1
 
-	RETRO		  TAL BitCrusher - TAL (TAL - Togu Audio Line)
+	RETRO		  COMPAKT (x86) (!!!!!!Team AiR!!!!!!) (mono)
 retro1
 
 	EQ                ReaEQ (Cockos)
@@ -371,12 +405,21 @@ eqAgua1
 
 	REVERB            OrilRiver (Denis Tihanov) 
 entorno0
+entorno1
+entorno2
+entorno3
+entorno4
+entorno5
+entorno6
 	
 	COMPRESOR         ReaComp (Cockos)
 comp1
 
 	LIMITADOR         ReaLimit (Cockos)
 limit1
+
+	EXPANSOR ESTEREO  OrilRiver (Denis Tihanov)
+expansor
 
 	MASTERING 	  AFTER (x86) (TWest Productions)
 mastering1
