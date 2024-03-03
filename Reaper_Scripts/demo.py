@@ -290,69 +290,116 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
 
 #Batería instrumento 7   
-def crearPista7(pista, tematica, preset):
-    i = pista-1
+def crearPista7(pista, tematica, preset, fill, preset_fill):
+    i = pista - 1
+    pista = 7
+
+        
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
+    if fill:
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "fill"+str(preset_fill))
+    else:
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "humanisator1") 
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
     
     if(tematica == 0):
-        if(preset <= 7):
+        if(preset <= 4):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK mini DRUMZ 2 (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         else:
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK DrumZ 8bitZ (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK mini DRUMZ 2 (x86) (DSK Music)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
 
 
 #Transiciones instrumento 8 y 9   
-def crearPista8(pista, tematica, preset):
+def crearPista8(pista, tematica, preset, preset2, preset3):
     i = pista-1
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
     
     if(tematica == 0):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "riser"+str(preset))
+        if(preset <= 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "riserTematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 5):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "riserTematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "riserTematica"+str(tematica)+"_"+str(preset))
+    elif(tematica == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "riser"+str(preset))
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "riser"+str(preset2))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "riser"+str(preset))
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "riser"+str(preset3))
+
+
+#Transiciones instrumento 10 y 11   
+def crearPista10(pista, tematica, preset, preset2, preset3):
+    i = pista-1
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
+    
+    if(tematica == 0):
+        if(preset <= 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "downriserTematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "downriserTematica"+str(tematica)+"_"+str(preset))
+    elif(tematica == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
+    
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "downriser"+str(preset3))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "downriser"+str(preset2))
 
 
 
@@ -371,26 +418,25 @@ def cargarDrums(tematica):
     elif(tematica == 1):
         estilo = "BASIC"
 
-    if(tematica != 1):
-        cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
 
-        cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
-        cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
-
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
+    cargarMidi("midi/output_"+estilo+"_drumPatternC.mid")
 
 
-for i in range (10):
+
+for i in range (20):
     RPR_DeleteTrack(RPR_GetTrack(0, 0))
     
 for i in range (10):
     RPR_TrackFX_Delete(RPR_GetMasterTrack(0), 0)
 
-n_tracks = 9
+n_tracks = 12
 
 for i in range(n_tracks):
     RPR_InsertTrackAtIndex(i, True)
@@ -400,8 +446,9 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
 tematica = 0
-entorno = 0
-lofi = False
+reverb = True
+entorno = 3
+lofi = True
 retro = False
 agua = False
 
@@ -423,14 +470,24 @@ crearPista5(5, tematica, random.randint(0, 9))
 #Bajo
 crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
+presetBateria = random.randint(0, 9)
 #Batería
-crearPista7(7, tematica, random.randint(0, 9))
+crearPista7(7, tematica, presetBateria, False, 0)
 
 #Transiciones 1
-crearPista8(8, tematica, 0)
+crearPista8(8, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 
 #Transiciones 2
-crearPista8(9, tematica, 0)
+crearPista8(9, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+#Transiciones 3
+crearPista10(10, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+#Transiciones 4
+crearPista10(11, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+#Drum Fills
+crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
 
 
 for i in range(5):
@@ -447,7 +504,7 @@ if(lofi):
 else:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "bypass") 
 
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "TAL BitCrusher - TAL (TAL - Togu Audio Line)", False, -1)
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "COMPAKT (x86) (!!!!!!Team AiR!!!!!!) (mono)", False, -1)
 if(retro):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "retro1") 
 else:
@@ -460,8 +517,10 @@ else:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "bypass") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "entorno"+str(entorno)) 
-
+if(reverb):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "entorno"+str(entorno)) 
+else:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "bypass") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaComp (Cockos)", False, -1)
 if(tematica != 1):
@@ -471,8 +530,11 @@ RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
 if(tematica != 1):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
 
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "expansor") 
+
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "mastering1") 
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "mastering1") 
 
 
 ## Cortar el midi
@@ -502,12 +564,19 @@ arreglo = [[False] * 8 for _ in range(7)]
 
 arreglo = [[random.choice([True, False]) for _ in range(8)] for _ in range(7)]
 
+arreglo[6] = [False]*8
+
 # Nos aseguramos de que no haya ningún espacio de tiempo en silencio
 for col in range(len(arreglo[0])):
     column_values = [row[col] for row in arreglo]
     if all(value == False for value in column_values):
         arreglo[2][col] = True
 
+# Limitamos las casillas de acompañamiento
+for col in range(len(arreglo[0])):
+    # Si ambas casillas 3 y 4 están marcadas como True, mantener solo la casilla 3
+    if arreglo[2][col] and arreglo[3][col]:
+        arreglo[3][col] = False
 
 if(tematica == 1):
     # Contar la cantidad de True en cada columna
@@ -524,14 +593,64 @@ if(tematica == 1):
             for idx in true_rows[2:]:
                 arreglo[idx][col] = False
 
+# Contar la cantidad de True en la primera columna
+first_column_count = sum(1 for row in arreglo if row[0])
+
+# Limitar a tres casillas True en la primera columna, con prioridad en la fila 3 y luego en orden descendente desde la 1
+if first_column_count > 3:
+    # Obtener las filas que tienen True en la primera columna
+    true_rows = [row_idx for row_idx, row in enumerate(arreglo) if row[0]]
+    # Ordenar las filas según la prioridad
+    true_rows.sort(key=lambda x: x == 2, reverse=True)
+    # Mantener las primeras tres filas con True, según la prioridad
+    for idx in true_rows[3:]:
+        arreglo[idx][0] = False
+
+
 # Calcular posiciones para colocar transiciones
 riser = [False] * len(arreglo[0])
+downriser = [False] * len(arreglo[0])
+drumFill = [False] * len(arreglo[0])
+
+
+# Marcamos las casillas que serán True en la siguiente columna
+for col in range(len(arreglo[0]) - 1):
+    for row in range(len(arreglo)):
+        if row == 6:  # Última fila
+            if not arreglo[row][col] and arreglo[row][col+1]:
+                drumFill[col] = True
+
+
+# Contar cuántas casillas serán True en la siguiente columna cuando ahora es False
+next_true_counts = [0] * len(arreglo[0])
 
 for col in range(len(arreglo[0]) - 1):
     for row in range(len(arreglo)):
-        if (arreglo[row][col] and not arreglo[row][col + 1]) or (not arreglo[row][col] and arreglo[row][col + 1]):
-            riser[col] = True
-            break
+        if not arreglo[row][col] and arreglo[row][col + 1]:
+            next_true_counts[col + 1] += 1
+
+# Contar cuántas casillas serán False en la siguiente columna cuando ahora es True
+next_false_counts = [0] * len(arreglo[0])
+
+for col in range(len(arreglo[0]) - 1):
+    for row in range(len(arreglo)):
+        if arreglo[row][col] and not arreglo[row][col + 1]:
+            next_false_counts[col + 1] += 1
+
+
+for col in range(len(arreglo[0]) - 1):
+        if arreglo[6][col] and arreglo[6][col + 1]:
+            if next_true_counts[col] == next_false_counts[col]:
+                drumFill[col] = True
+
+for col in range(len(arreglo[0]) - 1):
+    if next_true_counts[col + 1] > next_false_counts[col + 1]:
+        riser[col] = True
+        drumFill[col] = False
+
+for col in range(len(arreglo[0]) - 1):
+    if (next_true_counts[col + 1] + 1) < next_false_counts[col + 1]:
+        downriser[col + 1] = True
 
 
 
@@ -600,6 +719,46 @@ for value in arreglo[6]:
 
     i += 1
 
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 7), "I_SELECTED", 1)
+for value in riser:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 8), "I_SELECTED", 1)
+for value in riser:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+    
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 9), "I_SELECTED", 1)
+for value in downriser:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1 
+
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 10), "I_SELECTED", 1)
+for value in downriser:
+    if value:
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+    i += 1
+
+i = 0
+RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 11), "I_SELECTED", 1)
+for value in drumFill:
+    if value:
+        RPR_SetEditCurPos(i * 16 + 14, True, True)
+        cargarMidi("midi/fillTemplate.mid")
+    i += 1
+
 
 #RPR_SetMediaItemLength(RPR_GetMediaItem(0, 2), 24, False)
 
@@ -609,18 +768,12 @@ i = 0
 pista = 7 
 for value in riser:
     if value:
-        
-        RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, pista), "I_SELECTED", 1)
-        RPR_SetEditCurPos(i * 16, True, True) 
-        cargarMidi("midi/output_harmony.mid")
-
-
 
         RPR_SetTrackAutomationMode(RPR_GetTrack(0, pista), 3)
 
         RPR_SetEditCurPos(i * 16 + 0.1, True, True) 
         RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 0.0, False, False, 0)
-        RPR_SetEditCurPos(i * 16 + 12, True, True) 
+        RPR_SetEditCurPos(i * 16 + 8, True, True) 
         RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 1.0, False, False, 0)
         RPR_SetEditCurPos(i * 16 + 16, True, True) 
         RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 1.0, False, False, 0)
@@ -629,10 +782,35 @@ for value in riser:
 
         RPR_SetTrackAutomationMode(RPR_GetTrack(0, pista), 0)
 
-        #if(pista == 7):
-        #    pista = 8
-        #else:
-        #    pista = 7
+        if(pista == 7):
+            pista = 8
+        else:
+            pista = 7
+
+    i += 1
+              
+i = 0
+pista = 9 
+for value in downriser:
+    if value:
+
+        RPR_SetTrackAutomationMode(RPR_GetTrack(0, pista), 3)
+
+        RPR_SetEditCurPos(i * 16 - 0.1, True, True) 
+        RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 0.0, False, False, 0)
+        RPR_SetEditCurPos(i * 16, True, True) 
+        RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 1.0, False, False, 0)
+        RPR_SetEditCurPos(i * 16 + 8, True, True) 
+        RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 1.0, False, False, 0)
+        RPR_SetEditCurPos(i * 16 + 8.1, True, True) 
+        RPR_SetTrackUIVolume(RPR_GetTrack(0, pista), 0.0, False, False, 0)
+
+        RPR_SetTrackAutomationMode(RPR_GetTrack(0, pista), 0)
+
+        if(pista == 9):
+            pista = 10
+        else:
+            pista = 9
 
     i += 1
                 
