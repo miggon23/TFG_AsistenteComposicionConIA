@@ -3,7 +3,6 @@ import numpy as np
 import scale as Scale
 import interval as Interval
 import harmony as Harmony
-from song import possibleScales
 
 def softmax(row):
     return row / row.sum()

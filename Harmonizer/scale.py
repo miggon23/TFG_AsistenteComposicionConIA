@@ -140,7 +140,13 @@ class Scale:
 
         return idc == len(scale.scale)
     
-    
+allScales = {
+    "Major": Scale("1 2 3 4 5 6 7"), 
+    "minor": Scale("1 2 b3 4 5 b6 b7"),
+    "harmonic": Scale("1 2 b3 4 5 b6 7"),
+    "melodic": Scale("1 2 b3 4 5 6 7"),
+    "Major harmonic": Scale("1 2 3 4 5 b6 7"),
+}  
 
 
 

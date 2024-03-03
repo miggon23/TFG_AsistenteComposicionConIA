@@ -10,11 +10,6 @@ import random
 import sys
 from itertools import islice
 
-possibleScales = {
-    "Major": Scale.Scale("1 2 3 4 5 6 7"), 
-    "minor": Scale.Scale("1 2 b3 4 5 b6 b7") 
-}
-
 '''
 Reformatea la representación de la canción para que sea más fácil de operar para los diferentes algoritmos:
     song[tick] = (note_on[], note_off[])
@@ -48,15 +43,15 @@ class Song:
         self.ticksPerBeat = ticksPerBeat
 
         self.notes = notes
-        self.tonic = Note.Note(self.notes[0]['note'] % 12)
-        
+
+        self.tonic = Note.Note(self.notes[0]['note'] % 12)     
         pTonic = -(self.tonic.pitch - 12) 
-        intervals = []
-  
+
         self.noteFrequencies = [0] * 12
-  
         self.meanPitch = 0
         totalSoundDuration = 0
+
+        intervals = []
 
         for note in self.notes:
 
@@ -70,65 +65,97 @@ class Song:
             interval = (pitch + pTonic) % 12
             if interval not in intervals:
                 intervals.append(interval)
+
+        self.meanPitch /= totalSoundDuration 
       
         intervals.sort()
-        self.scale = Scale.Scale(intervals) 
+        self.scale = Scale.Scale(intervals)      
 
-        self.meanPitch /= totalSoundDuration   
-        
-    def fill_sacle(self):
+    '''
+    Elige una escala entre la lista de escalas provista en el supuesto de que la canción tenga 
+    menos de 7 notas (la escala formada originalmente es incompleta) con el siguiente criterio:
+        Se prioriza la escala a elegir por su orden en la lista
+        Si hay una escala que cubre el conjunto de notas con tónicas diferentes, 
+        se elegira la nota más frecuente
+        Existen dos iteraciones:
+            1- Se asume que la tónica se encuantra en este conjunto
+            2- No se ha encontrado ningún par (escala, tónica) que compla con 
+            el criterio 1, así que se busca una escala cuya tónica no pertenezca 
+            al conjunto original de notas
+        A pesar de todo ello podría ocurrir que no se encuentre ninguna escala que cumpla
+        los requisitos, en ese caso, se conservara la escala original y se devolverá False
+    '''
+    def fill_scale(self, possibleScales = Scale.allScales):
         if (self.scale.len() >= 7):
-            return
+            return True
         
-        print(f"Escala base: ", end="")
-        self.scale.print_scale()
-        print(f"Tónica base: {self.tonic.name}")
-        print(f"Grados:", end="\n")
+        print(f"Escala base:", end="\n")
         self.scale.create_degrees()
         self.scale.print_degrees()
-
+        print(f"Tónica base: {self.tonic.name}")
+        
         degrees = self.scale.degrees
         degrees.insert(0, self.scale)     
 
-        fittingScales = []
+        fittingTonics = []
 
-        for i, degree in enumerate(degrees):
-            for name, scale in possibleScales.items():
-                if scale.containsScale(degree):
-                    tonic = Note.Note((self.tonic.pitch + self.scale.scale[i].semitones) % 12)
-                    fittingScales.append((tonic, name))
+        for name, possibleScale in possibleScales.items():
+            for degreeIdx, degree in enumerate(degrees):
+                if possibleScale.containsScale(degree):
+                    tonic = Note.Note((self.tonic.pitch + self.scale.scale[degreeIdx].semitones) % 12)
+                    fittingTonics.append(tonic)
                     print(f"Escala {name} coincidente con tónica en {tonic.name}")
+            if fittingTonics:
+                self.scale = possibleScale
+                break
 
-        if not fittingScales:
+        if not fittingTonics:
+            print(f"No hay escala coincidente cuya tónica sea alguna de las notas del conjunto")
 
-            print(f"No hay escala tonal coincidente cuya tónica sea alguna de las notas de la melodía")
+            for name, possibleScale in possibleScales.items():
+                possibleScale.create_degrees()
+                pDegrees = possibleScale.degrees
+                for degreeIdx, degree in enumerate(degrees):
+                    for pDegreeIdx, pDegree in enumerate(pDegrees, start=1):
+                        if pDegree.containsScale(degree):
+                            tonic = Note.Note((self.tonic.pitch + 
+                                    self.scale.scale[degreeIdx].semitones - 
+                                    possibleScale.scale[pDegreeIdx].semitones) % 12)
+                            fittingTonics.append(tonic)
+                            print(f"Escala {name} coincidente con tónica en {tonic.name}")
+                if fittingTonics:
+                    self.scale = possibleScale
+                    break
 
-            majorDegrees = possibleScales["Major"].__copy__()
-            majorDegrees.create_degrees()
-            majorDegrees = majorDegrees.degrees
-
-            for i, degree in enumerate(degrees):
-                for j, majorDegree in enumerate(majorDegrees, start=1):
-                    if majorDegree.containsScale(degree):
-                        tonic = Note.Note(self.tonic.pitch + self.scale.scale[i].semitones)
-                        print(f"Modo {possibleScales['Major'].scale[j].get_name()} coincidente con tónica en {tonic.name}")
-                        tonic = Note.Note(tonic.pitch - possibleScales['Major'].scale[j].semitones)
-                        print(f"Se traduce a una escala Mayor con tónica en {tonic.name}")
-                        fittingScales.append((tonic, "Major"))
-
-        if not fittingScales:
+        if not fittingTonics:
              print(f"No hay ninguna escala tonal coincidente")
-             return
+             return False
+        
+        bestResult = -1
+        for tonic in fittingTonics:
+            result = self.noteFrequencies[tonic.pitch]
+            if result > bestResult:
+                bestResult = result
+                self.tonic = tonic
 
-        finalScale = fittingScales[random.randint(0, len(fittingScales) - 1)]
-        self.tonic = finalScale[0]
-        self.scale = possibleScales[finalScale[1]].__copy__()
-
+        print(f"Escala elegida:", end="\n")
+        self.scale.create_degrees()
+        self.scale.print_degrees()
+        print(f"Tónica elegida: {self.tonic.name}")
         self.scale.absolutize_scale(self.tonic)
-        print("Escala elegida:")
-        self.scale.print_scale()
-        self.scale.print_absolutized_scale()    
+        self.scale.print_absolutized_scale() 
 
+        return True
+
+    def most_frequent_note(self):
+        return Note.Note(self.noteFrequencies.index(max(self.noteFrequencies))) 
+
+    '''
+    Establece la escala de la canción y su tónica
+    En caso de omitir la tónica, esta se busca de forma que la tonalidad
+    cuya tónica deje menos notas fuera de la escala es la elegida
+    En caso de empata se elige la nota más frecuente como tónica
+    '''
     def choose_sacle(self, scale, tonic = None):
 
         if tonic is not None:
@@ -177,16 +204,20 @@ class Song:
         self.tonic = Note.Note((self.tonic.pitch + self.scale.scale[bestDegree].semitones) % 12)
         self.scale = scale
 
-        print(f"Tónica elegida: {self.tonic.name}")
+        print(f"Tónica elegida: {self.tonic.name}") 
 
-        return   
+    '''
+    Ajusta las notas a la escala, midiendo la distancia de edición:
+        ditancia = distancia en semitonos * penalización por distancia + penalización de la nota
+    Si las penalizaciones por cada nota son muy dispares puede ocurrir que notas que 
+    originalmente sí pertenacían a la escala se reajusten a otras de menor penalización
+    '''
+    def fit_notes(self, distancePenalty = 1, notePenalties = None):
 
-    def fit_notes(self, pitchDistanceWeight = 1, noteWeights = None):
-
-        if noteWeights is None:
-            noteWeights = [1] * self.scale.len()
-        elif len(noteWeights) != self.scale.len():
-            raise Exception("La lista de pesos de las notas debe tener el mismo número de elemetos que la escala")
+        if notePenalties is None:
+            notePenalties = [0] * self.scale.len()
+        elif len(notePenalties) != self.scale.len():
+            raise Exception("Tamaños no coincidentes")
 
         scalePitches = []
         for interval in self.scale.scale:
@@ -205,8 +236,8 @@ class Song:
                     pitchDistances.append(0)
 
             lowestDistance = sys.maxsize  
-            for pitchIdx, (pitchDistance, noteWeight) in enumerate(zip(pitchDistances, noteWeights)):
-                distance = pitchDistance * pitchDistanceWeight + noteWeight
+            for pitchIdx, (pitchDistance, notePenalty) in enumerate(zip(pitchDistances, notePenalties)):
+                distance = pitchDistance * distancePenalty + notePenalty
                 if distance < lowestDistance:
                     lowestDistance = distance
                     newPitchIdx = pitchIdx
@@ -216,6 +247,9 @@ class Song:
             else:
                 note['note'] -= pitchDistances[newPitchIdx]
 
+    def set_harmony(self, possibleChords = Harmony.allChords):
+        self.harmony = Harmony.Harmony(self.scale, possibleChords)
+        self.harmony.relativize_chords()
 
     """
     Armoniza la música según ciertos parámetros.

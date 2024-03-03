@@ -37,7 +37,7 @@ def modal(mode):
     print(f'{mode}: {tonic.name}')
     print(f'Color note: {Note.Note(tonic.pitch + modalModel.colorNotes[0].semitones).name}')
     song.choose_sacle(modalModel.modalScale, tonic)
-    song.fit_notes(noteWeights=noteWeights)
+    song.fit_notes(notePenalties=noteWeights)
 
     harmony = song.armonize(type="win",
                             timeSignatures = [
@@ -67,7 +67,8 @@ def standar():
     # MidiUtils.debug_midi_file("midi/input_song.mid", "files/midi_out.txt") 
     # Song.debug_song(notes, "files/notes_out.txt")
     song = Song.Song(notes, ticksPerBeat)
-    song.fill_sacle()
+    song.fill_scale()
+    # song.set_harmony(someChords)
     harmony = song.armonize(type = "win",
                             timeSignatures = [
                                 ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
@@ -91,9 +92,9 @@ def standar():
 
 if __name__ == "__main__":
     standar()
-    for mode in ModalPerspective.modes:
-        if mode is not None:
-            modal(mode)
+    # for mode in ModalPerspective.modes:
+    #     if mode is not None:
+    #         modal(mode)
 
     
 
