@@ -417,7 +417,7 @@ def cargarDrums(tematica):
             estilo = "JAZZ"
     elif(tematica == 1):
         estilo = "BASIC"
-
+    
     cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
     cargarMidi("midi/output_"+estilo+"_drumPatternB.mid")
     cargarMidi("midi/output_"+estilo+"_drumPatternA.mid")
@@ -564,7 +564,8 @@ arreglo = [[False] * 8 for _ in range(7)]
 
 arreglo = [[random.choice([True, False]) for _ in range(8)] for _ in range(7)]
 
-arreglo[6] = [False]*8
+if tematica == 1:
+    arreglo[6] = [False]*8
 
 # Nos aseguramos de que no haya ningún espacio de tiempo en silencio
 for col in range(len(arreglo[0])):
@@ -578,7 +579,7 @@ for col in range(len(arreglo[0])):
     if arreglo[2][col] and arreglo[3][col]:
         arreglo[3][col] = False
 
-if(tematica == 1):
+if tematica == 1:
     # Contar la cantidad de True en cada columna
     column_counts = [sum(1 for row in arreglo if row[col]) for col in range(len(arreglo[0]))]
 
