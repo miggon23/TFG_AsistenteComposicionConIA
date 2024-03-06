@@ -38,9 +38,7 @@ class App:
         #Setting de texto y botones
         self.setStyle()
         self.setButtons()
-        
 
-        #Llama al bucle de la aplicación
         
     def run(self):
         self.root.mainloop()
@@ -68,16 +66,13 @@ class App:
         style = ttk.Style()
         style.configure("TButton", padding=6, relief="flat", background="#ccc")
 
-        l1 = ttk.Label(self.frame, text="Generador Musical", font=30,)
+        l1 = ttk.Label(self.frame, text="Generador Musical", font=30, padding=[30, 30, 30, 30])
         l1.grid(column = 0, row = 0)
         l1.anchor(N)
 
     def prueba(self):
         print("Saliendo")
         self.root.destroy()
-
-    def saveCompass(self):
-        print(self.spinButton.get())
 
     def setButtons(self):
         ttk.Button(self.frame, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
@@ -86,8 +81,6 @@ class App:
         ttk.Spinbox(self.frame, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
         ttk.Button(self.frame, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
         ttk.Button(self.frame, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
-        ttk.Button(self.frame, text = "Salir", command = self.prueba).grid(column=0, row = 10)
-        
 
 
 
