@@ -76,8 +76,12 @@ def crearPista1(i, tematica, preset):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        if(preset == 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        elif(preset == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo1")
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -103,12 +107,18 @@ def crearPista1(i, tematica, preset):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
+    
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+    if(tematica != 1):
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+
 
 
 #Acompañamiento instrumento 3 y 4   
@@ -139,8 +149,12 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Elektrik Keyz (x86) (DSK)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        if(preset == 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        elif(preset == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo1")
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DPiano-A (Dead Duck Software)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -173,6 +187,10 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+    if(tematica != 1):
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+
 #Pads instrumento 5   
 def crearPista5(pista, tematica, preset):
     i = pista-1
@@ -192,8 +210,12 @@ def crearPista5(pista, tematica, preset):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "VSTi: DSK Strings (x86) (DSK)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        if(preset == 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo0")
+        elif(preset == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pianoSolo1")
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -226,6 +248,10 @@ def crearPista5(pista, tematica, preset):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+    if(tematica != 1): 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+
 #Bajo instrumento 6   
 def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
     i = pista-1
@@ -255,8 +281,12 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK BassZ (x86) (DSK MusicSZZ)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo0")
+        if(preset == 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo0")
+        elif(preset == 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo1")
     elif(tematica == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "tal-noiseMaker", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
@@ -288,6 +318,10 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+    if(tematica != 1):
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
 #Batería instrumento 7   
 def crearPista7(pista, tematica, preset, fill, preset_fill):
@@ -349,6 +383,9 @@ def crearPista7(pista, tematica, preset, fill, preset_fill):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+
 
 #Transiciones instrumento 8 y 9   
 def crearPista8(pista, tematica, preset, preset2, preset3):
@@ -367,8 +404,12 @@ def crearPista8(pista, tematica, preset, preset2, preset3):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "riserTematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
+            if(tematica == 0):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
+            elif(preset == 1):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo1")
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "riser"+str(preset2))
@@ -391,9 +432,12 @@ def crearPista10(pista, tematica, preset, preset2, preset3):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "downriserTematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
-    
+            if(preset == 0):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
+            elif(preset == 1):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo1")
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "downriser"+str(preset3))
@@ -436,7 +480,7 @@ for i in range (20):
 for i in range (10):
     RPR_TrackFX_Delete(RPR_GetMasterTrack(0), 0)
 
-n_tracks = 12
+n_tracks = 15
 
 for i in range(n_tracks):
     RPR_InsertTrackAtIndex(i, True)
@@ -445,49 +489,67 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-tematica = 0
+tematica = 1
 reverb = True
-entorno = 3
-lofi = True
+entorno = 1
+lofi = False
 retro = False
 agua = False
 
-#Melodía instrumento 1    
-crearPista1(1, tematica, random.randint(0, 9))
 
-#Melodía instrumento 2    
-crearPista1(2, tematica, random.randint(0, 9))
+if(tematica == 1):
+    presetPiano = random.randint(0, 1)        
+    
+    crearPista1(1, tematica, presetPiano)   
+    crearPista1(2, tematica, presetPiano)
+    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
+    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
+    crearPista5(5, tematica, presetPiano)
+    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
+    presetBateria = random.randint(0, 9)
+    crearPista7(7, tematica, presetBateria, False, 0)
+    crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
+    crearPista8(9, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
+    crearPista10(10, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
+    crearPista10(11, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
+    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+else:
+    #Melodía instrumento 1    
+    crearPista1(1, tematica, random.randint(0, 9))
 
-#Acompañamiento 1
-crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    #Melodía instrumento 2    
+    crearPista1(2, tematica, random.randint(0, 9))
 
-#Acompañamiento 2
-crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    #Acompañamiento 1
+    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
-#Pads o strings
-crearPista5(5, tematica, random.randint(0, 9))
+    #Acompañamiento 2
+    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
-#Bajo
-crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    #Pads o strings
+    crearPista5(5, tematica, random.randint(0, 9))
 
-presetBateria = random.randint(0, 9)
-#Batería
-crearPista7(7, tematica, presetBateria, False, 0)
+    #Bajo
+    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
 
-#Transiciones 1
-crearPista8(8, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    presetBateria = random.randint(0, 9)
+    #Batería
+    crearPista7(7, tematica, presetBateria, False, 0)
 
-#Transiciones 2
-crearPista8(9, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    #Transiciones 1
+    crearPista8(8, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 
-#Transiciones 3
-crearPista10(10, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    #Transiciones 2
+    crearPista8(9, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 
-#Transiciones 4
-crearPista10(11, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    #Transiciones 3
+    crearPista10(10, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 
-#Drum Fills
-crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+    #Transiciones 4
+    crearPista10(11, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+    #Drum Fills
+    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
 
 
 for i in range(5):
@@ -530,11 +592,14 @@ RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
 if(tematica != 1):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
 
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixTematica"+str(tematica)) 
+
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "expansor") 
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "expansor") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "mastering1") 
+RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
 
 
 ## Cortar el midi
@@ -567,6 +632,9 @@ arreglo = [[random.choice([True, False]) for _ in range(8)] for _ in range(7)]
 if tematica == 1:
     arreglo[6] = [False]*8
 
+if arreglo[0][0]:
+    arreglo[1][0] = False
+
 # Nos aseguramos de que no haya ningún espacio de tiempo en silencio
 for col in range(len(arreglo[0])):
     column_values = [row[col] for row in arreglo]
@@ -593,6 +661,11 @@ if tematica == 1:
             # Mantener las primeras dos filas con True, según la prioridad
             for idx in true_rows[2:]:
                 arreglo[idx][col] = False
+        elif column_counts[col] == 1:
+            if arreglo[0][col] == True:
+                arreglo[3][col] == True
+            else:
+                arreglo[0][col] == True
 
 # Contar la cantidad de True en la primera columna
 first_column_count = sum(1 for row in arreglo if row[0])

@@ -335,7 +335,7 @@ downriser0 - downriser9 ValhallaSupermassive (Valhalla DSP, LLC)
 
 	TEMATICA PIANO
 pianoSolo0 Room Piano v3 (SampleScience) (32 out)
-pianoSolo1
+pianoSolo1 Pianotone 600 v2 (SampleScience) (32 out)
 
 	ARPEGIADOR      BlueARP (omg-instruments)
 arpegio0
@@ -385,8 +385,10 @@ fill9
 	HUMANIZADOR       Humanisator (x86) (Tobybear)
 humanisator1      (genérico)
 humanisator2      (melodías)
+humanisator3      (percusion)
+humanisator3      (fills)
 
-	AUTO GAIN         ReaComp (Cockos)
+	GAIN         ReaComp (Cockos)
 			  ReaLimit (Cockos)
 gain1
 gain3
@@ -395,13 +397,28 @@ gain6
 gain7
 
 	LOFI              Unison Zen Master (Unison)
+lofi0
 lofi1
+lofi2
+lofi3
+lofi4
+lofi5
+lofi6
+lofi7
+lofi8
+lofi9
 
 	RETRO		  COMPAKT (x86) (!!!!!!Team AiR!!!!!!) (mono)
 retro1
 
 	EQ                ReaEQ (Cockos)
 eqAgua1
+eqMixTematica0
+eqPista1
+eqPista3
+eqPista5
+eqPista6
+eqPista7
 
 	REVERB            OrilRiver (Denis Tihanov) 
 entorno0
