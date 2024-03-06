@@ -331,7 +331,13 @@ downriserTematica0_9 TAL-NoiseMaker (TAL-Togu Audio Line)
 
 downriser0 - downriser9 Flux Mini 2 (Caelum Audio)
 downriser0 - downriser9 ValhallaSupermassive (Valhalla DSP, LLC)
+	
+	CANDY
+candyTematica0_0
 
+candy0 - candy9 Flux Mini 2 (Caelum Audio)
+candyGate0 - candyGate9 Flux Mini 2 (Caelum Audio)
+candy0 - candy9 CRMBL (unplugred)
 
 	TEMATICA PIANO
 pianoSolo0 Room Piano v3 (SampleScience) (32 out)
@@ -381,6 +387,17 @@ fill6
 fill7
 fill8
 fill9
+
+candy0
+candy1
+candy2
+candy3
+candy4
+candy5
+candy6
+candy7
+candy8
+candy9
 
 	HUMANIZADOR       Humanisator (x86) (Tobybear)
 humanisator1      (genérico)

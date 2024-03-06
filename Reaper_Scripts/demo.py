@@ -445,7 +445,35 @@ def crearPista10(pista, tematica, preset, preset2, preset3):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "downriser"+str(preset2))
 
+#Ear candy instrumento 13, 14 y 15   
+def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpegio):
+    i = pista-1
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "candy"+str(preset_arpegio)) 
+    
+    if(tematica == 0):
+        if(preset <= 0):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
+    elif(tematica == 1):
+            if(preset == 0):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo0")
+            elif(preset == 1):
+                RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
+                RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "pianoSolo1")
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "candy"+str(preset2))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "candyGate"+str(preset3))
+
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "CRMBL (unplugred)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "candy"+str(preset4))
 
 def cargarDrums(tematica):
         
@@ -513,6 +541,9 @@ if(tematica == 1):
     crearPista10(10, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
     crearPista10(11, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
     crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+    crearPista13(13, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista13(14, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista13(15, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 else:
     #Melodía instrumento 1    
     crearPista1(1, tematica, random.randint(0, 9))
@@ -550,6 +581,15 @@ else:
 
     #Drum Fills
     crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+
+    #Ear Candy 1
+    crearPista13(13, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+    #Ear Candy 2
+    crearPista13(14, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+
+    #Ear Candy 3
+    crearPista13(15, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 
 
 for i in range(5):
@@ -686,6 +726,9 @@ riser = [False] * len(arreglo[0])
 downriser = [False] * len(arreglo[0])
 drumFill = [False] * len(arreglo[0])
 
+# Calcular posiciones para colocar ear candy
+candy = [False] * len(arreglo[0])
+
 
 # Marcamos las casillas que serán True en la siguiente columna
 for col in range(len(arreglo[0]) - 1):
@@ -726,7 +769,10 @@ for col in range(len(arreglo[0]) - 1):
     if (next_true_counts[col + 1] + 1) < next_false_counts[col + 1]:
         downriser[col + 1] = True
 
-
+for col in range(len(arreglo[0])):
+    contador_true = sum(arreglo[fila][col] for fila in range(len(arreglo)))
+    if contador_true <= 3:
+        candy[col] = True
 
 
 # Mover el cursor al inicio de la pista
@@ -831,6 +877,19 @@ for value in drumFill:
     if value:
         RPR_SetEditCurPos(i * 16 + 14, True, True)
         cargarMidi("midi/fillTemplate.mid")
+    i += 1
+
+    
+i = 0
+pista = 12
+for value in candy:
+    if pista < 15 and value:
+        
+        RPR_SetOnlyTrackSelected(RPR_GetTrack(0, pista))
+        RPR_SetEditCurPos(i * 16, True, True)
+        cargarMidi("midi/output_harmony.mid")
+        
+        pista += 1
     i += 1
 
 

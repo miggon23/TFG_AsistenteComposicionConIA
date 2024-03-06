@@ -1,0 +1,34 @@
+Temática:
+0-Pradera
+1-Piano
+2-Desierto
+3-Nieve
+4-Pirata
+5-Selva
+6-Épico
+7-Tenebroso
+8-Espacio
+9-Agua
+
+-Asiático?
+-Medieval?
+
+Entorno:
+
+0-Exterior
+1-Interior sala pequeña
+2-Interior sala grande
+3-Musical
+4-Cueva
+5-Catedral
+6-Pasillo
+
+Carácter:
++Retro?
++Bajo el agua?
++LoFi
+
+Fase:
+-1
+-2
+-3
