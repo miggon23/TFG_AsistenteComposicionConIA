@@ -121,9 +121,9 @@ pista3tematica9_5
 pista3tematica9_6
 
 	PAD INSTRUMENTO 5
-pista5tematica0_0 DSK ChoirZ (x86) (DSK Music)
-pista5tematica0_1 DSK ChoirZ (x86) (DSK Music)
-pista5tematica0_2 DSK ChoirZ (x86) (DSK Music)
+pista5tematica0_0 Spicy Guitar (64 bits) (Keolab)
+pista5tematica0_1 Spicy Guitar (64 bits) (Keolab)
+pista5tematica0_2 Spicy Guitar (64 bits) (Keolab)
 pista5tematica0_3 DSK Strings (x86) (DSK)
 pista5tematica0_4 DSK Strings (x86) (DSK)
 pista5tematica0_5 DSK Strings (x86) (DSK)
@@ -333,7 +333,17 @@ downriser0 - downriser9 Flux Mini 2 (Caelum Audio)
 downriser0 - downriser9 ValhallaSupermassive (Valhalla DSP, LLC)
 	
 	CANDY
-candyTematica0_0
+candyTematica0_0 Ocarina (x86) (Christopher Clews) (mono)
+candyTematica0_1 Ocarina (x86) (Christopher Clews) (mono)
+candyTematica0_2 Ocarina (x86) (Christopher Clews) (mono)
+candyTematica0_3 VSCO2 Marimba (bigcat) (32 out)
+candyTematica0_4 Ukulele (x86) (Christopher Clews) (mono)
+candyTematica0_5 Ukulele (x86) (Christopher Clews) (mono)
+candyTematica0_6 Clap Machine (99Sounds) (16 out)
+candyTematica0_7 Clap Machine (99Sounds) (16 out)
+candyTematica0_8 DPiano-A (Dead Duck Software)
+candyTematica0_9 DPiano-A (Dead Duck Software)
+
 
 candy0 - candy9 Flux Mini 2 (Caelum Audio)
 candyGate0 - candyGate9 Flux Mini 2 (Caelum Audio)
@@ -342,6 +352,14 @@ candy0 - candy9 CRMBL (unplugred)
 	TEMATICA PIANO
 pianoSolo0 Room Piano v3 (SampleScience) (32 out)
 pianoSolo1 Pianotone 600 v2 (SampleScience) (32 out)
+pianoSolo2 EVM Grand Piano v1.1 (x86) (Etric van-mayer)
+pianoSolo3 DPiano-A (Dead Duck Software)
+pianoSolo4 DPiano-A (Dead Duck Software)
+pianoSolo5 DPiano-A (Dead Duck Software)
+pianoSolo6 DPiano-A (Dead Duck Software)
+pianoSolo7 DPiano-A (Dead Duck Software)
+pianoSolo8 Upright Piano (audiolatry) (32 out)
+pianoSolo9 Upright Piano (audiolatry) (32 out)
 
 	ARPEGIADOR      BlueARP (omg-instruments)
 arpegio0
@@ -403,7 +421,7 @@ candy9
 humanisator1      (genérico)
 humanisator2      (melodías)
 humanisator3      (percusion)
-humanisator3      (fills)
+humanisator4      (fills)
 
 	GAIN         ReaComp (Cockos)
 			  ReaLimit (Cockos)
@@ -412,6 +430,7 @@ gain3
 gain5
 gain6
 gain7
+gain13
 
 	LOFI              Unison Zen Master (Unison)
 lofi0
@@ -425,7 +444,7 @@ lofi7
 lofi8
 lofi9
 
-	RETRO		  COMPAKT (x86) (!!!!!!Team AiR!!!!!!) (mono)
+	RETRO		  DeltaModulator (Xfer Records)
 retro1
 
 	EQ                ReaEQ (Cockos)

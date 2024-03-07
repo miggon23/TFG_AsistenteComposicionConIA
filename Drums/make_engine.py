@@ -97,7 +97,8 @@ class Make_Engine:
             i = 12
             if delayed: i += delayedN
             elif rushed: i -= rushedN
-            list[i] = Note.OpenHiHat.value
+            if i < 16:
+                list[i] = Note.OpenHiHat.value
             if double2 and (i + double2N) < 16: list[i + double2N] = Note.OpenHiHat.value
 
         elif(style.value == Style.ROCK.value):
