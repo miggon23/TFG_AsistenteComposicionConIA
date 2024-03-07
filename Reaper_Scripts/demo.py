@@ -609,7 +609,7 @@ tematica = 0
 reverb = True
 entorno = 0
 lofi = False
-retro = True
+retro = False
 agua = False
 
 
