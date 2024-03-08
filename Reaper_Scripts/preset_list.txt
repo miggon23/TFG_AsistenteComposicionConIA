@@ -10,12 +10,17 @@ pista1tematica0_7 DSK Strings (x86) (DSK)
 pista1tematica0_8 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 pista1tematica0_9 DSK AkoustiK Keyz (x86) (DSK MusicSZZ)
 
-pista1tematica2_1
-pista1tematica2_2
-pista1tematica2_3
-pista1tematica2_4
-pista1tematica2_5
-pista1tematica2_6
+pista1tematica2_0 Room Piano v3 (SampleScience) (32 out)
+pista1tematica2_1 Zither Renaissance v2 (SampleScience) (32 out)
+pista1tematica2_2 Zither Renaissance v2 (SampleScience) (32 out)
+pista1tematica2_3 Sitar (x86) (Christopher Clews)
+pista1tematica2_4 Sitar (x86) (Christopher Clews)
+pista1tematica2_5 Sitar (x86) (Christopher Clews)
+pista1tematica2_6 DSK Indian DreamZ (x86) (DSK MusicSZZ)
+pista1tematica2_7 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
+pista1tematica2_8 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
+pista1tematica2_9 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
+
 pista1tematica3_1
 pista1tematica3_2
 pista1tematica3_3
@@ -71,12 +76,18 @@ pista3tematica0_7 Spicy Guitar (64 bits) (Keolab)
 pista3tematica0_8 DSK Elektrik Keyz (x86) (DSK)
 pista3tematica0_9 DSK Elektrik Keyz (x86) (DSK)
 
-pista3tematica2_1
-pista3tematica2_2
-pista3tematica2_3
+pista3tematica2_0 DSK World String (DSK Music) (32 out)
+pista3tematica2_1 DSK World String (DSK Music) (32 out)
+pista3tematica2_2 DSK World String (DSK Music) (32 out)
+pista3tematica2_3 DSK World String (DSK Music) (32 out)
 pista3tematica2_4
 pista3tematica2_5
 pista3tematica2_6
+pista3tematica2_7
+pista3tematica2_8
+pista3tematica2_9
+
+
 pista3tematica3_1
 pista3tematica3_2
 pista3tematica3_3
