@@ -21,24 +21,39 @@ pista1tematica2_7 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
 pista1tematica2_8 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
 pista1tematica2_9 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
 
-pista1tematica3_1
-pista1tematica3_2
-pista1tematica3_3
-pista1tematica3_4
-pista1tematica3_5
-pista1tematica3_6
-pista1tematica4_1
-pista1tematica4_2
-pista1tematica4_3
-pista1tematica4_4
-pista1tematica4_5
-pista1tematica4_6
-pista1tematica5_1
-pista1tematica5_2
-pista1tematica5_3
-pista1tematica5_4
-pista1tematica5_5
-pista1tematica5_6
+pista1tematica3_0 Virtual Handpan (SampleScience) (32 out)
+pista1tematica3_1 Virtual Handpan (SampleScience) (32 out)
+pista1tematica3_2 Quilcom SIM-DIZI v1.002 (Rex Basterfield)
+pista1tematica3_3 Quilcom SIM-MBIRA v1.00 (Rex Basterfield)
+pista1tematica3_4 Quilcom SIM-MBIRA v1.00 (Rex Basterfield)
+pista1tematica3_5 Quilcom SIM-MBIRA v1.00 (Rex Basterfield)
+pista1tematica3_6 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista1tematica3_7 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista1tematica3_8 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista1tematica3_9 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+
+pista1tematica4_0 DSK World String (DSK Music) (32 out)
+pista1tematica4_1 DSK World String (DSK Music) (32 out)
+pista1tematica4_2 Accordion (x86) (Safwan Matni)
+pista1tematica4_3 Accordion (x86) (Safwan Matni)
+pista1tematica4_4 DSK Indian DreamZ (x86) (DSK MusicSZZ)
+pista1tematica4_5 Ukulele (x86) (Christopher Clews) (mono)
+pista1tematica4_6 DSK Strings (x86) (DSK)
+pista1tematica4_7 DSK Strings (x86) (DSK)
+pista1tematica4_8 Keyzone (x86) (Bitsonic LP)
+pista1tematica4_9 Keyzone (x86) (Bitsonic LP)
+
+pista1tematica5_0 VSCO2 Marimba (bigcat) (32 out)
+pista1tematica5_1 01 Pipa (DSK Music) (32 out)
+pista1tematica5_2 01 Pipa (DSK Music) (32 out)
+pista1tematica5_3 01 Pipa (DSK Music) (32 out)
+pista1tematica5_4 01 Pipa (DSK Music) (32 out)
+pista1tematica5_5 DSK Indian DreamZ (x86) (DSK MusicSZZ)
+pista1tematica5_6 DSK Indian DreamZ (x86) (DSK MusicSZZ)
+pista1tematica5_7 Sonatina Xylopho (Maizesoft) (32 out)
+pista1tematica5_8 Quilcom SIM-MBIRA v1.00 (Rex Basterfield)
+pista1tematica5_9 Quilcom SIM-MBIRA v1.00 (Rex Basterfield)
+
 pista1tematica6_1
 pista1tematica6_2
 pista1tematica6_3
@@ -80,32 +95,46 @@ pista3tematica2_0 DSK World String (DSK Music) (32 out)
 pista3tematica2_1 DSK World String (DSK Music) (32 out)
 pista3tematica2_2 DSK World String (DSK Music) (32 out)
 pista3tematica2_3 DSK World String (DSK Music) (32 out)
-pista3tematica2_4
-pista3tematica2_5
-pista3tematica2_6
-pista3tematica2_7
-pista3tematica2_8
-pista3tematica2_9
+pista3tematica2_4 Spicy Guitar (64 bits) (Keolab)
+pista3tematica2_5 Spicy Guitar (64 bits) (Keolab)
+pista3tematica2_6 Spicy Guitar (64 bits) (Keolab)
+pista3tematica2_7 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica2_8 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica2_9 Toy Keyboard v3 (SampleScience) (32 out)
 
+pista3tematica3_0 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista3tematica3_1 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista3tematica3_2 Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)
+pista3tematica3_3 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_4 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_5 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_6 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_7 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_8 Toy Keyboard v3 (SampleScience) (32 out)
+pista3tematica3_9 Toy Keyboard v3 (SampleScience) (32 out)
 
-pista3tematica3_1
-pista3tematica3_2
-pista3tematica3_3
-pista3tematica3_4
-pista3tematica3_5
-pista3tematica3_6
-pista3tematica4_1
-pista3tematica4_2
-pista3tematica4_3
-pista3tematica4_4
-pista3tematica4_5
-pista3tematica4_6
-pista3tematica5_1
-pista3tematica5_2
-pista3tematica5_3
-pista3tematica5_4
-pista3tematica5_5
-pista3tematica5_6
+pista3tematica4_0 Keyzone (x86) (Bitsonic LP)
+pista3tematica4_1 Keyzone (x86) (Bitsonic LP)
+pista3tematica4_2 Spicy Guitar (64 bits) (Keolab)
+pista3tematica4_3 Spicy Guitar (64 bits) (Keolab)
+pista3tematica4_4 Spicy Guitar (64 bits) (Keolab)
+pista3tematica4_5 Spicy Guitar (64 bits) (Keolab)
+pista3tematica4_6 MF Concert Guita (bigcat) (32 out)
+pista3tematica4_7 Accordion (x86) (Safwan Matni)
+pista3tematica4_8 Accordion (x86) (Safwan Matni)
+pista3tematica4_9 Accordion (x86) (Safwan Matni)
+
+pista3tematica5_0 VSCO2 Marimba (bigcat) (32 out)
+pista3tematica5_1 VSCO2 Marimba (bigcat) (32 out) 
+pista3tematica5_2 01 Pipa (DSK Music) (32 out)
+pista3tematica5_3 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista3tematica5_4 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista3tematica5_5 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista3tematica5_6 Quilcom SIM-DUNUN v1.001 (Rex Basterfield)
+pista3tematica5_7 Quilcom SIM-DUNUN v1.001 (Rex Basterfield)
+pista3tematica5_8 DSK Strings (x86) (DSK)
+pista3tematica5_9 DSK Strings (x86) (DSK)
+
 pista3tematica6_1
 pista3tematica6_2
 pista3tematica6_3
@@ -143,30 +172,50 @@ pista5tematica0_7 DSK Strings (x86) (DSK)
 pista5tematica0_8 DSK Strings (x86) (DSK)
 pista5tematica0_9 DSK Strings (x86) (DSK)
 
-pista5tematica2_1
-pista5tematica2_2
-pista5tematica2_3
-pista5tematica2_4
-pista5tematica2_5
-pista5tematica2_6
-pista5tematica3_1
-pista5tematica3_2
-pista5tematica3_3
-pista5tematica3_4
-pista5tematica3_5
-pista5tematica3_6
-pista5tematica4_1
-pista5tematica4_2
-pista5tematica4_3
-pista5tematica4_4
-pista5tematica4_5
-pista5tematica4_6
-pista5tematica5_1
-pista5tematica5_2
-pista5tematica5_3
-pista5tematica5_4
-pista5tematica5_5
-pista5tematica5_6
+pista5tematica2_0 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_1 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_2 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_3 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_4 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_5 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_6 Abstract Crystal (SampleScience) (32 out)
+pista5tematica2_7 DSK Strings (x86) (DSK)
+pista5tematica2_8 DSK Strings (x86) (DSK)
+pista5tematica2_9 DSK Strings (x86) (DSK)
+
+pista5tematica3_0 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica3_1 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica3_2 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica3_3 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica3_4 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica3_5 Sonatina Glocken (Maizesoft) (32 out)
+pista5tematica3_6 Sonatina Xylopho (Maizesoft) (32 out)
+pista5tematica3_7 Abstract Crystal (SampleScience) (32 out)
+pista5tematica3_8 Abstract Crystal (SampleScience) (32 out)
+pista5tematica3_9 Abstract Crystal (SampleScience) (32 out)
+
+pista5tematica4_0 water (x86) (rurik leffanta)
+pista5tematica4_1 water (x86) (rurik leffanta)
+pista5tematica4_2 water (x86) (rurik leffanta)
+pista5tematica4_3 DSK Strings (x86) (DSK)
+pista5tematica4_4 DSK Strings (x86) (DSK)
+pista5tematica4_5 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista5tematica4_6 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista5tematica4_7 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica4_8 Toy Keyboard v3 (SampleScience) (32 out)
+pista5tematica4_9 Toy Keyboard v3 (SampleScience) (32 out)
+
+pista5tematica5_0 DSK ChoirZ (x86) (DSK Music)
+pista5tematica5_1 DSK Strings (x86) (DSK)
+pista5tematica5_2 DSK Strings (x86) (DSK)
+pista5tematica5_3 Abstract Crystal (SampleScience) (32 out)
+pista5tematica5_4 Abstract Crystal (SampleScience) (32 out)
+pista5tematica5_5 Abstract Crystal (SampleScience) (32 out)
+pista5tematica5_6 Abstract Crystal (SampleScience) (32 out)
+pista5tematica5_7 oscine tract (x86) (rurik leffanta)
+pista5tematica5_8 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista5tematica5_9 TAL-NoiseMaker (TAL-Togu Audio Line)
+
 pista5tematica6_1
 pista5tematica6_2
 pista5tematica6_3
@@ -204,24 +253,39 @@ pista6tematica0_7 DSK BassZ (x86) (DSK MusicSZZ)
 pista6tematica0_8 DSK BassZ (x86) (DSK MusicSZZ)
 pista6tematica0_9 DSK BassZ (x86) (DSK MusicSZZ)
 
-pista6tematica2_1
-pista6tematica2_2
-pista6tematica2_3
-pista6tematica2_4
-pista6tematica2_5
-pista6tematica2_6
-pista6tematica3_1
-pista6tematica3_2
-pista6tematica3_3
-pista6tematica3_4
-pista6tematica3_5
-pista6tematica3_6
-pista6tematica4_1
-pista6tematica4_2
-pista6tematica4_3
-pista6tematica4_4
-pista6tematica4_5
-pista6tematica4_6
+pista6tematica2_0 OMB2 (x86) (Christopher Clews)
+pista6tematica2_1 OMB2 (x86) (Christopher Clews)
+pista6tematica2_2 OMB2 (x86) (Christopher Clews)
+pista6tematica2_3 OMB2 (x86) (Christopher Clews)
+pista6tematica2_4 OMB2 (x86) (Christopher Clews)
+pista6tematica2_5 OMB2 (x86) (Christopher Clews)
+pista6tematica2_6 OMB2 (x86) (Christopher Clews)
+pista6tematica2_7 DSK Strings (x86) (DSK)
+pista6tematica2_8 DSK Strings (x86) (DSK)
+pista6tematica2_9 DSK Strings (x86) (DSK)
+
+pista6tematica3_0 OMB2 (x86) (Christopher Clews)
+pista6tematica3_1 OMB2 (x86) (Christopher Clews)
+pista6tematica3_2 OMB2 (x86) (Christopher Clews)
+pista6tematica3_3 OMB2 (x86) (Christopher Clews)
+pista6tematica3_4 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista6tematica3_5 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista6tematica3_6 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista6tematica3_7 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista6tematica3_8 TAL-NoiseMaker (TAL-Togu Audio Line)
+pista6tematica3_9 TAL-NoiseMaker (TAL-Togu Audio Line)
+
+pista6tematica4_0 Accordion (x86) (Safwan Matni)
+pista6tematica4_1 Accordion (x86) (Safwan Matni)
+pista6tematica4_2 Accordion (x86) (Safwan Matni)
+pista6tematica4_3 Accordion (x86) (Safwan Matni)
+pista6tematica4_4 OMB2 (x86) (Christopher Clews)
+pista6tematica4_5 OMB2 (x86) (Christopher Clews)
+pista6tematica4_6 OMB2 (x86) (Christopher Clews)
+pista6tematica4_7 OMB2 (x86) (Christopher Clews)
+pista6tematica4_8 OMB2 (x86) (Christopher Clews)
+pista6tematica4_9 OMB2 (x86) (Christopher Clews)
+
 pista6tematica5_1
 pista6tematica5_2
 pista6tematica5_3
@@ -265,24 +329,39 @@ pista7tematica0_7 Apari Tenpan (x86) (Apari)
 pista7tematica0_8 DSK DrumZ 8bitZ (x86) (DSK Music)
 pista7tematica0_9 DSK DrumZ 8bitZ (x86) (DSK Music)
 
-pista7tematica2_1
-pista7tematica2_2
-pista7tematica2_3
-pista7tematica2_4
-pista7tematica2_5
-pista7tematica2_6
-pista7tematica3_1
-pista7tematica3_2
-pista7tematica3_3
-pista7tematica3_4
-pista7tematica3_5
-pista7tematica3_6
-pista7tematica4_1
-pista7tematica4_2
-pista7tematica4_3
-pista7tematica4_4
-pista7tematica4_5
-pista7tematica4_6
+pista7tematica2_0 Clap Machine (99Sounds) (16 out)
+pista7tematica2_1 Clap Machine (99Sounds) (16 out)
+pista7tematica2_2 Clap Machine (99Sounds) (16 out)
+pista7tematica2_3 Quilcom SIM-DUNUN v1.001 (Rex Basterfield)
+pista7tematica2_4 Quilcom SIM-DUNUN v1.001 (Rex Basterfield)
+pista7tematica2_5 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica2_6 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica2_7 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica2_8 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica2_9 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+
+pista7tematica3_0 DrumPlayer v1 (99Sounds) (32 out)
+pista7tematica3_1 DrumPlayer v1 (99Sounds) (32 out)
+pista7tematica3_2 DrumPlayer v1 (99Sounds) (32 out)
+pista7tematica3_3 DrumPlayer v1 (99Sounds) (32 out)
+pista7tematica3_4 AfroPlugin (AfroPlug) (32 out)
+pista7tematica3_5 AfroPlugin (AfroPlug) (32 out)
+pista7tematica3_6 Apari Tenpan (x86) (Apari)
+pista7tematica3_7 Apari Tenpan (x86) (Apari)
+pista7tematica3_8 DSK mini DRUMZ 2 (x86) (DSK Music)
+pista7tematica3_9 DSK mini DRUMZ 2 (x86) (DSK Music)
+
+pista7tematica4_0 AfroPlugin (AfroPlug) (32 out)
+pista7tematica4_1 AfroPlugin (AfroPlug) (32 out)
+pista7tematica4_2 AfroPlugin (AfroPlug) (32 out)
+pista7tematica4_3 Cassette 606 (BPB) (32 out)
+pista7tematica4_4 Cassette 606 (BPB) (32 out)
+pista7tematica4_5 Cassette 909 (BPB) (32 out)
+pista7tematica4_6 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica4_7 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica4_8 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+pista7tematica4_9 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+
 pista7tematica5_1
 pista7tematica5_2
 pista7tematica5_3
@@ -354,6 +433,39 @@ candyTematica0_6 Clap Machine (99Sounds) (16 out)
 candyTematica0_7 Clap Machine (99Sounds) (16 out)
 candyTematica0_8 DPiano-A (Dead Duck Software)
 candyTematica0_9 DPiano-A (Dead Duck Software)
+
+candyTematica2_0 Clap Machine (99Sounds) (16 out)
+candyTematica2_1 Clap Machine (99Sounds) (16 out)
+candyTematica2_2 Clap Machine (99Sounds) (16 out)
+candyTematica2_3 Sitar (x86) (Christopher Clews)
+candyTematica2_4 Sitar (x86) (Christopher Clews)
+candyTematica2_5 DSK World String (DSK Music) (32 out)
+candyTematica2_6 DSK World String (DSK Music) (32 out)
+candyTematica2_7 Quilcom SIM-MIJWIZ v1.00 (Rex Basterfield)
+candyTematica2_8 Quilcom SIM-MIJWIZ v1.00 (Rex Basterfield)
+candyTematica2_9 Quilcom SIM-MIJWIZ v1.00 (Rex Basterfield)
+
+candyTematica3_0 Virtual Handpan (SampleScience) (32 out)
+candyTematica3_1 Virtual Handpan (SampleScience) (32 out)
+candyTematica3_2 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_3 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_4 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_5 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_6 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_7 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_8 Toy Keyboard v3 (SampleScience) (32 out)
+candyTematica3_9 Toy Keyboard v3 (SampleScience) (32 out)
+
+candyTematica4_0 water (x86) (rurik leffanta)
+candyTematica4_1 water (x86) (rurik leffanta)
+candyTematica4_2 water (x86) (rurik leffanta)
+candyTematica4_3 water (x86) (rurik leffanta)
+candyTematica4_4 DSK Guitars Acousti (x86) (DSK Music)
+candyTematica4_5 DSK Guitars Nylon (x86) (DSK Music)
+candyTematica4_6 Accordion (x86) (Safwan Matni)
+candyTematica4_7 Accordion (x86) (Safwan Matni)
+candyTematica4_8 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
+candyTematica4_9 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
 
 
 candy0 - candy9 Flux Mini 2 (Caelum Audio)
