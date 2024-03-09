@@ -60,8 +60,7 @@ class App:
     def tamborice(self):
         print("Tamborizando...")
 
-        style = enums.Style.BASIC
-        drumGenerator.DrumGenerator.generate(style)
+        drumGenerator.DrumGenerator.generateAllStyles()
 
     def setStyle(self):
         style = ttk.Style()
