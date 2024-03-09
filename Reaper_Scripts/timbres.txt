@@ -14,7 +14,6 @@ Temática:
 11-Reggaeton
 
 Entorno:
-
 0-Exterior
 1-Interior sala pequeña
 2-Interior sala grande
@@ -24,11 +23,7 @@ Entorno:
 6-Pasillo
 
 Carácter:
-+Retro?
-+Bajo el agua?
-+LoFi
-
-Fase:
--1
--2
--3
++Retro
++Bajo el agua
++Lofi
++Espacial

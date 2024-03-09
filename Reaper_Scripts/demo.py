@@ -341,7 +341,7 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
     
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
-    if(tematica == 1):
+    if(tematica == 1 or tematica == 8):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveDown") 
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
