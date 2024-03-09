@@ -38,7 +38,11 @@ def ajustarTempo(tematica):
     elif(tematica == 8):
         tempo = random.randint(70, 100)
     elif(tematica == 9):
-        tempo = random.randint(70, 100)
+        tempo = random.randint(80, 110)
+    elif(tematica == 10):
+        tempo = random.randint(90, 135)
+    elif(tematica == 11):
+        tempo = random.randint(90, 135)
     RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, tempo, 0, 0, True)
 
 def estiloDrums(tematica):
@@ -56,6 +60,18 @@ def estiloDrums(tematica):
         estilo = random.choice(["SHAKER", "LATIN", "ROCK"])
     elif(tematica == 5):
         estilo = random.choice(["METAL", "LATIN", "ROCK"])
+    elif(tematica == 6):
+        estilo = random.choice(["BASIC", "CLAP", "JAZZ"])
+    elif(tematica == 7):
+        estilo = random.choice(["SHAKER", "METAL", "ROCK"])
+    elif(tematica == 8):
+        estilo = random.choice(["CLAP", "SHAKER", "JAZZ"])
+    elif(tematica == 9):
+        estilo = random.choice(["BASIC", "JAZZ", "ROCK"])
+    elif(tematica == 10):
+        estilo = random.choice(["BASIC", "CLAP", "ROCK"])
+    elif(tematica == 11):
+        estilo = random.choice(["CLAP", "SHAKER", "LATIN"])
 
     return estilo
 
@@ -396,7 +412,7 @@ def crearPista7(pista, tematica, preset, fill, preset_fill):
     pista = 7
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
-    if tematica == 2 or (tematica == 4 and preset > 5):
+    if tematica == 2 or (tematica == 4 and preset > 5) or tematica == 5:
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
@@ -618,6 +634,10 @@ entorno = 0
 lofi = False
 retro = False
 agua = False
+espacial = False
+
+lofi_preset = random.randint(0, 9)
+espacial_preset = random.randint(0, 9)
 
 
 if(tematica == 1):
@@ -699,31 +719,36 @@ for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
 
-lofi_preset = random.randint(0, 9)
 
+if(espacial):
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "espacial"+str(espacial_preset)) 
+else:    
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+    if(reverb):
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "entorno"+str(entorno)) 
+    else:
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 0, False)
 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Unison Zen Master (Unison)", False, -1)
 if(lofi):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "lofi"+str(lofi_preset)) 
-else:
-    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 0, False)
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
-if(retro):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "retro1") 
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "lofi"+str(lofi_preset)) 
 else:
     RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 1, False)
 
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-if(agua):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "eqAgua1") 
+
+
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
+if(retro):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "retro1") 
 else:
     RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
 
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-if(reverb):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "entorno"+str(entorno)) 
+    
+RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+if(agua):
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "eqAgua1") 
 else:
     RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 3, False)
 
@@ -736,7 +761,9 @@ if(tematica != 1):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-if retro:
+if espacial:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixExpacial") 
+elif retro:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixRetro") 
 else:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixTematica"+str(tematica)) 
