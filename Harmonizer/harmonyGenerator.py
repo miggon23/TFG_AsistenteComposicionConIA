@@ -42,7 +42,7 @@ class HarmonyGenerator:
 
         return harmonyMidi, harmonyMidi
     
-    def generateModal(inputMidi, outputSongDir, outputHarmonyDir):
+    def generateModal(inputMidi = "midi/input_song.mid", outputSongDir = ".midis/", outputHarmonyDir = ".midis/"):
 
         someChords = {
             "": Scale.Scale("1 3 5"),  # Mayor
