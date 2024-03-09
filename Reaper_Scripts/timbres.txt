@@ -7,14 +7,13 @@ Temática:
 5-Selva
 6-Épico
 7-Tenebroso
-8-Espacio
-9-Agua
+8-Agua
+9-Asiático
 
--Asiático?
--Medieval?
+10-Rock
+11-Reggaeton
 
 Entorno:
-
 0-Exterior
 1-Interior sala pequeña
 2-Interior sala grande
@@ -24,11 +23,7 @@ Entorno:
 6-Pasillo
 
 Carácter:
-+Retro?
-+Bajo el agua?
-+LoFi
-
-Fase:
--1
--2
--3
++Retro
++Bajo el agua
++Lofi
++Espacial
