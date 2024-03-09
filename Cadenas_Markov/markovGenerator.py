@@ -293,7 +293,7 @@ class Markov_Generator:
             note_seq_sims.append(self.deserialize_noteseq(curr_sim))
 
             #guarda el output en la lista para devolverlo al final
-            output = "./midi/markov_melody_" + str(i) + ".mid"
+            output = "./midi/base_melody_" + str(i) + ".mid"
             outputs.append(output)
             midi_io.sequence_proto_to_midi_file(note_seq_sims[i], output)
 

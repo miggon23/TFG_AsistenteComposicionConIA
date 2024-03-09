@@ -47,7 +47,7 @@ class App:
     def generateMelodies(self):
         print("Generando " + str(self.SpinBoxVar.get()) + " compases")
         # melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
-        melody = demo.generate_magenta(self.SpinBoxVar.get(), 1)[0]
+        self.melody = demo.generate_magenta(self.SpinBoxVar.get(), 1)[0]
 
     def armonice(self):
         if(self.melody == None):
