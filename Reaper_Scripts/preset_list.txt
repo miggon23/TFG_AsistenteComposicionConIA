@@ -144,7 +144,7 @@ pista3tematica4_8 Accordion (x86) (Safwan Matni)
 pista3tematica4_9 Accordion (x86) (Safwan Matni)
 
 pista3tematica5_0 VSCO2 Marimba (bigcat) (32 out)
-pista3tematica5_1 VSCO2 Marimba (bigcat) (32 out) 
+pista3tematica5_1 VSCO2 Marimba (bigcat) (32 out)
 pista3tematica5_2 01 Pipa (DSK Music) (32 out)
 pista3tematica5_3 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
 pista3tematica5_4 Quilcom SIM-DJEMBE v1.00 (Rex Basterfield)
