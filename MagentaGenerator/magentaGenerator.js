@@ -2,7 +2,6 @@
 // sera recogida por python con subprocess
 
 const mm = require('@magenta/music/node/music_rnn');
-const fs = require('fs');
 
 // Guardar la referencia de la salida estándar original
 const originalStdoutWrite = process.stdout.write;
@@ -19,7 +18,8 @@ music_rnn.initialize().then(() => {
     generate();
 });
 
-rnn_steps = 20;
+n_melodies = parseInt(process.argv[2]);
+rnn_steps = parseInt(process.argv[3]);
 rnn_temperature = 1.5;
 
 function generate() {
@@ -34,13 +34,18 @@ function generate() {
         totalQuantizedSteps: 1
     };
 
-    music_rnn
-        .continueSequence(INI_MEL, rnn_steps, rnn_temperature)
-        .then(samples => {
-            // Convertir NoteSequence a JSON y enviarlo a la salida estándar
-            const jsonSequence = JSON.stringify(samples);
-            process.stdout.write(jsonSequence);
-        });
+    for (let i = 0; i < n_melodies; i++) {
+        music_rnn
+            .continueSequence(INI_MEL, rnn_steps, rnn_temperature)
+            .then(samples => {
+                // Convertir NoteSequence a JSON y enviarlo a la salida estándar
+                const jsonSequence = JSON.stringify(samples);
+                // process.stdout.write("[")
+                // process.stdout.write(jsonSequence);
+                process.stdout.write(jsonSequence + '\n');
+                // process.stdout.write("],")
+            });
+    }
 }
 
 // Llamar a la función generate() para generar la secuencia de notas

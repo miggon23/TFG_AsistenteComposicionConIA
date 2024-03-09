@@ -1,10 +1,12 @@
 import sys
 sys.path.append('./Cadenas_Markov/')
+sys.path.append('./MagentaGenerator/')
 sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
 sys.path.append('./Basslines/')
 
 from Cadenas_Markov import markovGenerator
+from MagentaGenerator import magentaPython
 
 from Drums import drumGenerator
 from Drums import enums
@@ -20,6 +22,9 @@ def load_markov_chain(generator):
 
 def generate_melodies(generator, n_bar, n_sims):
     return generator.run_markov_chain(num_bar = n_bar, num_simulations = n_sims)
+
+def generate_magenta(n_bar, n_sims):
+    return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 4)
 
 def main():
     generator = markovGenerator.Markov_Generator(use_silences=False)
