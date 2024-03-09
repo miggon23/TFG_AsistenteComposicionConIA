@@ -42,4 +42,4 @@ def generate_melodies(n_melodies, n_steps = 28):
 
     return outputs
 
-# generate_melodies(10)
+generate_melodies(10)
