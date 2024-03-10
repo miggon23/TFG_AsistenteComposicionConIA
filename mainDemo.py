@@ -15,7 +15,7 @@ from Harmonizer import harmonyGenerator
 
 from Basslines import basslineGenerator
 
-FILE = "./midi/markov_melody_8.mid"
+FILE = "./midi/base_melody_0.mid"
 
 def load_markov_chain(generator):
     generator.load_markov_chain_from_json("./trained_chains/markov_chain_1")
@@ -24,7 +24,10 @@ def generate_melodies(generator, n_bar, n_sims):
     return generator.run_markov_chain(num_bar = n_bar, num_simulations = n_sims)
 
 def generate_magenta(n_bar, n_sims):
-    return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 4)
+    return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 2)
+
+def continue_magenta(path_to_midi, n_bar, temperature):
+    return magentaPython.continue_melody_noteseq(path_to_midi, n_bar * 2, temperature)
 
 def main():
     generator = markovGenerator.Markov_Generator(use_silences=False)
@@ -43,7 +46,7 @@ def main():
             print("Introduce el numero de compases que deseas generar en cada melodia")
             bar = get_input_number(2, 4*40)
 
-            outputs = generate_melodies(generator, bar * 2, 1)
+            outputs = generate_magenta(bar * 2, 1)
 
         elif (option == "c"):
             outputs = [FILE]

@@ -8,6 +8,7 @@
   },
   "author": "",
   "dependencies": {
-    "@magenta/music": "^1.23.1"
+    "@magenta/music": "^1.23.1",
+    "@tensorflow/tfjs-node": "^4.17.0"
   }
 }

@@ -3,6 +3,7 @@
 
 // const mm = require('@magenta/music/node/music_rnn');
 const mm = require('@magenta/music/node/music_vae');
+// require('@tensorflow/tfjs-node');
 
 // Guardar la referencia de la salida estándar original
 const originalStdoutWrite = process.stdout.write;

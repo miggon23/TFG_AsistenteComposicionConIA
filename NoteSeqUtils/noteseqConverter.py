@@ -1,4 +1,5 @@
 from note_seq import NoteSequence, midi_io
+import json
 
 #QPM estandar para pasar a MIDI (1 negra por segundo)
 QPM = 60
@@ -50,6 +51,33 @@ def deserialize_noteseq(note_list):
 
     return ns
 
+def noteseq_to_json(note_seq):
+    # Crear un diccionario para representar la NoteSequence
+    note_seq_dict = {
+        "notes": [
+            {
+                "pitch": note.pitch,
+                "velocity": note.velocity,
+                "startTime": note.start_time,
+                "endTime": note.end_time,
+                "quantizedStartStep": note.quantized_start_step,
+                "quantizedEndStep": note.quantized_end_step
+            }
+            for note in note_seq.notes
+        ],
+        "totalQuantizedSteps": note_seq.total_quantized_steps,
+        "quantizationInfo": 
+        {
+            "stepsPerQuarter": note_seq.quantization_info.steps_per_quarter
+        }
+        # Añade otros atributos que desees serializar
+    }
+
+    # Convertir el diccionario a una cadena JSON
+    note_seq_json = json.dumps(note_seq_dict)
+    
+    return note_seq_json
+
 def json_to_serialized(noteSeq_json):
     serialized_notes = []
 
@@ -90,3 +118,6 @@ def json_to_noteSeq(noteSeq_json):
 
 def save_to_midi(noteseq, output):
     midi_io.sequence_proto_to_midi_file(noteseq, output)
+
+def load_from_midi(midi_path):
+    return midi_io.midi_file_to_note_sequence(midi_path)
