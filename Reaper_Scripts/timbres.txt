@@ -1,14 +1,14 @@
 Temática:
-0-Pradera
-1-Piano
-2-Desierto
-3-Nieve
-4-Pirata
-5-Selva
-6-Épico
-7-Tenebroso
-8-Agua
-9-Asiático
+0-Pradera      Lidio
+1-Piano        Normal
+2-Desierto     Frigio
+3-Nieve	       Dorico
+4-Pirata       Mixolidio
+5-Selva        Frigio
+6-Épico        Mixolidio
+7-Tenebroso    Locrio
+8-Agua         Mixolidio
+9-Asiático     Lidio
 
 10-Rock
 11-Reggaeton
