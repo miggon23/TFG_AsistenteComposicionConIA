@@ -3,19 +3,17 @@ sys.path.append('./Cadenas_Markov/')
 sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
 sys.path.append('./Basslines/')
+sys.path.append('./App/Tabs/')
 
 from tkinter import *
 from tkinter import ttk
-import random # TO DELETE
-import mainDemo as demo
-from Cadenas_Markov import markovGenerator
-from Harmonizer import harmonyGenerator
 
-from Basslines import basslineGenerator
-from Drums import enums
-from Drums import drumGenerator
-from Basslines import basslineGenerator
+from Cadenas_Markov import markovGenerator
+
 from PIL import Image, ImageTk
+
+#Tabs
+import generationTab
 
 class App:
 
@@ -28,6 +26,10 @@ class App:
     notebook = None
 
     #Pestañas de la App
+    generationTab = None
+    modeSelectorTab = None
+
+    #Frames
     frame1 = None
     frame2 = None
 
@@ -49,68 +51,27 @@ class App:
         
         #Background frame2
         self.canvas = Canvas(self.frame2, width = 800, height = 600)
-        #self.canvas.pack(expand=True, fill="both")
+        self.canvas.pack(expand=True, fill="both")
 
         # Agregar las pestañas al notebook
         self.notebook.add(self.frame1, text="Generación")
         self.notebook.add(self.frame2, text="Musicalización")
 
-        # Botones para pasar de pestaña
+        self.generationTab = generationTab.GenerationTab(self.frame1)
 
         #Los hacemos pack
         self.notebook.pack(fill="both", expand=True)
-
-
-        self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
-        demo.load_markov_chain(self.mkv_generator)
         
 
         #Setting de texto y botones
         self.setBackground()
-        self.setStyle()
-        self.setButtons()
+        self.generationTab.setUp()
+
 
         
     def run(self):
         self.root.mainloop()
 
-
-    def generateMelodies(self):
-        print("Generando " + str(self.SpinBoxVar.get()) + " compases")
-        # melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
-        self.melody = demo.generate_magenta(self.SpinBoxVar.get(), 1)[0]
-
-    def armonice(self):
-        if(self.melody == None):
-            return
-        
-        print("Armonizando...")
-        bassline = basslineGenerator.BasslineGenerator.generate()
-        harmonyGenerator.HarmonyGenerator.generate(bassline, self.melody)
-
-    def tamborice(self):
-        print("Tamborizando...")
-
-        drumGenerator.DrumGenerator.generateAllStyles()
-
-    def setStyle(self):
-        style = ttk.Style()
-        style.configure("TButton", padding=6, relief="flat", background="#ccc")
-
-        l1 = ttk.Label(self.frame1, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0)
-        #l1.anchor(N)
-
-    def prueba(self):
-        print("Saliendo")
-        self.root.destroy()
-
-    def setButtons(self):
-        ttk.Button(self.frame1, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
-        self.SpinBoxVar = IntVar()
-        self.SpinBoxVar.set(4)
-        ttk.Spinbox(self.frame1, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
-        ttk.Button(self.frame1, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
-        ttk.Button(self.frame1, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
 
     def setBackground(self):
         # Cargar la imagen original
