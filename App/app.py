@@ -15,13 +15,21 @@ from Basslines import basslineGenerator
 from Drums import enums
 from Drums import drumGenerator
 from Basslines import basslineGenerator
+from PIL import Image, ImageTk
 
 class App:
 
     melody = None
-    frame = None
+    canvas = None
     root = None
     mkv_generator = None
+
+    #Notebook, maneja las pestañas
+    notebook = None
+
+    #Pestañas de la App
+    frame1 = None
+    frame2 = None
 
     # Widgets
     SpinBoxVar = None
@@ -29,13 +37,36 @@ class App:
     def __init__(self):
         #Creación de la aplicación raíz
         self.root = Tk()
-        self.root.geometry("400x300")
-        self.frame = ttk.Frame(self.root, padding = 20)
-        self.frame.grid()
+        self.root.geometry("800x600")
+        
+
+        # Creamos el notebok que manejará las pestañas
+        self.notebook = ttk.Notebook(self.root)
+
+        #Crear pestañas
+        self.frame1 = ttk.Frame(self.root, padding = 20)
+        self.frame2 = ttk.Frame(self.root, padding = 20)
+        
+        #Background frame2
+        self.canvas = Canvas(self.frame2, width = 800, height = 600)
+        #self.canvas.pack(expand=True, fill="both")
+
+        # Agregar las pestañas al notebook
+        self.notebook.add(self.frame1, text="Generación")
+        self.notebook.add(self.frame2, text="Musicalización")
+
+        # Botones para pasar de pestaña
+
+        #Los hacemos pack
+        self.notebook.pack(fill="both", expand=True)
+
 
         self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
         demo.load_markov_chain(self.mkv_generator)
+        
+
         #Setting de texto y botones
+        self.setBackground()
         self.setStyle()
         self.setButtons()
 
@@ -66,21 +97,45 @@ class App:
         style = ttk.Style()
         style.configure("TButton", padding=6, relief="flat", background="#ccc")
 
-        l1 = ttk.Label(self.frame, text="Generador Musical", font=30, padding=[30, 30, 30, 30])
-        l1.grid(column = 0, row = 0)
-        l1.anchor(N)
+        l1 = ttk.Label(self.frame1, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0)
+        #l1.anchor(N)
 
     def prueba(self):
         print("Saliendo")
         self.root.destroy()
 
     def setButtons(self):
-        ttk.Button(self.frame, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
+        ttk.Button(self.frame1, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
         self.SpinBoxVar = IntVar()
         self.SpinBoxVar.set(4)
-        ttk.Spinbox(self.frame, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
-        ttk.Button(self.frame, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
-        ttk.Button(self.frame, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
+        ttk.Spinbox(self.frame1, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
+        ttk.Button(self.frame1, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
+        ttk.Button(self.frame1, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
+
+    def setBackground(self):
+        # Cargar la imagen original
+        self.background_image_pil = Image.open("App/Images/DarkRiders.png")
+        
+        # Crear una instancia de ImageTk para la imagen original
+        self.background = ImageTk.PhotoImage(self.background_image_pil)
+        
+        # Crear la imagen en el canvas
+        self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)
+        
+        # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
+        self.root.bind("<Configure>", self.resize_image)
+
+    def resize_image(self, event):
+        # Redimensionar la imagen original cuando cambia el tamaño de la ventana
+        new_width = event.width
+        new_height = event.height
+        resized_image_pil = self.background_image_pil.resize((new_width, new_height), Image.LANCZOS)
+        self.background = ImageTk.PhotoImage(resized_image_pil)
+        self.canvas.itemconfig(self.background_id, image=self.background)
+
+        
+
+
 
 
 
