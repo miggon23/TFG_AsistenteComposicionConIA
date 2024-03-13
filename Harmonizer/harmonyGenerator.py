@@ -85,6 +85,6 @@ class HarmonyGenerator:
                                         possibleChords = modalModel.possibleChords,
                                         model=modalModel)
                 
-                MidiUtils.write_midi_song(outputHarmonyDir + mode  + ".mid", harmony, ticksPerBeat)
-                MidiUtils.write_midi_song(outputSongDir + mode + ".mid", song.notes, ticksPerBeat)
+                MidiUtils.write_midi_song(outputHarmonyDir + mode  + "_output_harmony.mid", harmony, ticksPerBeat)
+                MidiUtils.write_midi_song(outputSongDir + mode + "_output_song.mid", song.notes, ticksPerBeat)
     

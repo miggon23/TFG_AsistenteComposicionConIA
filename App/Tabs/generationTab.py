@@ -42,7 +42,7 @@ class GenerationTab:
     
     def generateMelodies(self):
         print("Generando " + str(self.SpinBoxVar.get()) + " compases")
-        # melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
+        #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
         self.melody = demo.generate_magenta(self.SpinBoxVar.get(), 1)[0]
 
     def armonice(self):
@@ -52,8 +52,12 @@ class GenerationTab:
         print("Armonizando...")
         bassline = basslineGenerator.BasslineGenerator.generate()
         harmonyGenerator.HarmonyGenerator.generate(bassline, self.melody)
+        harmonyGenerator.HarmonyGenerator.generateModal(self.melody, "./midi/", "./midi/")
+        print("Armonizacion completa")
+
 
     def tamborice(self):
         print("Tamborizando...")
 
         drumGenerator.DrumGenerator.generateAllStyles()
+        print("Tamborizacion completa")

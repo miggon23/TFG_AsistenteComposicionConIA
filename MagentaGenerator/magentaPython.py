@@ -21,7 +21,10 @@ def generate_melodies(n_melodies, n_steps = 32):
     melodies = json.loads(output)
 
     for melody_json in melodies:
-        out = "./midi/base_melody_" + str(i) + ".mid"
+        indexStr = ""
+        if i > 0:
+            indexStr = "_" + str(i)
+        out = "./midi/output_song" + indexStr + ".mid"
         nc.save_to_midi(nc.json_to_noteSeq(melody_json), out)
         outputs.append(out)
         i += 1
