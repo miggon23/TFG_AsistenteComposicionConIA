@@ -719,7 +719,33 @@ lofi9
 
 	RETRO		  DeltaModulator (Xfer Records)
 retro1
-
+	
+	BAJO EL AGUA      Cymatics Deja Vu (Cymatics)
+dejaVuAqua1
+	
+	DREAM
+dream1 Cymatics Deja Vu (Cymatics)
+dream1 Cymatics Memory (Cymatics)
+	
+	Flux Mini 2 (Caelum Audio) 
+dream0
+dream1
+dream2
+dream3
+dream4
+dream5
+dream6
+dream7
+dream8
+dream9
+	
+	VINTAGE
+vintage1 OverHeat (Sampleson)
+vintage1 Ratshack Reverb (Audio Damage, Inc.)
+vintage1 DevilSpring (Lostin70s)
+vintage1 BPB Dirty VHS (Bedroom Producers Blog)
+vintage1 freeTILT (Mixland)
+	
 	EQ                ReaEQ (Cockos)
 eqAgua1
 eqPista1
@@ -730,6 +756,7 @@ eqPista7
 eqMixTematica0
 eqMixRetro
 eqMixExpacial
+eqMixVintage
 
 	REVERB            OrilRiver (Denis Tihanov) 
 entorno0
@@ -763,6 +790,7 @@ expansor
 
 	MASTERING 	  AFTER (x86) (TWest Productions)
 mastering1
+mastering2
 
 	MIDI OCTAVES      JS: MIDI Transpose Notes
 octaveDown

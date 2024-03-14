@@ -141,7 +141,7 @@ def cargarArmonia(tematica):
 
 
 #Melodía instrumento 1 y 2   
-def crearPista1(i, tematica, preset):
+def crearPista1(i, tematica, preset, dream):
     pista = 1
     i -= 1
 
@@ -315,10 +315,13 @@ def crearPista1(i, tematica, preset):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "dream"+str(random.randint(0, 9))) 
 
 
 #Acompañamiento instrumento 3 y 4   
-def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
+def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream):
     pista = 3
     i -= 1
     if(arpegiado == 1):
@@ -450,8 +453,13 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "dream"+str(random.randint(0, 9))) 
+
+
 #Pads instrumento 5   
-def crearPista5(pista, tematica, preset):
+def crearPista5(pista, tematica, preset, dream):
     i = pista-1
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
@@ -581,8 +589,13 @@ def crearPista5(pista, tematica, preset):
     if(tematica != 1): 
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "dream"+str(random.randint(0, 9))) 
+
+
 #Bajo instrumento 6   
-def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
+def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio, dream):
     i = pista-1
     if(arpegiado == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
@@ -693,8 +706,13 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio):
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
+
+
 #Batería instrumento 7   
-def crearPista7(pista, tematica, preset, fill, preset_fill):
+def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     i = pista - 1
     pista = 7
 
@@ -831,9 +849,12 @@ def crearPista7(pista, tematica, preset, fill, preset_fill):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
 
 #Transiciones instrumento 8 y 9   
-def crearPista8(pista, tematica, preset, preset2, preset3):
+def crearPista8(pista, tematica, preset, preset2, preset3, dream):
     i = pista-1
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
@@ -871,9 +892,12 @@ def crearPista8(pista, tematica, preset, preset2, preset3):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "riser"+str(preset3))
 
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "dream"+str(random.randint(0, 9))) 
 
 #Transiciones instrumento 10 y 11   
-def crearPista10(pista, tematica, preset, preset2, preset3):
+def crearPista10(pista, tematica, preset, preset2, preset3, dream):
     i = pista-1
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
@@ -907,6 +931,10 @@ def crearPista10(pista, tematica, preset, preset2, preset3):
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "downriser"+str(preset2))
+
+    if dream:        
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio) ", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "dream"+str(random.randint(0, 9))) 
 
 #Ear candy instrumento 13, 14 y 15   
 def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpegio):
@@ -1064,7 +1092,7 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
 for i in range (20):
     RPR_DeleteTrack(RPR_GetTrack(0, 0))
     
-for i in range (10):
+for i in range (20):
     RPR_TrackFX_Delete(RPR_GetMasterTrack(0), 0)
 
 n_tracks = 16
@@ -1076,13 +1104,15 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-tematica = 9
+tematica = 0
 reverb = True
 entorno = 0
 lofi = False
 retro = False
 agua = False
 espacial = False
+dream = False
+vintage = True
 
 lofi_preset = random.randint(0, 9)
 espacial_preset = random.randint(0, 9)
@@ -1091,60 +1121,60 @@ espacial_preset = random.randint(0, 9)
 if(tematica == 1):
     presetPiano = random.randint(0, 7)        
     
-    crearPista1(1, tematica, presetPiano)   
-    crearPista1(2, tematica, presetPiano)
-    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
-    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
-    crearPista5(5, tematica, presetPiano)
-    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9))
+    crearPista1(1, tematica, presetPiano, dream)   
+    crearPista1(2, tematica, presetPiano, dream)
+    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista5(5, tematica, presetPiano, dream)
+    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
     presetBateria = random.randint(0, 9)
     crearPista7(7, tematica, presetBateria, False, 0)
-    crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
-    crearPista8(9, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
-    crearPista10(10, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
-    crearPista10(11, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9))
-    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+    crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
+    crearPista8(9, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
+    crearPista10(10, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
+    crearPista10(11, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
+    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9), dream)
     crearPista13(13, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
     crearPista13(14, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
     crearPista13(15, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
     crearPista13(16, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 else:
     #Melodía instrumento 1    
-    crearPista1(1, tematica, random.randint(0, 9))
+    crearPista1(1, tematica, random.randint(0, 9), dream)
 
     #Melodía instrumento 2    
-    crearPista1(2, tematica, random.randint(0, 9))
+    crearPista1(2, tematica, random.randint(0, 9), dream)
 
     #Acompañamiento 1
-    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
 
     #Acompañamiento 2
-    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
 
     #Pads o strings
-    crearPista5(5, tematica, random.randint(0, 9))
+    crearPista5(5, tematica, random.randint(0, 9), dream)
 
     #Bajo
-    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9))
+    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
 
     presetBateria = random.randint(0, 9)
     #Batería
-    crearPista7(7, tematica, presetBateria, False, 0)
+    crearPista7(7, tematica, presetBateria, False, 0, dream)
 
     #Transiciones 1
-    crearPista8(8, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista8(8, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), dream)
 
     #Transiciones 2
-    crearPista8(9, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista8(9, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), dream)
 
     #Transiciones 3
-    crearPista10(10, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista10(10, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), dream)
 
     #Transiciones 4
-    crearPista10(11, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+    crearPista10(11, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), dream)
 
     #Drum Fills
-    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9))
+    crearPista7(12, tematica, presetBateria, True, random.randint(0, 9), dream)
 
     #Ear Candy 1
     crearPista13(13, tematica, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
@@ -1167,9 +1197,8 @@ for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
 
-
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
-if(retro):
+if retro:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "retro1") 
 else:
     RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 0, False)
@@ -1187,39 +1216,65 @@ if(espacial):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "espacial"+str(espacial_preset)) 
 else:    
     RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-    if(reverb):
+    if(reverb and not vintage):
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "entorno"+str(entorno)) 
     else:
         RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
 
-    
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-if(agua):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "eqAgua1") 
+if(dream or agua): 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Deja Vu (Cymatics)", False, -1)
+    if agua:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dejaVuAqua1") 
+    elif dream:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dream1") 
 else:
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
     RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 3, False)
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaComp (Cockos)", False, -1)
-if(tematica != 1):
+if(tematica != 1 and not vintage):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 4, "comp1") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
-if(tematica != 1):
+if(tematica != 1 and not vintage):
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
 
 RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
 if espacial:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixExpacial") 
+elif vintage:
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixVintage") 
 elif retro:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixRetro") 
 else:
     RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixTematica"+str(tematica)) 
 
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "expansor") 
+if not dream and not vintage:
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "expansor") 
+elif dream:
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Memory (Cymatics)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "dream1")
+else:
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 7, False)
 
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
+if not vintage: 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
+else:
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OverHeat (Sampleson)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "vintage1") 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Ratshack Reverb (Audio Damage, Inc.)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 9, "vintage1") 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DevilSpring (Lostin70s)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 10, "vintage1") 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "BPB Dirty VHS (Bedroom Producers Blog)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 11, "vintage1") 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "freeTILT (Mixland)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 12, "vintage1") 
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 13, "mastering2") 
 
 
 ## Cortar el midi
