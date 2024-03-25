@@ -27,7 +27,7 @@ def generate_magenta(n_bar, n_sims):
     return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 2)
 
 def continue_magenta(path_to_midi, n_bar, temperature):
-    return magentaPython.continue_melody_noteseq(path_to_midi, n_bar * 2, temperature)
+    return magentaPython.continue_melody_midi(path_to_midi, temperature = temperature)
 
 def main():
     generator = markovGenerator.Markov_Generator(use_silences=False)

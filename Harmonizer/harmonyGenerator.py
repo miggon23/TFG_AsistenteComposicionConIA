@@ -7,7 +7,20 @@ import note as Note
 from models import ModalPerspective
 
 class HarmonyGenerator:
-    def generate(bassline, input = "midi/input_song.mid", outputDir = "midi/", outputHarmonyFile = "output_harmony", outputBasslineFile = "output_bass"):
+
+    def treatMelody(input = "./midi/input_song.mid", output = "./midi/output_song.mid"):
+
+        melody, ticksPerBeat = MidiUtils.read_midi_song(input)
+        song = Song.Song(melody, ticksPerBeat)
+
+        song.traspose(int((song.meanPitch - 60) / 12) * -12)
+
+        MidiUtils.write_midi_song(output, song.notes, ticksPerBeat)
+
+        return output
+
+
+    def generate(input = "./midi/input_song.mid", output = "./midi/output_harmony.mid"):
         
         someChords = {
             "": Scale.Scale("1 3 5"),  # Mayor
@@ -28,35 +41,31 @@ class HarmonyGenerator:
                             ],  
                             possibleChords = someChords)
 
-        #si no existe el directorio de salida lo crea
-        if not os.path.isdir(outputDir):
-            os.mkdir(outputDir)
-            
-        #si no existe el archivo de salida lo crea
-        if not os.path.isfile(outputHarmonyFile):
-            with open(os.path.join(outputDir, outputHarmonyFile + ".mid"), 'w') as fp: 
-                pass
+        MidiUtils.write_midi_song(output, harmony, ticksPerBeat)
 
-        harmonyMidi = outputDir + outputHarmonyFile + ".mid"
-        MidiUtils.write_midi_song(harmonyMidi, harmony, ticksPerBeat)
-
-        return harmonyMidi, harmonyMidi
+        return output
     
-    def generateModal(inputMidi = "midi/input_song.mid", outputSongDir = ".midis/", outputHarmonyDir = ".midis/"):
-
+    def generateModalMelodies(input = "./midi/input_song.mid", 
+                              outputDirectory = "./midi/", 
+                              outputFile = "_output_song.mid"):
+        
         someChords = {
-            "": Scale.Scale("1 3 5"),  # Mayor
-            "-": Scale.Scale("1 b3 5"),  # Menor
+            "": Scale.Scale("1 3 5"),  
+            "-": Scale.Scale("1 b3 5")
         }
+
+        outputs = []
+        tonics = []
+        models = []
 
         for mode in ModalPerspective.modes:
             if mode is not None:
                 
                 modalModel = ModalPerspective(mode, chordWeights=[1, 1, 0.1], suggestedChords=someChords)
                 modalModel.load_model()
+                models.append(modalModel)
 
-                notes, ticksPerBeat = MidiUtils.read_midi_song(inputMidi)
-                
+                notes, ticksPerBeat = MidiUtils.read_midi_song(input)             
                 song = Song.Song(notes, ticksPerBeat)
 
                 tonicPen = 0.5
@@ -74,17 +83,76 @@ class HarmonyGenerator:
                             break
 
                 tonic = Note.Note(possibleTonics.index(max(possibleTonics)))
+                tonics.append(tonic)
                 song.choose_sacle(modalModel.modalScale, tonic)
                 song.fit_notes(notePenalties=notePenalties)
+
+                output = outputDirectory + mode + outputFile
+                MidiUtils.write_midi_song(output, song.notes, ticksPerBeat)  
+                outputs.append(output) 
+
+        return outputs, tonics, models
+    
+    def generateModalHarmony(tonics, models,
+                        inputDirectory = "./midi/", 
+                        inputFile = "_input_song.mid", 
+                        outputDirectory = "./midi/", 
+                        outputFile = "_output_harmony.mid"):
+        
+        outputs = []
+
+        idx = 0
+        for mode in ModalPerspective.modes:
+            if mode is not None:
+
+                notes, ticksPerBeat = MidiUtils.read_midi_song(inputDirectory + mode + inputFile) 
+                song = Song.Song(notes, ticksPerBeat) 
+                song.choose_sacle(models[idx].modalScale, tonics[idx])
 
                 harmony = song.armonize(type="win",
                                         timeSignatures = [
                                             ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
                                             ts(2, 4).set_weights([1.4, 1.2])                      
                                         ],  
-                                        possibleChords = modalModel.possibleChords,
-                                        model=modalModel)
+                                        possibleChords = models[idx].possibleChords,
+                                        model=models[idx])
                 
-                MidiUtils.write_midi_song(outputHarmonyDir + mode  + "_output_harmony.mid", harmony, ticksPerBeat)
-                MidiUtils.write_midi_song(outputSongDir + mode + "_output_song.mid", song.notes, ticksPerBeat)
+                output = outputDirectory + mode + outputFile
+                MidiUtils.write_midi_song(output, harmony, song.ticksPerBeat)
+                outputs.append(output) 
+
+                idx += 1
+
+        return outputs
+
+    def spreadSong(input = "./midi/input_song.mid", 
+                   output1 = "./midi/output_song1.mid", 
+                   output2 = "./midi/output_song2.mid", 
+                   ticks = 4):
+
+        melody, ticksPerBeat = MidiUtils.read_midi_song(input)
+        song = Song.Song(melody, ticksPerBeat)
+        song, cont = song.divide_song(int(ticks))
+
+        MidiUtils.write_midi_song(output1, song.notes, ticksPerBeat)
+        MidiUtils.write_midi_song(output2, cont.notes, ticksPerBeat)
+
+        return output1, output2
+    
+    def combineSongs(input, input2, output = "./midi/combined_song.mid"):
+
+        melody, ticksPerBeat = MidiUtils.read_midi_song(input)
+        song = Song.Song(melody, ticksPerBeat)
+
+        melody2, ticksPerBeat2 = MidiUtils.read_midi_song(input2)
+
+        if ticksPerBeat != ticksPerBeat2:
+            raise Exception("Canciones incompatibles")
+        
+        song += Song.Song(melody2, ticksPerBeat2)
+
+        MidiUtils.write_midi_song(output, song.notes, ticksPerBeat)
+
+        return output
+
     

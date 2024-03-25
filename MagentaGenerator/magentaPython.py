@@ -49,7 +49,7 @@ def continue_melody_noteseq(melody_noteseq, n_steps = 64, temperature = 1):
 
     return out
 
-def continue_melody_midi(melody_midi, n_steps = 64, temperature = 1.5):
+def continue_melody_midi(melody_midi, n_steps = 2, temperature = 1.5):
 
     noteseq = nc.load_from_midi(melody_midi)
 

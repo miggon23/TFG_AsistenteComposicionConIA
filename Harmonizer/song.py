@@ -715,6 +715,53 @@ class Song:
             processedBassline.append(note)
 
         return processedBassline
+    
+    def divide_song(self, ticks):
+
+        limit = self.ticksPerBeat * ticks
+
+        song1 = []
+        song2 = []
+
+        for note in self.notes:
+            if note['start_time'] + note['duration'] <= limit:
+                song1.append({
+                    'note': note['note'], 
+                    'start_time': note['start_time'], 
+                    'duration': note['duration']
+                })
+            elif note['start_time'] >= limit:
+                song2.append({
+                    'note': note['note'], 
+                    'start_time': note['start_time'] - limit, 
+                    'duration': note['duration']
+                })
+            else:
+                song1.append({
+                    'note': note['note'], 
+                    'start_time': note['start_time'], 
+                    'duration': limit - note['start_time']
+                })
+                song2.append({
+                    'note': note['note'], 
+                    'start_time': 0, 
+                    'duration': note['start_time'] + note['duration'] - limit
+                })
+        
+        return Song(song1, self.ticksPerBeat), Song(song2, self.ticksPerBeat)
+
+    def __iadd__(self, song):
+
+        for note in song.notes:
+            self.notes.append(note)
+
+        return Song(self.notes, self.ticksPerBeat)
+    
+    def traspose(self, semitones):
+        for note in self.notes:
+            note['note'] += semitones
+
+
                     
                     
 
