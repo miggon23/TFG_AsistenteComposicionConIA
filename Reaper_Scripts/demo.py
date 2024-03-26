@@ -75,17 +75,17 @@ def estiloDrums(tematica):
 
     return estilo
 
-def cargarDrums(tematica):
-       
+def cargarDrums(tematica, patron):
+    
     estilo = estiloDrums(tematica)
-    for i in range(4):
-        cargarMidi("midi/output_"+estilo+"_drumPattern"+random.choice(["A", "B", "C"])+".mid")
+    for item in patron:
+        cargarMidi("midi/output_"+estilo+"_drumPattern"+ item +".mid")
         
     estilo = estiloDrums(tematica)
-    for i in range(4):
-        cargarMidi("midi/output_"+estilo+"_drumPattern"+random.choice(["A", "B", "C"])+".mid")
+    for item in patron:
+        cargarMidi("midi/output_"+estilo+"_drumPattern"+ item +".mid")
 
-def cargarMelodia(tematica):
+def cargarMelodia(tematica, patron, recortar = False):
 
     estilo = "output_song"
 
@@ -110,9 +110,13 @@ def cargarMelodia(tematica):
     elif(tematica == 9):
         estilo = "Lydian_output_song"
 
-    cargarMidi("midi/"+estilo+".mid")
+    if not recortar:
+        for item in patron:
+            cargarMidi("midi/"+estilo+ item +".mid")
+    else:
+        cargarMidi("midi/"+estilo+"D.mid")
 
-def cargarArmonia(tematica):
+def cargarArmonia(tematica, recortar = False):
 
     estilo = "output_harmony"
 
@@ -138,6 +142,8 @@ def cargarArmonia(tematica):
         estilo = "Lydian_output_harmony"
 
     cargarMidi("midi/"+estilo+".mid")
+    if not recortar:
+        cargarMidi("midi/"+estilo+".mid")
 
 
 #Melodía instrumento 1 y 2   
@@ -849,9 +855,12 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cymatics Diablo Lite (Cymatics)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
+
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "dream"+str(random.randint(0, 9))) 
 
 #Transiciones instrumento 8 y 9   
 def crearPista8(pista, tematica, preset, preset2, preset3, dream):
@@ -1078,6 +1087,8 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "CRMBL (unplugred)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "candy"+str(preset4))
+    if tematica == 1:   
+        RPR_TrackFX_SetEnabled(RPR_GetTrack(0, i), 4, False)
 
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
@@ -1104,7 +1115,7 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-tematica = 0
+tematica = 4
 reverb = True
 entorno = 0
 lofi = False
@@ -1128,7 +1139,7 @@ if(tematica == 1):
     crearPista5(5, tematica, presetPiano, dream)
     crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
     presetBateria = random.randint(0, 9)
-    crearPista7(7, tematica, presetBateria, False, 0)
+    crearPista7(7, tematica, presetBateria, False, 0, dream)
     crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
     crearPista8(9, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
     crearPista10(10, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
@@ -1443,13 +1454,20 @@ for col in range(len(arreglo[0])):
 RPR_SetEditCurPos(0, True, True)
 
 
+n_patrones = 3
+patrones_melodia = []
+for _ in range(n_patrones):
+    patron_melodia = [random.choice(["A", "B", "C", "D"]) for _ in range(4)]
+    patrones_melodia.append(patron_melodia)
+
+patrones_orden = [random.randint(0, n_patrones-1) for _ in range(8)]
 
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 0), "I_SELECTED", 1)
 i = 0
 for value in arreglo[0]:
     if value:
         RPR_SetEditCurPos(i * 16, True, True)
-        cargarMelodia(tematica)
+        cargarMelodia(tematica, patrones_melodia[patrones_orden[i]])
     i += 1
 
 
@@ -1458,7 +1476,7 @@ i = 0
 for value in arreglo[1]:
     if value:
         RPR_SetEditCurPos(i * 16, True, True)
-        cargarMelodia(tematica)
+        cargarMelodia(tematica, patrones_melodia[patrones_orden[i]])
     i += 1
 i = 0
 
@@ -1493,13 +1511,17 @@ for value in arreglo[5]:
         cargarArmonia(tematica)
     i += 1
 
+
+
+patron_drums = [random.choice(["A", "B", "C"]) for _ in range(4)]
+
 i = 0
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 6), "I_SELECTED", 1)
 for value in arreglo[6]:
     if value:
         RPR_SetEditCurPos(i * 16, True, True)
-    
-        cargarDrums(tematica)
+
+        cargarDrums(tematica, patron_drums)
 
     i += 1
 
@@ -1540,7 +1562,7 @@ RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 11), "I_SELECTED", 1)
 for value in drumFill:
     if value:
         RPR_SetEditCurPos(i * 16 + 14, True, True)
-        cargarArmonia(tematica)
+        cargarMidi("midi/fillTemplate.mid")
     i += 1
 
 i = 0
@@ -1561,21 +1583,32 @@ for value in candy:
 for col in range(8):
     for fila in range(7):
         if arreglo_adelantar[fila][col]:
-            RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-            RPR_SetEditCurPos(col * 16, True, True)
-
             if(fila < 2):
-                cargarMelodia(tematica)
+                RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
+                RPR_SetEditCurPos(col * 16 + 12, True, True)
+                cargarMelodia(tematica, patrones_melodia[patrones_orden[col]], True)
+
+                cont = 0
+                for i in range(col):
+                    if arreglo[fila][i]:
+                        cont += 4
+
+                RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+
             else:
-                cargarArmonia(tematica)
+                RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
+                RPR_SetEditCurPos(col * 16 + 8, True, True)
 
-            cont = 0
-            for i in range(col):
-                if arreglo[fila][i]:
-                    cont += 1
+                cargarArmonia(tematica, True)
 
-            RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
-            RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+                cont = 0
+                for i in range(col):
+                    if arreglo[fila][i]:
+                        cont += 2
+
+                RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
 
 
 

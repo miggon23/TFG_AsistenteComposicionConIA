@@ -778,6 +778,9 @@ espacial6
 espacial7
 espacial8
 espacial9
+	
+	DRUMS             Cymatics Diablo Lite (Cymatics)
+drums1
 
 	COMPRESOR         ReaComp (Cockos)
 comp1
