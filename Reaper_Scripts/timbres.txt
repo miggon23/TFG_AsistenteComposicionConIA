@@ -1,6 +1,6 @@
 Temática:
 0-Pradera      Lidio
-1-Piano        Normal
+1-Piano        Original
 2-Desierto     Frigio
 3-Nieve	       Dorico
 4-Pirata       Mixolidio
@@ -9,9 +9,10 @@ Temática:
 7-Tenebroso    Locrio
 8-Agua         Mixolidio
 9-Asiático     Lidio
+10-Rock        Original
 
-10-Rock
-11-Reggaeton
+11-Pop         Original
+12-Dance       Original
 
 Entorno:
 0-Exterior

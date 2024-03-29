@@ -43,6 +43,8 @@ def ajustarTempo(tematica):
         tempo = random.randint(90, 135)
     elif(tematica == 11):
         tempo = random.randint(90, 135)
+    elif(tematica == 12):
+        tempo = random.randint(105, 150)
     RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, tempo, 0, 0, True)
 
 def estiloDrums(tematica):
@@ -69,9 +71,11 @@ def estiloDrums(tematica):
     elif(tematica == 9):
         estilo = random.choice(["BASIC", "JAZZ", "ROCK"])
     elif(tematica == 10):
-        estilo = random.choice(["BASIC", "CLAP", "ROCK"])
+        estilo = random.choice(["BASIC", "ROCK", "ROCK"])
     elif(tematica == 11):
-        estilo = random.choice(["CLAP", "SHAKER", "LATIN"])
+        estilo = random.choice(["BASIC", "LATIN", "ROCK"])
+    elif(tematica == 12):
+        estilo = random.choice(["SHAKER", "DISCO", "LATIN"])
 
     return estilo
 
@@ -109,6 +113,12 @@ def cargarMelodia(tematica, patron, recortar = False):
         estilo = "Mixolydian_output_song"
     elif(tematica == 9):
         estilo = "Lydian_output_song"
+    elif(tematica == 10):
+        estilo = "output_song"
+    elif(tematica == 11):
+        estilo = "output_song"
+    elif(tematica == 12):
+        estilo = "output_song"
 
     if not recortar:
         for item in patron:
@@ -140,6 +150,12 @@ def cargarArmonia(tematica, recortar = False):
         estilo = "Mixolydian_output_harmony"
     elif(tematica == 9):
         estilo = "Lydian_output_harmony"
+    elif(tematica == 10):
+        estilo = "output_harmony"
+    elif(tematica == 11):
+        estilo = "output_harmony"
+    elif(tematica == 12):
+        estilo = "output_harmony"
 
     cargarMidi("midi/"+estilo+".mid")
     if not recortar:
@@ -147,14 +163,17 @@ def cargarArmonia(tematica, recortar = False):
 
 
 #Melodía instrumento 1 y 2   
-def crearPista1(i, tematica, preset, dream):
+def crearPista1(i, tematica, preset, dream, ampli, ampli_preset):
     pista = 1
     i -= 1
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     if(i == 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp") 
-    
+        if(tematica == 10):
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveDown") 
+        else:
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp")
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator2") 
 
@@ -308,26 +327,44 @@ def crearPista1(i, tematica, preset, dream):
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Quilcom SIM-SHENG v1.002 (Rex Basterfield)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        
+    elif(tematica == 10):
+        if(preset <= 1): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 4): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DVS Guitar (x86) (Martin Best)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 5): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Karoryfer Cute E (bigcat) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "StratAVarious (x86) (Ian Webster)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))   
+
+    if(tematica == 10 and ampli):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "ampli"+str(ampli_preset))
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "dream"+str(random.randint(0, 9))) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
 
 
 #Acompañamiento instrumento 3 y 4   
-def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream):
+def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream, ampli, ampli_preset):
     pista = 3
     i -= 1
     if(arpegiado == 1):
@@ -339,9 +376,15 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream):
     elif(arpegiado == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
-    
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
+
+        
+    if(tematica == 10 and arpegiado != 1):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Mildon Strummer 3 (x86) (Mildon Maducdoc)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "strum1") 
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
+
 
     if(tematica == 0):
         if(preset <= 3):
@@ -448,20 +491,42 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DPiano-A (Dead Duck Software)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
+    elif(tematica == 10):
+        if(preset <= 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Dynamic Guitars (DSK Music) (16 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Karoryfer Cute E (bigcat) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DVS Guitar (x86) (Martin Best)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "StratAVarious (x86) (Ian Webster)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
+
+    if(tematica == 10 and ampli):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "ampli"+str(ampli_preset))
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "eqPista"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "dream"+str(random.randint(0, 9))) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
 
 
 #Pads instrumento 5   
@@ -583,7 +648,18 @@ def crearPista5(pista, tematica, preset, dream):
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "01 Pipa (DSK Music) (32 out)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-
+    
+    elif(tematica == 10):
+        if(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Elektrik Keyz (x86) (DSK)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
@@ -601,7 +677,7 @@ def crearPista5(pista, tematica, preset, dream):
 
 
 #Bajo instrumento 6   
-def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio, dream):
+def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio, dream, ampli, ampli_preset):
     i = pista-1
     if(arpegiado == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
@@ -700,17 +776,30 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio, dream):
     elif(tematica == 9):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+     
+    elif(tematica == 10):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
+
+
+    if(tematica == 10 and ampli):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "ampli"+str(ampli_preset))
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "gain"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "eqPista"+str(pista))
 
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
@@ -842,6 +931,17 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        
+    elif(tematica == 10):
+        if(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         
 
@@ -1076,6 +1176,9 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Ocarina (x86) (Christopher Clews) (mono)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
         
+    elif(tematica == 10):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "candy"+str(preset2))
@@ -1099,6 +1202,87 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain13")
 
 
+def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, entorno, vintage, dream, agua):
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
+    if retro:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "retro1") 
+    else:
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 0, False)
+
+
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Unison Zen Master (Unison)", False, -1)
+    if(lofi):
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "lofi"+str(lofi_preset)) 
+    else:
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 1, False)
+
+
+    if(espacial):
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "espacial"+str(espacial_preset)) 
+    else:    
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+        if(reverb and not vintage):
+            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "entorno"+str(entorno)) 
+        else:
+            RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
+
+    if(dream or agua): 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Deja Vu (Cymatics)", False, -1)
+        if agua:
+            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dejaVuAqua1") 
+        elif dream:
+            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dream1") 
+    else:
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 3, False)
+
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaComp (Cockos)", False, -1)
+    if(tematica != 1 and not vintage):
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 4, "comp1") 
+
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
+    if(tematica != 1 and not vintage):
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
+
+    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+    if espacial:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixExpacial") 
+    elif vintage:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixVintage") 
+    elif retro:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixRetro") 
+    else:
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixTematica"+str(tematica)) 
+
+    if not dream and not vintage:
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "expansor") 
+    elif dream:
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Memory (Cymatics)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "dream1")
+    else:
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 7, False)
+
+    if not vintage: 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
+    else:
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OverHeat (Sampleson)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "vintage1") 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Ratshack Reverb (Audio Damage, Inc.)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 9, "vintage1") 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DevilSpring (Lostin70s)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 10, "vintage1") 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "BPB Dirty VHS (Bedroom Producers Blog)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 11, "vintage1") 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "freeTILT (Mixland)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 12, "vintage1") 
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 13, "mastering2") 
+
+
 
 for i in range (20):
     RPR_DeleteTrack(RPR_GetTrack(0, 0))
@@ -1115,7 +1299,7 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-tematica = 4
+tematica = 10
 reverb = True
 entorno = 0
 lofi = False
@@ -1123,21 +1307,22 @@ retro = False
 agua = False
 espacial = False
 dream = False
-vintage = True
+vintage = False
+
+mezclar_melodias = True
 
 lofi_preset = random.randint(0, 9)
 espacial_preset = random.randint(0, 9)
 
-
 if(tematica == 1):
     presetPiano = random.randint(0, 7)        
     
-    crearPista1(1, tematica, presetPiano, dream)   
-    crearPista1(2, tematica, presetPiano, dream)
-    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
-    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista1(1, tematica, presetPiano, dream, False, 0)   
+    crearPista1(2, tematica, presetPiano, dream, False, 0)
+    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
+    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
     crearPista5(5, tematica, presetPiano, dream)
-    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
     presetBateria = random.randint(0, 9)
     crearPista7(7, tematica, presetBateria, False, 0, dream)
     crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
@@ -1151,22 +1336,22 @@ if(tematica == 1):
     crearPista13(16, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
 else:
     #Melodía instrumento 1    
-    crearPista1(1, tematica, random.randint(0, 9), dream)
+    crearPista1(1, tematica, random.randint(0, 9), dream, random.choice([True, False]), random.randint(0, 9))
 
     #Melodía instrumento 2    
-    crearPista1(2, tematica, random.randint(0, 9), dream)
+    crearPista1(2, tematica, random.randint(0, 9), dream, random.choice([True, False]), random.randint(0, 9))
 
     #Acompañamiento 1
-    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False, False]), random.randint(0, 9))
 
     #Acompañamiento 2
-    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False, False]), random.randint(0, 9))
 
     #Pads o strings
     crearPista5(5, tematica, random.randint(0, 9), dream)
 
     #Bajo
-    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream)
+    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False]), random.randint(0, 9))
 
     presetBateria = random.randint(0, 9)
     #Batería
@@ -1207,107 +1392,7 @@ for i in range(5):
 for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
-if retro:
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "retro1") 
-else:
-    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 0, False)
-
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Unison Zen Master (Unison)", False, -1)
-if(lofi):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 1, "lofi"+str(lofi_preset)) 
-else:
-    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 1, False)
-
-
-if(espacial):
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "espacial"+str(espacial_preset)) 
-else:    
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-    if(reverb and not vintage):
-        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "entorno"+str(entorno)) 
-    else:
-        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
-
-if(dream or agua): 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Deja Vu (Cymatics)", False, -1)
-    if agua:
-        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dejaVuAqua1") 
-    elif dream:
-        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 3, "dream1") 
-else:
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 3, False)
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaComp (Cockos)", False, -1)
-if(tematica != 1 and not vintage):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 4, "comp1") 
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaLimit (Cockos)", False, -1)
-if(tematica != 1 and not vintage):
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 5, "limit1") 
-
-RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-if espacial:
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixExpacial") 
-elif vintage:
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixVintage") 
-elif retro:
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixRetro") 
-else:
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 6, "eqMixTematica"+str(tematica)) 
-
-if not dream and not vintage:
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "expansor") 
-elif dream:
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Memory (Cymatics)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 7, "dream1")
-else:
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
-    RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 7, False)
-
-if not vintage: 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
-else:
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OverHeat (Sampleson)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "vintage1") 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Ratshack Reverb (Audio Damage, Inc.)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 9, "vintage1") 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DevilSpring (Lostin70s)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 10, "vintage1") 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "BPB Dirty VHS (Bedroom Producers Blog)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 11, "vintage1") 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "freeTILT (Mixland)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 12, "vintage1") 
-    RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 13, "mastering2") 
-
-
-## Cortar el midi
-#RPR_SplitMediaItem(RPR_GetMediaItem(0, 0), 2)
-#RPR_SetMediaItemLength(RPR_GetMediaItem(0, 0), 4, False)
-#
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 1), 4, False)
-#RPR_SplitMediaItem(RPR_GetMediaItem(0, 1), 6)
-#RPR_SetMediaItemLength(RPR_GetMediaItem(0, 1), 4, False)
-#
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 2), 12, False)
-#
-#RPR_SplitMediaItem(RPR_GetMediaItem(0, 0), 2)
-#RPR_SetMediaItemLength(RPR_GetMediaItem(0, 0), 4, False)
-#RPR_SetMediaItemLength(RPR_GetMediaItem(0, 1), 4, False)
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 1), 8, False)
-#
-## Mover el midi
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 3), 28, False)
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 2), 24, False)
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 1), 20, False)
-#RPR_SetMediaItemPosition(RPR_GetMediaItem(0, 0), 16, False)
+crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, entorno, vintage, dream, agua)
 
 
 
@@ -1454,10 +1539,24 @@ for col in range(len(arreglo[0])):
 RPR_SetEditCurPos(0, True, True)
 
 
+#Generamos patrones de melodía variados
 n_patrones = 3
 patrones_melodia = []
-for _ in range(n_patrones):
-    patron_melodia = [random.choice(["A", "B", "C", "D"]) for _ in range(4)]
+patrones_melodia.append(["A", "B", "C", "D"])
+
+for _ in range(n_patrones - 1):
+    patron_melodia = []
+
+    if mezclar_melodias:
+        most_probable = random.choice(["A", "B", "C", "D"])
+        for _ in range(4):
+            if random.randint(1, 10) <= 6:
+                patron_melodia.append(most_probable)
+            else:
+                patron_melodia.append(random.choice(["A", "B", "C", "D"]))
+    else:
+        patron_melodia = ["A", "B", "C", "D"]
+
     patrones_melodia.append(patron_melodia)
 
 patrones_orden = [random.randint(0, n_patrones-1) for _ in range(8)]
