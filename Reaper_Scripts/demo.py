@@ -114,7 +114,7 @@ def cargarMelodia(tematica, patron, recortar = False):
     elif(tematica == 9):
         estilo = "Lydian_output_song"
     elif(tematica == 10):
-        estilo = "output_song"
+        estilo = "Dorian_output_song"
     elif(tematica == 11):
         estilo = "output_song"
     elif(tematica == 12):
@@ -151,7 +151,7 @@ def cargarArmonia(tematica, recortar = False):
     elif(tematica == 9):
         estilo = "Lydian_output_harmony"
     elif(tematica == 10):
-        estilo = "output_harmony"
+        estilo = "Dorian_output_harmony"
     elif(tematica == 11):
         estilo = "output_harmony"
     elif(tematica == 12):
@@ -364,7 +364,7 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset):
 
 
 #Acompañamiento instrumento 3 y 4   
-def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream, ampli, ampli_preset):
+def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, dream, ampli, ampli_preset):
     pista = 3
     i -= 1
     if(arpegiado == 1):
@@ -372,13 +372,13 @@ def crearPista3(i, tematica, preset, arpegiado, preset_arpegio, dream, ampli, am
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "arpegio"+str(preset_arpegio)) 
     elif(arpegiado == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "acordes"+str(preset_arpegio)) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "acordes"+str(preset_acordes)) 
     elif(arpegiado == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
 
         
-    if(tematica == 10 and arpegiado != 1):
+    if(tematica == 10 and arpegiado == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Mildon Strummer 3 (x86) (Mildon Maducdoc)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "strum1") 
     else:
@@ -677,21 +677,21 @@ def crearPista5(pista, tematica, preset, dream):
 
 
 #Bajo instrumento 6   
-def crearPista6(pista, tematica, preset, arpegiado, preset_arpegio, dream, ampli, ampli_preset):
+def crearPista6(pista, tematica, preset, arpegiado, preset_bajo, preset_arpegio, dream, ampli, ampli_preset):
     i = pista-1
     if(arpegiado == 1):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "arpegio"+str(preset_arpegio)) 
     elif(arpegiado == 2):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bajo"+str(preset_arpegio)) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bajo"+str(preset_bajo)) 
     elif(arpegiado == 3):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bajo0") 
     
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
-    if(tematica == 1 or tematica == 8):
+    if(tematica == 1 or tematica == 8 or tematica == 10):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveDown") 
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
@@ -956,7 +956,10 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cymatics Diablo Lite (Cymatics)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
+    if (tematica == 10):
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums2")
+    else:
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
 
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
@@ -1319,10 +1322,10 @@ if(tematica == 1):
     
     crearPista1(1, tematica, presetPiano, dream, False, 0)   
     crearPista1(2, tematica, presetPiano, dream, False, 0)
-    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
-    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
+    crearPista3(3, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, False, 0)
+    crearPista3(4, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, False, 0)
     crearPista5(5, tematica, presetPiano, dream)
-    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), dream, False, 0)
+    crearPista6(6, tematica, presetPiano, random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, False, 0)
     presetBateria = random.randint(0, 9)
     crearPista7(7, tematica, presetBateria, False, 0, dream)
     crearPista8(8, tematica, presetPiano, random.randint(0, 9), random.randint(0, 9), dream)
@@ -1342,16 +1345,16 @@ else:
     crearPista1(2, tematica, random.randint(0, 9), dream, random.choice([True, False]), random.randint(0, 9))
 
     #Acompañamiento 1
-    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False, False]), random.randint(0, 9))
+    crearPista3(3, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, random.choice([True, False, False]), random.randint(0, 9))
 
     #Acompañamiento 2
-    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False, False]), random.randint(0, 9))
+    crearPista3(4, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, random.choice([True, False, False]), random.randint(0, 9))
 
     #Pads o strings
     crearPista5(5, tematica, random.randint(0, 9), dream)
 
     #Bajo
-    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), dream, random.choice([True, False]), random.randint(0, 9))
+    crearPista6(6, tematica, random.randint(0, 9), random.randint(1, 3), random.randint(0, 9), random.randint(0, 49), dream, random.choice([True, False]), random.randint(0, 9))
 
     presetBateria = random.randint(0, 9)
     #Batería
@@ -1514,12 +1517,6 @@ for col in range(len(arreglo[0]) - 1):
         if arreglo[row][col] and not arreglo[row][col + 1]:
             next_false_counts[col + 1] += 1
 
-
-for col in range(len(arreglo[0]) - 1):
-        if arreglo[6][col] and arreglo[6][col + 1]:
-            if next_true_counts[col] == next_false_counts[col]:
-                drumFill[col] = True
-
 for col in range(len(arreglo[0]) - 1):
     if next_true_counts[col + 1] > next_false_counts[col + 1]:
         riser[col] = True
@@ -1656,13 +1653,37 @@ for value in downriser:
         cargarArmonia(tematica)
     i += 1
 
-i = 0
+fill_n = 0
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 11), "I_SELECTED", 1)
-for value in drumFill:
-    if value:
+for i in range(8):
+    if drumFill[i]:
         RPR_SetEditCurPos(i * 16 + 14, True, True)
         cargarMidi("midi/fillTemplate.mid")
-    i += 1
+        fill_n += 1
+    if arreglo[6][i]:
+        
+        if(i < 6):
+            RPR_SetEditCurPos(i * 16 + 7, True, True)
+            cargarMidi("midi/fillTemplate.mid")
+            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 1, False)
+        else:
+            RPR_SetEditCurPos(i * 16 + 6, True, True)
+            cargarMidi("midi/fillTemplate.mid")
+        fill_n += 1
+
+        if(i < 4):
+            RPR_SetEditCurPos(i * 16 + 14, True, True)
+            cargarMidi("midi/fillTemplate.mid")
+        elif(i < 6):
+            RPR_SetEditCurPos(i * 16 + 13, True, True)
+            cargarMidi("midi/fillTemplate.mid")
+            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 3, False)
+        else:
+            RPR_SetEditCurPos(i * 16 + 12, True, True)
+            cargarMidi("midi/fillTemplate.mid")
+            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 4, False)
+        
+        fill_n += 1
 
 i = 0
 pista = 12
