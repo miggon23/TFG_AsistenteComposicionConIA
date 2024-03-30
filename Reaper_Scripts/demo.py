@@ -378,12 +378,12 @@ def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, 
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "bypass") 
 
         
-    if(tematica == 10 and arpegiado == 3):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Mildon Strummer 3 (x86) (Mildon Maducdoc)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "strum1") 
-    else:
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
+    #if(tematica == 10 and arpegiado == 3):
+    #    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Mildon Strummer 3 (x86) (Mildon Maducdoc)", False, -1)
+    #    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "strum1") 
+    #else:
+    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "humanisator1") 
 
 
     if(tematica == 0):
