@@ -171,6 +171,8 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset):
     if(i == 1):
         if(tematica == 10):
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveDown") 
+        elif(tematica == 12):
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "") 
         else:
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 0, "octaveUp")
 
@@ -371,7 +373,9 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset):
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "dream"+str(random.randint(0, 9))) 
-
+    elif (tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "sidechain1")
 
 #Acompañamiento instrumento 3 y 4   
 def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, dream, ampli, ampli_preset):
@@ -1348,9 +1352,13 @@ def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset,
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
         RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 7, False)
 
-    if not vintage: 
-        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1") 
+    if not vintage:
+        if(tematica == 12):
+            RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering2")
+        else:
+            RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "mastering1")
     else:
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OverHeat (Sampleson)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 8, "vintage1") 

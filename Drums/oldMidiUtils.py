@@ -81,7 +81,7 @@ def write_midi_song_drums(midi_file_path, note_list):
             vel = 45
             if (notes[1][y_init] == 36):
                 vel = 120
-            elif (notes[1][y_init] == 38):
+            elif (notes[1][y_init] == 38 or notes[1][y_init] == 40):
                 vel = 100
             track.append(mido.Message('note_off', note=notes[1][y_init],channel=9, velocity=vel, time=midi_events[idx]))
             y_init = 1
@@ -89,7 +89,7 @@ def write_midi_song_drums(midi_file_path, note_list):
             vel = 45
             if (notes[0][x_init] == 36):
                 vel = 120
-            elif (notes[0][x_init] == 38):
+            elif (notes[0][x_init] == 38 or notes[0][x_init] == 40):
                 vel = 100
             track.append(mido.Message('note_on', note=notes[0][x_init],channel=9, velocity=vel, time=midi_events[idx]))
             x_init = 1
@@ -98,14 +98,14 @@ def write_midi_song_drums(midi_file_path, note_list):
             vel = 45
             if (note == 36):
                 vel = 120
-            elif (note == 38):
+            elif (note == 38 or note == 40):
                 vel = 100
             track.append(mido.Message('note_off', note=note, channel=9, velocity=vel, time=0))
         for note in notes[0][x_init:]:
             vel = 45
             if (note == 36):
                 vel = 120
-            elif (note == 38):
+            elif (note == 38 or note == 40):
                 vel = 100
             track.append(mido.Message('note_on', note=note,channel=9, velocity=vel, time=0))
         
