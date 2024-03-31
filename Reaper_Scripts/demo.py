@@ -75,7 +75,7 @@ def estiloDrums(tematica):
     elif(tematica == 11):
         estilo = random.choice(["BASIC", "LATIN", "ROCK"])
     elif(tematica == 12):
-        estilo = random.choice(["SHAKER", "DISCO", "LATIN"])
+        estilo = random.choice(["DISCO", "DISCO", "DISCO"])
 
     return estilo
 
@@ -340,6 +340,16 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset):
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "StratAVarious (x86) (Ian Webster)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))   
+    elif(tematica == 11):
+        if(preset <= 1): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 4): 
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DVS Guitar (x86) (Martin Best)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    elif(tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
     if(tematica == 10 and ampli):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
@@ -504,7 +514,16 @@ def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, 
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "StratAVarious (x86) (Ian Webster)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-
+    elif(tematica == 11):
+        if(preset <= 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Dynamic Guitars (DSK Music) (16 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Karoryfer Cute E (bigcat) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    elif(tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
     if(tematica == 10 and ampli):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
@@ -659,7 +678,19 @@ def crearPista5(pista, tematica, preset, dream):
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        
+           
+    elif(tematica == 11):
+        if(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Elektrik Keyz (x86) (DSK)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+ 
+    elif(tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "gain"+str(pista))
@@ -779,6 +810,18 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_bajo, preset_arpegio,
      
     elif(tematica == 10):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    
+    elif(tematica == 11):
+        if(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Virtual Handpan (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    
+    elif(tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
 
@@ -942,6 +985,31 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+             
+    elif(tematica == 11):
+        if(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+
+    elif(tematica == 12):
+        if(preset <= 1):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "AfroPlugin (AfroPlug) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 2):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cassette 606 (BPB) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 4):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cassette 808 (BPB) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 6):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cassette 909 (BPB) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 9):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         
 
@@ -1183,6 +1251,18 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
 
+    elif(tematica == 11):
+        if(preset <= 7):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "01 Pipa (DSK Music) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
+        elif(preset <= 8):
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Upright Piano (audiolatry) (32 out)", False, -1)
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
+
+    elif(tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "candyTematica"+str(tematica)+"_"+str(preset))
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "candy"+str(preset2))
     if tematica == 1:   
@@ -1302,7 +1382,7 @@ for i in range(n_tracks):
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
-tematica = 10
+tematica = 12
 reverb = True
 entorno = 0
 lofi = False
