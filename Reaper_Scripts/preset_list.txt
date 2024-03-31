@@ -844,9 +844,6 @@ ampli7
 ampli8
 ampli9
 
-	STRUMMER        Mildon Strummer 3 (x86) (Mildon Maducdoc)
-strum1
-
 	ARPEGIADOR      BlueARP (omg-instruments)
 arpegio0
 arpegio1
@@ -992,6 +989,9 @@ espacial7
 espacial8
 espacial9
 	
+	SIDECHAIN         Flux Mini 2 (Caelum Audio)
+sidechain1
+
 	DRUMS             Cymatics Diablo Lite (Cymatics)
 drums1
 
