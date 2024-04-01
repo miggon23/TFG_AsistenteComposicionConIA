@@ -7,6 +7,7 @@ from timeSignature import TimeSignature as ts
 
 import math
 import sys
+import copy
 
 '''
 Reformatea la representación de la canción para que sea más fácil de operar para los diferentes algoritmos:
@@ -67,7 +68,186 @@ class Song:
         self.meanPitch /= totalSoundDuration 
       
         intervals.sort()
-        self.scale = Scale.Scale(intervals)      
+        self.scale = Scale.Scale(intervals) 
+
+    def __processed_chord_progressions(self, chordProgressions):
+
+        processedChordProgressions = {}
+
+        def add_chord(progresion):
+
+            key = ""
+            for chord in progresion:
+                key += chord + " "
+
+            processedChordProgressions[key] = progresion
+
+        for chordProgression in chordProgressions: 
+
+            add_chord(copy.deepcopy(chordProgression["Progression"]))
+
+            newProgresion = copy.deepcopy(chordProgressionT["Progression"])
+            newProgresion.insert(0, None)
+            add_chord(newProgresion)
+
+            for transition in chordProgression["Transitions"]:
+                for chordProgressionT in chordProgressions:                           
+                    if transition == chordProgressionT["Progression"][0]: 
+                        newProgresion = copy.deepcopy(chordProgressionT["Progression"])
+                        newProgresion.insert(0, chordProgression["Progression"][-1])
+                        add_chord(newProgresion)
+
+        return list(processedChordProgressions.values())   
+    
+    def __choose_next_chord_progressions(self, previousChord, chordProgressions, discardedProgressions = []):
+        
+        newChordProgressions = []
+
+        for chordProgression in chordProgressions:
+            if previousChord == chordProgression["Progression"][0] and chordProgression not in discardedProgressions: 
+                newChordProgressions.append(chordProgression)
+
+        return newChordProgressions
+
+    def find_chord_sequence(self, chordProgressions = Harmony.allChordProgressions):
+
+        self.harmony = Harmony.Harmony()
+        self.harmony.create_harmony_from_chord_progression_list(chordProgressions)
+        self.harmony.relativize_chords()
+        
+        chordWeights = [1, 0.25, 0.5, 0.125]
+        timeSignatures = [
+            ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+            ts(2, 4).set_weights([1.4, 1.2]),
+            ts(1, 4).set_weights([1])
+        ],               
+        notPlayingAtTickPen = 0.75
+
+        chordProgressions = self.__processed_chord_progressions(chordProgressions)
+        tonicPriority = sorted(range(len(self.noteFrequencies)), key=lambda i: self.noteFrequencies[i], reverse=True)
+
+        sol = None
+        for tonic in tonicPriority:
+
+            self.tonic = tonic
+            self.__win_armonize(chordWeights, timeSignatures, notPlayingAtTickPen)
+
+            for idx, analysis in enumerate(self.chordAnalysis):
+                self.chordAnalysis[idx] = dict(sorted(analysis.items(), key=lambda item: item[1], reverse=True))
+
+            sol = self.__find_chord_sequence(chordProgressions)
+            if sol is not None:
+                break
+
+        if sol is None:
+            print("No hay solución")
+        else:
+            self.__rebuild_solution(sol)
+            return self.__absolutize_harmony()
+
+    
+    def __rebuild_solution(self, chordProgressions, windwSize):
+
+        ticksPerChord = int(windwSize * self.ticksPerBeat)
+        self.bestChords = []
+
+        combChordProg = []
+        for chordProgression in chordProgressions:
+            combChordProg += chordProgression[1:]
+        combChordProg += None
+
+        chordIdx = 0
+        ticks = 0
+         
+        for analysis in self.chordAnalysis:   
+            if combChordProg[chordIdx + 1] not in analysis:
+                ticks += 1     
+            elif combChordProg[chordIdx] not in analysis:
+                self.bestChords.append([combChordProg[chordIdx], ticksPerChord * ticks])
+                chordIdx += 1
+                ticks = 1                
+            elif combChordProg[chordIdx] >= combChordProg[chordIdx + 1]:
+                ticks += 1
+            else:
+                self.bestChords.append([combChordProg[chordIdx], ticksPerChord * ticks])
+                chordIdx += 1
+                ticks = 1
+
+        if ticks > 1:
+             self.bestChords.append([combChordProg[chordIdx], ticksPerChord * ticks])
+
+    def __find_chord_sequence(self, chordProgressions):
+
+        windowIdx = 0
+        nWindows = len(self.chordAnalysis)
+
+        sol = []
+        fails = [[] for _ in range(nWindows)]
+
+        selChordProg = self.__choose_next_chord_progressions(None, chordProgressions)
+
+        threshold = 1
+        limit = 10
+        
+        while windowIdx < nWindows:
+
+            for chordProgression in selChordProg:
+                res = self.__chord_progression_fits(chordProgression, windowIdx, threshold)
+
+                if res >= 0:
+                    sol.append((chordProgression, windowIdx, threshold))
+                    selChordProg = self.__choose_next_chord_progressions(chordProgression[-1], chordProgressions)
+
+                    threshold = 0
+                    windowIdx += res
+                                
+                    break
+            
+            threshold += 1
+
+            if threshold >= limit:
+
+                threshold = sol[-1][2]
+                windowIdx = sol[-1][1]
+                if windowIdx == 0:
+                    return None
+                
+                fails[windowIdx].append(sol[-1][0])
+                selChordProg = self.__choose_next_chord_progressions(sol[-1][0][0], chordProgressions)
+
+                sol.pop()
+
+        return sol
+    
+    def __chord_progression_fits(self, chordProgresion, windowIdx, threshold):
+        
+        chordIdx = 0
+
+        for  windowCount, chordAnalysis in enumerate(self.chordAnalysis[windowIdx:]):
+            chordAnalysis = list(chordAnalysis.keys())[:min(threshold, len(chordAnalysis))]
+
+            res = self.__chord_fits(chordProgresion[chordIdx], 
+                                    chordProgresion[chordIdx + 1],
+                                    chordAnalysis)
+            
+            if res >= 0:
+                chordIdx += res
+                if (chordIdx + 1) == len(chordProgresion):
+                    return windowCount
+            else:
+                return res
+                
+        return windowCount
+
+    def __chord_fits(self, currentChord, nextChord, chordAnalysis):
+
+        for chord in chordAnalysis:
+            if chord == currentChord:
+                return 0
+            elif nextChord == currentChord:
+                return 1      
+   
+        return -1
 
     '''
     Elige una escala entre la lista de escalas provista en el supuesto de que la canción tenga 
@@ -245,10 +425,6 @@ class Song:
             else:
                 note['note'] -= pitchDistances[newPitchIdx]
 
-    def set_harmony(self, possibleChords = Harmony.allChords):
-        self.harmony = Harmony.Harmony(self.scale, possibleChords)
-        self.harmony.relativize_chords()
-
     """
     Armoniza la música según ciertos parámetros.
 
@@ -295,7 +471,8 @@ class Song:
         
         self.model = model
         
-        self.harmony = Harmony.Harmony(self.scale, possibleChords)
+        self.harmony = Harmony.Harmony()
+        self.harmony.create_harmony_from_scale(self.scale, possibleChords)
         self.harmony.relativize_chords()
         
         if type == "std":
