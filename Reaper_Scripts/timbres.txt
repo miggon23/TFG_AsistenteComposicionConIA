@@ -10,7 +10,6 @@ Temática:
 8-Agua         Mixolidio
 9-Asiático     Lidio
 10-Rock        Dorico
-
 11-Pop         Original
 12-Dance       Original
 
