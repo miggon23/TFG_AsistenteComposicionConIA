@@ -3,7 +3,7 @@
 
 const mm = require('@magenta/music/node/music_rnn');
 const core = require('@magenta/music/node/core');
-// require('@tensorflow/tfjs-node');
+const config = require('./configMusicRNN.json');
 
 // Guardar la referencia de la salida estándar original
 const originalStdoutWrite = process.stdout.write;
@@ -12,8 +12,9 @@ const originalStdoutWrite = process.stdout.write;
 // Esto es necesario para evitar el mensaje de inicializacion de magenta en la salida estandar
 process.stdout.write = function() {};
 
+music_rnn_spec = config
 // Restaura la función write original después de la inicialización del modelo
-music_rnn = new mm.MusicRNN('https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn');
+music_rnn = new mm.MusicRNN("https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn");
 music_rnn.initialize().then(() => {
     process.stdout.write = originalStdoutWrite;
     // generamos la secuencia de notas

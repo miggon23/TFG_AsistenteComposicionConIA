@@ -8,7 +8,7 @@ sys.path.append('./NoteSeqUtils/')
 
 import noteseqConverter as nc
 
-def generate_melodies(n_melodies, n_steps = 32):
+def generate_melodies(n_melodies, n_steps = 16):
 
     outputs = []
 
@@ -32,10 +32,10 @@ def generate_melodies(n_melodies, n_steps = 32):
 
     return outputs
 
-def continue_melody_noteseq(melody_noteseq, n_steps = 64, temperature = 1):
+def continue_melody_noteseq(melody_noteseq, n_steps = 16, temperature = 1):
 
     json_noteseq = nc.noteseq_to_json(melody_noteseq)
-    process = subprocess.Popen(['node', os.getcwd() + '\MagentaGenerator\magentaContinue.js', str(json_noteseq), str(n_steps), str(temperature)], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['node', os.getcwd() + '\MagentaGenerator\magentaContinue.js', str(json_noteseq), str(n_steps * 2), str(temperature)], stdout=subprocess.PIPE)
 
     # Lee toda la salida del proceso a la vez
     output, _ = process.communicate()
@@ -49,7 +49,7 @@ def continue_melody_noteseq(melody_noteseq, n_steps = 64, temperature = 1):
 
     return out
 
-def continue_melody_midi(melody_midi, n_steps = 2, temperature = 1.5):
+def continue_melody_midi(melody_midi, n_steps = 16, temperature = 1.5):
 
     noteseq = nc.load_from_midi(melody_midi)
 
@@ -62,7 +62,7 @@ def continue_melody_midi(melody_midi, n_steps = 2, temperature = 1.5):
 
     return continue_melody_noteseq(quantized_seq, n_steps, temperature)
 
-# out = generate_melodies(1)
+# out = generate_melodies(1, 16)
 
-# continue_melody_midi(out[0], 64)
-# continue_melody_midi("midi/base_melody_0.mid")
+# continue_melody_midi(out[0], 16)
+continue_melody_midi("midi/output_song.mid", 16)
