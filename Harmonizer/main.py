@@ -94,11 +94,22 @@ def standar():
     # print()
     # song.harmony.print_chords()
 
+def main():
+
+    notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
+    song = Song.Song(notes, ticksPerBeat)
+    harmony = song.find_chord_sequence()
+
+    MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
+    MidiUtils.write_midi_song("midi/output_song.mid", song.notes, ticksPerBeat)
+    
+
 if __name__ == "__main__":
-    standar()
-    for mode in ModalPerspective.modes:
-        if mode is not None:
-            modal(mode)
+    # standar()
+    # for mode in ModalPerspective.modes:
+    #     if mode is not None:
+    #         modal(mode)
+    main()
 
     
 

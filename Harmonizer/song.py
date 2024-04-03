@@ -78,17 +78,20 @@ class Song:
 
             key = ""
             for chord in progresion:
-                key += chord + " "
-
+                if chord is None:
+                    key += " "
+                else:
+                    key += chord[0] + chord[1]
+                    
             processedChordProgressions[key] = progresion
 
         for chordProgression in chordProgressions: 
 
-            add_chord(copy.deepcopy(chordProgression["Progression"]))
-
-            newProgresion = copy.deepcopy(chordProgressionT["Progression"])
+            newProgresion = copy.deepcopy(chordProgression["Progression"])
             newProgresion.insert(0, None)
             add_chord(newProgresion)
+
+            add_chord(copy.deepcopy(chordProgression["Progression"]))       
 
             for transition in chordProgression["Transitions"]:
                 for chordProgressionT in chordProgressions:                           
@@ -104,7 +107,7 @@ class Song:
         newChordProgressions = []
 
         for chordProgression in chordProgressions:
-            if previousChord == chordProgression["Progression"][0] and chordProgression not in discardedProgressions: 
+            if previousChord == chordProgression[0] and chordProgression not in discardedProgressions: 
                 newChordProgressions.append(chordProgression)
 
         return newChordProgressions
@@ -120,8 +123,9 @@ class Song:
             ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
             ts(2, 4).set_weights([1.4, 1.2]),
             ts(1, 4).set_weights([1])
-        ],               
+        ]            
         notPlayingAtTickPen = 0.75
+        self.model = None
 
         chordProgressions = self.__processed_chord_progressions(chordProgressions)
         tonicPriority = sorted(range(len(self.noteFrequencies)), key=lambda i: self.noteFrequencies[i], reverse=True)
@@ -129,7 +133,7 @@ class Song:
         sol = None
         for tonic in tonicPriority:
 
-            self.tonic = tonic
+            self.tonic = Note.Note(tonic)
             self.__win_armonize(chordWeights, timeSignatures, notPlayingAtTickPen)
 
             for idx, analysis in enumerate(self.chordAnalysis):
@@ -142,7 +146,7 @@ class Song:
         if sol is None:
             print("No hay solución")
         else:
-            self.__rebuild_solution(sol)
+            self.__rebuild_solution(sol, timeSignatures[-1].measure_size())
             return self.__absolutize_harmony()
 
     
@@ -153,8 +157,8 @@ class Song:
 
         combChordProg = []
         for chordProgression in chordProgressions:
-            combChordProg += chordProgression[1:]
-        combChordProg += None
+            combChordProg += chordProgression[0][1:]
+        combChordProg += [None]
 
         chordIdx = 0
         ticks = 0
@@ -166,7 +170,7 @@ class Song:
                 self.bestChords.append([combChordProg[chordIdx], ticksPerChord * ticks])
                 chordIdx += 1
                 ticks = 1                
-            elif combChordProg[chordIdx] >= combChordProg[chordIdx + 1]:
+            elif analysis[combChordProg[chordIdx]] >= analysis[combChordProg[chordIdx + 1]]:
                 ticks += 1
             else:
                 self.bestChords.append([combChordProg[chordIdx], ticksPerChord * ticks])
@@ -194,12 +198,13 @@ class Song:
             for chordProgression in selChordProg:
                 res = self.__chord_progression_fits(chordProgression, windowIdx, threshold)
 
-                if res >= 0:
+                if res >= 0 and (sol or res < nWindows):
+
                     sol.append((chordProgression, windowIdx, threshold))
                     selChordProg = self.__choose_next_chord_progressions(chordProgression[-1], chordProgressions)
 
                     threshold = 0
-                    windowIdx += res
+                    windowIdx += res 
                                 
                     break
             
@@ -207,10 +212,11 @@ class Song:
 
             if threshold >= limit:
 
+                if not sol:
+                    return None
+
                 threshold = sol[-1][2]
                 windowIdx = sol[-1][1]
-                if windowIdx == 0:
-                    return None
                 
                 fails[windowIdx].append(sol[-1][0])
                 selChordProg = self.__choose_next_chord_progressions(sol[-1][0][0], chordProgressions)
@@ -219,6 +225,64 @@ class Song:
 
         return sol
     
+    def __chord_progression_combinatory(self, chordProgresion, windowIdx):
+
+        if chordProgresion[0] not in self.chordAnalysis[windowIdx]:
+            return False
+        
+        class ChordNode:
+            def __init__(self, chord, weight, last = None):
+                self.chord = chord
+                self.weight = weight   
+                self.last = last
+                self.left = None
+                self.right = None
+
+        pendingChords = [ChordNode(0, self.chordAnalysis[windowIdx][chordProgresion[0]], 0)]
+        nextChords = []  
+        solutions = {}
+
+        for deep, chordAnalysis in enumerate(self.chordAnalysis[(windowIdx + 1):]):
+
+            for chordNode in pendingChords:  
+
+                chordIdx = chordNode.chord
+                if chordProgresion[chordIdx] in chordAnalysis:
+                    left = ChordNode(chordIdx, 
+                                     chordNode.weight + chordAnalysis[chordProgresion[chordIdx]], 
+                                     chordNode)
+                    chordNode.left = left
+                    nextChords.append(left)
+
+                chordIdx += 1
+                if chordProgresion[chordIdx] in chordAnalysis:
+                    right = ChordNode(chordIdx, 
+                                      chordNode.weight + chordAnalysis[chordProgresion[chordIdx]],
+                                      chordNode)
+                    chordNode.right = right
+                    if chordIdx < len(chordProgresion) - 1:
+                        nextChords.append(right)
+                    elif deep not in solutions or right.weight > solutions[deep].weight:
+                        solutions[deep] = right
+
+            pendingChords = nextChords
+            nextChords = []
+
+            if not pendingChords:
+                break
+              
+        if pendingChords:
+            if deep in solutions:
+                idx = 0        
+            else:
+                solutions[deep] = pendingChords[0]
+                idx = 1
+            for chordNode in pendingChords[idx:]:
+                if chordNode.weight > solutions[deep].weight:
+                    solutions[deep] = chordNode
+
+        return solutions                 
+                
     def __chord_progression_fits(self, chordProgresion, windowIdx, threshold):
         
         chordIdx = 0
@@ -233,18 +297,18 @@ class Song:
             if res >= 0:
                 chordIdx += res
                 if (chordIdx + 1) == len(chordProgresion):
-                    return windowCount
+                    return windowCount + 1
             else:
                 return res
                 
-        return windowCount
+        return windowCount + 1
 
     def __chord_fits(self, currentChord, nextChord, chordAnalysis):
 
         for chord in chordAnalysis:
             if chord == currentChord:
                 return 0
-            elif nextChord == currentChord:
+            elif chord == nextChord:
                 return 1      
    
         return -1
