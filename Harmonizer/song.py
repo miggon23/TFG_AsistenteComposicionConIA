@@ -78,36 +78,27 @@ class Song:
 
             key = ""
             for chord in progresion:
-                if chord is None:
-                    key += " "
-                else:
-                    key += chord[0] + chord[1]
+                key += chord[0] + chord[1]
                     
             processedChordProgressions[key] = progresion
 
         for chordProgression in chordProgressions: 
 
-            newProgresion = copy.deepcopy(chordProgression["Progression"])
-            newProgresion.insert(0, None)
-            add_chord(newProgresion)
-
             add_chord(copy.deepcopy(chordProgression["Progression"]))       
 
             for transition in chordProgression["Transitions"]:
-                for chordProgressionT in chordProgressions:                           
-                    if transition == chordProgressionT["Progression"][0]: 
-                        newProgresion = copy.deepcopy(chordProgressionT["Progression"])
-                        newProgresion.insert(0, chordProgression["Progression"][-1])
-                        add_chord(newProgresion)
+                newProgresion = copy.deepcopy(chordProgression["Progression"])
+                newProgresion.append(transition)
+                add_chord(newProgresion)
 
         return list(processedChordProgressions.values())   
     
-    def __choose_next_chord_progressions(self, previousChord, chordProgressions, discardedProgressions = []):
+    def __choose_next_chord_progressions(self, previousChord, chordProgressions):
         
         newChordProgressions = []
 
         for chordProgression in chordProgressions:
-            if previousChord == chordProgression[0] and chordProgression not in discardedProgressions: 
+            if previousChord == chordProgression[0]: 
                 newChordProgressions.append(chordProgression)
 
         return newChordProgressions
@@ -225,45 +216,69 @@ class Song:
 
         return sol
     
-    def __chord_progression_combinatory(self, chordProgresion, windowIdx):
+    class ChordNode:
+        def __init__(self, chord, weight, last = None):
+            self.chord = chord
+            self.weight = weight   
+            self.last = last
+            self.left = None
+            self.right = None
 
-        if chordProgresion[0] not in self.chordAnalysis[windowIdx]:
-            return False
+    def __find_best_chord_sequence(self, chordProgressions):
+
+        nWindows = len(self.chordAnalysis)
+        windows = [{} for _ in range(nWindows)]
+
+        rootChordNode = Song.ChordNode(0, 0)
+        for chordProgression in chordProgressions:
+            solutions = self.__chord_progression_combinatory(rootChordNode, chordProgression, -1)
+            for depth, chordNode in solutions.items():
+                if chordNode.chord not in windows[depth]:
+                    windows[depth][chordProgression[-1]] = (chordNode, chordProgression)
+                elif chordNode.weight > windows[depth][chordProgression[-1]][0].weight:
+                    windows[depth][chordProgression[-1]] = (chordNode, chordProgression)
+
+        for n in range(nWindows - 1):
+            for lastChord in windows[n].keys():
+                selChordProg = self.__choose_next_chord_progressions(lastChord, chordProgressions)
+                for chordProgression in selChordProg:
+                    solutions = self.__chord_progression_combinatory(chordProgression, n)
+                    for depth, chordNode in solutions.items():
+                        idx = n + depth
+                        if chordNode.chord not in windows[idx]:
+                            windows[idx][chordProgression[-1]] = (chordNode, chordProgression)
+                        elif chordNode.weight > windows[idx][chordProgression[-1]][0].weight:
+                            windows[idx][chordProgression[-1]] = (chordNode, chordProgression)
+
+    
+    def __chord_progression_combinatory(self, prevChordNode, chordProgresion, windowIdx):
         
-        class ChordNode:
-            def __init__(self, chord, weight, last = None):
-                self.chord = chord
-                self.weight = weight   
-                self.last = last
-                self.left = None
-                self.right = None
-
-        pendingChords = [ChordNode(0, self.chordAnalysis[windowIdx][chordProgresion[0]], 0)]
+        pendingChords = [prevChordNode]
         nextChords = []  
         solutions = {}
 
-        for deep, chordAnalysis in enumerate(self.chordAnalysis[(windowIdx + 1):]):
+        for depth, chordAnalysis in enumerate(self.chordAnalysis[(windowIdx + 1):], start=1):
 
             for chordNode in pendingChords:  
 
                 chordIdx = chordNode.chord
                 if chordProgresion[chordIdx] in chordAnalysis:
-                    left = ChordNode(chordIdx, 
-                                     chordNode.weight + chordAnalysis[chordProgresion[chordIdx]], 
-                                     chordNode)
+                    left = Song.ChordNode(chordIdx, 
+                                chordNode.weight + chordAnalysis[chordProgresion[chordIdx]], 
+                                chordNode)
                     chordNode.left = left
                     nextChords.append(left)
 
                 chordIdx += 1
                 if chordProgresion[chordIdx] in chordAnalysis:
-                    right = ChordNode(chordIdx, 
-                                      chordNode.weight + chordAnalysis[chordProgresion[chordIdx]],
-                                      chordNode)
+                    right = Song.ChordNode(chordIdx, 
+                                chordNode.weight + chordAnalysis[chordProgresion[chordIdx]],
+                                chordNode)
                     chordNode.right = right
                     if chordIdx < len(chordProgresion) - 1:
                         nextChords.append(right)
-                    elif deep not in solutions or right.weight > solutions[deep].weight:
-                        solutions[deep] = right
+                    elif depth not in solutions or right.weight > solutions[depth].weight:
+                        solutions[depth] = right
 
             pendingChords = nextChords
             nextChords = []
@@ -272,14 +287,14 @@ class Song:
                 break
               
         if pendingChords:
-            if deep in solutions:
+            if depth in solutions:
                 idx = 0        
             else:
-                solutions[deep] = pendingChords[0]
+                solutions[depth] = pendingChords[0]
                 idx = 1
             for chordNode in pendingChords[idx:]:
-                if chordNode.weight > solutions[deep].weight:
-                    solutions[deep] = chordNode
+                if chordNode.weight > solutions[depth].weight:
+                    solutions[depth] = chordNode
 
         return solutions                 
                 
