@@ -103,19 +103,20 @@ class Song:
 
         return newChordProgressions
 
-    def find_chord_sequence(self, chordProgressions = Harmony.allChordProgressions):
+    def find_chord_sequence(self, 
+                            chordProgressions = Harmony.allChordProgressions,
+                            chordWeights = [1, 0.25, 0.5, 0.125], 
+                            timeSignatures = [
+                                ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+                                ts(2, 4).set_weights([1.4, 1.2]),
+                                ts(1, 4).set_weights([1])
+                            ],               
+                            notPlayingAtTickPen = 0.75,):
 
         self.harmony = Harmony.Harmony()
         self.harmony.create_harmony_from_chord_progression_list(chordProgressions)
         self.harmony.relativize_chords()
         
-        chordWeights = [1, 0.25, 0.5, 0.125]
-        timeSignatures = [
-            ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
-            ts(2, 4).set_weights([1.4, 1.2]),
-            ts(1, 4).set_weights([1])
-        ]            
-        notPlayingAtTickPen = 0.75
         self.model = None
 
         chordProgressions = self.__processed_chord_progressions(chordProgressions)
@@ -141,35 +142,26 @@ class Song:
             print("No hay solución")
         else:
             self.tonic = bestTonic
-            self.__rebuild_solution(bestSol, timeSignatures[-1].measure_size())
+            self.__rebuild_solution(bestSol)
+            self.__combine_best_chords(timeSignatures[-1].measure_size())
             return self.__absolutize_harmony()
 
     
-    def __rebuild_solution(self, chordNode, windwSize):
+    def __rebuild_solution(self, chordNode):
 
-        ticksPerChord = int(windwSize * self.ticksPerBeat)  
+        self.chordAnalysis = [{} for _ in range(len(self.chordAnalysis))]
 
-        ticks = 0
-        lastChord = None
         chordProgression = None
 
-        self.bestChords = []
-
+        idx = len(self.chordAnalysis) - 1
         while chordNode is not None:
             if chordNode.chordProgression is not None:
                 chordProgression = chordNode.chordProgression
 
-            chord = chordProgression[chordNode.chord]
-            if chord == lastChord:
-                ticks += 1
-            else:
-                self.bestChords.insert(0, [lastChord, ticksPerChord * ticks])
-                ticks = 1
-                lastChord = chord
+            self.chordAnalysis[idx][chordProgression[chordNode.chord]] = 1
+            idx -= 1
 
             chordNode = chordNode.last
-    
-        self.bestChords.insert(0, [lastChord, ticksPerChord * ticks])
 
     
     class ChordNode:

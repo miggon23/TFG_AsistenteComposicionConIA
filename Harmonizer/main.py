@@ -98,8 +98,20 @@ def main():
 
     notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
     song = Song.Song(notes, ticksPerBeat)
-    harmony = song.find_chord_sequence()
+    song.traspose(int((song.meanPitch - 72) / 12) * -12)
+    MidiUtils.write_midi_song("midi/input_song.mid", song.notes, ticksPerBeat)
+    notes, ticksPerBeat = MidiUtils.read_midi_song("midi/input_song.mid")
 
+    timeSignatures = [
+        ts(4, 4).set_weights([1.4, 1.1, 1.2, 1.1]),
+        ts(2, 4).set_weights([1.4, 1.2]),
+        ts(1, 4).set_weights([1])
+    ]
+
+    song = Song.Song(notes, ticksPerBeat)
+    harmony = song.find_chord_sequence(timeSignatures=timeSignatures[:2])
+
+    print(f"Tónica: {song.tonic.name}")
     song.print_best_chords()
 
     MidiUtils.write_midi_song("midi/output_harmony.mid", harmony, ticksPerBeat)
