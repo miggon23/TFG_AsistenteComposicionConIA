@@ -1,0 +1,8 @@
+{
+  "type": "MusicRNN",
+  "dataConverter": {
+      "type": "MelodyConverter",
+      "args": {"minPitch": 21,
+      "maxPitch": 108}
+  }
+}
