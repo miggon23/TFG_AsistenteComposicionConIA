@@ -65,4 +65,4 @@ def continue_melody_midi(melody_midi, n_steps = 16, temperature = 1.5):
 # out = generate_melodies(1, 16)
 
 # continue_melody_midi(out[0], 16)
-continue_melody_midi("midi/output_song.mid", 16)
+# continue_melody_midi("midi/output_song.mid", 16)

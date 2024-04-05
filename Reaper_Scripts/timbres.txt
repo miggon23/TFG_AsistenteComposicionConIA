@@ -11,7 +11,7 @@ Temática:
 9-Asiático     Lidio
 10-Rock        Dorico
 11-Pop         Original
-12-Dance       Original
+12-Tecno       Original
 
 Entorno:
 0-Exterior

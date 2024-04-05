@@ -113,7 +113,7 @@ pista1tematica11_0 DSK Guitars Acousti (x86) (DSK Music)
 pista1tematica11_1 Karoryfer Cute E (bigcat) (32 out)
 pista1tematica11_2 Upright Piano (audiolatry) (32 out)
 pista1tematica11_3 DPiano-A (Dead Duck Software)
-pista1tematica11_4 DVS Guitar (x86) (Martin Best)
+pista1tematica11_4 DPiano-A (Dead Duck Software)
 pista1tematica11_5 Virtual Handpan (SampleScience) (32 out)
 pista1tematica11_6 Toy Keyboard v3 (SampleScience) (32 out)
 pista1tematica11_7 Toy Keyboard v3 (SampleScience) (32 out)
@@ -1008,6 +1008,18 @@ expansor
 mastering1
 mastering2
 
-	MIDI OCTAVES      JS: MIDI Transpose Notes
+	MIDI PITCH        JS: MIDI Transpose Notes
 octaveDown
 octaveUp
+minus6semitones
+minus5semitones
+minus4semitones
+minus3semitones
+minus2semitones
+minus1semitones
+plus1semitones
+plus2semitones
+plus3semitones
+plus4semitones
+plus5semitones
+plus6semitones

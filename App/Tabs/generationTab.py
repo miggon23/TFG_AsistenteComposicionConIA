@@ -1,6 +1,9 @@
 from tkinter import ttk
 from tkinter import *
 
+from timidity import Parser, play_notes
+import numpy as np
+
 import mainDemo as demo
 from Cadenas_Markov import markovGenerator
 from Harmonizer import harmonyGenerator
@@ -8,6 +11,7 @@ from Basslines import basslineGenerator
 from Drums import enums
 from Drums import drumGenerator
 from Basslines import basslineGenerator
+
 
 class GenerationTab:
     
@@ -34,8 +38,9 @@ class GenerationTab:
         self.SpinBoxVar = IntVar()
         self.SpinBoxVar.set(4)
         ttk.Spinbox(self.tab, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
-        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 2)
-        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 3)
+        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2)
+        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3)
+        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4)
 
     # Button callbacks
         
@@ -84,3 +89,8 @@ class GenerationTab:
 
         drumGenerator.DrumGenerator.generateAllStyles()
         print("Tamborizacion completa")
+
+    def playPreview(self):
+        ps = Parser("./midi/output_song.mid")
+
+        play_notes(*ps.parse(), np.sin)

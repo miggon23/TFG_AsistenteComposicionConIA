@@ -78,7 +78,8 @@ class ModalPerspective():
 
     def load_model(self, reverse = False):
 
-        harmony = Harmony.Harmony(self.modalScale, self.possibleChords)     
+        harmony = Harmony.Harmony()   
+        harmony.create_harmony_from_scale(self.modalScale, self.possibleChords)  
         harmony.relativize_chords()
 
         dic = {"start" : ["end"]}
