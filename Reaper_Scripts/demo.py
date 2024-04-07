@@ -1455,15 +1455,15 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
 
-tematica = 12
+tematica = 1
 tematica_pistas = [0,1,2,3,4,5,6]
 tematicas_aleatorias = False
 mezclar_tematicas = False
 mezclar_melodias = True
-semitonos = -2
+semitonos = -1
 reverb = True
-entorno = 2
-lofi = False
+entorno = 1
+lofi = True
 retro = False
 agua = False
 espacial = False
