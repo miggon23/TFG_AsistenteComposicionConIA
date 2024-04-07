@@ -1,9 +1,12 @@
+import sys
+sys.path.append('././Reaper_Scripts/')
+
 from tkinter import ttk
 from tkinter import *
 from enum import Enum
 
 from PIL import Image, ImageTk
-
+from Reaper_Scripts import llamamosReaper
 
 class TematicEnum(Enum):
     PRADERA   =   "Pradera"
@@ -65,7 +68,7 @@ class ModeSelectorTab:
         y = (600 - 100) / 2
 
         # Crea y coloca el botón en las coordenadas calculadas
-        Button(self.canvas, image=self.playButtonImage).place(x=x, y=y)
+        Button(self.canvas, image=self.playButtonImage, command=self.playReaper).place(x=x, y=y)
 
         # Botón de todo aleatorio
         original_image = Image.open("App/Images/dado6.png")
@@ -125,3 +128,9 @@ class ModeSelectorTab:
         resized_image_pil = self.background_image_pil.resize((new_width, new_height), Image.LANCZOS)
         self.background = ImageTk.PhotoImage(resized_image_pil)
         self.canvas.itemconfig(self.background_id, image=self.background)
+
+    def playReaper(self):
+        reaperStream = llamamosReaper.ReaperStream()
+        reaperStream.SetUp()
+
+        
