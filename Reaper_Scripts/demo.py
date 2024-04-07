@@ -1491,7 +1491,8 @@ lofi_preset = random.randint(0, 9)
 espacial_preset = random.randint(0, 9)
 
 if(tematicas_aleatorias):
-    tematica = random.randint(0, 12)
+    tematica = random.randint(1, 12)
+    if(tematica == 1) tematica = 0
     tematica_pistas = [random.randint(0, 12)] * len(tematica_pistas)
 
 if(not mezclar_tematicas):
