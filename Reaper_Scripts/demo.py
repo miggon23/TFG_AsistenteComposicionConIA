@@ -1,6 +1,8 @@
 from asyncio.windows_events import NULL
 import os
 import random
+import json
+
 
 
 def cargarMidi(ruta):
@@ -1455,20 +1457,35 @@ RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
 
 
-tematica = 1
-tematica_pistas = [0,1,2,3,4,5,6]
-tematicas_aleatorias = False
-mezclar_tematicas = False
-mezclar_melodias = True
-semitonos = -1
-reverb = True
-entorno = 1
-lofi = True
-retro = False
-agua = False
-espacial = False
-dream = False
-vintage = False
+
+bufOut = ""  # Initialize bufOut with an empty string
+bufOut_sz = 1024  # Set an arbitrary size for bufOut_sz, adjust as needed
+
+# Corrected usage of RPR_GetProjectPath
+bufOut, bufOut_sz = RPR_GetProjectPath(bufOut, bufOut_sz)
+
+rutaJson = os.path.join(bufOut, "parametros.json")  # Use os.path.join to concatenate paths
+    
+
+with open(rutaJson, 'r') as file:
+    parametros = json.load(file)
+
+file.close()
+
+tematica = parametros["tematica"]
+tematica_pistas = parametros["tematica_pistas"]
+tematicas_aleatorias = parametros["tematicas_aleatorias"]
+mezclar_tematicas = parametros["mezclar_tematicas"]
+mezclar_melodias = parametros["mezclar_melodias"]
+semitonos = parametros["semitonos"]
+reverb = parametros["reverb"]
+entorno = parametros["entorno"]
+lofi = parametros["lofi"]
+retro = parametros["retro"]
+agua = parametros["agua"]
+espacial = parametros["espacial"]
+dream = parametros["dream"]
+vintage = parametros["vintage"]
 
 lofi_preset = random.randint(0, 9)
 espacial_preset = random.randint(0, 9)
