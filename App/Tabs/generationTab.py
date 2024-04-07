@@ -38,8 +38,6 @@ class GenerationTab:
         ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2)
         ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3)
         ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4)
-
-    # Button callbacks
         
     
     def generateMelodies(self):
