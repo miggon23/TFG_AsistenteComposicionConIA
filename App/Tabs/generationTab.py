@@ -35,9 +35,6 @@ class GenerationTab:
 
     def setButtons(self):
         ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
-        self.SpinBoxVar = IntVar()
-        self.SpinBoxVar.set(4)
-        ttk.Spinbox(self.tab, from_=2, to=40, textvariable=self.SpinBoxVar).grid(column=1, row=1)
         ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2)
         ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3)
         ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4)
@@ -46,9 +43,9 @@ class GenerationTab:
         
     
     def generateMelodies(self):
-        print("Generando " + str(self.SpinBoxVar.get()) + " compases")
+        print("Generando")
         #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
-        self.bars = self.SpinBoxVar.get()
+        self.bars = 4
         self.melody = demo.generate_magenta(self.bars * 2, 1)[0]
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./midi/trasposed_melody.mid")
 
