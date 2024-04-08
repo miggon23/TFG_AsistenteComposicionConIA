@@ -38,6 +38,9 @@ class ModeSelectorTab:
         self.displayEnumSelectors()
         self.setButtons()
 
+    def onEntryTab(self):
+        self.resize_image()
+
     def setCheckboxes(self):
         self.lofi = BooleanVar()
         Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=360)
@@ -121,10 +124,10 @@ class ModeSelectorTab:
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         root.bind("<Configure>", self.resize_image)
 
-    def resize_image(self, event):
+    def resize_image(self, event = None):
         # Redimensionar la imagen original cuando cambia el tamaño de la ventana
-        new_width = event.width
-        new_height = event.height
+        new_width = self.tab.winfo_width()
+        new_height = self.tab.winfo_height()
         resized_image_pil = self.background_image_pil.resize((new_width, new_height), Image.LANCZOS)
         self.background = ImageTk.PhotoImage(resized_image_pil)
         self.canvas.itemconfig(self.background_id, image=self.background)

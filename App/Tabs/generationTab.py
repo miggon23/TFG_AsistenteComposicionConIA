@@ -89,3 +89,6 @@ class GenerationTab:
         ps = Parser("./Media/midi/output_song.mid")
 
         play_notes(*ps.parse(), np.sin)
+
+    def onEntryTab(self):
+        print("Generation Tab")

@@ -4,6 +4,7 @@ sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
 sys.path.append('./Basslines/')
 sys.path.append('./App/Tabs/')
+sys.path.append('./Utils/')
 
 from tkinter import *
 from tkinter import ttk
@@ -59,6 +60,8 @@ class App:
 
         #Los hacemos pack
         self.notebook.pack(fill="both", expand=True)
+
+        self.notebook.bind("<<NotebookTabChanged>>", self.onTabChanged)
         
         # Creamos las clases que representan cada pestaña de la App
         self.generationTab = generationTab.GenerationTab(self.frame1)
@@ -73,6 +76,17 @@ class App:
     def run(self):
         self.root.mainloop()
 
+    def onTabChanged(self, event):
+        #curentTab = self.notebook.select()
+        selectedTab = self.notebook.select()
+        id = self.notebook.index(selectedTab)  
+
+        if id == 0:
+            self.generationTab.onEntryTab()
+        elif id == 1:
+            self.modeSelectorTab.onEntryTab()
+        elif id == 2:
+            self.configTab.onEntryTab()
 
         
 
