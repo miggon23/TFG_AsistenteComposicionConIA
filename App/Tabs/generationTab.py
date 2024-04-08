@@ -45,7 +45,7 @@ class GenerationTab:
         #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
         self.bars = 4
         self.melody = demo.generate_magenta(self.bars * 2, 1)[0]
-        self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./midi/trasposed_melody.mid")
+        self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_melody.mid")
 
 
     def armonice(self):
@@ -71,8 +71,8 @@ class GenerationTab:
         semiSongs = harmonyGenerator.HarmonyGenerator.spreadSong(self.melody, ticks=self.bars*4)
         for idx, semiSong in enumerate(semiSongs):
             harmonyGenerator.HarmonyGenerator.spreadSong(semiSong, 
-                output1="./midi/output_song" + letters[idx * 2] + ".mid",
-                output2="./midi/output_song" + letters[idx * 2 + 1] + ".mid",
+                output1="./Media/midi/output_song" + letters[idx * 2] + ".mid",
+                output2="./Media/midi/output_song" + letters[idx * 2 + 1] + ".mid",
                 ticks=self.bars*2)
         harmonyGenerator.HarmonyGenerator.generate(harmonyGenerator.HarmonyGenerator.combineSongs(semiSongs[0], semiSongs[1]))
     
@@ -86,6 +86,6 @@ class GenerationTab:
         print("Tamborizacion completa")
 
     def playPreview(self):
-        ps = Parser("./midi/output_song.mid")
+        ps = Parser("./Media/midi/output_song.mid")
 
         play_notes(*ps.parse(), np.sin)

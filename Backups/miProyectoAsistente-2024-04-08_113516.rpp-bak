@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "7.11/win64" 1712569009
+<REAPER_PROJECT 0.1 "7.11/win64" 1712568915
   <NOTES 0 2
   >
   RIPPLE 0
@@ -18,8 +18,8 @@
   VIDEO_CONFIG 0 0 256
   PANMODE 3
   PANLAWFLAGS 3
-  CURSOR 151.76470588235293
-  ZOOM 5.40878929323954 0 0
+  CURSOR 0
+  ZOOM 4.50732441103295 0 0
   VZOOMEX 0 0
   USE_REC_CFG 0
   RECMODE 1
@@ -759,7 +759,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {58F8E4F7-2B66-4D07-89B3-7006E7AC1122}
       IID 372
       NAME output_songB.mid
@@ -807,7 +807,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {6129B9A2-15CF-4E31-B20C-EB181192F996}
       IID 373
       NAME output_songB.mid
@@ -855,7 +855,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {8AB2FD2F-4799-4CD0-BBA4-53E44050B3C3}
       IID 374
       NAME output_songA.mid
@@ -901,7 +901,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A4E6B6CD-2A1F-4F27-BE96-99984DD330E6}
       IID 375
       NAME output_songB.mid
@@ -949,7 +949,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {C5650C31-B358-4AB1-916A-098FE0892C43}
       IID 376
       NAME output_songA.mid
@@ -995,7 +995,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {8C790EF4-E0FD-416C-A7B3-2288935F4B28}
       IID 377
       NAME output_songB.mid
@@ -1043,7 +1043,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {91F350E4-485E-490D-9DEE-253207696EF7}
       IID 378
       NAME output_songC.mid
@@ -1089,7 +1089,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {055D2286-4C58-4BD2-A9D1-24B001BE7C7F}
       IID 379
       NAME output_songD.mid
@@ -1137,7 +1137,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1DFE4393-2407-498D-89B9-6A12252767DA}
       IID 380
       NAME output_songA.mid
@@ -1183,7 +1183,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {D2043D3C-271A-406B-AC19-7F8770B194FA}
       IID 381
       NAME output_songB.mid
@@ -1231,7 +1231,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {10C57120-FA1B-432E-B803-232E75EA4D4F}
       IID 382
       NAME output_songC.mid
@@ -1277,7 +1277,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {9997CD0B-2518-4369-9416-A3ED0EB65317}
       IID 383
       NAME output_songD.mid
@@ -1754,7 +1754,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {05DB7415-751F-4A9E-BDE0-8255DBE4C262}
       IID 384
       NAME output_songD.mid
@@ -1802,7 +1802,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {C960B5C4-FD41-4750-A114-BC35A17BF405}
       IID 385
       NAME output_songD.mid
@@ -1850,7 +1850,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {97730E90-55BE-4A37-8119-EE47E282C1D3}
       IID 386
       NAME output_songB.mid
@@ -1898,7 +1898,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {33147419-4FB1-4B30-A86C-2D2DDF63463C}
       IID 387
       NAME output_songD.mid
@@ -1946,7 +1946,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B955CB32-A368-49B6-8B6D-BB141FE07F5D}
       IID 388
       NAME output_songD.mid
@@ -1994,7 +1994,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {3C77BB88-225C-480A-A286-64D942DBB1A2}
       IID 389
       NAME output_songD.mid
@@ -2042,7 +2042,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {7BD25578-7264-4AA1-A5CF-5A92CB578E12}
       IID 390
       NAME output_songB.mid
@@ -2090,7 +2090,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {6DECCAF7-6DA2-46B5-8E41-DFC936B264FF}
       IID 391
       NAME output_songD.mid
@@ -2138,7 +2138,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A06C05DF-5D93-4D03-899C-CBB608C5E306}
       IID 392
       NAME output_songB.mid
@@ -2186,7 +2186,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {6D3BCAD7-C402-4806-A702-6BE37F036D86}
       IID 393
       NAME output_songB.mid
@@ -2234,7 +2234,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {636E5717-F441-4D80-AC37-3A0BCDD13D11}
       IID 394
       NAME output_songA.mid
@@ -2280,7 +2280,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4A7D6218-B988-452F-A36F-648C32FD4207}
       IID 395
       NAME output_songB.mid
@@ -2334,7 +2334,7 @@
     BUSCOMP 0 0 0 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FIXEDLANES 9 0 0
-    SEL 1
+    SEL 0
     REC 0 0 1 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0 0 0 0 0
@@ -3648,7 +3648,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1956417A-6B79-408D-A327-576EEB0D1D66}
       IID 396
       NAME output_harmony.mid
@@ -3728,7 +3728,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1B5AFFAF-FDE3-4BEF-A32E-A04364107C26}
       IID 397
       NAME output_harmony.mid
@@ -3808,7 +3808,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E5C73A2B-6CFE-483A-A589-6EB2BDE951B0}
       IID 398
       NAME output_harmony.mid
@@ -3888,7 +3888,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ECEE7301-0D26-4DAA-BE40-7B56724B3D64}
       IID 399
       NAME output_harmony.mid
@@ -5289,7 +5289,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1B6E87A3-6CC4-4BDB-B7D2-CE485C4F5977}
       IID 400
       NAME output_harmony.mid
@@ -5369,7 +5369,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B9B8BF47-8822-434D-B118-D2E4256F919F}
       IID 401
       NAME output_harmony.mid
@@ -5449,7 +5449,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A976870E-1256-4ABC-8793-68267E709BD7}
       IID 402
       NAME output_harmony.mid
@@ -5529,7 +5529,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FE25CED3-A56D-4206-BCE4-46A15EF3423C}
       IID 403
       NAME output_harmony.mid
@@ -5609,7 +5609,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2C60B9B5-B057-4322-B226-7EBB0A759F6E}
       IID 404
       NAME output_harmony.mid
@@ -5689,7 +5689,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {291DC7FE-D492-4BFA-B566-3417C76DD7F6}
       IID 405
       NAME output_harmony.mid
@@ -5775,7 +5775,7 @@
     BUSCOMP 0 0 0 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FIXEDLANES 9 0 0
-    SEL 0
+    SEL 1
     REC 0 0 1 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0 0 0 0 0 0
@@ -6189,7 +6189,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {5A33AB29-42C2-408A-BEBE-1312C5E933DF}
       IID 406
       NAME output_harmony.mid
@@ -6269,7 +6269,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {18F5910D-1276-4AAF-B686-15F539BC40C0}
       IID 407
       NAME output_harmony.mid
@@ -6349,7 +6349,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2C532D20-37C3-44F7-B418-32569CC8CE83}
       IID 505
       NAME output_harmony.mid
@@ -6388,7 +6388,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {F8B57543-17A0-4728-B60A-D40520B20EF0}
       IID 408
       NAME output_harmony.mid
@@ -6468,7 +6468,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4B6E95FD-A142-4BDF-A0A4-4A10B3924E58}
       IID 409
       NAME output_harmony.mid
@@ -6548,7 +6548,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {59AC5D87-088B-48B6-95D8-56F4558E1F6D}
       IID 410
       NAME output_harmony.mid
@@ -6628,7 +6628,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {F7114A66-F66C-4706-B907-D270EFE06945}
       IID 411
       NAME output_harmony.mid
@@ -6708,7 +6708,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E94FE546-6443-4A92-89A1-028EC245ED35}
       IID 412
       NAME output_harmony.mid
@@ -6788,7 +6788,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ABF47A54-2A4D-4EDD-AA5B-8C710B1A6E7D}
       IID 413
       NAME output_harmony.mid
@@ -6868,7 +6868,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {19DFFCD0-871A-4E0D-8FD7-334BD0FCF61F}
       IID 414
       NAME output_harmony.mid
@@ -6948,7 +6948,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {7444CA25-7C47-45B8-8CC9-030D1EF5A10D}
       IID 415
       NAME output_harmony.mid
@@ -8063,7 +8063,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {9C32D2FD-E863-460B-88AF-C2AA78250962}
       IID 503
       NAME output_harmony.mid
@@ -8102,7 +8102,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {F191FC13-7858-4A0F-A97A-C898E61909A1}
       IID 416
       NAME output_harmony.mid
@@ -8182,7 +8182,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {6D3EB68A-1A64-4BAC-BDEB-C3EA7A192719}
       IID 417
       NAME output_harmony.mid
@@ -8262,7 +8262,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {5674423D-09A5-4484-9C9A-CE78DD955E9D}
       IID 418
       NAME output_harmony.mid
@@ -8342,7 +8342,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {AF062B28-ED83-49A6-9760-FBCEC7CB3B4D}
       IID 419
       NAME output_harmony.mid
@@ -8422,7 +8422,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {78F3B1E4-6800-4231-9D77-478A2A4543FA}
       IID 420
       NAME output_harmony.mid
@@ -8502,7 +8502,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {BA78D805-D95A-4CD1-9343-F34C3D58B4F2}
       IID 421
       NAME output_harmony.mid
@@ -9639,7 +9639,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {3DB9EEB3-3E2E-44D4-8B7C-5CBEFF90B00F}
       IID 422
       NAME output_DISCO_drumPatternB.mid
@@ -9711,7 +9711,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1CC2D9D2-41F7-4A0E-B9B1-26ACC9A3CF68}
       IID 423
       NAME output_DISCO_drumPatternA-imported.mid
@@ -9785,7 +9785,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FB54D970-888E-412F-B1DF-E375E8019A8C}
       IID 424
       NAME output_DISCO_drumPatternB.mid
@@ -9857,7 +9857,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {5F54FFF0-31CE-401A-B567-ECA3202F87DA}
       IID 425
       NAME output_DISCO_drumPatternB.mid
@@ -9929,7 +9929,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {30C5BDFB-F33B-4E05-9BB1-C24F29F41CED}
       IID 426
       NAME output_DISCO_drumPatternB.mid
@@ -10001,7 +10001,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {35C61FB9-C112-45FA-956E-4708CEA8BA2A}
       IID 427
       NAME output_DISCO_drumPatternA-imported.mid
@@ -10075,7 +10075,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4074ABB5-5ABE-4D6A-B3F7-C6D6D77F4BE6}
       IID 428
       NAME output_DISCO_drumPatternB.mid
@@ -10147,7 +10147,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {05AC2039-32FC-4AFB-966E-D83C2C23A982}
       IID 429
       NAME output_DISCO_drumPatternB.mid
@@ -10219,7 +10219,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B166449C-071C-4529-BEE4-30D62EEF4923}
       IID 430
       NAME output_DISCO_drumPatternB.mid
@@ -10291,7 +10291,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2F97CEB1-8F7C-4A12-B5FA-067E6DF4F154}
       IID 431
       NAME output_DISCO_drumPatternA-imported.mid
@@ -10365,7 +10365,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4FD046B1-4950-48DB-AE9C-EEF57AAD0AD6}
       IID 432
       NAME output_DISCO_drumPatternB.mid
@@ -10437,7 +10437,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FE3E8D20-94EB-4CCC-9A63-1BE59FCF52D2}
       IID 433
       NAME output_DISCO_drumPatternB.mid
@@ -10509,7 +10509,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {20B25D4A-0F2B-48B4-9B10-C4474759FBE9}
       IID 434
       NAME output_DISCO_drumPatternB.mid
@@ -10581,7 +10581,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B8E0C1AF-F172-40BC-A72A-D7BC79BD4AAC}
       IID 435
       NAME output_DISCO_drumPatternA-imported.mid
@@ -10655,7 +10655,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {0DFBF3B2-DCE3-45BA-880E-CB24DF0452D1}
       IID 436
       NAME output_DISCO_drumPatternB.mid
@@ -10727,7 +10727,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A016ABA5-A5B4-485E-962B-F0B626E2691E}
       IID 437
       NAME output_DISCO_drumPatternB.mid
@@ -10799,7 +10799,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {DBCD1160-544D-4241-953A-4C16CCC9FD1D}
       IID 438
       NAME output_DISCO_drumPatternB.mid
@@ -10871,7 +10871,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {03064C2E-3A8C-4A32-BDE1-855FE01D9C25}
       IID 439
       NAME output_DISCO_drumPatternA-imported.mid
@@ -10945,7 +10945,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {5DC887BC-3480-4004-87DF-E658C259FD5E}
       IID 440
       NAME output_DISCO_drumPatternB.mid
@@ -11017,7 +11017,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {F6EE3861-4568-42AC-9B66-4E26FBE57A43}
       IID 441
       NAME output_DISCO_drumPatternB.mid
@@ -11089,7 +11089,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {01A92A65-63CE-4CC7-8EA1-2D8C5E5B8807}
       IID 442
       NAME output_DISCO_drumPatternB.mid
@@ -11161,7 +11161,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {618FC05E-CA9C-4321-844B-0B25E832D404}
       IID 443
       NAME output_DISCO_drumPatternA-imported.mid
@@ -11235,7 +11235,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {BBBF988A-17DA-4508-87B2-4BDB7C827D29}
       IID 444
       NAME output_DISCO_drumPatternB.mid
@@ -11307,7 +11307,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {473CE45E-5693-4B1E-8383-AF5BAB80EC14}
       IID 445
       NAME output_DISCO_drumPatternB.mid
@@ -11379,7 +11379,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {56F2E731-9269-49AA-A157-BD5A68181D3B}
       IID 446
       NAME output_DISCO_drumPatternB.mid
@@ -11451,7 +11451,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E5349242-9FB1-499C-92B3-B4BAD3580818}
       IID 447
       NAME output_DISCO_drumPatternA-imported.mid
@@ -11525,7 +11525,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {CB2382AE-1478-4B30-9374-C33FD7A1D96A}
       IID 448
       NAME output_DISCO_drumPatternB.mid
@@ -11597,7 +11597,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {C02F7A24-D751-4229-9516-6C6124E10040}
       IID 449
       NAME output_DISCO_drumPatternB.mid
@@ -11669,7 +11669,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {70B2389B-5BD5-47B2-9E52-0C4801FBD219}
       IID 450
       NAME output_DISCO_drumPatternB.mid
@@ -11741,7 +11741,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {780AD8C8-6AC6-4402-A593-84A0C950EA1F}
       IID 451
       NAME output_DISCO_drumPatternA-imported.mid
@@ -11815,7 +11815,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ADA4E310-D0DA-43D1-8745-7F7BC0FC1696}
       IID 452
       NAME output_DISCO_drumPatternB.mid
@@ -11887,7 +11887,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FABD74CB-6DA1-462D-8F90-23DFE7AF6F77}
       IID 453
       NAME output_DISCO_drumPatternB.mid
@@ -11959,7 +11959,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E34DE55B-4FEF-4206-AA2C-AA441ACAE5A4}
       IID 454
       NAME output_DISCO_drumPatternB.mid
@@ -12031,7 +12031,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ED72D623-0700-47D2-973F-5FBF9100305B}
       IID 455
       NAME output_DISCO_drumPatternA-imported.mid
@@ -12105,7 +12105,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2CC0BA80-DCF5-4C31-9936-3F7CEA0133E1}
       IID 456
       NAME output_DISCO_drumPatternB.mid
@@ -12177,7 +12177,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4FAD8604-F769-4188-993F-8A5227BE023F}
       IID 457
       NAME output_DISCO_drumPatternB.mid
@@ -12249,7 +12249,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {898C7077-42BD-424D-89F8-16BBE3110C0D}
       IID 458
       NAME output_DISCO_drumPatternB.mid
@@ -12321,7 +12321,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {4F3BADE6-17D2-4B58-A6E2-504602FFA702}
       IID 459
       NAME output_DISCO_drumPatternA-imported.mid
@@ -12395,7 +12395,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FBCF7B44-37DC-485D-A298-8766889581FC}
       IID 460
       NAME output_DISCO_drumPatternB.mid
@@ -12467,7 +12467,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {22C0CE55-7943-43DF-AE4D-54969FB4B2E1}
       IID 461
       NAME output_DISCO_drumPatternB.mid
@@ -13789,7 +13789,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {DA26A7F6-4E04-4032-9810-AD7521017CA1}
       IID 462
       NAME output_harmony.mid
@@ -13869,7 +13869,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ADE85F29-3D7A-4CCF-9467-CE982674879B}
       IID 463
       NAME output_harmony.mid
@@ -13949,7 +13949,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {9DA0BAB3-4120-4ABF-A7A6-35C7EDBF2CBF}
       IID 464
       NAME output_harmony.mid
@@ -14029,7 +14029,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E1F89644-C796-401A-9C05-CC34A0B1C50F}
       IID 465
       NAME output_harmony.mid
@@ -14109,7 +14109,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B6935F71-C51D-4EE0-AFCE-369AC0F9CC56}
       IID 466
       NAME output_harmony.mid
@@ -14189,7 +14189,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {04199A03-D138-4E58-9695-CD65FAB6EE06}
       IID 467
       NAME output_harmony.mid
@@ -14269,7 +14269,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {D561C416-AF5A-4632-8B6C-48D313979DC1}
       IID 468
       NAME output_harmony.mid
@@ -14349,7 +14349,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {20A62831-920A-4815-8101-27F8A8799529}
       IID 469
       NAME output_harmony.mid
@@ -14846,7 +14846,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {3A2AC218-BEB4-47B1-8606-060623A8D4E2}
       IID 470
       NAME output_harmony.mid
@@ -14926,7 +14926,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {EA1B0F4A-CBB2-428E-906B-7EB9B98155A6}
       IID 471
       NAME output_harmony.mid
@@ -15006,7 +15006,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {81EF94B6-D65C-45C7-B95A-AD6689306943}
       IID 472
       NAME output_harmony.mid
@@ -15086,7 +15086,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {C52F616D-1E35-48DF-B2EC-51226E3F6C6F}
       IID 473
       NAME output_harmony.mid
@@ -15166,7 +15166,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {945005B3-F912-4574-AA68-782C739F4AB1}
       IID 474
       NAME output_harmony.mid
@@ -15246,7 +15246,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {02B05A2D-99C6-4298-88DB-96F0A28EE3CC}
       IID 475
       NAME output_harmony.mid
@@ -15326,7 +15326,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {55D8D99E-D8E9-4BEB-BB99-508082466CC6}
       IID 476
       NAME output_harmony.mid
@@ -15406,7 +15406,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {CBC07EF0-8904-4FB2-92C1-C1741A8A78B3}
       IID 477
       NAME output_harmony.mid
@@ -15940,7 +15940,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {0D366C05-006F-4872-AF9C-E27653994CA8}
       IID 478
       NAME output_harmony.mid
@@ -16020,7 +16020,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {91F954CD-DAE3-4FED-B852-D49C2B0C4128}
       IID 479
       NAME output_harmony.mid
@@ -16495,7 +16495,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {FB292E4E-15F7-4764-96CC-8C632376B37C}
       IID 480
       NAME output_harmony.mid
@@ -16575,7 +16575,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {1B7301B0-4BB5-4795-98E4-89F899A57284}
       IID 481
       NAME output_harmony.mid
@@ -17712,7 +17712,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {E4B56B52-9DAB-4863-BA39-90AF0D812F6D}
       IID 482
       NAME "ola - fillTemplate.mid"
@@ -17756,7 +17756,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {7D64B49F-5622-4F58-A411-589ED4B1CC5C}
       IID 483
       NAME "ola - fillTemplate.mid"
@@ -17800,7 +17800,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B0254BC6-C758-4EBF-9283-489DE7B7545F}
       IID 484
       NAME "ola - fillTemplate.mid"
@@ -17844,7 +17844,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A04AFC33-24D7-414E-A07B-2606EB1868E8}
       IID 485
       NAME "ola - fillTemplate.mid"
@@ -17888,7 +17888,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {A8091B7D-F57E-4E79-8D44-9A1346D68A0F}
       IID 486
       NAME "ola - fillTemplate.mid"
@@ -17932,7 +17932,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {93935FFB-F7E3-4E8C-8E0C-861A7B976ECA}
       IID 487
       NAME "ola - fillTemplate.mid"
@@ -17976,7 +17976,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {C91506B7-FDCD-4CC6-A133-EDD8C8A33516}
       IID 488
       NAME "ola - fillTemplate.mid"
@@ -18020,7 +18020,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {90DA289A-9459-4328-8ECE-68749A66B159}
       IID 489
       NAME "ola - fillTemplate.mid"
@@ -18064,7 +18064,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {ED88980F-04E6-44CD-B8B4-C513982E2312}
       IID 490
       NAME "ola - fillTemplate.mid"
@@ -18108,7 +18108,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {7C38FC96-9155-4905-B7BD-56A7AFE05DEF}
       IID 491
       NAME "ola - fillTemplate.mid"
@@ -18152,7 +18152,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {387E92F7-4F55-4BE1-AD39-73C5FCAC2C76}
       IID 492
       NAME "ola - fillTemplate.mid"
@@ -19795,7 +19795,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {B942CBB9-E5B3-4FFB-B6F4-207277726A31}
       IID 493
       NAME output_harmony.mid
@@ -19875,7 +19875,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {7E34BC5F-4418-4209-8E51-73EA954374FB}
       IID 494
       NAME output_harmony.mid
@@ -19955,7 +19955,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {36F3E623-F857-442A-9D56-CC745E66E72E}
       IID 501
       NAME output_harmony.mid
@@ -20035,7 +20035,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {BDAEC01C-4751-4E46-9744-CAA4A27C87CA}
       IID 502
       NAME output_harmony.mid
@@ -21715,7 +21715,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2B61CE74-7F39-4F58-AE48-028A523F528F}
       IID 495
       NAME output_harmony.mid
@@ -21795,7 +21795,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {74AD5001-32EB-484D-843A-B9D3703C82B0}
       IID 496
       NAME output_harmony.mid
@@ -23475,7 +23475,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {20FD7179-5825-4A49-BE1F-58536B19AF3A}
       IID 497
       NAME output_harmony.mid
@@ -23555,7 +23555,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {67CEC6C4-191B-423D-9E15-889849F2DADB}
       IID 498
       NAME output_harmony.mid
@@ -25233,7 +25233,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {2ACD7EDB-B786-4DFF-AE5F-461CF5CC2788}
       IID 499
       NAME output_harmony.mid
@@ -25313,7 +25313,7 @@
       FADEIN 1 0 0 1 0 0 0
       FADEOUT 1 0 0 1 0 0 0
       MUTE 0 0
-      SEL 0
+      SEL 1
       IGUID {09011E80-F75E-4D78-B7DB-9C2D7E369730}
       IID 500
       NAME output_harmony.mid

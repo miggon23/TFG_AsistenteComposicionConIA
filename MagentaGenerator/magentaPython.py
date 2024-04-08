@@ -24,7 +24,7 @@ def generate_melodies(n_melodies, n_steps = 16):
         indexStr = ""
         if i > 0:
             indexStr = "_" + str(i)
-        out = "./midi/output_song" + indexStr + ".mid"
+        out = "./Media/midi/output_song" + indexStr + ".mid"
         nc.save_to_midi(nc.json_to_noteSeq(melody_json), out)
         outputs.append(out)
         i += 1
@@ -42,7 +42,7 @@ def continue_melody_noteseq(melody_noteseq, n_steps = 16, temperature = 1):
 
     melody = json.loads(output)
 
-    out = "./midi/continued_melody.mid"
+    out = "./Media/midi/continued_melody.mid"
     nc.save_to_midi(nc.json_to_noteSeq(melody), out)
 
     print(f"Saved midi to {out}")

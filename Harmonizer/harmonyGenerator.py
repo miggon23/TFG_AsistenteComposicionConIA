@@ -8,7 +8,7 @@ from models import ModalPerspective
 
 class HarmonyGenerator:
 
-    def treatMelody(input = "./midi/input_song.mid", output = "./midi/output_song.mid"):
+    def treatMelody(input = "./Media/midi/input_song.mid", output = "./Media/midi/output_song.mid"):
 
         melody, ticksPerBeat = MidiUtils.read_midi_song(input)
         song = Song.Song(melody, ticksPerBeat)
@@ -20,7 +20,7 @@ class HarmonyGenerator:
         return output
 
 
-    def generate(input = "./midi/input_song.mid", output = "./midi/output_harmony.mid"):
+    def generate(input = "./Media/midi/input_song.mid", output = "./Media/midi/output_harmony.mid"):
         
         someChords = {
             "": Scale.Scale("1 3 5"),  # Mayor
@@ -45,8 +45,8 @@ class HarmonyGenerator:
 
         return output
     
-    def generateModalMelodies(input = "./midi/input_song.mid", 
-                              outputDirectory = "./midi/", 
+    def generateModalMelodies(input = "./Media/midi/input_song.mid", 
+                              outputDirectory = "./Media/midi/", 
                               outputFile = "_output_song.mid"):
         
         someChords = {
@@ -94,9 +94,9 @@ class HarmonyGenerator:
         return outputs, tonics, models
     
     def generateModalHarmony(tonics, models,
-                        inputDirectory = "./midi/", 
+                        inputDirectory = "./Media/midi/", 
                         inputFile = "_input_song.mid", 
-                        outputDirectory = "./midi/", 
+                        outputDirectory = "./Media/midi/", 
                         outputFile = "_output_harmony.mid"):
         
         outputs = []
@@ -125,9 +125,9 @@ class HarmonyGenerator:
 
         return outputs
 
-    def spreadSong(input = "./midi/input_song.mid", 
-                   output1 = "./midi/output_song1.mid", 
-                   output2 = "./midi/output_song2.mid", 
+    def spreadSong(input = "./Media/midi/input_song.mid", 
+                   output1 = "./Media/midi/output_song1.mid", 
+                   output2 = "./Media/midi/output_song2.mid", 
                    ticks = 4):
 
         melody, ticksPerBeat = MidiUtils.read_midi_song(input)
@@ -139,7 +139,7 @@ class HarmonyGenerator:
 
         return output1, output2
     
-    def combineSongs(input, input2, output = "./midi/combined_song.mid"):
+    def combineSongs(input, input2, output = "./Media/midi/combined_song.mid"):
 
         melody, ticksPerBeat = MidiUtils.read_midi_song(input)
         song = Song.Song(melody, ticksPerBeat)
