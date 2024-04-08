@@ -22,10 +22,12 @@ class GenerationTab:
         #self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
         #demo.load_markov_chain(self.mkv_generator)
 
-
     def setUp(self):
         self.setStyle()
         self.setButtons()
+
+    def onEntryTab(self):
+        print("Generation Tab")
 
     def setStyle(self):
         style = ttk.Style()
@@ -90,5 +92,3 @@ class GenerationTab:
 
         play_notes(*ps.parse(), np.sin)
 
-    def onEntryTab(self):
-        print("Generation Tab")

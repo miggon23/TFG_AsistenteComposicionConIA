@@ -42,6 +42,9 @@ class ModeSelectorTab:
         self.displayEnumSelectors()
         self.setButtons()
 
+        # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
+        self.root.bind("<Configure>", self.resize_image)
+
     def onEntryTab(self):
         self.resize_image()
 
@@ -56,13 +59,13 @@ class ModeSelectorTab:
         Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=360)
 
         self.vintage = BooleanVar()
-        Checkbutton(self.canvas, text="Vintage", variable=self.vintage, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=440)
+        Checkbutton(self.canvas, text="Vintage", variable=self.vintage, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=400)
  
         self.dream = BooleanVar()
-        Checkbutton(self.canvas, text="Dream", variable=self.dream, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=480)
+        Checkbutton(self.canvas, text="Dream", variable=self.dream, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=440)
     
         self.spatial = BooleanVar()
-        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=400)
+        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=480)
    
     def setButtons(self):
       
@@ -141,6 +144,7 @@ class ModeSelectorTab:
                 self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
             else:
                 self.canvas.delete(self.background_dream_id)
+        self.resize_image()
 
     def setBackground(self, image):   
 
@@ -153,8 +157,7 @@ class ModeSelectorTab:
         # Crear la imagen en el canvas
         self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)
         
-        # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
-        self.root.bind("<Configure>", self.resize_image)
+       
 
     def resize_image(self, event = None):
         # Redimensionar la imagen original cuando cambia el tamaño de la ventana
