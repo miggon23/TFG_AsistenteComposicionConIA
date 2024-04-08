@@ -26,6 +26,6 @@ Carácter:
 +Retro
 +Bajo el agua
 +Lofi
-+Espacial
 +Vintage
 +Dream
++Espacial
