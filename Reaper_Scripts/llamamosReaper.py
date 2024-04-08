@@ -5,7 +5,7 @@ class ReaperStream:
     def SetUp(self):
         reaper_executable = "C:\\Program Files\\REAPER (x64)\\reaper.exe"
 
-        reaper_proyect = ".\\Reaper_Proyect\\miProyectoAsistente.rpp"
+        reaper_proyect = ".\\miProyectoAsistente.rpp"
         reascript_script = ".\\Reaper_Scripts\\ok.lua"
 
         #Crear proyecto
