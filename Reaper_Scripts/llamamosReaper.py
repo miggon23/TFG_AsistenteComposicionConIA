@@ -1,9 +1,14 @@
 import subprocess
 import time
+import json
+from Utils import globalConsts
 
 class ReaperStream:
     def SetUp(self):
-        reaper_executable = "C:\\Program Files\\REAPER (x64)\\reaper.exe"
+        with open(globalConsts.Paths.appConfigPath, "r") as archivo:
+            data = json.load(archivo)
+
+        reaper_executable = data["reaperPath"]
 
         reaper_proyect = ".\\miProyectoAsistente.rpp"
         reascript_script = ".\\Reaper_Scripts\\ok.lua"
