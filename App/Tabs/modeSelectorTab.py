@@ -19,6 +19,9 @@ class TematicEnum(Enum):
     TENEBROSO =   "Tenebroso"
     AGUA      =   "Agua"
     ASIATICO  =   "Asiático"
+    ROCK      =   "Rock"
+    POP       =   "Pop"
+    TECNO     =   "Tecno"
 
 class ModeSelectorTab:
 
@@ -33,7 +36,8 @@ class ModeSelectorTab:
         self.canvas.pack(fill="both", expand=True)
 
     def setUp(self, root):
-        self.setBackground(root)
+        self.root = root
+        self.setBackground("0_0")
         self.setCheckboxes()
         self.displayEnumSelectors()
         self.setButtons()
@@ -42,22 +46,24 @@ class ModeSelectorTab:
         self.resize_image()
 
     def setCheckboxes(self):
-        self.lofi = BooleanVar()
-        Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=360)
-        #Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT).grid(column=0, row=1)
-
         self.retro = BooleanVar()
-        Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=400)
-        #Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT).grid(column=0, row=2)
+        Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=280)
 
         self.underWater = BooleanVar()
-        Checkbutton(self.canvas, text="Bajo el agua", variable=self.underWater, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=440)
-        #Checkbutton(self.canvas, text="Bajo el agua", variable=self.underWater, justify=LEFT).grid(column=0, row=3)
+        Checkbutton(self.canvas, text="Bajo el agua", variable=self.underWater, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=320)
 
+        self.lofi = BooleanVar()
+        Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=360)
+
+        self.vintage = BooleanVar()
+        Checkbutton(self.canvas, text="Vintage", variable=self.vintage, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=440)
+ 
+        self.dream = BooleanVar()
+        Checkbutton(self.canvas, text="Dream", variable=self.dream, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=480)
+    
         self.spatial = BooleanVar()
-        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=480)
-        #Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT).grid(column=0, row=4)
-
+        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=400)
+   
     def setButtons(self):
       
         original_image = Image.open("App/Images/playButton.png")
@@ -103,17 +109,43 @@ class ModeSelectorTab:
         print("Seleccionado: ",self.current_tematic.get())
 
     def onSelectCheckbox(self):
-        if(self.underWater.get()):
-            self.background_filter_pil = Image.open("App/Images/filterBlue.png")
-            self.background_filter = ImageTk.PhotoImage(self.background_filter_pil)
-            self.background_filter_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_filter)
-        else:
-            self.canvas.delete(self.background_filter_id)
 
-    def setBackground(self, root):   
+        if(self.spatial.get()):
+            self.setBackground("espacial")
+        else:
+            if(self.retro.get()):
+                if(self.underWater.get()):    
+                    self.setBackground("0_3")
+                else:
+                    self.setBackground("0_1")
+            elif(self.underWater.get()):    
+                self.setBackground("0_2")
+
+            if(self.lofi.get()):
+                self.background_lofi_pil = Image.open("App/Images/Backgrounds/lofi.png")
+                self.background_lofi = ImageTk.PhotoImage(self.background_lofi_pil)
+                self.background_lofi_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_lofi)
+            else:
+                self.canvas.delete(self.background_lofi_id)
+            
+            if(self.vintage.get()):
+                self.background_vintage_pil = Image.open("App/Images/Backgrounds/vintage.png")
+                self.background_vintage = ImageTk.PhotoImage(self.background_vintage_pil)
+                self.background_vintage_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_vintage)
+            else:
+                self.canvas.delete(self.background_vintage_id)
+
+            if(self.dream.get()):
+                self.background_dream_pil = Image.open("App/Images/Backgrounds/dream.png")
+                self.background_dream = ImageTk.PhotoImage(self.background_dream_pil)
+                self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
+            else:
+                self.canvas.delete(self.background_dream_id)
+
+    def setBackground(self, image):   
 
         # Cargar la imagen original
-        self.background_image_pil = Image.open("App/Images/DarkRiders.png")
+        self.background_image_pil = Image.open("App/Images/Backgrounds/"+ image +".png")
         
         # Crear una instancia de ImageTk para la imagen original
         self.background = ImageTk.PhotoImage(self.background_image_pil)
@@ -122,7 +154,7 @@ class ModeSelectorTab:
         self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)
         
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
-        root.bind("<Configure>", self.resize_image)
+        self.root.bind("<Configure>", self.resize_image)
 
     def resize_image(self, event = None):
         # Redimensionar la imagen original cuando cambia el tamaño de la ventana
