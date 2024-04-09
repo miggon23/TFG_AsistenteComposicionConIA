@@ -1,5 +1,4 @@
-import sys
-sys.path.append('././Reaper_Scripts/')
+import json
 
 from tkinter import ttk
 from tkinter import *
@@ -7,6 +6,8 @@ from enum import Enum
 
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
+from App.AppState import modeState
+from Utils import globalConsts
 
 class TematicEnum(Enum):
     PRADERA   =   "Pradera"
@@ -42,8 +43,11 @@ class ModeSelectorTab:
         self.displayEnumSelectors()
         self.setButtons()
 
+        self.recoverState()
+
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         self.root.bind("<Configure>", self.resize_image)
+        self.reaperStream = llamamosReaper.ReaperStream()
 
     def onEntryTab(self):
         self.resize_image()
@@ -109,7 +113,11 @@ class ModeSelectorTab:
 
     def selectTematic(self, event):
         # Guardamos la temática seleccionada en el evento
-        print("Seleccionado: ",self.current_tematic.get())
+        tematic = self.current_tematic.get()
+        print("Seleccionado: ", tematic)
+
+        self.modeState.tematica = [member.value for member in TematicEnum].index(tematic)
+        print(self.modeState.tematica)
 
     def onSelectCheckbox(self):
 
@@ -155,8 +163,7 @@ class ModeSelectorTab:
         self.background = ImageTk.PhotoImage(self.background_image_pil)
         
         # Crear la imagen en el canvas
-        self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)
-        
+        self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)   
        
 
     def resize_image(self, event = None):
@@ -168,7 +175,19 @@ class ModeSelectorTab:
         self.canvas.itemconfig(self.background_id, image=self.background)
 
     def playReaper(self):
-        reaperStream = llamamosReaper.ReaperStream()
-        reaperStream.SetUp()
+        self.saveState()
 
-        
+        self.reaperStream.SetUp()
+
+    def recoverState(self):
+        jsonPath = globalConsts.Paths.mediaSettings
+        self.modeState = modeState.ModeState.fromJSON(jsonPath)
+
+    def saveState(self):
+        jsonPath = globalConsts.Paths.mediaSettings
+        dataJSONString = self.modeState.toJSON()
+
+        print(dataJSONString)
+        # Abre el archivo JSON en modo escritura
+        with open(jsonPath, "w") as archivo:
+            json.dump(dataJSONString, archivo, indent=4)

@@ -24,7 +24,7 @@ class ConfigurationTab:
         with open(jsonPath, "r") as archivo: # <- with se encarga de cerrar el archivo cuando acaba
             # Cargamos el contenido del archivo en un diccionario
             datos = json.load(archivo)
-        print(datos)
+
         reaper_path = datos["reaperPath"]
         self.pathString.set(reaper_path)
 
