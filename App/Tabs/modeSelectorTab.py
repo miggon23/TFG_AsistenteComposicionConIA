@@ -120,38 +120,44 @@ class ModeSelectorTab:
         print(self.modeState.tematica)
 
     def onSelectCheckbox(self):
+        self.modeState.agua = self.underWater.get()
+        self.modeState.retro = self.retro.get()
+        self.modeState.lofi = self.lofi.get()
+        self.modeState.vintage = self.vintage.get()
+        self.modeState.espacial = self.spatial.get()
+        self.modeState.dream = self.dream.get()
 
-        if(self.spatial.get()):
-            self.setBackground("espacial")
-        else:
-            if(self.retro.get()):
-                if(self.underWater.get()):    
-                    self.setBackground("0_3")
-                else:
-                    self.setBackground("0_1")
-            elif(self.underWater.get()):    
-                self.setBackground("0_2")
+        # if(self.spatial.get()):
+        #     self.setBackground("espacial")
+        # else:
+        #     if(self.retro.get()):
+        #         if(self.underWater.get()):    
+        #             self.setBackground("0_3")
+        #         else:
+        #             self.setBackground("0_1")
+        #     elif(self.underWater.get()):    
+        #         self.setBackground("0_2")
 
-            if(self.lofi.get()):
-                self.background_lofi_pil = Image.open("App/Images/Backgrounds/lofi.png")
-                self.background_lofi = ImageTk.PhotoImage(self.background_lofi_pil)
-                self.background_lofi_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_lofi)
-            else:
-                self.canvas.delete(self.background_lofi_id)
+        #     if(self.lofi.get()):
+        #         self.background_lofi_pil = Image.open("App/Images/Backgrounds/lofi.png")
+        #         self.background_lofi = ImageTk.PhotoImage(self.background_lofi_pil)
+        #         self.background_lofi_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_lofi)
+        #     else:
+        #         self.canvas.delete(self.background_lofi_id)
             
-            if(self.vintage.get()):
-                self.background_vintage_pil = Image.open("App/Images/Backgrounds/vintage.png")
-                self.background_vintage = ImageTk.PhotoImage(self.background_vintage_pil)
-                self.background_vintage_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_vintage)
-            else:
-                self.canvas.delete(self.background_vintage_id)
+        #     if(self.vintage.get()):
+        #         self.background_vintage_pil = Image.open("App/Images/Backgrounds/vintage.png")
+        #         self.background_vintage = ImageTk.PhotoImage(self.background_vintage_pil)
+        #         self.background_vintage_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_vintage)
+        #     else:
+        #         self.canvas.delete(self.background_vintage_id)
 
-            if(self.dream.get()):
-                self.background_dream_pil = Image.open("App/Images/Backgrounds/dream.png")
-                self.background_dream = ImageTk.PhotoImage(self.background_dream_pil)
-                self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
-            else:
-                self.canvas.delete(self.background_dream_id)
+        #     if(self.dream.get()):
+        #         self.background_dream_pil = Image.open("App/Images/Backgrounds/dream.png")
+        #         self.background_dream = ImageTk.PhotoImage(self.background_dream_pil)
+        #         self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
+        #     else:
+        #         self.canvas.delete(self.background_dream_id)
         self.resize_image()
 
     def setBackground(self, image):   
