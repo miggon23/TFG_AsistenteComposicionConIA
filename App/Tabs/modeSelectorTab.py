@@ -1,4 +1,5 @@
 import json
+import os
 
 from tkinter import ttk
 from tkinter import *
@@ -6,7 +7,7 @@ from enum import Enum
 
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
-from App.AppState import modeState
+from App.AppState.modeState import ModeState
 from App.AppState.tooltip import Tooltip
 from App.AppState.presetsManager import PresetManager
 from Utils import globalConsts
@@ -43,15 +44,17 @@ class ModeSelectorTab:
         self.setBackground("0_0")
         self.setCheckboxes()
         self.displayEnumSelectors()
+        self.displayPresetSelector()
         self.setButtons()
 
-        self.recoverState()
+        self.recoverStateFromFile()
 
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         self.root.bind("<Configure>", self.resize_image)
 
         self.reaperStream = llamamosReaper.ReaperStream()
         self.presetManager = PresetManager()
+
 
     def onEntryTab(self):
         self.resize_image()
@@ -137,6 +140,26 @@ class ModeSelectorTab:
 
         print("combobox packed")
 
+    def displayPresetSelector(self):
+        directory = PresetManager.presetsPath
+        elements = os.listdir(directory)
+        files = [elemento for elemento in elements if os.path.isfile(os.path.join(directory, elemento))]
+        jsonFiles = [e for e in files if e.endswith(".json")]
+
+        if len(jsonFiles) < 1:
+            return
+        filesWithNoExtension = [os.path.splitext(archivo)[0] for archivo in jsonFiles]
+        self.presetName = StringVar()
+        self.presetCombobox = ttk.Combobox(self.canvas, values=filesWithNoExtension,
+                                  textvariable=self.presetName, state="readonly")
+        self.presetCombobox.place(x=0, y=0)
+        self.presetCombobox.bind("<<ComboboxSelected>>", self.recoverPresetAction)
+
+        tooltip = Tooltip(self.presetCombobox, "Saved presets")
+        self.presetCombobox.bind("<Enter>", tooltip.show_tooltip)
+        self.presetCombobox.bind("<Leave>", tooltip.hide_tooltip)
+
+
     def selectTematic(self, event):
         # Guardamos la temática seleccionada en el evento
         tematic = self.current_tematic.get()
@@ -211,9 +234,8 @@ class ModeSelectorTab:
 
         self.reaperStream.SetUp()
 
-    def recoverState(self):
-        jsonPath = globalConsts.Paths.mediaSettings
-        self.modeState = modeState.ModeState.fromJSON(jsonPath)
+    def recoverState(self, modeState):
+        self.modeState = modeState
 
         self.lofi.set(self.modeState.lofi)
         self.vintage.set(self.modeState.vintage)
@@ -225,15 +247,23 @@ class ModeSelectorTab:
         tematica_value = list(TematicEnum)[self.modeState.tematica].value
         self.current_tematic.set(tematica_value)
 
+    def recoverStateFromFile(self):
+        jsonPath = globalConsts.Paths.mediaSettings
+        modeState = ModeState.fromJSON(jsonPath)
+        self.recoverState(modeState)
 
     def saveState(self):
         jsonPath = globalConsts.Paths.mediaSettings
         dataJSONString = self.modeState.toJSON()
 
-        print(dataJSONString)
         # Abre el archivo JSON en modo escritura
         with open(jsonPath, "w") as archivo:
             json.dump(dataJSONString, archivo, indent=4)
 
     def savePresetAction(self):
         self.presetManager.show_save_preset_popup(tab = self.tab, modeState=self.modeState)
+
+    def recoverPresetAction(self, event=None):
+        self.modeState = self.presetManager.recoverPreset(self.presetName.get())
+        self.recoverState(self.modeState)
+        

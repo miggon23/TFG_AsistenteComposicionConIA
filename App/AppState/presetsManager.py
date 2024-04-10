@@ -18,7 +18,7 @@ class PresetManager:
         print("Preset guardado con el nombre de " + presetName)
 
     def recoverPreset(self, presetName):
-        jsonPath = self.presetsPath + presetName + ".json"
+        jsonPath = self.presetsPath + "/" + presetName + ".json"
         recoveredPreset = ModeState.fromJSON(jsonPath)
         return recoveredPreset
     
