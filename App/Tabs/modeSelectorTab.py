@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
 from App.AppState import modeState
 from App.AppState.tooltip import Tooltip
+from App.AppState.presetsManager import PresetManager
 from Utils import globalConsts
 
 class TematicEnum(Enum):
@@ -48,7 +49,9 @@ class ModeSelectorTab:
 
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         self.root.bind("<Configure>", self.resize_image)
+
         self.reaperStream = llamamosReaper.ReaperStream()
+        self.presetManager = PresetManager()
 
     def onEntryTab(self):
         self.resize_image()
@@ -93,7 +96,7 @@ class ModeSelectorTab:
         self.playButton.bind("<Enter>", playTooltip.show_tooltip)
         self.playButton.bind("<Leave>", playTooltip.hide_tooltip)
 
-        # Botón de todo aleatorio
+        #  -----------  Botón de todo aleatorio ---------------
         original_image = Image.open("App/Images/dado6.png")
 
         # Reduce el tamaño de la imagen
@@ -107,10 +110,26 @@ class ModeSelectorTab:
         # Crea y coloca el botón en las coordenadas calculadas
         Button(self.canvas, image=self.generateAllRandom_buttonImage).place(x=x, y=y)
 
+        #  -----------  Botón de guardar presets ---------------
+        original_image = Image.open("App/Images/saveIcon.png")
+        resized_image = original_image.resize((30, 30), Image.LANCZOS) 
+        self.savePreset_image = ImageTk.PhotoImage(resized_image)
+
+        x = 800 * 0.85
+        y = 600 * 0.04
+
+        self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
+        self.savePreset_button.place(x=x, y=y)
+
+        savePreset_tooltip = Tooltip(self.savePreset_button, "Save preset")
+        self.savePreset_button.bind("<Enter>", savePreset_tooltip.show_tooltip)
+        self.savePreset_button.bind("<Leave>", savePreset_tooltip.hide_tooltip)
+
+
     def displayEnumSelectors(self):
         self.current_tematic = StringVar()
         self.combo = ttk.Combobox(self.canvas, values=[option.value for option in TematicEnum],
-                                  textvariable=self.current_tematic)
+                                  textvariable=self.current_tematic, state="readonly")
 
         self.combo.bind("<<ComboboxSelected>>", self.selectTematic)
         #self.combo.grid(column=3, row=0, padx=10, pady= 40)
@@ -215,3 +234,6 @@ class ModeSelectorTab:
         # Abre el archivo JSON en modo escritura
         with open(jsonPath, "w") as archivo:
             json.dump(dataJSONString, archivo, indent=4)
+
+    def savePresetAction(self):
+        self.presetManager.show_save_preset_popup(tab = self.tab, modeState=self.modeState)
