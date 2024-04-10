@@ -1,5 +1,5 @@
 {
-    "tematica": 2,
+    "tematica": 7,
     "tematica_pistas": [
         0,
         1,
@@ -15,7 +15,7 @@
     "semitonos": 3,
     "reverb": true,
     "entorno": 0,
-    "lofi": false,
+    "lofi": true,
     "retro": true,
     "agua": false,
     "espacial": false,

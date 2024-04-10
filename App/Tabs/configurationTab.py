@@ -13,7 +13,7 @@ class ConfigurationTab:
         ttk.Label(self.tab, text="Reaper absolute path").grid(row=0, column=0)
         
         self.pathString = StringVar()
-        self.reaperPathEntry = ttk.Entry(self.tab, text="C:", textvariable=self.pathString)
+        self.reaperPathEntry = ttk.Entry(self.tab, text="C:", textvariable=self.pathString, width=100)
         self.reaperPathEntry.grid(row=0, column=1)
 
         self.applyButton = ttk.Button(self.tab, text="Aplicar", command=self.applySettings).grid(row=10, column=0, pady=40)

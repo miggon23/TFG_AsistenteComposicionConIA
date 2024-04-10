@@ -27,7 +27,7 @@ class GenerationTab:
         self.setButtons()
 
     def onEntryTab(self):
-        print("Generation Tab")
+        return
 
     def setStyle(self):
         style = ttk.Style()

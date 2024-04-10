@@ -189,6 +189,17 @@ class ModeSelectorTab:
         jsonPath = globalConsts.Paths.mediaSettings
         self.modeState = modeState.ModeState.fromJSON(jsonPath)
 
+        self.lofi.set(self.modeState.lofi)
+        self.vintage.set(self.modeState.vintage)
+        self.spatial.set(self.modeState.espacial)
+        self.underWater.set(self.modeState.agua)
+        self.retro.set(self.modeState.retro)
+        self.dream.set(self.modeState.dream)
+
+        tematica_value = list(TematicEnum)[self.modeState.tematica].value
+        self.current_tematic.set(tematica_value)
+
+
     def saveState(self):
         jsonPath = globalConsts.Paths.mediaSettings
         dataJSONString = self.modeState.toJSON()
