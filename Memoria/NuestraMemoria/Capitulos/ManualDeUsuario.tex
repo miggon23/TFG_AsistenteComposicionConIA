@@ -2,7 +2,6 @@
 \label{cap:descripcionTrabajo}
 
 En este capítulo recogeremos los pasos que debe seguir un usuario para poder utilizar la aplicación. Además de las \refname{sec:dependeciasApp}, se explican los dos grandes pasos que hay que tomar para generar un tema con nuestra aplicación. 
-
 Estos dos grandes pasos son la \nameref{sec:dependeciasApp} y la \nameref{sec:instrumentalizacion} del contenido generado en el primer paso. 
 
 \section{Dependencias de la aplicación}
@@ -14,7 +13,8 @@ Estos dos grandes pasos son la \nameref{sec:dependeciasApp} y la \nameref{sec:in
 	Estas dependencias se componen desde lenguajes de programación tales como Python y JavaScript hasta los instrumentos que permiten poder escuchar los temas musicales generados.
 
 \subsection{Interfaz gráfica con TKInter}
-	TKInter es la interfaz por defecto que \PythonLink{} ofrece a los desarrolladores para montar una GUI (Interfaz Gráfica de Usuario por sus siglas en ingles).
+	TKInter es la interfaz por defecto que \PythonLink{} ofrece a los desarrolladores para montar una 
+    GUI (Interfaz Gráfica de Usuario por sus siglas en ingles).
 	Esta herramienta viene integrada junto con Python, por lo que no requiere instalar ningún entorno ni herramienta adicional para hacer uso de ella.
 
 
@@ -29,7 +29,21 @@ Estos dos grandes pasos son la \nameref{sec:dependeciasApp} y la \nameref{sec:in
 \section{Generación de audio}
 \label{sec:generacionAudio}
 	Generación de audio
-\section{Instrumentalizacion}
-\label{sec:instrumentalizacion}
-	Instrumentalizacion
-	
+\section{Selección de Temática y Sonorización}
+\label{sec:SeleccionTematica}
+
+\section{Modo avanzado}
+\label{sec:app:advancedMode}
+El objetivo principal de la aplicación es ofrecer a los usuarios una forma sencilla de generar temas musicales. No obstante, está incluida la posibilidad de relizar acciones avanzadas para los usuarios más avezados de la aplicación, así como los que cuentan con conicimiento musical previo.
+
+La posibilidad de editar en REAPER los temas musicales generados por nuestra aplicación sigue existiendo, tal y como está planteado en la sección \nameref{sec:SeleccionTematica}, al pulsar el botón de \textit{Play}. Esto iniciará el ejecutable de REAPER, por lo que en cualquier momento el usuario puede pasar a trabajar directamente en la DAW en lugar de centrarse en nuestra aplicación, permitiendo trabajar con normalidad en REAPER, a partir de los MIDIs e instrumentos generados por \appName{}
+
+En los subapartados siguientes veremos las acciones posibles dentro de la pestaña \advancedTabName{} de la aplicación.
+
+\subsection{Alternar Generador}
+\label{subsec:alternarGenerador}
+Esta opción permite cambiar el modo de generación de la melodía en la pestaña \generationTabName{}. Los generadores disponibles son \nameref{sec:markov-chain}, \nameref{sec:RNR} y \nameref{sec:magenta}. Ver el capítulo \nameref{cap:generacionMusical} para más información acerca de los modos de generacion musical.
+
+\subsection{Mezclar temáticas}
+
+\subsection{Mezclar melodías}
