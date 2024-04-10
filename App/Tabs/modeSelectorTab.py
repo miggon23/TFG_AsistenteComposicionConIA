@@ -141,23 +141,21 @@ class ModeSelectorTab:
         print("combobox packed")
 
     def displayPresetSelector(self):
-        directory = PresetManager.presetsPath
-        elements = os.listdir(directory)
-        files = [elemento for elemento in elements if os.path.isfile(os.path.join(directory, elemento))]
-        jsonFiles = [e for e in files if e.endswith(".json")]
-
-        if len(jsonFiles) < 1:
-            return
-        filesWithNoExtension = [os.path.splitext(archivo)[0] for archivo in jsonFiles]
+        
         self.presetName = StringVar()
-        self.presetCombobox = ttk.Combobox(self.canvas, values=filesWithNoExtension,
+        self.presetCombobox = ttk.Combobox(self.canvas, values=None,
                                   textvariable=self.presetName, state="readonly")
         self.presetCombobox.place(x=0, y=0)
+        self.refreshPresets()
         self.presetCombobox.bind("<<ComboboxSelected>>", self.recoverPresetAction)
 
         tooltip = Tooltip(self.presetCombobox, "Saved presets")
         self.presetCombobox.bind("<Enter>", tooltip.show_tooltip)
         self.presetCombobox.bind("<Leave>", tooltip.hide_tooltip)
+
+        original_image = Image.open("App/Images/saveIcon.png")
+        resized_image = original_image.resize((30, 30), Image.LANCZOS) 
+        self.redreshButton_Image = ImageTk.PhotoImage(resized_image)
 
 
     def selectTematic(self, event):
@@ -261,9 +259,20 @@ class ModeSelectorTab:
             json.dump(dataJSONString, archivo, indent=4)
 
     def savePresetAction(self):
-        self.presetManager.show_save_preset_popup(tab = self.tab, modeState=self.modeState)
+        self.presetManager.show_save_preset_popup(tab = self.tab, modeState=self.modeState, onSavedCallback=self.refreshPresets)
 
     def recoverPresetAction(self, event=None):
         self.modeState = self.presetManager.recoverPreset(self.presetName.get())
         self.recoverState(self.modeState)
+
+    def refreshPresets(self):
+        directory = PresetManager.presetsPath
+        elements = os.listdir(directory)
+        files = [elemento for elemento in elements if os.path.isfile(os.path.join(directory, elemento))]
+        jsonFiles = [e for e in files if e.endswith(".json")]
+
+        filesWithNoExtension = [os.path.splitext(archivo)[0] for archivo in jsonFiles]
+
+        self.presetCombobox['values'] = filesWithNoExtension
+        self.presetCombobox.update()
         

@@ -22,7 +22,7 @@ class PresetManager:
         recoveredPreset = ModeState.fromJSON(jsonPath)
         return recoveredPreset
     
-    def show_save_preset_popup(self, tab, modeState):
+    def show_save_preset_popup(self, tab, modeState, onSavedCallback = None):
         self.popup = Toplevel(tab)
         self.popup.geometry("200x100")
         self.popup.title("Guardar Preset")
@@ -34,11 +34,15 @@ class PresetManager:
         self.presetName = StringVar()
         Entry(self.popup, textvariable=self.presetName).pack()
 
-        Button(self.popup, text="Guardar", command=self._saveAndClose).pack()
+        Button(self.popup, text="Guardar", command=lambda: self._saveAndClose(onSavedCallback)).pack()
 
-    def _saveAndClose(self):
+    def _saveAndClose(self, callback):
         self._savePreset(self.modeState, self.presetName.get())
         if self.popup != None:
             self.popup.destroy()
             self.popup = None
+
+        if callback != None:
+            callback()
+
         
