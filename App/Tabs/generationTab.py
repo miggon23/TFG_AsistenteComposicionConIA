@@ -26,7 +26,7 @@ class GenerationTab:
         self.setStyle()
         self.setButtons()
 
-    def onEntryTab(self):
+    def onEntryTab(self):   
         return
 
     def setStyle(self):

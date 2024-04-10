@@ -7,6 +7,7 @@ from enum import Enum
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
 from App.AppState import modeState
+from App.AppState.tooltip import Tooltip
 from Utils import globalConsts
 
 class TematicEnum(Enum):
@@ -84,7 +85,13 @@ class ModeSelectorTab:
         y = (600 - 100) / 2
 
         # Crea y coloca el botón en las coordenadas calculadas
-        Button(self.canvas, image=self.playButtonImage, command=self.playReaper).place(x=x, y=y)
+        self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
+        self.playButton.place(x=x, y=y)
+
+        playTooltip = Tooltip(self.playButton, "Apply changes and play")
+
+        self.playButton.bind("<Enter>", playTooltip.show_tooltip)
+        self.playButton.bind("<Leave>", playTooltip.hide_tooltip)
 
         # Botón de todo aleatorio
         original_image = Image.open("App/Images/dado6.png")
