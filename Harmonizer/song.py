@@ -150,7 +150,7 @@ class Song:
             self.tonic = bestTonic
             self.__rebuild_solution(bestSol)
             self.__combine_best_chords(timeSignatures[-1].measure_size())
-            return self.__absolutize_harmony()
+            return self.__absolutized_inverted_harmony(), self.__absolutized_harmony()
 
     
     def __rebuild_solution(self, chordNode):
@@ -621,7 +621,7 @@ class Song:
             self.__off_armonize(chordWeights, timeSignatures[0], notPlayingAtTickPen, offset)
             self.__combine_best_chords(offset.measure_size())
         
-        return self.__absolutize_harmony()
+        return self.__absolutized_inverted_harmony()
     
     def __off_armonize(self, chordWeights, timeSignature, notPlayingAtTickPen, offset):
 
@@ -893,7 +893,7 @@ class Song:
     A partir de la tónica de la canción transforma los intervalos
     en notas reales traduciendo el análisis de armonía en "acordes de misa"
     '''
-    def __absolutize_harmony(self):
+    def __absolutized_inverted_harmony(self):
 
         absolutizedHarmony = []
 
@@ -911,6 +911,30 @@ class Song:
                 for interval in relativazedChord.scale:
                     absolutizedHarmony.append({
                         "note": Note.get_nearest_pitch(interval, self.tonic, self.meanPitch - 12), 
+                        "start_time": startTime, 
+                        "duration": chordTicks})
+                    
+            startTime += chordTicks
+
+        return absolutizedHarmony
+    
+    def __absolutized_harmony(self):
+
+        absolutizedHarmony = []
+
+        startTime = 0
+        for chordInfo in self.bestChords:
+
+            chord = chordInfo[0]
+            chordTicks = chordInfo[1]
+
+            if chord is not None:
+
+                basePitch = Note.get_nearest_pitch(Interval.Interval(chord[0]), self.tonic, self.meanPitch - 12)
+                
+                for interval in Harmony.allChords[chord[1]].scale:
+                    absolutizedHarmony.append({
+                        "note": basePitch + interval.semitones, 
                         "start_time": startTime, 
                         "duration": chordTicks})
                     
@@ -1062,12 +1086,16 @@ class Song:
         
         return Song(song1, self.ticksPerBeat), Song(song2, self.ticksPerBeat)
 
-    def __iadd__(self, song):
+    def add_song(self, song, offset = 0):
+
+        offset = self.ticksPerBeat * offset
 
         for note in song.notes:
-            self.notes.append(note)
-
-        return Song(self.notes, self.ticksPerBeat)
+            self.notes.append({
+                    'note': note['note'], 
+                    'start_time': note['start_time'] + offset, 
+                    'duration': note['duration']
+                })
     
     def traspose(self, semitones):
         for note in self.notes:

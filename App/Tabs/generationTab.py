@@ -6,11 +6,13 @@ import numpy as np
 
 import mainDemo as demo
 from Cadenas_Markov import markovGenerator
-from Harmonizer import harmonyGenerator
 from Basslines import basslineGenerator
 from Drums import enums
 from Drums import drumGenerator
 from Basslines import basslineGenerator
+from Harmonizer import harmonyGenerator
+from Harmonizer import models as Models
+import shutil
 
 
 class GenerationTab:
@@ -45,39 +47,108 @@ class GenerationTab:
     def generateMelodies(self):
         print("Generando")
         #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
-        self.bars = 4
-        self.melody = demo.generate_magenta(self.bars * 2, 1)[0]
+        self.bars = 8
+        self.melody = demo.generate_magenta(self.bars, 1)[0]
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_melody.mid")
 
 
     def armonice(self):
-        # if(self.melody == None):
-        #     return
-
         print("Armonizando...")
 
-        letters = ['A', 'B', 'C', 'D']
+        # A(4) + B(4) 
+        # A(4) = A1(2) + A2(2)
+        # B(4) = B1(2) + B2(2)
+        # Armonización combinada: (A + B)(4)
 
-        songs, tonics, models = harmonyGenerator.HarmonyGenerator.generateModalMelodies(self.melody)
-        for song in songs:
-            semiSongs = harmonyGenerator.HarmonyGenerator.spreadSong(song, ticks=self.bars*4)
-            for idx, semiSong in enumerate(semiSongs):
-                harmonyGenerator.HarmonyGenerator.spreadSong(semiSong,
-                    output1=song[:-4] + letters[idx * 2] + ".mid",
-                    output2=song[:-4] + letters[idx * 2 + 1] + ".mid",
-                    ticks=self.bars*2)
-            harmonyGenerator.HarmonyGenerator.combineSongs(semiSongs[0], semiSongs[1],
-                                             output=song.replace("_output_", "_input_"))
-        harmonyGenerator.HarmonyGenerator.generateModalHarmony(tonics, models)
+        A, B = harmonyGenerator.HarmonyGenerator.spreadSong(input="./Media/midi/trasposed_melody.mid",
+                                                    output1="./Media/midi/output_songA.mid",
+                                                    output2="./Media/midi/output_songB.mid",
+                                                    ticks=4*4)
+        
+        A1, A2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=A,
+                                                    output1="./Media/midi/output_songA1.mid",
+                                                    output2="./Media/midi/output_songA2.mid",
+                                                    ticks=2*4)
+        
+        B1, B2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=B,
+                                                    output1="./Media/midi/output_songB1.mid",
+                                                    output2="./Media/midi/output_songB2.mid",
+                                                    ticks=2*4)
+        
+        A_B = harmonyGenerator.HarmonyGenerator.combineSongs(input1=A,
+                                                             input2=B)
+        
+        harmony, std_harmony = harmonyGenerator.HarmonyGenerator.generate(A_B)
 
-        semiSongs = harmonyGenerator.HarmonyGenerator.spreadSong(self.melody, ticks=self.bars*4)
-        for idx, semiSong in enumerate(semiSongs):
-            harmonyGenerator.HarmonyGenerator.spreadSong(semiSong, 
-                output1="./Media/midi/output_song" + letters[idx * 2] + ".mid",
-                output2="./Media/midi/output_song" + letters[idx * 2 + 1] + ".mid",
-                ticks=self.bars*2)
-        harmonyGenerator.HarmonyGenerator.generate(harmonyGenerator.HarmonyGenerator.combineSongs(semiSongs[0], semiSongs[1]))
-    
+        # A(2) + B(2) 
+        # A(2) = A1(1) + A2(1)
+        # B(2) = B1(1) + B2(1)
+        # Armonización secuencial: (A + B)(4)
+
+        # esto lo tengo que hacer porque no se puede hacer generate de 4
+        # harmonyGenerator.HarmonyGenerator.spreadSong(input="./Media/midi/trasposed_melody.mid",
+        #                                             output1="./Media/midi/trasposed_melody.mid",
+        #                                             output2="./Media/midi/output_songB.mid",
+        #                                             ticks=4*4)
+        
+        # A, B = harmonyGenerator.HarmonyGenerator.spreadSong(input="./Media/midi/trasposed_melody.mid",
+        #                                             output1="./Media/midi/output_songA.mid",
+        #                                             output2="./Media/midi/output_songB.mid",
+        #                                             ticks=2*4)
+        
+        # A1, A2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=A,
+        #                                             output1="./Media/midi/output_songA1.mid",
+        #                                             output2="./Media/midi/output_songA2.mid",
+        #                                             ticks=1*4)
+        
+        # B1, B2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=B,
+        #                                             output1="./Media/midi/output_songB1.mid",
+        #                                             output2="./Media/midi/output_songB2.mid",
+        #                                             ticks=1*4)
+        
+        # harmony, std_harmony = harmonyGenerator.HarmonyGenerator.generate(input="./Media/midi/trasposed_melody.mid")
+
+        # A(2) + B(2) 
+        # A(2) = A1(1) + A2(1)
+        # B(2) = B1(1) + B2(1)
+        # Armonización secuencial y combinada: ((A + B) + (A + B))(4)
+
+        
+        # esto lo tengo que hacer porque no se puede hacer generate de 4
+        # harmonyGenerator.HarmonyGenerator.spreadSong(input="./Media/midi/trasposed_melody.mid",
+        #                                             output1="./Media/midi/trasposed_melody.mid",
+        #                                             output2="./Media/midi/output_songB.mid",
+        #                                             ticks=4*4)
+
+        # A, B = harmonyGenerator.HarmonyGenerator.spreadSong(input="./Media/midi/trasposed_melody.mid",
+        #                                             output1="./Media/midi/output_songA.mid",
+        #                                             output2="./Media/midi/output_songB.mid",
+        #                                             ticks=2*4)
+        
+        # A1, A2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=A,
+        #                                             output1="./Media/midi/output_songA1.mid",
+        #                                             output2="./Media/midi/output_songA2.mid",
+        #                                             ticks=1*4)
+        
+        # B1, B2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=B,
+        #                                             output1="./Media/midi/output_songB1.mid",
+        #                                             output2="./Media/midi/output_songB2.mid",
+        #                                             ticks=1*4)
+        
+        # A_B = harmonyGenerator.HarmonyGenerator.combineSongs(input1=A,
+        #                                                      input2=B)
+        
+        # A_B = harmonyGenerator.HarmonyGenerator.combineSongs(input1=A_B,
+        #                                                      input2=A_B,
+        #                                                      ticks=2*4)
+        
+        # harmony, std_harmony = harmonyGenerator.HarmonyGenerator.generate(A_B)
+
+        for mode in Models.ModalPerspective.modes:
+            if mode is not None:
+                for file in [A, B, A1, A2, B1, B2, harmony, std_harmony]:
+                    shutil.copy(file, file[:-4] + "_" + mode + ".mid")
+        
         print("Armonizacion completa")
 
 
