@@ -126,6 +126,15 @@ def main():
     song.print_best_chords()
 
     MidiUtils.write_midi_song("midi/output_harmony_loop.mid", harmony, ticksPerBeat)
+
+    harmony = song.find_chord_sequence(timeSignatures=timeSignatures[:3],
+                                       loop=True)
+
+    print("Looped_2:")
+    print(f"Tónica: {song.tonic.name}")
+    song.print_best_chords()
+
+    MidiUtils.write_midi_song("midi/output_harmony_loop_2.mid", harmony, ticksPerBeat)
     
 
 if __name__ == "__main__":

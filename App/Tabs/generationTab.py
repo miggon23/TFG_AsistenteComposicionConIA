@@ -88,7 +88,7 @@ class GenerationTab:
         print("Tamborizacion completa")
 
     def playPreview(self):
-        ps = Parser("./Media/midi/output_song.mid")
+        ps = Parser("./Media/midi/trasposed_melody.mid")
 
         play_notes(*ps.parse(), np.sin)
 
