@@ -111,7 +111,13 @@ class Song:
                                 ts(2, 4).set_weights([1.4, 1.2]),
                                 ts(1, 4).set_weights([1])
                             ],               
-                            notPlayingAtTickPen = 0.75,):
+                            notPlayingAtTickPen = 0.75,
+                            loop = False):
+        
+        if loop:
+            foo = self.__find_best_loop_chord_sequence
+        else:
+            foo = self.__find_best_chord_sequence
 
         self.harmony = Harmony.Harmony()
         self.harmony.create_harmony_from_chord_progression_list(chordProgressions)
@@ -132,7 +138,7 @@ class Song:
             for idx, analysis in enumerate(self.chordAnalysis):
                 self.chordAnalysis[idx] = dict(sorted(analysis.items(), key=lambda item: item[1], reverse=True))
 
-            sol = self.__find_best_chord_sequence(chordProgressions)
+            sol = foo(chordProgressions)
             if sol is not None and sol.weight > bestSol.weight:
                 bestSol = sol
                 bestTonic = self.tonic
@@ -174,37 +180,41 @@ class Song:
     def __find_best_chord_sequence(self, chordProgressions):
 
         nWindows = len(self.chordAnalysis)
-        windows = [{} for _ in range(nWindows)]
+        windows = [{} for _ in range(nWindows - 1)]
+
+        bestChordSequence = None
 
         rootChordNode = Song.ChordNode(-1, 0)
         for chordProgression in chordProgressions:
-            solutions = self.__chord_progression_combinatory(rootChordNode, chordProgression, -1)
+            solutions, finalSolution = self.__chord_progression_combinatory(rootChordNode, chordProgression, -1)
             for depth, chordNode in solutions.items():
-                lastChord = chordProgression[-1]
-                if chordNode.chord not in windows[depth] or chordNode.weight > windows[depth][lastChord].weight:
+                window = windows[depth]
+                lastChord = chordProgression[chordNode.chord]
+                if lastChord not in window or chordNode.weight > window[lastChord].weight:
                     chordNode.chordProgression = chordProgression
-                    windows[depth][lastChord] = chordNode
+                    window[lastChord] = chordNode
+            if finalSolution is not None:
+                if bestChordSequence is None or finalSolution.weight > bestChordSequence.weight:
+                    finalSolution.chordProgression = chordProgression
+                    bestChordSequence = finalSolution
 
-        for n in range(nWindows - 1):
-            for lastChord, ch in windows[n].items():
-                selChordProg = self.__choose_next_chord_progressions(lastChord, chordProgressions)
-                for chordProgression in selChordProg:
-                    solutions = self.__chord_progression_combinatory(ch, chordProgression, n)
+        for idx in range(nWindows - 1):
+            for lastChord, prevChordNode in windows[idx].items():
+                for chordProgression in self.__choose_next_chord_progressions(lastChord, chordProgressions):
+                    solutions, finalSolution = self.__chord_progression_combinatory(prevChordNode, chordProgression, idx)
                     for depth, chordNode in solutions.items():
-                        lastChord = chordProgression[-1]
-                        if chordNode.chord not in windows[depth] or chordNode.weight > windows[depth][lastChord].weight:
+                        window = windows[depth]
+                        lastChord = chordProgression[chordNode.chord]
+                        if lastChord not in window or chordNode.weight > window[lastChord].weight:
                             chordNode.chordProgression = chordProgression
-                            windows[depth][lastChord] = chordNode
-
-        bestChordSequence = None
-        for chordNode in windows[-1].values():
-            if bestChordSequence is None or bestChordSequence.weight < chordNode.weight:
-                bestChordSequence = chordNode
+                            window[lastChord] = chordNode
+                    if finalSolution is not None:
+                        if bestChordSequence is None or finalSolution.weight > bestChordSequence.weight:
+                            finalSolution.chordProgression = chordProgression
+                            bestChordSequence = finalSolution
 
         return bestChordSequence
 
-
-    
     def __chord_progression_combinatory(self, prevChordNode, chordProgresion, windowIdx):
         
         prevChordNodeChord = prevChordNode.chord
@@ -212,7 +222,9 @@ class Song:
 
         pendingChords = [prevChordNode]
         nextChords = []  
+
         solutions = {}
+        finalSolution = None
 
         for depth, chordAnalysis in enumerate(self.chordAnalysis[(windowIdx + 1):], start=windowIdx + 1):
 
@@ -240,20 +252,137 @@ class Song:
 
             if not pendingChords:
                 break
-              
-        if pendingChords:
-            if depth in solutions:
-                idx = 0        
-            else:
-                solutions[depth] = pendingChords[0]
-                idx = 1
-            for chordNode in pendingChords[idx:]:
-                if chordNode.weight > solutions[depth].weight:
-                    solutions[depth] = chordNode
 
         prevChordNode.chord = prevChordNodeChord
 
-        return solutions                 
+        finalDepth = len(self.chordAnalysis) - 1
+        if finalDepth in solutions:
+            pendingChords.append(solutions.pop(finalDepth))
+
+        for chordNode in pendingChords:
+            if finalSolution is None or chordNode.weight > finalSolution.weight:
+                finalSolution = chordNode
+
+        return solutions, finalSolution 
+
+    def __find_best_loop_chord_sequence(self, chordProgressions):
+
+        nWindows = len(self.chordAnalysis)
+        allWindows = {} 
+
+        bestChordSequence = None
+
+        for chordProgression in chordProgressions:
+            firstChord = chordProgression[0]
+            if firstChord not in allWindows:
+                allWindows[firstChord] = [{} for _ in range(nWindows - 1)]
+
+        rootChordNode = Song.ChordNode(-1, 0)
+        for chordProgression in chordProgressions:
+            firstChord = chordProgression[0]
+            windows = allWindows[firstChord]
+            solutions, finalSolutions = self.__chord_progression_combinatory_loop(rootChordNode, chordProgression, -1)
+            for depth, chordNode in solutions.items():
+                window = windows[depth]
+                lastChord = chordProgression[chordNode.chord]
+                if lastChord not in window or chordNode.weight > window[lastChord].weight:
+                    chordNode.chordProgression = chordProgression
+                    window[lastChord] = chordNode
+            for chordNode in finalSolutions:
+                if self.__can_loop(chordNode, chordProgression, firstChord, False):
+                    if bestChordSequence is None or chordNode.weight > bestChordSequence.weight:
+                        chordNode.chordProgression = chordProgression
+                        bestChordSequence = chordNode
+
+        for firstChord, windows in allWindows.items():
+            for idx in range(nWindows - 1):
+                for lastChord, prevChordNode in windows[idx].items():
+                    for chordProgression in self.__choose_next_chord_progressions(lastChord, chordProgressions):
+                        solutions, finalSolutions = self.__chord_progression_combinatory_loop(prevChordNode, chordProgression, idx)
+                        for depth, chordNode in solutions.items():
+                            window = windows[depth]
+                            lastChord = chordProgression[chordNode.chord]
+                            if lastChord not in window or chordNode.weight > window[lastChord].weight:
+                                chordNode.chordProgression = chordProgression
+                                window[lastChord] = chordNode
+                        for chordNode in finalSolutions:                        
+                            if self.__can_loop(chordNode, chordProgression, firstChord):
+                                if bestChordSequence is None or chordNode.weight > bestChordSequence.weight:
+                                    chordNode.chordProgression = chordProgression
+                                    bestChordSequence = chordNode
+
+        return bestChordSequence  
+    
+    def __chord_progression_combinatory_loop(self, prevChordNode, chordProgresion, windowIdx):
+        
+        prevChordNodeChord = prevChordNode.chord
+        prevChordNode.chord = min(prevChordNodeChord, 0)
+
+        pendingChords = [prevChordNode]
+        nextChords = []  
+
+        solutions = {}
+        finalSolutions = [None] * len(chordProgresion)
+
+        for depth, chordAnalysis in enumerate(self.chordAnalysis[(windowIdx + 1):], start=windowIdx + 1):
+
+            for chordNode in pendingChords:  
+
+                chordIdx = chordNode.chord
+                if chordIdx >=0 and chordProgresion[chordIdx] in chordAnalysis:
+                    newChordNode = Song.ChordNode(chordIdx, 
+                                chordNode.weight + chordAnalysis[chordProgresion[chordIdx]], 
+                                chordNode)
+                    nextChords.append(newChordNode)
+
+                chordIdx += 1
+                if chordProgresion[chordIdx] in chordAnalysis:
+                    newChordNode = Song.ChordNode(chordIdx, 
+                                chordNode.weight + chordAnalysis[chordProgresion[chordIdx]],
+                                chordNode)
+                    if chordIdx < len(chordProgresion) - 1:
+                        nextChords.append(newChordNode)
+                    elif depth not in solutions or newChordNode.weight > solutions[depth].weight:
+                        solutions[depth] = newChordNode
+
+            pendingChords = nextChords
+            nextChords = []
+
+            if not pendingChords:
+                break
+
+        prevChordNode.chord = prevChordNodeChord
+
+        for chordNode in pendingChords:
+            chordIdx = chordNode.chord
+            if finalSolutions[chordIdx] is None or chordNode.weight > finalSolutions[chordIdx].weight:
+                finalSolutions[chordIdx] = chordNode
+  
+        finalDepth = len(self.chordAnalysis) - 1
+        if finalDepth in solutions:
+            finalSolutions[-1] = solutions.pop(finalDepth)
+
+        return solutions, list(filter(lambda x: x is not None, finalSolutions))   
+
+    def __can_loop(self, lastChordNode, chordProgression, firstChord, b = True):
+
+        nChords = len(chordProgression)
+        chordIdx = lastChordNode.chord
+
+        # Primer acorde
+        if b and chordIdx == 0:
+            if chordProgression[0] == firstChord:
+                return True
+        # Penúltimo acorde
+        elif chordIdx == nChords - 2:
+            if chordProgression[chordIdx + 1] == firstChord:
+                return True
+        # Último acorde
+        elif chordIdx == nChords - 1:
+            if chordProgression[chordIdx] == firstChord:
+                return True
+            
+        return False              
 
     '''
     Elige una escala entre la lista de escalas provista en el supuesto de que la canción tenga 
