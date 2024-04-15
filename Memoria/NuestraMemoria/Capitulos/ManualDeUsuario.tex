@@ -22,9 +22,13 @@ Estos dos grandes pasos son la \nameref{sec:dependeciasApp} y la \nameref{sec:in
 \subsection{REAPER}
 \label{subsec:reaper}
 	\href{https://www.reaper.fm/}{REAPER} es el DAW de producción musical que usamos en nuestra aplicación
-	Un DAW, \textit{Digital Audio Workstation}, es una estación trabajo de audio digital.
+	Una DAW, \textit{Digital Audio Workstation}, es una estación de trabajo de audio digital. Las DAWs permiten grabar y editar audio, así como interpretar música simbólica (principalmente MIDI) para generar sonido.
 
-	Este entorno de edición y producción musical es el que nos permite sonorizar el audio que generamos en nuestra aplicación. Es decir, nos permite agregar los instrumentos y efectos de audio que hacen sonar el MIDI almacenado. 
+	Este entorno de edición y producción musical es el que nos permite sonorizar el audio que generamos en nuestra aplicación. Es decir, nos permite agregar los instrumentos y efectos de audio que hacen sonar el MIDI generado o proporcionado por el usuario.
+    
+    Para el uso de la herramienta debemos instalar Reaper 7, desde su \href{https://www.reaper.fm/download.php}{web oficial}. El usuario debe tener en cuenta que Reaper no es una DAW gratuita, pero permite un periodo de prueba con todas sus funcionalidades y donde podrá usar la herramienta sin ningún tipo de problemas, tan sólo hay que esperar unos segundos y cerrar la pestaña que aparece explicando que estamos usando el periodo de prueba.
+
+    Una vez tengamos Reaper instalado, debemos selecionar el apartado Opciones, Preferencias (o atajo de teclado Ctrl+P) y buscar el apartado ReaScript dentro del apartado Plug-ins. Una vez en esta pestaña, marcaremos la casilla Enable Python for use with ReaScript y le proporcionaremos la ruta a nuestro Python 3.9.0 (Apéndice \ref{Appendix:Key1}), así como el nombre de la dll de Python (python39.dll en el caso de usar la versión que recomendamos) Pulsamos apply y debería de indicarnos que python está instalado correctamente, reiniciamos Reaper y estamos listos para usar la herramienta.
 
 \section{Generación de audio}
 \label{sec:generacionAudio}

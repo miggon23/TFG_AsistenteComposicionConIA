@@ -18,6 +18,7 @@
         Por ejemplo, si quisiéramos codificar un Do de la cuarta octava (C4 en inglés) que dura 2 tiempos se codificaría como "60\_2", siendo 60 el pitch MIDI de la nota C4 (consultar \cite{MIDIPitch} para más información sobre el pitch MIDI).
 
     \subsection{Magenta NoteSequence}
+    \label{subsec:note-seq}
     En las partes de generación de melodías que utilizan machine learning empleamos el estándar definido por Magenta llamada NoteSequence: \cite{note-seq}. 
 
     Este estándar nos proporciona una forma cómoda y rápida de interactuar con la API de Magenta (explicada en \ref{sec:magenta}), así como de poder leer y convertir a MIDI fácilmente.
@@ -28,6 +29,25 @@
 
 \section{Dataset utilizado y procesamiento de datos}
 \label{sec:dataset}
+Para poder utilizar algoritmos de machine learning lo primero es tener un dataset con una gran cantidad de datos y procesarlo adecuadamente.
+
+A la hora de buscar el dataset es importante buscar uno adecuado para poder generar melodías básicas que podamos posteriormente armonizar y crear variaciones de esta.
+
+Magenta posee una gran cantidad de datasets que se utilizaron para el entrenamiento de sus modelos. Dichos datasets se pueden consultar en \cite{MagentaDatasets}.
+
+El dataset elegido ha sido el \textit{Bach Doodle Dataset} de Magenta, que se puede encontrar en el siguiente enlace: \url{https://magenta.tensorflow.org/datasets/bach-doodle}.
+
+Este dataset consiste en una serie de JSONs con melodías que componían los usuarios del Bach Doodle (\cite{BachDoodlePaper}). Contiene más de 6 años de música de usuarios y sus melodías están en formato NoteSequence (para más información ver \ref{subsec:note-seq}).
+
+Al utilizar un dataset con melodías simples podemos entrenar de forma más simple y directa nuestros modelos. Pero para poder utilizar el dataset tenemos que procesar algunos aspectos de este.
+
+Lo primero es filtrar las melodías, existe un campo en cada entrada del dataset llamado \textit{"feedback"}, que representa el feedback de usuarios con 0, 1 o 2. Ya que 2 significa feedback positivo y tenemos una gran cantidad de melodías, podemos descartar todas las melodías que no tengan un feedback de 2.
+
+Para poder realizar ajustes posteriormente a la melodía es conveniente que se encuentre en una escala determinada. Por simplicidad descartamos todas las melodías que no se encuentren en Do Mayor (C Major en inglés). Además, comprimimos las notas entre 2 octavas realizando traslaciones de las notas.
+
+Finalmente, es vital normalizar el tempo de las canciones, por lo que convertimos todas las melodías a 120bpm, pasando de tiempo absolutos a steps relativos.
+
+Una vez realizados estos ajustes, podemos guardar el dataset procesado como CSV con los atributos pitch, start, end, duration, next\_note\_pitch, next\_note\_start y next\_note\_duration. Con estos parámetros podemos implementar distintos modelos de machine learning utilizando unos parámetros u otros dependiendo de las necesidades del modelo.
 
 \section{Cadenas de Markov}
 \label{sec:markov-chain}
@@ -181,3 +201,44 @@
 
 \section{Magenta}
 \label{sec:magenta}
+    \subsection{¿Qué es Magenta?}
+    \label{subsec:definicionMagenta}
+    Magenta es un proyecto de investigación propiedad de Google, compuesto por varios modelos de machine learning. Estos modelos están entrenados para generar tanto música como dibujos.
+
+    Particularmente, los modelos entrenados con música pueden realizar varias funcionalidades. Existen modelos que generan melodías, modelos que continúan una melodía dada, generar baterías, autoencoders que permiten humanizar baterías, armonizar una melodía dada... Podemos encontrar estos modelos y más en el repositorio de Magenta (\cite{MagentaRepo}) o en su web (\cite{MagentaWeb}).
+
+    Magenta contiene además un plugin para la DAW Ableton llamado Magenta Studio (\cite{MagentaStudio}). Dicho plugin fue además porteado a aplicación de escritorio para Windows. En este plugin encontramos varios programas que desmuestran la funcionalidad de Magenta, como: Generate, que genera melodías de 4 compases; Continue, que continúa una melodía de entrada un número N de compases; Drumify, que crea una base de batería dado un ritmo de input; Interpolate, que crea una melodía o base de tambor combinando 2 de entrada; y finalmente Groove, que humaniza una base de tambor para que suene como una persona.
+    
+    \subsection{Paquete de Magenta para Python}
+    \label{subsec:magentaPython}
+    Existe un paquete de Magenta para Python, que puede ejecutar todos los modelos preentrenados.
+
+    Dicho paquete tiene instrucciones de instalación para sistemas Linux y MacOS (consultar \cite{MagentaRepo}), sin embargo, a día de hoy no parece tener una versión compatible con Windows, por lo que no podemos utilizarlo en nuestra aplicación.
+
+    \subsection{Paquete de Magenta para JavaScript}
+    \label{subsec:magentaJS}
+    Magenta tiene también una versión para JavaScript, que se ejecuta sobre TensorFlowJS. Dicha versión es análoga a la de Python y permite ejecutar los modelos preentrenados.
+
+    Magenta Studio utiliza esta versión de Magenta, tanto para el plugin de Ableton como en la versión de escritorio, por lo que podemos utilizar esta versión para incluir Magenta en nuestro proyecto.
+
+    \subsection{Magenta en nuestro proyecto}
+    \label{subsec:magentaEnNuestroProyecto}
+    Para poder comunicar nuestro proyecto de Python con Magenta utilizamos el módulo de Python \textit{subprocess}.
+
+    Podemos tener diversos scripts de NodeJS que son ejecutados por un script Python y se comunican por los argumentos del proceso y la salida estándar de este. 
+
+    Actualmente tenemos 2 scripts, uno dedicado a generar melodías (magentaGenerator.js) y otro dedicado a continuar melodías ya creadas (magentaContinue.js).
+
+    En la aplicación tenemos la posibilidad de generar melodías con Magenta, requiriendo una conexión a internet para descargar y ejecutar el modelo preentrenado.
+
+    \subsection{Ventajas y desventajas de la generación con Magenta}
+    \label{ventajasYDesventajasMagenta}
+    Generar melodías con Magenta nos aporta varias ventajas respecto a modelos anteriores.
+
+    Son modelos entrenados con una gran cantidad de datasets y que utilizan técnicas avanzadas de machine learning, por tanto, la generación de melodías es bastantes más rica que en otros modelos propios y estas poseen más coherencia interna.
+
+    Además, el \textit{continue} nos permite alargar melodías y mantenerlas coherentes para poder trabajar con ellas posteriormente.
+
+    Sin embargo, como desventaja principal tenemos la necesidad de una conexión a internet para poder utilizar el modelo, así como el tiempo que tarda el modelo en inicializar, sobre todo al tener que manejar subprocesos.
+
+    Este modelo de generación nos aporta bastantes ventajas, pero es necesario mantener algún modelo que se pueda ejecutar de forma local y no dependa de módulos que a futuro puedan ser descontinuados.
