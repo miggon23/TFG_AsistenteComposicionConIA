@@ -1,5 +1,6 @@
 import json
 import os
+import random
 
 from tkinter import ttk
 from tkinter import *
@@ -11,6 +12,7 @@ from App.AppState.modeState import ModeState
 from App.AppState.tooltip import Tooltip
 from App.AppState.presetsManager import PresetManager
 from Utils import globalConsts
+from Utils import stringUtils
 
 class TematicEnum(Enum):
     PRADERA   =   "Pradera"
@@ -54,6 +56,7 @@ class ModeSelectorTab:
 
         self.reaperStream = llamamosReaper.ReaperStream()
         self.presetManager = PresetManager()
+        self.rerollSeed()
 
 
     def onEntryTab(self):
@@ -111,8 +114,15 @@ class ModeSelectorTab:
         y = 600 * 0.7
 
         # Crea y coloca el botón en las coordenadas calculadas
-        Button(self.canvas, image=self.generateAllRandom_buttonImage).place(x=x, y=y)
+        Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollSeed).place(x=x, y=y)
 
+        self.seedString = StringVar()
+        self.seedEntry = Entry(self.canvas, textvariable=self.seedString, justify="center")
+        self.seedEntry.place(x=x, y=y-20, width=80)
+
+        seed_tooltip = Tooltip(self.seedEntry, "Seed")
+        self.seedEntry.bind("<Enter>", seed_tooltip.show_tooltip)
+        self.seedEntry.bind("<Leave>", seed_tooltip.hide_tooltip)
         #  -----------  Botón de guardar presets ---------------
         original_image = Image.open("App/Images/saveIcon.png")
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
@@ -228,8 +238,8 @@ class ModeSelectorTab:
         self.canvas.itemconfig(self.background_id, image=self.background)
 
     def playReaper(self):
+        self.modeState.seed = self.seedString.get()
         self.saveState()
-
         self.reaperStream.SetUp()
 
     def recoverState(self, modeState):
@@ -276,3 +286,5 @@ class ModeSelectorTab:
         self.presetCombobox['values'] = filesWithNoExtension
         self.presetCombobox.update()
         
+    def rerollSeed(self):
+        self.seedString.set(stringUtils.generate_random_string(5, None))

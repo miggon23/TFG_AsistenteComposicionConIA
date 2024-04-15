@@ -16,6 +16,7 @@ class ModeState:
     espacial = False
     dream = False
     vintage = False
+    seed = "1p0mC"
 
     # Devuelve una cadena con el formato JSON listo para guardar
     def toJSON(self):
@@ -33,7 +34,8 @@ class ModeState:
             "agua": self.agua,
             "espacial": self.espacial,
             "dream": self.dream,
-            "vintage": self.vintage
+            "vintage": self.vintage,
+            "seed": self.seed
         }
    
         return jsonMap

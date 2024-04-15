@@ -2,7 +2,7 @@ from asyncio.windows_events import NULL
 import os
 import random
 import json
-
+import hashlib
 
 
 def cargarMidi(ruta):
@@ -1445,7 +1445,26 @@ def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset,
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "AFTER (x86) (TWest Productions)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 13, "mastering2") 
 
+bufOut = ""  # Initialize bufOut with an empty string
+bufOut_sz = 1024  # Set an arbitrary size for bufOut_sz, adjust as needed
 
+# Corrected usage of RPR_GetProjectPath
+bufOut, bufOut_sz = RPR_GetProjectPath(bufOut, bufOut_sz)
+
+rutaJson = os.path.join(bufOut, "parametros.json")  # Use os.path.join to concatenate paths
+    
+
+with open(rutaJson, 'r') as file:
+    parametros = json.load(file)
+
+string_seed = parametros["seed"]
+hashed_obj = hashlib.sha256(string_seed.encode())
+hash_hex = hashed_obj.hexdigest()
+hash_int = int(hash_hex, 16)
+hash_int = hash_int % 1000000000000
+
+RPR_ShowMessageBox("Tegucigalpa", "Semilla:", 0)
+random.seed(hash_int) 
 
 for i in range (20):
     RPR_DeleteTrack(RPR_GetTrack(0, 0))
@@ -1461,22 +1480,6 @@ for i in range(n_tracks):
 
 RPR_SetTempoTimeSigMarker(0, -1, 0, -1, -1, 120, 0, 0, True)
 
-
-
-
-bufOut = ""  # Initialize bufOut with an empty string
-bufOut_sz = 1024  # Set an arbitrary size for bufOut_sz, adjust as needed
-
-# Corrected usage of RPR_GetProjectPath
-bufOut, bufOut_sz = RPR_GetProjectPath(bufOut, bufOut_sz)
-
-rutaJson = os.path.join(bufOut, "parametros.json")  # Use os.path.join to concatenate paths
-    
-
-with open(rutaJson, 'r') as file:
-    parametros = json.load(file)
-
-file.close()
 
 tematica = parametros["tematica"]
 tematica_pistas = parametros["tematica_pistas"]
