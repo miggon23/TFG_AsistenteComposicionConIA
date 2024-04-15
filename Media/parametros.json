@@ -1,5 +1,5 @@
 {
-    "tematica": 12,
+    "tematica": 4,
     "tematica_pistas": [
         0,
         1,
@@ -20,5 +20,5 @@
     "agua": false,
     "espacial": false,
     "dream": false,
-    "vintage": true
+    "vintage": false
 }

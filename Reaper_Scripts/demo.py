@@ -97,76 +97,85 @@ def cargarMelodia(tematica, patron, recortar = False, pos = -1):
     estilo = "output_song"
 
     if(tematica == 0):
-        estilo = "Lydian_output_song"
+        estilo = "_Lydian"
     elif(tematica == 1):
-        estilo = "output_song"
+        estilo = ""
     elif(tematica == 2):
-        estilo = "Phrygian_output_song"
+        estilo = "_Phrygian"
     elif(tematica == 3):
-        estilo = "Dorian_output_song"
+        estilo = "_Dorian"
     elif(tematica == 4):
-        estilo = "Mixolydian_output_song"
+        estilo = "_Mixolydian"
     elif(tematica == 5):
-        estilo = "Phrygian_output_song"
+        estilo = "_Phrygian"
     elif(tematica == 6):
-        estilo = "Mixolydian_output_song"
+        estilo = "_Mixolydian"
     elif(tematica == 7):
-        estilo = "Locrian_output_song"
+        estilo = "_Locrian"
     elif(tematica == 8):
-        estilo = "Mixolydian_output_song"
+        estilo = "_Mixolydian"
     elif(tematica == 9):
-        estilo = "Lydian_output_song"
+        estilo = "_Lydian"
     elif(tematica == 10):
-        estilo = "Dorian_output_song"
+        estilo = "_Dorian"
     elif(tematica == 11):
-        estilo = "output_song"
+        estilo = ""
     elif(tematica == 12):
-        estilo = "output_song"
+        estilo = ""
+
+
 
     if not recortar:
-        cont = 0
-        for item in patron:
-            if(pos != -1):
-                RPR_SetEditCurPos(pos + cont*4, True, True)
-                cont += 1
-            cargarMidi("midi/"+estilo+ item +".mid")
+        cont= 0
+        for _ in range(2):
+            for item in patron:
+                if(pos != -1):
+                    RPR_SetEditCurPos(pos + cont*2, True, True)
+                    cont += 1
+                cargarMidi("midi/output_song"+ item + estilo +".mid")
     else:
-        cargarMidi("midi/"+estilo+"D.mid")
+        cargarMidi("midi/output_song"+ patron[3] + estilo +".mid")
 
-def cargarArmonia(tematica, recortar = False):
+def cargarArmonia(tematica, recortar = False, estandar = False):
 
     estilo = "output_harmony"
 
     if(tematica == 0):
-        estilo = "Lydian_output_harmony"
+        estilo = "_Lydian"
     elif(tematica == 1):
-        estilo = "output_harmony"
+        estilo = ""
     elif(tematica == 2):
-        estilo = "Phrygian_output_harmony"
+        estilo = "_Phrygian"
     elif(tematica == 3):
-        estilo = "Dorian_output_harmony"
+        estilo = "_Dorian"
     elif(tematica == 4):
-        estilo = "Mixolydian_output_harmony"
+        estilo = "_Mixolydian"
     elif(tematica == 5):
-        estilo = "Phrygian_output_harmony"
+        estilo = "_Phrygian"
     elif(tematica == 6):
-        estilo = "Mixolydian_output_harmony"
+        estilo = "_Mixolydian"
     elif(tematica == 7):
-        estilo = "Locrian_output_harmony"
+        estilo = "_Locrian"
     elif(tematica == 8):
-        estilo = "Mixolydian_output_harmony"
+        estilo = "_Mixolydian"
     elif(tematica == 9):
-        estilo = "Lydian_output_harmony"
+        estilo = "_Lydian"
     elif(tematica == 10):
-        estilo = "Dorian_output_harmony"
+        estilo = "_Dorian"
     elif(tematica == 11):
-        estilo = "output_harmony"
+        estilo = ""
     elif(tematica == 12):
-        estilo = "output_harmony"
+        estilo = ""
 
-    cargarMidi("midi/"+estilo+".mid")
+    nombre = "output_harmony"
+    if(estandar):
+        nombre = "output_std_harmony"+estilo
+    else:
+        nombre = "output_harmony"+estilo
+
+    cargarMidi("midi/"+nombre+".mid")
     if not recortar:
-        cargarMidi("midi/"+estilo+".mid")
+        cargarMidi("midi/"+nombre+".mid")
 
 
 #Melodía instrumento 1 y 2   
@@ -1746,20 +1755,20 @@ RPR_SetEditCurPos(0, True, True)
 #Generamos patrones de melodía variados
 n_patrones = 3
 patrones_melodia = []
-patrones_melodia.append(["A", "B", "C", "D"])
+patrones_melodia.append(["A1", "A2", "B1", "B2"])
 
 for _ in range(n_patrones - 1):
     patron_melodia = []
 
     if mezclar_melodias:
-        most_probable = random.choice(["A", "B", "C", "D"])
+        most_probable = random.choice(["A1", "A2", "B1", "B2"])
         for _ in range(4):
             if random.randint(1, 10) <= 6:
                 patron_melodia.append(most_probable)
             else:
-                patron_melodia.append(random.choice(["A", "B", "C", "D"]))
+                patron_melodia.append(random.choice(["A1", "A2", "B1", "B2"]))
     else:
-        patron_melodia = ["A", "B", "C", "D"]
+        patron_melodia = ["A1", "A2", "B1", "B2"]
 
     patrones_melodia.append(patron_melodia)
 
@@ -1811,7 +1820,7 @@ RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 5), "I_SELECTED", 1)
 for value in arreglo[5]:
     if value:
         RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
+        cargarArmonia(tematica, estandar=True)
     i += 1
 
 
@@ -1867,30 +1876,31 @@ for i in range(8):
         RPR_SetEditCurPos(i * 16 + 14, True, True)
         cargarMidi("midi/fillTemplate.mid")
         fill_n += 1
-    if arreglo[6][i]:
-        
-        if(i < 6):
-            RPR_SetEditCurPos(i * 16 + 7, True, True)
-            cargarMidi("midi/fillTemplate.mid")
-            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 1, False)
-        else:
-            RPR_SetEditCurPos(i * 16 + 6, True, True)
-            cargarMidi("midi/fillTemplate.mid")
-        fill_n += 1
+    if (tematica_pistas[6] != 12):
+        if arreglo[6][i]:
+            
+            if(i < 6):
+                RPR_SetEditCurPos(i * 16 + 7, True, True)
+                cargarMidi("midi/fillTemplate.mid")
+                RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 1, False)
+            else:
+                RPR_SetEditCurPos(i * 16 + 6, True, True)
+                cargarMidi("midi/fillTemplate.mid")
+            fill_n += 1
 
-        if(i < 4):
-            RPR_SetEditCurPos(i * 16 + 14, True, True)
-            cargarMidi("midi/fillTemplate.mid")
-        elif(i < 6):
-            RPR_SetEditCurPos(i * 16 + 13, True, True)
-            cargarMidi("midi/fillTemplate.mid")
-            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 3, False)
-        else:
-            RPR_SetEditCurPos(i * 16 + 12, True, True)
-            cargarMidi("midi/fillTemplate.mid")
-            RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 4, False)
-        
-        fill_n += 1
+            if(i < 4):
+                RPR_SetEditCurPos(i * 16 + 14, True, True)
+                cargarMidi("midi/fillTemplate.mid")
+            elif(i < 6):
+                RPR_SetEditCurPos(i * 16 + 13, True, True)
+                cargarMidi("midi/fillTemplate.mid")
+                RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 3, False)
+            else:
+                RPR_SetEditCurPos(i * 16 + 12, True, True)
+                cargarMidi("midi/fillTemplate.mid")
+                RPR_SetMediaItemLength(RPR_GetTrackMediaItem(RPR_GetTrack(0, 11), fill_n), 4, False)
+            
+            fill_n += 1
 
 i = 0
 pista = 12
