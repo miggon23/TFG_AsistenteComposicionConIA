@@ -277,11 +277,8 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset, semitonos):
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Ukulele (x86) (Christopher Clews) (mono)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        elif(preset <= 7): 
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Keyzone (x86) (Bitsonic LP)", False, -1)
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         if(preset <= 0): 
@@ -488,7 +485,7 @@ def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, 
     
     elif(tematica == 4):
         if(preset <= 1):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Keyzone (x86) (Bitsonic LP)", False, -1)
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Spicy Guitar (64 bits) (Keolab)", False, -1)
@@ -1763,7 +1760,7 @@ for _ in range(n_patrones - 1):
     if mezclar_melodias:
         most_probable = random.choice(["A1", "A2", "B1", "B2"])
         for _ in range(4):
-            if random.randint(1, 10) <= 6:
+            if random.randint(1, 10) <= 4:
                 patron_melodia.append(most_probable)
             else:
                 patron_melodia.append(random.choice(["A1", "A2", "B1", "B2"]))
@@ -1922,7 +1919,7 @@ for col in range(8):
         if arreglo_adelantar[fila][col]:
             if(fila < 2):
                 RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-                RPR_SetEditCurPos(col * 16 + 12, True, True)
+                RPR_SetEditCurPos(col * 16 + 14, True, True)
                 cargarMelodia(tematica, patrones_melodia[patrones_orden[col]], recortar = True)
 
                 cont = 0
@@ -1930,14 +1927,17 @@ for col in range(8):
                     if arreglo[fila][i]:
                         cont += 4
 
-                RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
-                RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+                #RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                #RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
 
             else:
                 RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
                 RPR_SetEditCurPos(col * 16 + 8, True, True)
 
-                cargarArmonia(tematica, True)
+                if(fila == 5):
+                    cargarArmonia(tematica, recortar = True, estandar = True)
+                else:
+                    cargarArmonia(tematica, recortar = True)
 
                 cont = 0
                 for i in range(col):

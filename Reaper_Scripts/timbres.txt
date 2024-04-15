@@ -6,7 +6,7 @@ Temática:
 4-Pirata       Mixolidio
 5-Selva        Frigio
 6-Épico        Mixolidio
-7-Tenebroso    Locrio
+7-Tenebroso    Locrio           ***
 8-Agua         Mixolidio
 9-Asiático     Lidio
 10-Rock        Dorico
