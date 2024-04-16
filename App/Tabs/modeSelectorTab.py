@@ -119,6 +119,7 @@ class ModeSelectorTab:
         self.seedString = StringVar()
         self.seedEntry = Entry(self.canvas, textvariable=self.seedString, justify="center")
         self.seedEntry.place(x=x, y=y-20, width=80)
+        self.seedEntry.bind("<KeyRelease>", self.onUpdateSeed)
 
         seed_tooltip = Tooltip(self.seedEntry, "Seed")
         self.seedEntry.bind("<Enter>", seed_tooltip.show_tooltip)
@@ -251,6 +252,7 @@ class ModeSelectorTab:
         self.underWater.set(self.modeState.agua)
         self.retro.set(self.modeState.retro)
         self.dream.set(self.modeState.dream)
+        self.seedString.set(self.modeState.seed)
 
         tematica_value = list(TematicEnum)[self.modeState.tematica].value
         self.current_tematic.set(tematica_value)
@@ -288,3 +290,7 @@ class ModeSelectorTab:
         
     def rerollSeed(self):
         self.seedString.set(stringUtils.generate_random_string(5, None))
+        self.modeState.seed = self.seedString.get()
+
+    def onUpdateSeed(self, event):
+        self.modeState.seed = self.seedString.get()
