@@ -35,13 +35,13 @@ class GenerationTab:
         style = ttk.Style()
         style.configure("TButton", padding=6, relief="flat", background="#ccc")
 
-        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0)
+        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0, padx=200)
 
     def setButtons(self):
-        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1)
-        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2)
-        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3)
-        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4)
+        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=200, pady=10)
+        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=200, pady=10)
+        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=200, pady=10)
+        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=200, pady=10)
         
     
     def generateMelodies(self):
