@@ -21,6 +21,7 @@ class ModeSelectorTab:
     current_tematic = TematicEnum.PRADERA
 
     background_filter_id = None
+    background_dream_id = None
 
     def __init__(self, tab):
         self.tab = tab
@@ -183,16 +184,24 @@ class ModeSelectorTab:
         #self.background_image_pil = Image.open("App/Images/Backgrounds/"+ image +".png")
         
         themeName = self.idToEnumValue(self.modeState.tematica)
-        self.background_image_pil = self.backgroundSys.configure_background(theme=themeName, 
+        self.background_image_array = self.backgroundSys.configure_background(theme=themeName, 
                                                                 dream= self.modeState.dream,
                                                                 lofi=self.modeState.lofi,
                                                                 vintage=self.modeState.vintage,
-                                                                spacial=self.modeState.espacial)[0]
+                                                                spacial=self.modeState.espacial)
         
+        self.background_image_pil = self.background_image_array[0]
         self.background = ImageTk.PhotoImage(self.background_image_pil)
-        
-        # Crear la imagen en el canvas
         self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)   
+        
+        if(self.modeState.dream):
+            bckDreamPil = self.background_image_array[1]
+            self.background_dream = ImageTk.PhotoImage(bckDreamPil)
+            self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
+        elif (self.background_dream_id != None):
+            self.canvas.delete(self.background_dream_id)
+
+        # Crear la imagen en el canvas
        
 
     def resize_image(self, event = None):
