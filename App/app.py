@@ -58,7 +58,7 @@ class App:
         self.notebook.add(self.frame1, text="Generación")
         self.notebook.add(self.frame2, text="Musicalización")
         self.notebook.add(self.frame3, text="Avanzado")
-        self.notebook.add(self.frame4, text="Configuratción")
+        self.notebook.add(self.frame4, text="Configuración")
 
         #Los hacemos pack
         self.notebook.pack(fill="both", expand=True)
@@ -90,6 +90,8 @@ class App:
         elif id == 1:
             self.modeSelectorTab.onEntryTab()
         elif id == 2:
+            self.advancedConfig.onEntryTab()
+        elif id == 3:
             self.configTab.onEntryTab()
 
         

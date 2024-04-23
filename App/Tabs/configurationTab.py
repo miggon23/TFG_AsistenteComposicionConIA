@@ -1,5 +1,6 @@
 from tkinter import ttk
 from tkinter import *
+from tkinter import filedialog
 from Utils import globalConsts
 
 import json
@@ -27,6 +28,11 @@ class ConfigurationTab:
 
         reaper_path = datos["reaperPath"]
         self.pathString.set(reaper_path)
+
+        #TODO Llamar cuando se pulse un botón
+        #file_path = filedialog.asksaveasfile(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+
+
 
     def applySettings(self):
         reaperPathString = self.reaperPathEntry.get()
