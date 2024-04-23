@@ -11,23 +11,10 @@ from Reaper_Scripts import llamamosReaper
 from App.AppState.modeState import ModeState
 from App.AppState.tooltip import Tooltip
 from App.AppState.presetsManager import PresetManager
+from App.AppState.backgroundSystem import BackgroundSystem
+from App.AppEnums.tematicEnum import TematicEnum
 from Utils import globalConsts
 from Utils import stringUtils
-
-class TematicEnum(Enum):
-    PRADERA   =   "Pradera"
-    PIANO     =   "Piano"
-    DESIERTO  =   "Desierto"
-    NIEVE	  =   "Nieve"
-    PIRATA    =   "Pirata"
-    SELVA     =   "Selva"
-    ÉPICO     =   "Épico"
-    TENEBROSO =   "Tenebroso"
-    AGUA      =   "Agua"
-    ASIATICO  =   "Asiático"
-    ROCK      =   "Rock"
-    POP       =   "Pop"
-    TECNO     =   "Tecno"
 
 class ModeSelectorTab:
 
@@ -43,13 +30,14 @@ class ModeSelectorTab:
 
     def setUp(self, root):
         self.root = root
-        self.setBackground("0_0")
+        self.backgroundSys = BackgroundSystem()
         self.setCheckboxes()
         self.displayEnumSelectors()
         self.displayPresetSelector()
         self.setButtons()
 
         self.recoverStateFromFile()
+        self.setBackground()
 
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         self.root.bind("<Configure>", self.resize_image)
@@ -174,8 +162,9 @@ class ModeSelectorTab:
         tematic = self.current_tematic.get()
         print("Seleccionado: ", tematic)
 
-        self.modeState.tematica = [member.value for member in TematicEnum].index(tematic)
-        print(self.modeState.tematica)
+        self.modeState.tematica = self.NameEnumToId(tematic)
+        self.setBackground()
+        self.resize_image()
 
     def onSelectCheckbox(self):
         self.modeState.agua = self.underWater.get()
@@ -185,45 +174,21 @@ class ModeSelectorTab:
         self.modeState.espacial = self.spatial.get()
         self.modeState.dream = self.dream.get()
 
-        # if(self.spatial.get()):
-        #     self.setBackground("espacial")
-        # else:
-        #     if(self.retro.get()):
-        #         if(self.underWater.get()):    
-        #             self.setBackground("0_3")
-        #         else:
-        #             self.setBackground("0_1")
-        #     elif(self.underWater.get()):    
-        #         self.setBackground("0_2")
-
-        #     if(self.lofi.get()):
-        #         self.background_lofi_pil = Image.open("App/Images/Backgrounds/lofi.png")
-        #         self.background_lofi = ImageTk.PhotoImage(self.background_lofi_pil)
-        #         self.background_lofi_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_lofi)
-        #     else:
-        #         self.canvas.delete(self.background_lofi_id)
-            
-        #     if(self.vintage.get()):
-        #         self.background_vintage_pil = Image.open("App/Images/Backgrounds/vintage.png")
-        #         self.background_vintage = ImageTk.PhotoImage(self.background_vintage_pil)
-        #         self.background_vintage_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_vintage)
-        #     else:
-        #         self.canvas.delete(self.background_vintage_id)
-
-        #     if(self.dream.get()):
-        #         self.background_dream_pil = Image.open("App/Images/Backgrounds/dream.png")
-        #         self.background_dream = ImageTk.PhotoImage(self.background_dream_pil)
-        #         self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
-        #     else:
-        #         self.canvas.delete(self.background_dream_id)
+        self.setBackground()
         self.resize_image()
 
-    def setBackground(self, image):   
+    def setBackground(self):   
 
         # Cargar la imagen original
-        self.background_image_pil = Image.open("App/Images/Backgrounds/"+ image +".png")
+        #self.background_image_pil = Image.open("App/Images/Backgrounds/"+ image +".png")
         
-        # Crear una instancia de ImageTk para la imagen original
+        themeName = self.idToEnumValue(self.modeState.tematica)
+        self.background_image_pil = self.backgroundSys.configure_background(theme=themeName, 
+                                                                dream= self.modeState.dream,
+                                                                lofi=self.modeState.lofi,
+                                                                vintage=self.modeState.vintage,
+                                                                spacial=self.modeState.espacial)[0]
+        
         self.background = ImageTk.PhotoImage(self.background_image_pil)
         
         # Crear la imagen en el canvas
@@ -231,6 +196,8 @@ class ModeSelectorTab:
        
 
     def resize_image(self, event = None):
+        if(self.background_image_pil == None):
+            return
         # Redimensionar la imagen original cuando cambia el tamaño de la ventana
         new_width = self.tab.winfo_width()
         new_height = self.tab.winfo_height()
@@ -253,9 +220,15 @@ class ModeSelectorTab:
         self.retro.set(self.modeState.retro)
         self.dream.set(self.modeState.dream)
         self.seedString.set(self.modeState.seed)
-
-        tematica_value = list(TematicEnum)[self.modeState.tematica].value
+        
+        tematica_value = self.idToEnumValue(self.modeState.tematica)
         self.current_tematic.set(tematica_value)
+
+    def idToEnumValue(self, id):
+        return list(TematicEnum)[id].value
+    
+    def NameEnumToId(self, themeName):
+        return [member.value for member in TematicEnum].index(themeName)
 
     def recoverStateFromFile(self):
         jsonPath = globalConsts.Paths.mediaSettings
