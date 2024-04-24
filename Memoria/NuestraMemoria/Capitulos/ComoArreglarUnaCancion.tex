@@ -1,0 +1,98 @@
+\chapter{Cómo arreglar una canción}
+Hacer un arreglo de una canción consiste en utilizar una idea musical, una composición o una canción entera para crear una canción nueva.
+
+En nuestro caso vamos a usar un motivo o idea musical para arreglar una canción que funcione como música para un videojuego. Hay muchas formas de abordar esto, y como es común en la música y el arte, no hay una verdad absoluta.
+
+Por nuestra parte, priorizamos que el arreglo funcione pero sea rico y variado, con varias secciones y sonidos posibles, de manera que dos generaciones distintas no sean nunca iguales. Bajo esta premisa, hemos definido una serie de normas para la estructura y timbres de la canción, que se generarán de manera pseudoaleatoria siguiendo dichas normas.
+
+\section{Temática}
+\label{sec:tematica}
+
+\section{Secciones}
+
+Dividimos la canción en un máximo de 8 secciones, las cuales tienen una duración de 8 compases cada una. Lo ideal para que una canción no se vuelva repetitiva es añadir o quitar elementos cada poco tiempo, siendo lo más común cada 8 compases.
+
+El usuario puede eligir si quiere renderizar la canción entera de 8 secciones, o seleccionar un rango se secciones para renderizar únicamente esas.
+
+\section{Mezcla de melodías}
+A la hora de elegir la melodía que sonará en cada sección, el usuario puede decidir si quiere mezclar la melodía o si usar siempre la versión original (\ref{cap:generacionMusical})
+En el caso de que decida mezclar las melodías, generamos dos patrones adicionales de melodía combinando la melodía original trozeada, priorizando la repetición de uno de los trozos, seleccionado de forma aleatoria.
+
+La repetición en la melodía es clave para que la canción sea predecible y sea fácil de recordar, objetivos que buscamos alcanzar usando patrones de repetición cortos, llegando a ser los patrones de un compás de duración los de menor longitud.
+
+\section{Arpegios}
+Arpegiar un acorde no es más que tocar las notas de dicho acorde de una en una en vez de todas a la vez, generalmente repitiendo un patrón sencillo que se repite constantemente. Por ejemplo, en un acorde de Do Mayor, si tocamos el acorde de la manera más simple tocaríamos las notas Do, Mi y Sol a la vez, mientras que si arpegiamos el acorde podríamos tocar con duración de una semicorchea la nota Mi, después Sol, luego Do y de nuevo Sol, y volveríamos a empezar la secuencia.
+
+Para realizar estos arpegios a partir de los MIDIs de armonía (\ref{sec:arm:cuestion}) que ya tenemos, cargamos un plugin  BlueArp (\ref{subsec:bluearp}) con varios arpegios diseñados por nosotros, de los cuales se seleccionará uno de manera aleatoria.
+
+\section{Línea de bajo}
+Al comienzo del desarrollo de la herramienta, implementamos un generador de líneas de bajo que crea, a partir de una armonía referencia dada, una melodía monofónica para ser interpretado por el bajo, usando principalmente la nota más grave de cada acorde (que puede no ser la fundamental, ya que la armonía puede tener inversiones de acordes). Este generador es similar al generador de baterías (\ref{subsec:generacion-percusion-propia}) pero simplificado.
+
+Este algoritmo tenía algunas limitaciones y a la hora de ampliarlo para añadir variedad, descubrimos una alternativa más cómoda y flexible.
+
+En la versión actual de la herramienta, cargamos la armonía (\ref{sec:arm:cuestion} (sin inversiones) en Reaper en la pista de bajo y utilizamos el plugin BlueArp (\ref{subsec:bluearp}) para interpretar la línea de bajo usando principalmente la nota fundamental del acorde y en ocasiones el resto de notas de dicho acorde.
+
+\section{Arreglos de batería}
+Dependiendo del estilo de la canción (\ref{sec:tematica}), se genera cada cuatro compases de forma aleatoria un estilo de batería o género musical de entre hasta tres posibles. Se cargan alternando las 3 variaciones distintas que nos proporciona el generador de baterías (\ref{subsec:generacion-percusion-propia}) formando un patrón calculado de forma aleatoria una única vez. Por ejemplo si el patrón calculado es ABAC, patrón típico de batería, cargaríamos el MIDI correspondiente al ritmo A, de longitud de un compás, a continuación el ritmo B, de nuevo el A y después el C. Y repetiríamos el mismo patrón ABAC durante toda la canción.
+
+\section{Ear candy}
+\label{sec:ear-candy}
+El \textit{ear candy} en la producción musical son pequeños elementos que se añaden a una canción para volverla más interesante, que no son imprescindibles para la canción, pero que captan la atención del oyente o ayudan a dar coherencia a la mezcla. Podríamos decir que el \textit{ear candy} es la guinda del pastel en una canción.
+
+A partir del arreglo inicial, nuestro programa sigue unas reglas para añadir varios tipos de \textit{ear candy}: transiciones, \textit{drum fills} y sonidos adicionales que enriquecen la mezcla final:
+
+
+\begin{itemize}
+
+\item Transiciones: cuando una sección contiene un número determinado de instrumentos sonando simultáneamente y la sección siguiente contiene al menos un instrumento más, se añade un \textit{riser} formado a partir de un sonido aleatorio con mucha reverb que va aumentando en volumen según nos acercamos al cambio de sección. En el caso contrario, es decir, que haya varios elementos en una sección y en la siguiente al menos 2 elementos menos, se agrega un \textit{downriser}, que no es más que un sonido reverberado también pero esta vez decreciente en volumen.
+
+\item \textit{Drum fill}: referencia Cuando va a entrar un instrumento de batería en la próxima sección, y sólo si no hay un \textit{riser} colocado para la transición, se coloca un \textit{drum fill} que sonando sin otros instrumentos de batería, funciona como un ritmo de introducción al patrón de batería. Adicionalmente, cada 4 compases de percusión, colocamos un \textit{drum fill} que suena a la vez que el ritmo principal para añadirle movimiento, siendo de mayor duración en los compases múltiplos de 8 y cuanto más avanzados en la canción estemos.
+
+\item  Entrada adelantada de sonidos: Si entre dos secciones no hay ningún elemento común, uno de los elementos adelanta su entrada para que el cambio no sea muy brusco. Al elegir instrumento para hacer esto, tiene prioridad el instrumento de bajo. Si no hay bajo presente, será la melodía o el acompañamiento el que resuelva esto, en ese orden de prioridad.
+
+\item  Sonidos adicionales: Si en una sección no hay muchos sonidos presentes, se agregarán de forma aleatorio algunos sonidos (con más o menos protagonismo en la mezcla) a lo largo de la sección.
+
+
+\end{itemize}
+
+\section{Arreglo}
+
+Generamos una matriz de booleanos de 7x8 la cuál rellenamos de maneras aleatoria, y que posteriormente corregimos siguiendo unas normas:
+
+\begin{itemize}
+
+\item No puede haber dos pistas de acompañamiento sonando simultáneamente.
+\item En la primera sección no puede haber más de tres instrumentos principales (\ref{subsec:instrumentos-secundarios}) sonando a la vez.
+\end{itemize}
+
+\section{Pistas}
+
+Dependiendo de la temática (referencia) de la canción, la herramienta cargará en Reaper varios efectos (referencia) por pista, la mayoría son genéricos dependiendo de la temática y pista concreta, pero el instrumento que interpretará el MIDI(referencia) cargado se seleccionará de manera aleatoria de entre unos plugins vst (referencia) seleccionados por nosotros.
+
+\subsection{Instrumentos principales}
+\label{subsec:instrumentos-principales}
+Estos instrumentos son los que harán sonar la matriz del arreglo(referencia). Cubren las necesidades básicas de toda producción (referencia) y son los siguientes:
+
+\begin{itemize}
+\item 2 pistas de melodía, una de ellas una octava (referencia) por encima de la otra. En esta pista van los MIDIs de melodía (referencia)
+\item 2 pistas de acompañamiento. No pueden sonar al mismo tiempo (ver arreglo(referencia)). Estas pistas van acompañadas de un arpegiador (BlueArp(referencia)) que hará que en ocasiones los acordes sean arpegiados o tocados con otro ritmo distinto al del MIDI. Estas pistas cargan el MIDI de armonía (referencia)
+\item Una pista de pads. Esta pista carga el MIDI de armonía (referencia), por lo que interpreta los acordes de la canción. Cuando suena sin el acompañamiento hace la propia función de acompañar a la melodía algo más en segundo plano, y cuando suena a la vez que el acompañamiento complementa el sonido de este.
+\item Una pista de bajo. Esta pista carga el MIDI de armonía (referencia) pero esta vez sin inversiones (referencia). Esto es porque en el bajo generalmente queremos una melodía monofónica (referencia) con las notas fundamentales de cada acorde, y necesitamos que la fundamental sea la nota más grave porque le metemos un arpegiador BlueArp (referencia) para tocar o bien únicamente esa nota, o un arpegio o una línea de bajo.
+\item Una pista de batería. Esta pista carga varios MIDIs de batería (referencia) dependiendo de la temática de la canción (referencia)
+\end{itemize}
+
+\subsection{Instrumentos secundarios}
+\label{subsec:instrumentos-secundarios}
+Estos instrumentos son los que generarán los sonidos de los \textit{ear candy} (\ref{sec:ear-candy}) a partir de la disposición del arreglo, sin ser los propios sonidos de este. Son sonidos que no acaparan el protagonismo, más bien se encuentran en un segundo plano y es fácil que no te des cuenta de que están ahí, pero hacen una diferencia significativa a la hora de dar cohesión y dinamismo a una canción. Son los siguientes:
+
+
+\begin{itemize}
+\item 2 pistas de \textit{uprisers} (referencia). Cargan el MIDI de acompañamiento para crear transiciones usando un sonido reverberado que deja de sonar al entrar la nueva sección. Sólo puede sonar una simultáneamente, son dos para añadir variedad.
+
+\item 2 pistas de \textit{downrisers} (referencia). Al igual que los uprisers, cargan el MIDI de acompañamiento pero esta vez para generar una bajada, usando una Reverb con menos ataque (referencia) que baja de volumen progresivamente.
+
+\item Una pista de \textit{drum fills} (referencia a baterías). Suenan de forma simultánea a las baterías o cuando va a entrar una sección con batería y no estaba sonando en la sección actual. Carga un MIDI especial que tiene marcadas las notas de bombo, caja y dos platillos, que serán interpretados por el arpegiador BlueArp (referencia) y con el humanizador (referencia) configurado con algo de aleatoriedad en el pitch, lo que en instrumentos de batería significa que sonarán distintos golpes (cajas, platillos, toms, palmas) cada vez.
+
+\item 4 pistas de sonidos puntuales (referencia). Cargan el MIDI de la armonía y suenan al menos dos veces por sección (referencia) durante un periodo corto de tiempo si la sección cumple los requisitos (referencia). Usan un arpegiador BlueArp (referencia) para interpretar una melodía tocando las notas presentes en el acorde y llevan un efecto de delay(referencia) creado con el plugin CRMBL (referencia).
+\end{itemize}
+

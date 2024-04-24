@@ -2,12 +2,21 @@
 \label{cap:generacionMusical}
 
 \section{¿Qué es el MIDI?}
+\label{subsec:que-es-midi}
+A la hora de representar música, tradicionalmente hacemos uso una serie de estándares y normas que juntos forman la notación musical occidental. El uso de esta notación musical nos permite escribir partituras que otros músicos pueden entender e interpretar.
+
+Pero, ¿cómo llevamos esto al mundo digital? Si bien hay programas capaces de interpretar partituras digitales, en la mayoría de ocasiones se utilizan otras formas de lo que se denomina música simbólica. La más común es el MIDI (archivos con extensión .mid).
+
+El MIDI, al igual que el resto de formatos de música simbólica, no suena por sí solo, pues el archivo no contiene sonido alguno, sólo contiene información. Al igual que una partitura, el MIDI nos indica qué nota hay que tocar, cuando hay que tocar esa nota, durante cuanto tiempo, y en ocasiones incluso en qué instrumento recomiendan ser tocadas esas notas (aunque esto último es algo que apenas se utiliza ya).
+
+Como ya hemos dicho, el MIDI no contiene sonido, sólo instrucciones para tocar una serie de notas, por lo que es un formato de archivo muy liviano y cómodo de usar. Además, si bien podría parecería una desventaja no poder escuchar sin más su contenido, los sistemas operativos suelen traer una forma de reproducir el archivo MIDI fácilmente. En el caso de Windows, basta con abrirlo con el reproductor de multimedia por defecto para que lo interprete, eso sí, con timbres algo pobres pero que cumplen su función.
+
 
 \section{Cómo generamos MIDI}
     \subsection{Representaciones propias}
         \subsubsection{Representación \textit{"pitch\_duración"}}
         \label{subsub:representacion-pitch_duracion}
-        Esta representación simplifica al máximo la información crucial de una nota, es utilizada principalmente por las Cadenas de Markov (explicadas en \ref{sec:markov-chains}).
+        Esta representación simplifica al máximo la información crucial de una nota, es utilizada principalmente por las Cadenas de Markov (explicadas en \ref{sec:markov-chain}).
 
         La duración suele venir dada en steps, ya que nos proporcionan una unidad entera que es independiente del tiempo absoluto.
 
@@ -19,6 +28,9 @@
 
     \subsection{Magenta NoteSequence}
     \label{subsec:note-seq}
+
+    PON AQUI QUE ES MAGENTA.
+    
     En las partes de generación de melodías que utilizan machine learning empleamos el estándar definido por Magenta llamada NoteSequence: \cite{note-seq}. 
 
     Este estándar nos proporciona una forma cómoda y rápida de interactuar con la API de Magenta (explicada en \ref{sec:magenta}), así como de poder leer y convertir a MIDI fácilmente.
@@ -35,15 +47,15 @@ A la hora de buscar el dataset es importante buscar uno adecuado para poder gene
 
 Magenta posee una gran cantidad de datasets que se utilizaron para el entrenamiento de sus modelos. Dichos datasets se pueden consultar en \cite{MagentaDatasets}.
 
-El dataset elegido ha sido el \textit{Bach Doodle Dataset} de Magenta, que se puede encontrar en el siguiente enlace: \url{https://magenta.tensorflow.org/datasets/bach-doodle}.
+El dataset elegido ha sido el \textit{Bach Doodle Dataset} de Magenta\footnote{\url{https://magenta.tensorflow.org/datasets/bach-doodle}}.
 
 Este dataset consiste en una serie de JSONs con melodías que componían los usuarios del Bach Doodle (\cite{BachDoodlePaper}). Contiene más de 6 años de música de usuarios y sus melodías están en formato NoteSequence (para más información ver \ref{subsec:note-seq}).
 
-Al utilizar un dataset con melodías simples podemos entrenar de forma más simple y directa nuestros modelos. Pero para poder utilizar el dataset tenemos que procesar algunos aspectos de este.
+Al utilizar un dataset con melodías sencillas podemos entrenar de forma más simple y directa nuestros modelos. Pero para poder utilizar el dataset tenemos que procesar algunos aspectos de este.
 
 Lo primero es filtrar las melodías, existe un campo en cada entrada del dataset llamado \textit{"feedback"}, que representa el feedback de usuarios con 0, 1 o 2. Ya que 2 significa feedback positivo y tenemos una gran cantidad de melodías, podemos descartar todas las melodías que no tengan un feedback de 2.
 
-Para poder realizar ajustes posteriormente a la melodía es conveniente que se encuentre en una escala determinada. Por simplicidad descartamos todas las melodías que no se encuentren en Do Mayor (C Major en inglés). Además, comprimimos las notas entre 2 octavas realizando traslaciones de las notas.
+Para poder realizar ajustes posteriormente a la melodía es conveniente que se encuentre en una escala determinada. Por simplicidad descartamos todas las melodías que no se encuentren en Do Mayor (C Major en inglés). Además, limitamos las notas a 2 octavas realizando trasposiciones de las notas.
 
 Finalmente, es vital normalizar el tempo de las canciones, por lo que convertimos todas las melodías a 120bpm, pasando de tiempo absolutos a steps relativos.
 
@@ -90,7 +102,7 @@ Una vez realizados estos ajustes, podemos guardar el dataset procesado como CSV 
 	\begin{tabular}{c|c|c|c}
 		\textbf{} & \textbf{$X_1$} & \textbf{$X_2$} & \textbf{$X_3$}\\
 		\hline
-		\textbf{$X_1$} & 0.1 & 0.7 & 0.8\\
+		\textbf{$X_1$} & 0.1 & 0.7 & 0.2\\
 		\hline
 		\textbf{$X_2$} & 0.5 & 0.3 & 0.2\\
 		\hline
@@ -192,12 +204,68 @@ Una vez realizados estos ajustes, podemos guardar el dataset procesado como CSV 
 
     Sin embargo, tienen algunas desventajas. Primero, hablando de rendimiento y escalabilidad, cada nodo de la cadena tiene que representar una nota con duración como mínimo, por lo que en la práctica se crea una cadena inmensa aunque limitemos a 2 octavas el posible rango melódico. Además, aunque la ejecución de pasos en la cadena sea instantáneo, el coste de cargarla y guardarla a archivo es muy grande, pudiendo tardar más de medio minuto.
 
-    Además, desde el punto de vista musical, no proporcionan una melodía muy rica, ya que dependen completamente de la probabilística, las melodías generadas no tendrán una coherencia aparente. Aunque ese punto no resulta muy crítico para nuestro trabajo por el resto de etapas que realizamos, es conveniente obtener una melodía lo más agradable posible.
+    Finalmente, desde el punto de vista musical, no proporcionan una melodía muy rica, ya que dependen completamente de la probabilística, las melodías generadas no tendrán una coherencia aparente. Aunque ese punto no resulta muy crítico para nuestro trabajo por el resto de etapas que realizamos, es conveniente obtener una melodía lo más agradable posible.
 
     Por estos inconvenientes, resulta interesante explorar otros modelos.
 
 \section{Redes Neruonales Recurrentes}
 \label{sec:RNR}
+    \subsection{Introducción a las Redes Neuronales Recurrentes}
+    \label{subsec:introRNR}
+
+    \subsubsection{¿Qué es una red neuronal?}
+    \label{subsub:introRedesNeuronales}
+    Las redes neuronales son uno de los principales modelos de machine learning y de los más estudiados, esto es por su versatilidad y capacidad de resolver problemas no lineales. A lo largo de los años se han explorado muchos tipos de redes neuronales, pero antes de profundizar debemos de entender qué es una red neuronal. En esta sección se explicarán las redes neuronales de una forma muy simple y superficial para poder seguir el resto del trabajo, para más información sobre el tema y profundizar en sus bases es recomendable consultar \cite{M.A.Nielsen}.
+    
+    Las redes neuronales son, de forma simplista, una serie de nodos (llamados neuronas) conectados a otros mediante unas conexiones que poseen pesos, siendo cada serie de nodos una capa de la red. Esto implica que podemos representar una red de neuronas con un grafo como el de la figura \ref{fig:simpleNN}. 
+
+    Los nodos se conforman por una función de activación, que convierte la entrada de este en otra salida. Las funciones de activación más comúnmente utilizadas son la función sigmoide\footnote{\url{https://en.wikipedia.org/wiki/Sigmoid_function}} y la función ReLU\footnote{\url{https://en.wikipedia.org/wiki/Rectifier_(neural_networks)}}.
+
+    En toda red neuronal poseemos 2 tipos de nodos principales: por un lado los nodos de entrada codifican, como su nombre indica, la entrada de la red. La entrada de la red puede ser de muchos tipos dependiendo del problema, pero es típico adaptarla para que sea una serie de números reales, generalmente normalizados. Además, también existen los nodos de salida, que representan una codificación de la salida de la red. Al igual que la entrada, la salida de la red puede ser codificada de diversas maneras, siendo común la representación mediante \textit{one-hot encoding}.
+
+    Las técnicas de codificacón más comunes incluyen: normalización de valores que son números enteros o reales, en este caso la entrada puede ser por ejemplo una distancia, la intensidad de un color, etc. Con la normalización conseguimos reducir la posible diferencia entre valores, lo que permite un mejor aprendizaje de la red. Además, una técnica de codificación ampliamente usada suele ser utilizar el llamado \textit{one-hot enconding}, este tipo de codificación resulta vital para poder codificar valores de tipo \textit{labeled}, es decir, valores discretos que se encuentran etiquetados, como por ejemplo un tipo de animal (perro, gato, koala, hurón...). El one-hot encoding consiste en covertir estos valores en un array de tantos elementos como etiquetas existan y posteriormente rellenarlo con ceros en todos los elementos exceptuando el que se corresponda con la etiqueta a codificar, que tendrá valor 1.
+
+    Además de los nodos de entrada y salida suele existir al menos otra serie de nodos, llamada capa oculta. La capa oculta puede estar conformada por el número de nodos que se desee, sin ser necesario que coincida en tamaño con la entrada o salida. En una primera instancia la capa oculta puede tener un tamaño arbitrario, pues sólo se podrá saber si es mejor añadir o quitar nodos de esta mediante prueba y error en el entrenamiento de la red.
+
+    Finalmente, la parte crucial de toda red neuronal son los pesos de las conexiones. Estos pesos multiplican la salida de una capa antes de llegar a la siguiente. Los pesos, a diferencia de otros parámetros, no se establecen desde el principio, sino que son calculados en el proceso de entrenamiento de la red. Los pesos junto con la función de activación son los que permite que la red genere una salida con una entrada dada. Además de los pesos, se suele utilizar otro parámetro llamado threshold o bias, que se suma a una capa dada antes de pasar a la siguiente, cada capa de la red tiene su propio bias y este se calcula también en el entrenamiento.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{Imagenes/Bitmap/nn.png}
+        \caption{Red neuronal simple, con 1 capa oculta}
+        \label{fig:simpleNN}
+    \end{figure}
+
+    \subsubsection{Introducir recurrencia a las redes}
+    \label{subsub:introRedesNeuronalesRecurrentes}
+    Una red neuronal clásica es buena realizando predicciones sobre una situación concreta o clasificando estados fijos, pero, ¿qué pasa si los datos que tenemos dependen de los que vinieron antes?
+
+    Las redes neuronales recurrentes (RNN para abreviar) son redes neuronales en las que la salida se conecta a la entrada de la propia red, por lo que la salida en un instante depende de las salidas anteriores de la red.
+
+    En estas redes podemos interpretar que la salida en un instante \textit{t} depende de la entrada en ese instante y de las salidas en los instantes \textit{t-1} y \textit{t-2} de la red, como se muestra en la figura \ref{fig:simpleRNN}.
+
+    Las redes neuronales recurrentes son el modelo ideal para realizar predicciones de modelos financieros, modelos de reconocimiento y tratamiento de texto (conocido como NLP) y en nuestro caso, generar melodías que tienen en cuenta las notas anteriores de esta.
+
+    Sin embargo, las RNN tienen un problema grave, al ser entrenadas utilizando el método del \textit{stochastic gradient descent} podemos apreciar el problema del \textit{desvanecimiento del gradiente} (consultar más información en \cite{M.A.Nielsen_Chapter5}). Este problema se encuentra en redes neuronales profundas de muchas capas y en redes recurrentes, pues al calcular el gradiente a lo largo de todas las capas este va disminuyendo, llegando a ser muy pequeño a medida que se llega a las primera capas de la red, esto hace que el entrenamiento se estanque y la red no consiga aprender correctamente. Este problema es instrínseco de estos tipos de redes, y es muy complicado evitarlo, para ello se utilizan modelos de redes neuronales recurrentes adaptados específicamente para reducir este problema.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{Imagenes/Bitmap/RNN.png}
+        \caption{Despliegue temporal de una RNN}
+        \label{fig:simpleRNN}
+    \end{figure}
+
+    \subsubsection{Redes Long-Short Term Memory}
+    \label{subsub:redesLSTM}
+    Una forma de evitar el problema del \textit{desvanecimiento de gradiente} es utilizar el modelo Long-Short Term Memory, dicho modelo fue presentado en \cite{LSTMArticle}.
+
+    La idea es introducir 2 vías de memoria a la red, uno de memoria a corto plazo y otro a largo plazo, la memoria a largo plazo se conecta a toda la red y la memoria a corto plazo se conecta a cada capa de la red. Combinando ambos tipos de memoria conseguimos que la red no desvanezca el gradiente. Consultar \cite{LSTMWikipedia} para más información.
+
+    \subsection{Diseño de nuestra RNR}
+    \label{subsec:disenoRNR}
+
+    \subsection{Resultados}
+    \label{subsec:resultadosRNR}
 
 \section{Magenta}
 \label{sec:magenta}

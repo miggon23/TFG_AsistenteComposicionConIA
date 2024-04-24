@@ -1,0 +1,34 @@
+\chapter{Generar Perscusión por Ordenador}
+\label{cap:generacionPercusion}
+
+La batería\footnote{\url{https://rayrojodrums.com/es/que-son-las-percusiones/}} es una parte fundamental de una canción que aporta ritmo y soporte al resto del arreglo musical.
+
+Para la generación de baterías hemos barajado distintas opciones, entre ellas una muy interesante que nos proporciona \cite{MagentaStudio} (más info en \ref{sec:magenta}), lo que en su versión de escritorio llaman Drumify.
+
+\section{Generación de percusión}
+\label{sec:generacion-percusion}
+    \subsection{Generación de percusión con Magenta}
+    \label{subsec:generacion-percusion-magenta}
+    Drumify es un programa sencillo dentro de la suite de aplicaciones de Magenta. Su uso es simple pero eficaz: cargas un archivo MIDI (\ref{subsec:que-es-midi}) de una canción, ya sea con acordes o sólo melodía, y devuelve un archivo MIDI con un arreglo batería que funciona para la canción que tú le has proporcionado. 
+    
+    Este flujo de trabajo podemos complementarlo usando otra herramienta que nos da Magenta, que en la versión de escritorio llaman Groove.
+    El groove\footnote{\url{https://es.wikipedia.org/wiki/Groove_(música)}} en una canción, en este caso aplicado a la parte de la percusión, es algo así como la sensación de movimiento que genera la canción al escucharla.
+    
+    La aplicación de Groove de Magenta recibe un archivo MIDI, esta vez de percusión, y humananiza las notas, poniendo más velocidad en las notas que suenan en los golpes fuertes del compás, que generalmente serán el bombo y muchas veces la caja, mientras que otros instrumentos como los platillos tendrán menos velocidad. 
+    
+    La herramienta Groove también varía la posición de las notas, de forma que no están colocadas en el instante de tiempo exacto marcado por el compás, algo que hace que la percusión (y todos los timbres en general) suenen bastante robóticos.
+
+    \subsection{Generación de percusión propia}
+    \label{subsec:generacion-percusion-propia}
+    Una vez visto las herramientas que nos brinda Magenta para la generación de MIDIs de percusión, llegamos a la conclusión de que era algo que, si bien funcionaba, era demasiado genérico para lo que buscábamos. Por esta razón, implementamos nuestro propio generador de baterías que nos permitiera trabajar mejor en los estilos (TODO: referencia? anexo?) que buscábamos.
+
+    Nuestro generador de baterías no recibe ningún archivo MIDI como hacía el de Magenta (\ref{subsec:generacion-percusion-magenta}), si no que recibe de input un género musical o temática. Por temas de eficiencia temporal, generamos de una vez todos los archivos MIDI que podamos necesitar. 
+    
+    Cada vez que generamos un patrón de percusión, generamos diversas variables de forma aleatoria que definirán como es el patrón final. Cambiando algunas de esas variables de forma controlada podemos generar ligeras variaciones del patrón original. Haciendo esto dos veces, obtenemos como resultado tres patrones de batería únicos de cada estilo que funcionan juntos y que podremos combinar más adelante a la hora de hacer el arreglo de una canción.
+
+    \subsection{¿Cómo enfocamos la percusión?}
+
+    Como se cuenta en este video: \url{https://www.youtube.com/watch?v=FoMmVlAvjmM}
+
+    Separamos las baterías en tres partes principales: engine, beat y constant. Además añadimos también los drum fills.
+    
