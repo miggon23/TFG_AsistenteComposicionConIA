@@ -31,7 +31,7 @@ class ModeSelectorTab:
 
     def setUp(self, root):
         self.root = root
-        self.backgroundSys = BackgroundSystem()
+        self.backgroundSys = BackgroundSystem(self.canvas)
         self.setCheckboxes()
         self.displayEnumSelectors()
         self.displayPresetSelector()
@@ -41,7 +41,7 @@ class ModeSelectorTab:
         self.setBackground()
 
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
-        self.root.bind("<Configure>", self.resize_image)
+        # self.root.bind("<Configure>", self.resize_image)
 
         self.reaperStream = llamamosReaper.ReaperStream()
         self.presetManager = PresetManager()
@@ -178,41 +178,21 @@ class ModeSelectorTab:
         self.setBackground()
         self.resize_image()
 
-    def setBackground(self):   
-
-        # Cargar la imagen original
-        #self.background_image_pil = Image.open("App/Images/Backgrounds/"+ image +".png")
-        
+    def setBackground(self):           
         themeName = self.idToEnumValue(self.modeState.tematica)
         self.background_image_array = self.backgroundSys.configure_background(theme=themeName, 
                                                                 dream= self.modeState.dream,
                                                                 lofi=self.modeState.lofi,
                                                                 vintage=self.modeState.vintage,
-                                                                spacial=self.modeState.espacial)
-        
-        self.background_image_pil = self.background_image_array[0]
-        self.background = ImageTk.PhotoImage(self.background_image_pil)
-        self.background_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background)   
-        
-        if(self.modeState.dream):
-            bckDreamPil = self.background_image_array[1]
-            self.background_dream = ImageTk.PhotoImage(bckDreamPil)
-            self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
-        elif (self.background_dream_id != None):
-            self.canvas.delete(self.background_dream_id)
-
-        # Crear la imagen en el canvas
-       
+                                                                spacial=self.modeState.espacial,
+                                                                underwater=self.modeState.agua,
+                                                                retro=self.modeState.retro
+                                                                )
+              
 
     def resize_image(self, event = None):
-        if(self.background_image_pil == None):
-            return
-        # Redimensionar la imagen original cuando cambia el tamaño de la ventana
-        new_width = self.tab.winfo_width()
-        new_height = self.tab.winfo_height()
-        resized_image_pil = self.background_image_pil.resize((new_width, new_height), Image.LANCZOS)
-        self.background = ImageTk.PhotoImage(resized_image_pil)
-        self.canvas.itemconfig(self.background_id, image=self.background)
+        self.backgroundSys.resize_image(self.tab) 
+        
 
     def playReaper(self):
         self.modeState.seed = self.seedString.get()
