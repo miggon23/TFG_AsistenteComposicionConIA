@@ -28,7 +28,7 @@ class BackgroundSystem:
             "lofi":       load_image("lofi"),
             "espacial":   load_image("espacial"),
             "vintage":    load_image("vintage"),
-            "underwater": load_image("dream"), # cambiar a underwater cuando esté 
+            "underwater": load_image("filterBlue"), # cambiar a underwater cuando esté 
             "retro":      load_image("dream")  # cambiar retro cuando esté
             #completear con los checkboxes restantes
         }
@@ -61,7 +61,7 @@ class BackgroundSystem:
 
         # ------ UNDERWATER ------
         if(underwater):
-            self.background_underwater_pil = self.img_map["retro"]
+            self.background_underwater_pil = self.img_map["underwater"]
             self.background_underwater = ImageTk.PhotoImage(self.background_underwater_pil)
             self.background_underwater_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_underwater)
         elif (self.background_underwater_id != None):
@@ -97,7 +97,7 @@ class BackgroundSystem:
 
         # ------ SPACIAL ------
         if(spacial):
-            self.background_spacial_pil = self.img_map["vintage"]
+            self.background_spacial_pil = self.img_map["espacial"]
             self.background_spacial = ImageTk.PhotoImage(self.background_spacial_pil)
             self.background_spacial_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_spacial)
         elif (self.background_spacial_id != None):
