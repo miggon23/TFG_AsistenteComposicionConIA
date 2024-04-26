@@ -26,7 +26,7 @@ class ModeSelectorTab:
     def __init__(self, tab):
         self.tab = tab
 
-        self.canvas = Canvas(self.tab, width = 800, height = 600)
+        self.canvas = Canvas(self.tab, width = 1152, height = 648)
         self.canvas.pack(fill="both", expand=True)
 
     def setUp(self, root):
@@ -53,22 +53,22 @@ class ModeSelectorTab:
 
     def setCheckboxes(self):
         self.retro = BooleanVar()
-        Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=280)
+        Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=330)
 
         self.underWater = BooleanVar()
-        Checkbutton(self.canvas, text="Bajo el agua", variable=self.underWater, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=320)
+        Checkbutton(self.canvas, text="Bajo el agua", variable=self.underWater, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=370)
 
         self.lofi = BooleanVar()
-        Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=360)
+        Checkbutton(self.canvas, text="Lofi", variable=self.lofi, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=410)
 
         self.vintage = BooleanVar()
-        Checkbutton(self.canvas, text="Vintage", variable=self.vintage, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=400)
+        Checkbutton(self.canvas, text="Vintage", variable=self.vintage, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=450)
  
         self.dream = BooleanVar()
-        Checkbutton(self.canvas, text="Dream", variable=self.dream, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=440)
+        Checkbutton(self.canvas, text="Dream", variable=self.dream, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=490)
     
         self.spatial = BooleanVar()
-        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=480)
+        Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox).place(x=30, y=530)
    
     def setButtons(self):
       
@@ -79,8 +79,8 @@ class ModeSelectorTab:
         self.playButtonImage = ImageTk.PhotoImage(resized_image)
 
         # Calcula las coordenadas para centrar el botón
-        x = (800 - 100) / 2
-        y = (600 - 100) / 2
+        x = (1152) / 2 - 85
+        y = (648) / 2 - 230
 
         # Crea y coloca el botón en las coordenadas calculadas
         self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
@@ -99,8 +99,8 @@ class ModeSelectorTab:
         self.generateAllRandom_buttonImage = ImageTk.PhotoImage(resized_image)
 
         # Calcula las coordenadas para centrar el botón
-        x = 800 * 0.8
-        y = 600 * 0.7
+        x = 1152 * 0.85
+        y = 648 * 0.7
 
         # Crea y coloca el botón en las coordenadas calculadas
         Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollSeed).place(x=x, y=y)
@@ -118,8 +118,8 @@ class ModeSelectorTab:
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
         self.savePreset_image = ImageTk.PhotoImage(resized_image)
 
-        x = 800 * 0.85
-        y = 600 * 0.04
+        x = 1152 * 0.85
+        y = 648 * 0.04
 
         self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
         self.savePreset_button.place(x=x, y=y)
@@ -136,7 +136,9 @@ class ModeSelectorTab:
 
         self.combo.bind("<<ComboboxSelected>>", self.selectTematic)
         #self.combo.grid(column=3, row=0, padx=10, pady= 40)
-        self.combo.place(x=500, y= 80)
+        x = (1152) / 2 - 95
+        y = (648) / 2 - 260
+        self.combo.place(x=x, y=y)
 
         print("combobox packed")
 

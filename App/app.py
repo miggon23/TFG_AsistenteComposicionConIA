@@ -43,7 +43,7 @@ class App:
     def __init__(self):
         #Creación de la aplicación raíz
         self.root = Tk()
-        self.root.geometry("800x600")
+        self.root.geometry("1152x648")
         self.root.resizable(False, False)
         
         # Creamos el notebok que manejará las pestañas
