@@ -86,7 +86,7 @@ class ModeSelectorTab:
         self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
         self.playButton.place(x=x, y=y)
 
-        playTooltip = Tooltip(self.playButton, "Apply changes and play", color="black")
+        playTooltip = Tooltip(self.playButton, "Apply changes and play")
 
         self.playButton.bind("<Enter>", playTooltip.show_tooltip)
         self.playButton.bind("<Leave>", playTooltip.hide_tooltip)
