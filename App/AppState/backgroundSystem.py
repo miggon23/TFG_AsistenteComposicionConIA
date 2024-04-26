@@ -107,7 +107,7 @@ class BackgroundSystem:
         if(retro):
             caracter = caracter + "_r"
             
-        if(theme == "Piano"):
+        if(theme == "Piano" or theme == "Tenebroso"):
             caracter = caracter + "_1"
 
         self.background_caracter_pil = self.img_map[caracter]
@@ -170,16 +170,17 @@ class BackgroundSystem:
         new_width = (int) (tab.winfo_width() * 0.965)
         new_height = (int) (tab.winfo_height() * 0.935)
 
+
+
+        # ------ TEMATICA ------
         resized_image_pil = self.background_img_pil.resize((new_width, new_height), Image.LANCZOS)
         self.background_img = ImageTk.PhotoImage(resized_image_pil)
         self.canvas.itemconfig(self.background_img_id, image=self.background_img)
 
+        # ------ CARACTER ------
         resized_image_caracter_pil = self.background_caracter_pil.resize((new_width, new_height), Image.LANCZOS)
         self.background_caracter = ImageTk.PhotoImage(resized_image_caracter_pil)
         self.canvas.itemconfig(self.background_caracter_id, image=self.background_caracter)
-
-
-
 
         # ------ LOFI ------
         if(self.background_lofi_id != None):

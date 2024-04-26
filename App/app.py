@@ -8,6 +8,7 @@ sys.path.append('./Utils/')
 
 from tkinter import *
 from tkinter import ttk
+import sv_ttk
 
 from Cadenas_Markov import markovGenerator
 
@@ -43,9 +44,11 @@ class App:
     def __init__(self):
         #Creación de la aplicación raíz
         self.root = Tk()
+        self.root.title("Compositor Automatico")
         self.root.geometry("1152x648")
         self.root.resizable(False, False)
-        
+        sv_ttk.set_theme("dark")
+
         # Creamos el notebok que manejará las pestañas
         self.notebook = ttk.Notebook(self.root)
 
@@ -63,7 +66,7 @@ class App:
 
         #Los hacemos pack
         self.notebook.pack(fill="both", expand=True)
-        #self.notebook.bind("<<NotebookTabChanged>>", self.onTabChanged)
+        self.notebook.bind("<<NotebookTabChanged>>", self.onTabChanged)
         
         # Creamos las clases que representan cada pestaña de la App
         self.generationTab = generationTab.GenerationTab(self.frame1)
