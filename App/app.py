@@ -44,6 +44,7 @@ class App:
         #Creación de la aplicación raíz
         self.root = Tk()
         self.root.geometry("800x600")
+        self.root.resizable(False, False)
         
         # Creamos el notebok que manejará las pestañas
         self.notebook = ttk.Notebook(self.root)
@@ -62,8 +63,7 @@ class App:
 
         #Los hacemos pack
         self.notebook.pack(fill="both", expand=True)
-
-        self.notebook.bind("<<NotebookTabChanged>>", self.onTabChanged)
+        #self.notebook.bind("<<NotebookTabChanged>>", self.onTabChanged)
         
         # Creamos las clases que representan cada pestaña de la App
         self.generationTab = generationTab.GenerationTab(self.frame1)

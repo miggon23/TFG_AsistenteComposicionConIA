@@ -17,6 +17,8 @@ import shutil
 
 class GenerationTab:
     
+    previewPlayer = None
+
     def __init__(self, tab):
         self.tab = tab
 
@@ -40,6 +42,7 @@ class GenerationTab:
     def setButtons(self):
         ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=200, pady=10)
         ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=200, pady=10)
+        ttk.Button(self.tab, text= "Stop", command= self.stopPreview).grid(column=1, row=2)
         ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=200, pady=10)
         ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=200, pady=10)
         
@@ -159,7 +162,18 @@ class GenerationTab:
         print("Tamborizacion completa")
 
     def playPreview(self):
-        ps = Parser("./Media/midi/trasposed_melody.mid")
+        if(self.previewPlayer != None and self.previewPlayer.is_playing()):
+            self.previewPlayer.stop()
 
-        play_notes(*ps.parse(), np.sin)
+        ps = Parser("./Media/midi/trasposed_melody.mid")
+        # TODO salida de errores si falla al parsear .mid
+        audio, self.previewPlayer = play_notes(*ps.parse(), np.sin, wait_done=False)
+
+    def stopPreview(self):
+        if(self.previewPlayer == None):
+            return
+        
+        self.previewPlayer.stop()
+        self.previewPlayer = None
+    
 
