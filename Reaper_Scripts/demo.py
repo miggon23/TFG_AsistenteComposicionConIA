@@ -132,9 +132,9 @@ def cargarMelodia(tematica, patron, recortar = False, pos = -1):
                 if(pos != -1):
                     RPR_SetEditCurPos(pos + cont*2, True, True)
                     cont += 1
-                cargarMidi("midi/output_song"+ item + estilo +".mid")
+                cargarMidi("midi/output_melody"+ estilo + item +".mid")
     else:
-        cargarMidi("midi/output_song"+ patron[3] + estilo +".mid")
+        cargarMidi("midi/output_melody" + estilo + patron[3] +".mid")
 
 def cargarArmonia(tematica, recortar = False, estandar = False):
 

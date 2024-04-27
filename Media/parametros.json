@@ -1,5 +1,5 @@
 {
-    "tematica": 2,
+    "tematica": 8,
     "tematica_pistas": [
         0,
         1,
@@ -17,9 +17,9 @@
     "entorno": 0,
     "lofi": false,
     "retro": false,
-    "agua": false,
+    "agua": true,
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed": "HSWRl"
+    "seed": "iTeGb"
 }
