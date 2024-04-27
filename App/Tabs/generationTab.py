@@ -32,6 +32,9 @@ class GenerationTab:
 
     def onEntryTab(self):   
         return
+    
+    def update(self):
+        return
 
     def setStyle(self):
         style = ttk.Style()

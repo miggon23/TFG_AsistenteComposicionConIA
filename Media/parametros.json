@@ -1,5 +1,5 @@
 {
-    "tematica": 0,
+    "tematica": 2,
     "tematica_pistas": [
         0,
         1,
@@ -21,5 +21,5 @@
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed": "fspHs"
+    "seed": "HSWRl"
 }

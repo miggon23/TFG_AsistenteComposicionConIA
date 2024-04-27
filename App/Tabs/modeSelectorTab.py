@@ -21,7 +21,6 @@ class ModeSelectorTab:
     current_tematic = TematicEnum.PRADERA
 
     background_filter_id = None
-    background_dream_id = None
 
     def __init__(self, tab):
         self.tab = tab
@@ -31,7 +30,8 @@ class ModeSelectorTab:
 
     def setUp(self, root):
         self.root = root
-        self.backgroundSys = BackgroundSystem(self.canvas)
+        self.backgroundSys = BackgroundSystem(self.canvas, self.tab)
+        self.backgroundSys.init()
         self.setCheckboxes()
         self.displayEnumSelectors()
         self.displayPresetSelector()
@@ -47,6 +47,8 @@ class ModeSelectorTab:
         self.presetManager = PresetManager()
         self.rerollSeed()
 
+    def update(self):
+        self.backgroundSys.update()
         
     def onEntryTab(self):
         self.resize_image()
@@ -191,6 +193,7 @@ class ModeSelectorTab:
                                                                 retro=self.modeState.retro
                                                                 )
               
+    
 
     def resize_image(self, event = None):
         self.backgroundSys.resize_image(self.tab) 
@@ -240,6 +243,8 @@ class ModeSelectorTab:
     def recoverPresetAction(self, event=None):
         self.modeState = self.presetManager.recoverPreset(self.presetName.get())
         self.recoverState(self.modeState)
+        self.setBackground()
+        self.resize_image()
 
     def refreshPresets(self):
         directory = PresetManager.presetsPath
