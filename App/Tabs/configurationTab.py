@@ -32,7 +32,8 @@ class ConfigurationTab:
         #TODO Llamar cuando se pulse un botón
         #file_path = filedialog.asksaveasfile(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
 
-
+    def update(self):
+        return
 
     def applySettings(self):
         reaperPathString = self.reaperPathEntry.get()

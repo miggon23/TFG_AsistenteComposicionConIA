@@ -10,15 +10,11 @@ from tkinter import *
 from tkinter import ttk
 import sv_ttk
 
-from Cadenas_Markov import markovGenerator
-
-from PIL import Image, ImageTk
-
-#Tabs
-import generationTab
-import modeSelectorTab
-import configurationTab
-import advancedConfigTab
+#Tabs 
+from App.Tabs import generationTab
+from App.Tabs import modeSelectorTab
+from App.Tabs import configurationTab
+from App.Tabs import advancedConfigTab
 
 class App:
 
@@ -38,15 +34,16 @@ class App:
     frame1 = None
     frame2 = None
 
-    # Widgets
-    SpinBoxVar = None
-
-    def __init__(self):
+    currentTab = None
+    updateMS = 100
+        
+    def init(self):
         #Creación de la aplicación raíz
         self.root = Tk()
         self.root.title("Compositor Automatico")
         self.root.geometry("1152x648")
         self.root.resizable(False, False)
+        self.root.after(self.updateMS, self.update_)
         sv_ttk.set_theme("dark")
 
         # Creamos el notebok que manejará las pestañas
@@ -84,20 +81,28 @@ class App:
         self.root.mainloop()
 
     def onTabChanged(self, event):
+        
         #curentTab = self.notebook.select()
         selectedTab = self.notebook.select()
         id = self.notebook.index(selectedTab)  
 
         if id == 0:
-            self.generationTab.onEntryTab()
+            self.currentTab = self.generationTab
         elif id == 1:
-            self.modeSelectorTab.onEntryTab()
+            self.currentTab = self.modeSelectorTab
         elif id == 2:
-            self.advancedConfig.onEntryTab()
+            self.currentTab = self.advancedConfig
         elif id == 3:
-            self.configTab.onEntryTab()
-
+            self.currentTab = self.configTab
         
+        self.currentTab.onEntryTab()
+
+    def update_(self):
+        
+        if(self.currentTab == None):
+            return
+        self.currentTab.update()
+        self.root.after(self.updateMS, self.update_)
 
 
 
