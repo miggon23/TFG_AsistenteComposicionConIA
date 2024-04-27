@@ -17,3 +17,9 @@ class AdvancedConfigTab:
         self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in GenerationMode],
                                         textvariable=self.generationMode, state="readonly")
         self.comboGeneration.grid(row=2, column=1)
+
+    def update(self):
+        return
+    
+    def onEntryTab(self):
+        return

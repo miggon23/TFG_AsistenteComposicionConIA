@@ -1,5 +1,8 @@
 from PIL import Image, ImageTk
+
 from App.AppEnums.tematicEnum import TematicEnum
+from App.Render.animation import Animation
+
 
 def load_image(image):
     # Cargar la imagen original
@@ -11,16 +14,27 @@ def load_image(image):
 
 class BackgroundSystem:
     backgroundPath = ""
+    inited = False
 
+    background_img_pil = None
     background_underwater_id = None
     background_retro_id = None
     background_spacial_id = None
     background_dream_id = None
     background_vintage_id = None
     background_lofi_id = None
+    background_caracter_id = None
+    background_color_id = None
+    background_img_id = None
 
-    def __init__(self, canvas):
+    particle_animation = None
+    xPos = 0
+
+    def __init__(self, canvas, tab):
         self.canvas = canvas
+        self.tab = tab
+        
+    def init(self):
         self.img_map = {
             "lightOff":   load_image("apagado"),
             "lightUp":    load_image("encendido"),
@@ -44,7 +58,22 @@ class BackgroundSystem:
             "c_espacial_r_1":    load_image("1caracter_espacial_r"),
         }
         self.load_tematic_backgrounds()
-        print(self.img_map)
+
+        self.particle_animation = Animation("Prueba")
+        w = self.tab.winfo_width()
+        h = self.tab.winfo_height()
+        self.particle_animation.load(1152, 648)
+
+        self.initBackground_()
+        self.initParticles_()
+
+        self.inited = True
+
+
+    def update(self):
+        assert(self.inited)
+        if(self.particle_animation != None):
+            self.particle_animation.update(self.canvas)
 
     def load_tematic_backgrounds(self):
         i = 0
@@ -76,6 +105,38 @@ class BackgroundSystem:
 
             i += 1
 
+    def initBackground_(self):            
+
+        self.placeholder = self.img_map["dream"]
+
+        self.background_img = ImageTk.PhotoImage(self.placeholder)
+        self.background_img_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_img)
+
+        #------ CARACTER ------
+        self.background_caracter = ImageTk.PhotoImage(self.placeholder)
+        self.background_caracter_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_caracter)
+
+        #------ LOFI ------
+        self.background_lofi = ImageTk.PhotoImage(self.placeholder)
+        self.background_lofi_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_lofi)
+
+        #------ VINTAGE ------
+        self.background_vintage = ImageTk.PhotoImage(self.placeholder)
+        self.background_vintage_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_vintage)
+
+        #------ DREAM ------
+        self.background_dream = ImageTk.PhotoImage(self.placeholder)
+        self.background_dream_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_dream)
+ 
+        #------ SPACIAL ------
+        self.background_spacial = ImageTk.PhotoImage(self.placeholder)
+        self.background_spacial_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_spacial)
+
+        #------ TEMATICAS ------
+        self.background_color = ImageTk.PhotoImage(self.placeholder)
+        self.background_color_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_color)
+
+
     def configure_background(self, theme, dream, lofi, vintage, spacial, underwater, retro, lighted = True): # Completar con el resto de checkboxes
 
         if(not lighted):
@@ -90,10 +151,12 @@ class BackgroundSystem:
             else:
                 self.background_img_pil = self.img_map[theme]
                 
+        if(self.background_img_id != None):
+            self.canvas.delete(self.background_img_id)
+            self.background_img_id = None
 
         self.background_img = ImageTk.PhotoImage(self.background_img_pil)
         self.background_img_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_img)
-
 
         # ------ CARACTER ------
         caracter = "c_"
@@ -110,6 +173,9 @@ class BackgroundSystem:
         if(theme == "Piano" or theme == "Tenebroso"):
             caracter = caracter + "_1"
 
+        if(self.background_caracter_id != None):
+            self.canvas.delete(self.background_caracter_id)
+
         self.background_caracter_pil = self.img_map[caracter]
         self.background_caracter = ImageTk.PhotoImage(self.background_caracter_pil)
         self.background_caracter_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_caracter)
@@ -117,7 +183,6 @@ class BackgroundSystem:
         if(theme == "Agua" and underwater):
             self.canvas.delete(self.background_caracter_id)
             self.background_caracter_id = None
-
 
         # ------ LOFI ------
         if(lofi):
@@ -156,11 +221,23 @@ class BackgroundSystem:
             self.background_spacial_id = None
 
         # ------ TEMATICAS ------
+        if(self.background_color_id != None):
+            self.canvas.delete(self.background_color_id)
+            self.background_color_id = None
+
         self.background_color_pil = self.img_map[theme+"_color"]
         self.background_color = ImageTk.PhotoImage(self.background_color_pil)
         self.background_color_id = self.canvas.create_image(0, 0, anchor="nw", image=self.background_color)
 
+        self.regenerateParticles()
 
+
+    def initParticles_(self):
+        self.particle_animation_id = self.canvas.create_image(0, 0, anchor="nw", image = self.particle_animation.getCurrentSprite()) 
+        self.particle_animation.bindImage(self.particle_animation_id) 
+
+    def regenerateParticles(self):
+        self.canvas.itemconfig(self.particle_animation_id, image=self.particle_animation.getCurrentSprite())
 
     def resize_image(self, tab):
         if(self.background_img_pil == None):
@@ -169,8 +246,6 @@ class BackgroundSystem:
         #Redimensionar la imagen original cuando cambia el tamaño de la ventana
         new_width = (int) (tab.winfo_width() * 0.965)
         new_height = (int) (tab.winfo_height() * 0.935)
-
-
 
         # ------ TEMATICA ------
         resized_image_pil = self.background_img_pil.resize((new_width, new_height), Image.LANCZOS)
@@ -210,4 +285,6 @@ class BackgroundSystem:
         resized_image_color_pil = self.background_color_pil.resize((new_width, new_height), Image.LANCZOS)
         self.background_color = ImageTk.PhotoImage(resized_image_color_pil)
         self.canvas.itemconfig(self.background_color_id, image=self.background_color)
+
+
         
