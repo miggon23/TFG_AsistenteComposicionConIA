@@ -1463,7 +1463,7 @@ hash_hex = hashed_obj.hexdigest()
 hash_int = int(hash_hex, 16)
 hash_int = hash_int % 1000000000000
 
-RPR_ShowMessageBox("Tegucigalpa", "Semilla:", 0)
+#RPR_ShowMessageBox("Tegucigalpa", "Semilla:", 0)
 random.seed(hash_int) 
 
 for i in range (20):
