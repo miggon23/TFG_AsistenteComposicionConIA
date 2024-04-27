@@ -112,7 +112,8 @@ class Song:
                                 ts(1, 4).set_weights([1])
                             ],               
                             notPlayingAtTickPen = 0.75,
-                            loop = False):
+                            loop = False,
+                            respectTonic = False):
         
         if loop:
             foo = self.__find_best_loop_chord_sequence
@@ -122,11 +123,12 @@ class Song:
         self.harmony = Harmony.Harmony()
         self.harmony.create_harmony_from_chord_progression_list(chordProgressions)
         self.harmony.relativize_chords()
-        
-        self.model = None
 
         chordProgressions = self.__processed_chord_progressions(chordProgressions)
-        tonicPriority = sorted(range(len(self.noteFrequencies)), key=lambda i: self.noteFrequencies[i], reverse=True)
+        if respectTonic:
+            tonicPriority = [self.tonic.pitch]
+        else:
+            tonicPriority = sorted(range(len(self.noteFrequencies)), key=lambda i: self.noteFrequencies[i], reverse=True)
 
         bestSol = Song.ChordNode(-1, 0)
         bestTonic = None
@@ -150,7 +152,7 @@ class Song:
             self.tonic = bestTonic
             self.__rebuild_solution(bestSol)
             self.__combine_best_chords(timeSignatures[-1].measure_size())
-            return self.__absolutized_inverted_harmony(), self.__absolutized_harmony()
+            return self.__absolutized_inverted_harmony(), self.__absolutized_harmony(), bestSol.weight
 
     
     def __rebuild_solution(self, chordNode):
@@ -601,10 +603,7 @@ class Song:
                 ],               
                 notPlayingAtTickPen = 0.75,
                 offset = ts(1, 4),
-                model = None
             ):
-        
-        self.model = model
         
         self.harmony = Harmony.Harmony()
         self.harmony.create_harmony_from_scale(self.scale, possibleChords)
@@ -768,8 +767,6 @@ class Song:
 
             for note in volatileNotes:
                 self.__calculate_chord_weights(note, analysis, chordWeights, tickWeight) 
-      
-        self.__bias()
 
     '''
     Dada una nota (y una serie de pesos), recorre toda la lista de acordes posibles para 
@@ -796,9 +793,6 @@ class Song:
     los datos obtenidos por el algoritmo y lo que dicte el modelo utilizado
     '''
     def __bias(self, ratio = 0.5, nChordSequence = 4, nBestChords = sys.maxsize, reverse = False):
-
-        if self.model is None:
-            return
 
         lastChord = None
 

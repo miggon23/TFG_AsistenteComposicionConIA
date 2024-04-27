@@ -16,17 +16,62 @@ allChords = {
     "+7": Scale.Scale("1 3 #5 b7"),  # Aumentada dominante
 }
 
+majorProgressions = [
+    {"Progression": [("1", ""), ("5", ""), ("1", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("4", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("4", ""), ("5", ""), ("4", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("5", ""), ("6", "-"), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("5", ""), ("6", "-"), ("4", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("6", "-"), ("4", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+]
+
+minorProgressions = [
+    {"Progression": [("1", "-"), ("5", "-"), ("1", "-"), ("5", "-"), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("1", "-"), ("b6", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("5", "-"), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b7", ""), ("b6", ""), ("b7", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("b3", ""), ("b7", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("4", "-"), ("b7", ""), ("b3", ""), ("b6", ""), ("2", "-b5"), ("5", "-"), ("1", "-")],
+     "Transitions": []}
+]
+
 allChordProgressions = [
-    {"Progression": [("1", ""), ("4", ""), ("5", "")],
-     "Transitions": [("1", ""), ("3", "-"), ("6", "-")]},
-    {"Progression": [("1", ""), ("6", "-"), ("4", ""), ("5", "")],
-     "Transitions": [("1", ""), ("3", "-"), ("6", "-")]},
-    {"Progression": [("2", "-"), ("5", ""), ("1", "")],
-     "Transitions": [("3", "-"), ("4", ""), ("5", ""), ("6", "-")]},
-    {"Progression": [("6", "-"), ("4", ""), ("5", ""), ("1", "")],
-     "Transitions": [("3", "-"), ("4", ""), ("5", ""), ("6", "-")]},
-    {"Progression": [("1", ""), ("6", "-"), ("2", "-"), ("5", "")],
-     "Transitions": [("1", ""), ("3", "-"), ("6", "-")]}
+    {"Progression": [("1", ""), ("5", ""), ("1", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("4", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("4", ""), ("5", ""), ("4", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("5", ""), ("6", "-"), ("5", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("5", ""), ("6", "-"), ("4", ""), ("1", "")],
+     "Transitions": []},
+    {"Progression": [("1", ""), ("6", "-"), ("4", ""), ("5", ""), ("1", "")],
+     "Transitions": []},
+
+    {"Progression": [("1", "-"), ("5", "-"), ("1", "-"), ("5", "-"), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("1", "-"), ("b6", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("5", "-"), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b7", ""), ("b6", ""), ("b7", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("b6", ""), ("b3", ""), ("b7", ""), ("1", "-")],
+     "Transitions": []},
+    {"Progression": [("1", "-"), ("4", "-"), ("b7", ""), ("b3", ""), ("b6", ""), ("2", "-b5"), ("5", "-"), ("1", "-")],
+     "Transitions": []}
 ]
 
 class Harmony:
@@ -36,7 +81,7 @@ class Harmony:
 
     def create_harmony_from_chord_progression_list(self, chordProgressions = allChordProgressions):
 
-        for degree in ["1", "b2", "2", "b3", "3", "4", "#4", "5", "b6", "6", "b7", "7"]:
+        for degree in Interval.intervals:    
             self.chords[degree] = []
 
         for chordProggresion in chordProgressions:

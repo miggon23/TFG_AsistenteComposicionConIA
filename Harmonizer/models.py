@@ -17,13 +17,11 @@ def translate_chord(chord):
 class Chain:
 
     def __init__(self, filePath):
-        self.filePath = filePath
 
-    def load_model(self, reverse = False):
-        self.df = pd.read_excel(self.filePath, index_col=0)
+        self.df = pd.read_excel(filePath, index_col=0)
 
-        if reverse:
-            self.df = self.df.transpose()
+        # if reverse:
+        #     self.df = self.df.transpose()
 
         self.df = self.df.apply(softmax, axis=1)
 
@@ -41,6 +39,58 @@ class Chain:
               
 class ModalPerspective():
 
+    # modalChordProgressions = {
+    #     "Dorian" : [
+    #         {"Progression": [("1", "-"), ("4", "")],
+    #         "Transitions": [("1", "-")]},
+    #         {"Progression": [("1", "-"), ("5", "-")],
+    #         "Transitions": [("1", "-")]},
+    #         {"Progression": [("1", "-"), ("7", ""), ("4", "")],
+    #         "Transitions": [("1", "-")]},
+    #         {"Progression": [("1", "-"), ("3", ""), ("4", "")],
+    #         "Transitions": [("1", "-")]}
+    #     ],
+    #     "Phrygian" : [
+    #         {"Progression": [("1", "-"), ("4", "-")],
+    #         "Transitions": [("1", "-")]},
+    #         {"Progression": [("1", "-"), ("7", "-")],
+    #         "Transitions": [("1", "-")]},
+    #         {"Progression": [("1", "-"), ("b3", ""), ("4", "-")],
+    #         "Transitions": [("1", "-")]}
+    #     ],
+    #     "Lydian" : [
+    #         {"Progression": [("1", ""), ("5", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("3", ""), ("5", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("3", ""), ("6", "-")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("5", ""), ("2", "")],
+    #         "Transitions": [("1", "")]}
+    #     ],
+    #     "Mixolydian" : [
+    #         {"Progression": [("1", ""), ("4", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("5", "-")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("7", ""), ("4", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("6", "-"), ("4", "")],
+    #         "Transitions": [("1", "")]}
+    #     ],
+    #     "Locrian" : [
+    #         {"Progression": [("1", ""), ("4", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("5", "-")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("7", ""), ("4", "")],
+    #         "Transitions": [("1", "")]},
+    #         {"Progression": [("1", ""), ("6", "-"), ("4", "")],
+    #         "Transitions": [("1", "")]}
+    #     ]
+    # }
+
+
     modes = [None, "Dorian", "Phrygian", "Lydian", "Mixolydian", None, "Locrian"]
 
     possibleChords = {
@@ -50,9 +100,8 @@ class ModalPerspective():
         "-7": Scale.Scale("1 b3 5 b7"),  # Menor séptima
     }
 
-    def __init__(self, mode, chordWeights = [1, 0.5, 0.05], suggestedChords = possibleChords):
-        self.mode = mode
-        self.chordWeights = chordWeights  
+    def __init__(self, mode, suggestedChords = possibleChords):
+        self.mode = mode 
 
         if self.mode == "Locrian":
             self.possibleChords["-b5"] = Scale.Scale("1 b3 b5")    
@@ -76,42 +125,45 @@ class ModalPerspective():
             if scaleInterval != modalInterval:
                 self.colorNotes.append(modalInterval.__copy__())
 
-    def load_model(self, reverse = False):
-
         harmony = Harmony.Harmony()   
         harmony.create_harmony_from_scale(self.modalScale, self.possibleChords)  
         harmony.relativize_chords()
 
-        dic = {"start" : ["end"]}
-        dic.update(harmony.chords.copy())
-
-        self.weights = {}
+        primaryChords = []
+        secondaryChords = []
         
         for (degree, chords), chordNames in zip(harmony.relativizedChords.items(), harmony.chords.values()):
             for chord, chordName in zip(chords, chordNames):
 
-                weight = self.chordWeights[2]
                 if degree == "1":
-                    weight = self.chordWeights[0]
+                    primaryChords.append((degree, chordName))
                 else:
                     idx = 0
                     while idx < len(self.colorNotes) and not chord.containsInterval(self.colorNotes[idx]):
                         idx += 1
                     if idx < len(self.colorNotes):
-                        weight = self.chordWeights[1]
+                        secondaryChords.append((degree, chordName))
 
-                # self.weights[degree + "_" + chordName] = weight
-                self.weights[(degree, chordName)] = weight
+        self.chordProgressions = []
 
-        values = softmax(np.array(list(self.weights.values())))
-        self.weights = dict(zip(self.weights.keys(), values))
+        for primaryChord in primaryChords:
+            for secondaryChord in secondaryChords:
 
-        # df = pd.DataFrame(list(self.weights.items()), columns=['Clave', 'Valor'])
-        # df.to_excel('datasets/debug.xlsx')
+                progression = {}
+                progression["Progression"] = [primaryChord, secondaryChord]
+                progression["Transitions"] = primaryChords + [chord for chord in secondaryChords if chord != secondaryChord]
+                self.chordProgressions.append(progression)
+
+                progression = {}
+                progression["Progression"] = [secondaryChord, primaryChord]
+                progression["Transitions"] = [chord for chord in primaryChords if chord != primaryChord] + secondaryChords
+                self.chordProgressions.append(progression)
+        
+        return
+
 
     def predict(self, prevChords, chord):
-        if chord in self.weights:
-            return self.weights[chord]
+        return 1
     
 
 
