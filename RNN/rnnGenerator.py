@@ -17,6 +17,9 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import confusion_matrix
 
+import sys
+sys.path.append('./NoteSeqUtils/')
+
 import noteseqConverter as nc
 
 def generate_sequences(X, y, seq_length):
@@ -176,8 +179,8 @@ def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: flo
     return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
 
 if __name__ == '__main__':
-    train_rnn()
-    exit()
+    # train_rnn()
+    # exit()
 
     path = "Datasets/Cleaned/"
 
