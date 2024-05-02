@@ -8,11 +8,11 @@ sys.path.append('./NoteSeqUtils/')
 
 import noteseqConverter as nc
 
-def generate_melodies(n_melodies, n_steps = 16):
+def generate_melodies(n_melodies, n_steps = 16, temperature = 1):
 
     outputs = []
 
-    process = subprocess.Popen(['node', os.getcwd() + '\MagentaGenerator\magentaGenerator.js', str(n_melodies), str(n_steps)], stdout=subprocess.PIPE)
+    process = subprocess.Popen(['node', os.getcwd() + '\MagentaGenerator\magentaGenerator.js', str(n_melodies), str(n_steps), str(temperature)], stdout=subprocess.PIPE)
         
     # Lee toda la salida del proceso a la vez
     output, _ = process.communicate()

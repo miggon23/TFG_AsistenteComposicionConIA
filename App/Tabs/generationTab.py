@@ -54,14 +54,16 @@ class GenerationTab:
         print("Generando")
         self.bars = 8
 
+        temperature = 1.5
+
         # MARKOV
         #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
         
         # MAGENTA
-        # self.melody = demo.generate_magenta(self.bars, 1)[0]
+        # self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
         
         # RNN
-        self.melody = demo.generate_rnn(self.bars, 1.5)[0]
+        self.melody = demo.generate_rnn(self.bars, temperature)[0]
 
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
 

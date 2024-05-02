@@ -29,8 +29,8 @@ music_vae.initialize().then(() => {
 
 n_melodies = parseInt(process.argv[2]);
 rnn_steps = parseInt(process.argv[3]);
+vae_temperature = parseInt(process.argv[4]);
 rnn_temperature = 1.5;
-vae_temperature = 1;
 
 function generate() {
 
