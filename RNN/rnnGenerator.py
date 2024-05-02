@@ -34,6 +34,7 @@ def generate_sequences(X, y, seq_length):
 
     return np.array(input_sequences), np.array(output_sequences)
 
+@keras.saving.register_keras_serializable()
 def mse_with_positive_pressure(y_true: tf.Tensor, y_pred: tf.Tensor):
     mse = (y_true - y_pred) ** 2
     positive_pressure = 10 * tf.maximum(-y_pred, 0.0)
@@ -158,8 +159,8 @@ def train_rnn():
 def load_model():    
     return keras.models.load_model('rnn_entrenado.keras')
 
-def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: float = 1.0) -> tuple[int, float, float]:
-    """Generates a note as a tuple of (pitch, step, duration), using a trained sequence model."""
+def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: float = 1.0) -> tuple[int, float]:
+    """Generates the index of the next note and its predicted start time, using a trained sequence model."""
 
     assert temperature > 0
 
@@ -168,26 +169,22 @@ def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: flo
 
     predictions = model.predict(inputs)
 
-    # Aplicamos el muestreo estocástico con la temperatura dada
-    predictions = np.log(predictions) / temperature
-    exp_predictions = np.exp(predictions)
-    predicted_probs = exp_predictions / np.sum(exp_predictions, axis=1, keepdims=True)
+    # Obtenemos las predicciones para la próxima nota y el tiempo de inicio
+    next_note_probs = predictions['next_note'][0]
+    next_note_start = predictions['next_note_start'][0][0]
 
-    # Muestreamos la próxima nota según las probabilidades predichas
-    predicted_index = np.random.choice(range(len(predictions[0])), p=predicted_probs[0])
+    # Aplicamos el muestreo estocástico a las probabilidades de la próxima nota con la temperatura dada
+    next_note_index = np.random.choice(range(len(next_note_probs)), p=next_note_probs)
 
-    return predicted_index, predicted_probs[0][predicted_index], predictions[0][predicted_index]
+    return next_note_index, next_note_start
 
-if __name__ == '__main__':
-    # train_rnn()
-    # exit()
-
+def generate(n_steps = 16, temperature = 1.0):
     path = "Datasets/Cleaned/"
 
     keys = []
-    #keys
+    # Leer las claves (keys)
     with open(path + "keys.txt", 'r') as file:
-        # Lee el contenido del archivo y divide la cadena en una lista utilizando el espacio como separador
+        # Dividir la cadena del archivo en una lista utilizando el espacio como separador
         keys = file.read().split()
 
     with open(path + "scaler_params.json", 'r') as file:
@@ -195,48 +192,62 @@ if __name__ == '__main__':
 
     model = load_model()
 
-    num_bar = 32
+    num_bar = 8
 
     simulations = []
     note_seq_sims = []
     outputs = []
-    for i in range(10):
-        #realiza tantos pasos como sean necesarios para llegar al numero de compases pedidos
-        curr_sim = [ "60_2", "60_2", "60_2", "60_2", "60_2" ]
-        curr_sim_int = [tuple(map(float, sim.split('_'))) for sim in curr_sim]
-        curr_sim_array = np.array(curr_sim_int)
+    
+    # Generar una secuencia inicial de notas con tiempos de inicio
+    curr_sim = [("60", 2, 0), ("60", 2, 2), ("60", 2, 4), ("60", 2, 6), ("60", 2, 8)]
+    
+    # Convertir la secuencia de notas en un array numpy
+    curr_sim_array = np.array(curr_sim, dtype=float)
+    
+    # Normalizar los datos
+    curr_sim_array[:, 0] = (curr_sim_array[:, 0] - scaler_params['mean'][0]) / scaler_params['std'][0]
+    curr_sim_array[:, 1] = (curr_sim_array[:, 1] - scaler_params['mean'][1]) / scaler_params['std'][1]
+    curr_sim_array[:, 2] = (curr_sim_array[:, 2] - scaler_params['mean'][2]) / scaler_params['std'][2]
 
-        curr_sim_array[: , 0] = (curr_sim_array[: , 0] - scaler_params['mean'][0]) / scaler_params['std'][0]
-        curr_sim_array[: , 1] = (curr_sim_array[: , 1] - scaler_params['mean'][1]) / scaler_params['std'][1]
+    curr_duration = 0
 
-        print(curr_sim_array)
-        
-        curr_duration = curr_sim_array.sum(axis=1)[1]
-        
-        j = 1
-        while curr_duration < num_bar * 4:
-            #predict de la nota
-            next_note_index, _, _ = predict_next_note(curr_sim_array[-5:,:], model)
-            # next_note_index = 10
-            next_note = keys[next_note_index]
-            print(next_note)
+    while curr_duration < n_steps:
+        # Predecir la próxima nota y su tiempo de inicio
+        next_note_index, next_note_start = predict_next_note(curr_sim_array[-5:,:], model, temperature)
+        next_note = keys[next_note_index]
+        next_note_pitch = int(next_note.split('_')[0])
+        next_note_dur = int(next_note.split('_')[1])
 
-            #decodificamos la nota y la escalamos
-            next_note_array = np.array([((float(next_note.split('_')[0]) - scaler_params['mean'][0]) / scaler_params['std'][0]), 
-                                        ((float(next_note.split('_')[1]) - scaler_params['mean'][1]) / scaler_params['std'][1])])
-            #añadimos la nota
-            curr_sim_array = np.vstack([curr_sim_array, next_note_array])
-            
-            #actualizamos duraciones
-            curr_duration += int((next_note.split('_'))[1])
-            if curr_duration <= num_bar * 4:
-                curr_sim.append(next_note)
-            j += 1
+        # Decodificar y escalar la nota
+        next_pitch = (int(next_note.split('_')[0]) - scaler_params['mean'][0]) / scaler_params['std'][0]
+        next_duration = (int(next_note.split('_')[1]) - scaler_params['mean'][1]) / scaler_params['std'][1]
+        next_start = (next_note_start - scaler_params['mean'][2]) / scaler_params['std'][2]
 
-        simulations.append(curr_sim)
-        note_seq_sims.append(nc.deserialize_noteseq(curr_sim))
+        # Añadir la próxima nota a la secuencia
+        curr_sim_array = np.vstack([curr_sim_array, [next_pitch, next_duration, next_start]])
 
-        #guarda el output en la lista para devolverlo al final
-        output = "./midi/markov_melody_" + str(i) + ".mid"
-        outputs.append(output)
-        nc.save_to_midi(note_seq_sims[i], output)
+        # Actualizar la duración acumulada
+        curr_duration += int(next_note.split('_')[1])
+
+        if (curr_duration > n_steps):
+            last_note_dur = next_note_dur - (curr_duration - n_steps)
+            next_note = str(next_note_pitch) + "_" + str(last_note_dur)
+
+        # Añadir la próxima nota a la lista de simulaciones
+        curr_sim.append(next_note)
+
+    simulations.append(curr_sim[5:])
+    note_seq_sims.append(nc.deserialize_noteseq(curr_sim[5:]))
+
+    # Guardar la secuencia en un archivo MIDI
+    output = f"./Media/midi/output_song.mid"
+    outputs.append(output)
+    nc.save_to_midi(note_seq_sims[0], output)
+
+    return outputs
+
+if __name__ == '__main__':
+    # train_rnn()
+    # exit()
+
+    generate()

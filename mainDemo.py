@@ -1,12 +1,14 @@
 import sys
 sys.path.append('./Cadenas_Markov/')
 sys.path.append('./MagentaGenerator/')
+sys.path.append('./RNN/')
 sys.path.append('./Harmonizer/')
 sys.path.append('./Drums/')
 sys.path.append('./Basslines/')
 
 from Cadenas_Markov import markovGenerator
 from MagentaGenerator import magentaPython
+from RNN import rnnGenerator
 
 from Drums import drumGenerator
 from Drums import enums
@@ -25,6 +27,9 @@ def generate_melodies(generator, n_bar, n_sims):
 
 def generate_magenta(n_bar, n_sims):
     return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 2)
+
+def generate_rnn(n_bar, temperature):
+    return rnnGenerator.generate(n_bar*8, temperature)
 
 def continue_magenta(path_to_midi, n_bar, temperature):
     return magentaPython.continue_melody_midi(path_to_midi, temperature = temperature)
