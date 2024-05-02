@@ -1,0 +1,25 @@
+{
+    "tematica": 12,
+    "tematica_pistas": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
+    "tematicas_aleatorias": false,
+    "mezclar_tematicas": false,
+    "mezclar_melodias": true,
+    "semitonos": 3,
+    "reverb": true,
+    "entorno": 0,
+    "lofi": false,
+    "retro": false,
+    "agua": false,
+    "espacial": false,
+    "dream": false,
+    "vintage": false,
+    "seed": "Juan"
+}
