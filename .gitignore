@@ -167,3 +167,5 @@ Drums/midi
 Harmonizer/midi
 
 MagentaGenerator/node_modules
+Datasets/Cleaned/dataset_rnn_labeled.csv
+Datasets/Cleaned/dataset.csv
