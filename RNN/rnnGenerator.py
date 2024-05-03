@@ -178,7 +178,7 @@ def predict_next_note(notes: np.ndarray, model: tf.keras.Model, temperature: flo
 
     return next_note_index, next_note_start
 
-def generate(n_steps = 16, temperature = 1.0):
+def generate(n_steps = 64, temperature = 1):
     path = "Datasets/Cleaned/"
 
     keys = []
