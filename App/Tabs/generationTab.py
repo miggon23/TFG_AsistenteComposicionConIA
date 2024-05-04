@@ -23,8 +23,8 @@ class GenerationTab:
         self.tab = tab
 
         # Ver si se genera por Magenta o por Markov
-        #self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
-        #demo.load_markov_chain(self.mkv_generator)
+        self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
+        demo.load_markov_chain(self.mkv_generator)
 
     def setUp(self):
         self.setStyle()
@@ -57,13 +57,17 @@ class GenerationTab:
         temperature = 1.5
 
         # MARKOV
-        #self.melody = demo.generate_melodies(self.mkv_generator, self.SpinBoxVar.get(), 1)[0]
+        # self.melody = demo.generate_markov(self.mkv_generator, self.bars, 1)[0]
         
         # MAGENTA
         # self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
         
         # RNN
         self.melody = demo.generate_rnn(self.bars, temperature)[0]
+
+        # CARGAR MELODIA EXISTENTE 
+        # (es solamente pasarle la ruta, porque todo los generate devuelven un array con la ruta)
+        # self.melody = "./Media/midi/output_song.mid"
 
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
 

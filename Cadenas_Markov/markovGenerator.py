@@ -296,7 +296,7 @@ class Markov_Generator:
             indexStr = ""
             if i > 0:
                 indexStr = "_" + str(i)
-            output = "./midi/output_song" + indexStr + ".mid"
+            output = "./Media/midi/output_song" + indexStr + ".mid"
             outputs.append(output)
             midi_io.sequence_proto_to_midi_file(note_seq_sims[i], output)
 
