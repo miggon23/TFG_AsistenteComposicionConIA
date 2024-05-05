@@ -54,15 +54,15 @@ class GenerationTab:
         print("Generando")
         self.bars = 8
 
-        temperature = 2
+        temperature = 1.5
 
         # MARKOV
         # self.melody = demo.generate_markov(self.mkv_generator, self.bars, 1)[0]
         # self.melody = demo.generate_markov(self.mkv_generator, 64, 1)[0]
         
         # MAGENTA
-        # self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
-        self.melody = demo.generate_magenta(64, 1, temperature)[0]
+        self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
+        # self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
         # RNN
         # self.melody = demo.generate_rnn(self.bars, temperature)[0]
@@ -77,29 +77,6 @@ class GenerationTab:
 
     def armonice(self):
         print("Armonizando...")
-
-        # A(4) + B(4) 
-        # A(4) = A1(2) + A2(2)
-        # B(4) = B1(2) + B2(2)
-        # Armonización combinada: (A + B)(4)
-      
-        # melody_list = harmonyGenerator.HarmonyGenerator.generate2(input="./Media/midi/trasposed_song.mid")[0]
-
-        # for melody in melody_list: 
-        #     A, B = harmonyGenerator.HarmonyGenerator.spreadSong(input=melody,
-        #                                                 output1=melody[:-4] + "A.mid",
-        #                                                 output2=melody[:-4] + "B.mid",
-        #                                                 ticks=4*4)
-            
-        #     A1, A2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=A,
-        #                                                 output1=melody[:-4] + "A1.mid",
-        #                                                 output2=melody[:-4] + "A2.mid",
-        #                                                 ticks=2*4)
-            
-        #     B1, B2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=B,
-        #                                                 output1=melody[:-4] + "B1.mid",
-        #                                                 output2=melody[:-4] + "B2.mid",
-        #                                                 ticks=2*4)
 
         # A(2) + B(2) 
         # A(2) = A1(1) + A2(1)
@@ -130,10 +107,32 @@ class GenerationTab:
         #                                                 output2=melody[:-4] + "B2.mid",
         #                                                 ticks=1*4)
 
+        # A(4) + B(4) 
+        # A(4) = A1(2) + A2(2)
+        # B(4) = B1(2) + B2(2)
+        # Armonización combinada: (A + B)(4)
+      
+        # melody_list = harmonyGenerator.HarmonyGenerator.generate2(input="./Media/midi/trasposed_song.mid")[0]
+
+        # for melody in melody_list: 
+        #     A, B = harmonyGenerator.HarmonyGenerator.spreadSong(input=melody,
+        #                                                 output1=melody[:-4] + "A.mid",
+        #                                                 output2=melody[:-4] + "B.mid",
+        #                                                 ticks=4*4)
+            
+        #     A1, A2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=A,
+        #                                                 output1=melody[:-4] + "A1.mid",
+        #                                                 output2=melody[:-4] + "A2.mid",
+        #                                                 ticks=2*4)
+            
+        #     B1, B2 = harmonyGenerator.HarmonyGenerator.spreadSong(input=B,
+        #                                                 output1=melody[:-4] + "B1.mid",
+        #                                                 output2=melody[:-4] + "B2.mid",
+        #                                                 ticks=2*4)
+
         # A(8)
         # Armonización completa: (A)(8)
 
-        
         harmonyGenerator.HarmonyGenerator.generate3(input="./Media/midi/trasposed_song.mid")[0]
         
         print("Armonizacion completa")

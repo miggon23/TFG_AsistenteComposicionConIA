@@ -328,11 +328,6 @@ class HarmonyGenerator:
         print(f"Tonica original: {tonic.name}")
         song.print_best_chords()
 
-        notes, ticksPerBeat = MidiUtils.read_midi_song(input)
-        song = Song.Song(notes, ticksPerBeat)
-        song.choose_sacle(scale, tonic)
-        song.fit_notes()
-
         MidiUtils.write_midi_song(output_melody, song.notes, ticksPerBeat)
         MidiUtils.write_midi_song(output_harmony, harmony, ticksPerBeat)
         MidiUtils.write_midi_song(output_std_harmony, harmony_std, ticksPerBeat)
@@ -340,12 +335,6 @@ class HarmonyGenerator:
         output_melody_list.append(output_melody)
         output_harmony_list.append(output_harmony)
         output_std_harmony_list.append(output_std_harmony)
-
-        notes, ticksPerBeat = MidiUtils.read_midi_song(A_B)
-        song = Song.Song(notes, ticksPerBeat)
-        song.choose_sacle(scale, tonic)
-        song.fit_notes()
-        MidiUtils.write_midi_song("./Media/midi/combined_song_debug.mid", song.notes, ticksPerBeat)
 
         someChords = {
             "": Scale.Scale("1 3 5"),  # Mayor
@@ -380,11 +369,6 @@ class HarmonyGenerator:
                 
                 print(f"Tonica {mode}: {song.tonic.name}")
                 song.print_best_chords()
-
-                notes, ticksPerBeat = MidiUtils.read_midi_song(input)
-                song = Song.Song(notes, ticksPerBeat)
-                song.choose_sacle(modalPerspective.modalScale, tonic)
-                song.fit_notes()
                 
                 output_melody_mode = output_melody[:-4] + "_" + mode + ".mid" 
                 output_harmony_mode = output_harmony[:-4] + "_" + mode + ".mid"
