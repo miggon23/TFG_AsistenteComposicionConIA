@@ -5,19 +5,21 @@ import random
 from tkinter import ttk
 from tkinter import *
 from enum import Enum
+from tktooltip import ToolTip
 
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
 from App.AppState.modeState import ModeState
-from App.AppState.tooltip import Tooltip
+# from App.AppState.tooltip import Tooltip
 from App.AppState.presetsManager import PresetManager
 from App.AppState.backgroundSystem import BackgroundSystem
 from App.AppEnums.tematicEnum import TematicEnum
+from App.AppEnums.reverbModesEnum import ReverbEnum
 from Utils import globalConsts
 from Utils import stringUtils
 
 class ModeSelectorTab:
-
+    tooltip_delay = 0.6 # En segundos
     current_tematic = TematicEnum.PRADERA
 
     background_filter_id = None
@@ -39,7 +41,7 @@ class ModeSelectorTab:
 
         self.recoverStateFromFile()
         self.setBackground()
-
+        self.setTooltips()
         # Enlazar la función resize_image al evento de cambio de tamaño de la ventana
         # self.root.bind("<Configure>", self.resize_image)
 
@@ -72,6 +74,17 @@ class ModeSelectorTab:
         self.spatial = BooleanVar()
         Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox, selectcolor="black").place(x=30, y=510)
    
+    def setTooltips(self):
+        ToolTip(self.seedEntry, msg = "Seed", delay = self.tooltip_delay)
+        ToolTip(self.savePreset_button, msg = "Save preset", delay=self.tooltip_delay)
+        ToolTip(self.playButton, msg = "Apply changes and play", delay=self.tooltip_delay)
+        ToolTip(self.presetCombobox, msg= "Saved presets", delay=self.tooltip_delay)
+        ToolTip(self.themes_combo, msg="Themes", delay=self.tooltip_delay)
+        ToolTip(self.all_random_button, msg="Randomize seed", delay=self.tooltip_delay)        
+
+    def playButtonACtivation(self):
+        print("PlayBUttons")
+
     def setButtons(self):
       
         original_image = Image.open("App/Images/playButton.png")
@@ -88,11 +101,6 @@ class ModeSelectorTab:
         self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
         self.playButton.place(x=x, y=y)
 
-        playTooltip = Tooltip(self.playButton, "Apply changes and play")
-
-        self.playButton.bind("<Enter>", playTooltip.show_tooltip)
-        self.playButton.bind("<Leave>", playTooltip.hide_tooltip)
-
         #  -----------  Botón de todo aleatorio ---------------
         original_image = Image.open("App/Images/dado6.png")
 
@@ -105,16 +113,14 @@ class ModeSelectorTab:
         y = 648 * 0.7
 
         # Crea y coloca el botón en las coordenadas calculadas
-        Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollSeed).place(x=x, y=y)
+        self.all_random_button = Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollSeed)
+        self.all_random_button.place(x=x, y=y)
 
         self.seedString = StringVar()
         self.seedEntry = Entry(self.canvas, textvariable=self.seedString, justify="center")
         self.seedEntry.place(x=x, y=y-20, width=80)
         self.seedEntry.bind("<KeyRelease>", self.onUpdateSeed)
 
-        seed_tooltip = Tooltip(self.seedEntry, "Seed")
-        self.seedEntry.bind("<Enter>", seed_tooltip.show_tooltip)
-        self.seedEntry.bind("<Leave>", seed_tooltip.hide_tooltip)
         #  -----------  Botón de guardar presets ---------------
         original_image = Image.open("App/Images/saveIcon.png")
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
@@ -126,23 +132,28 @@ class ModeSelectorTab:
         self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
         self.savePreset_button.place(x=x, y=y)
 
-        savePreset_tooltip = Tooltip(self.savePreset_button, "Save preset")
-        self.savePreset_button.bind("<Enter>", savePreset_tooltip.show_tooltip)
-        self.savePreset_button.bind("<Leave>", savePreset_tooltip.hide_tooltip)
-
 
     def displayEnumSelectors(self):
         self.current_tematic = StringVar()
-        self.combo = ttk.Combobox(self.canvas, values=[option.value for option in TematicEnum],
+        self.themes_combo = ttk.Combobox(self.canvas, values=[option.value for option in TematicEnum],
                                   textvariable=self.current_tematic, state="readonly")
 
-        self.combo.bind("<<ComboboxSelected>>", self.selectTematic)
-        #self.combo.grid(column=3, row=0, padx=10, pady= 40)
+        self.themes_combo.bind("<<ComboboxSelected>>", self.selectTematic)
+
         x = (1152) / 2 - 130
         y = (648) / 2 - 270
-        self.combo.place(x=x, y=y)
+        self.themes_combo.place(x=x, y=y)
 
-        print("combobox packed")
+        
+        self.current_reverb = StringVar()
+        self.comboReverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
+                                  textvariable=self.current_reverb, state="readonly")
+
+        self.comboReverb.bind("<<ComboboxSelected>>", self.selectTematic)
+        x = (1152) / 2 - 130
+        y = (648) / 2 - 310
+        self.comboReverb.place(x=x, y=y)
+
 
     def displayPresetSelector(self):
         
@@ -153,14 +164,9 @@ class ModeSelectorTab:
         self.refreshPresets()
         self.presetCombobox.bind("<<ComboboxSelected>>", self.recoverPresetAction)
 
-        tooltip = Tooltip(self.presetCombobox, "Saved presets")
-        self.presetCombobox.bind("<Enter>", tooltip.show_tooltip)
-        self.presetCombobox.bind("<Leave>", tooltip.hide_tooltip)
-
         original_image = Image.open("App/Images/saveIcon.png")
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
         self.redreshButton_Image = ImageTk.PhotoImage(resized_image)
-
 
     def selectTematic(self, event):
         # Guardamos la temática seleccionada en el evento

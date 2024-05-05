@@ -10,6 +10,33 @@ class AdvancedConfigTab:
         self.tab = tab
 
     def setUp(self):
+       self.setCombobox()
+       self.setSliders()
+
+    def setSliders(self):
+        # ---- Temperature ----
+        self.temperature_label = ttk.Label(self.tab, text="Temperatura:  0", justify="left", anchor="w")
+        self.temperature_label.grid(row=2, column=0)
+        estilo = ttk.Style()
+
+        estilo.configure("TScale", background="lightgray")
+        estilo.map("TScale",
+            background=[("active", "red")],
+            foreground=[("active", "red")]
+            )
+        self.temperature_var = IntVar()
+        self.slider_temperature = ttk.Scale(self.tab, from_=0, to=4, style="TScale", command=self.saveTemperature, variable=self.temperature_var)
+        self.slider_temperature.grid(row=2, column=1)
+
+        # ---- Semitones ----
+        self.vary_semitones_label = ttk.Label(self.tab, text="Variar semitonos:  0", justify="left", anchor="w")
+        self.vary_semitones_label.grid(row=3, column=0)
+
+        self.semitones_var = IntVar()
+        slider = ttk.Scale(self.tab, from_=-6, to=6, orient="horizontal", command=self.saveSemitones, value= 0, variable=self.semitones_var)
+        slider.grid(row=3, column=1)
+
+    def setCombobox(self):
         ttk.Label(self.tab, text="Generador de Melodías:  ").grid(row=0, column=0)
         self.generationMode = StringVar()
         self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in GenerationMode],
@@ -22,11 +49,11 @@ class AdvancedConfigTab:
                                         textvariable=self.complejidad, state="readonly")
         self.comboComplejidad.grid(row=1, column=1)
 
-        ttk.Label(self.tab, text="Variar tonalidad:              ").grid(row=2, column=0)
-        self.variarSemitonos = StringVar()
-        self.comboSemitonos = ttk.Combobox(self.tab, values=[option.value for option in Semitones],
-                                        textvariable=self.variarSemitonos, state="readonly")
-        self.comboSemitonos.grid(row=2, column=1)
+        # ttk.Label(self.tab, text="Variar tonalidad:              ").grid(row=2, column=0)
+        # self.variarSemitonos = StringVar()
+        # self.comboSemitonos = ttk.Combobox(self.tab, values=[option.value for option in Semitones],
+        #                                 textvariable=self.variarSemitonos, state="readonly")
+        # self.comboSemitonos.grid(row=2, column=1)
 
 
 
@@ -79,6 +106,16 @@ class AdvancedConfigTab:
                                         textvariable=self.tematicaPista7, state="readonly")
         self.comboGeneration.grid(row=8, column=4)
 
+    def saveSemitones(self, event):
+        semitones = self.semitones_var.get()
+        self.vary_semitones_label.config(text = f"Variar semitonos: {semitones}")
+
+    def saveTemperature(self, event):
+        temperature = self.temperature_var.get()
+        self.temperature_label.config(text=f"Temperatura: {temperature}")
+
+    def setTooltips():
+        return
 
     def update(self):
         return
