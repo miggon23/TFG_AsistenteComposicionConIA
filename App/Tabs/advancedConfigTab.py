@@ -3,23 +3,31 @@ from tkinter import *
 from App.AppEnums.generationModesEnum import GenerationMode
 from App.AppEnums.tematicEnum import TematicEnum
 from App.AppEnums.semitonesEnum import Semitones
+from App.AppEnums.melodicComplexityEnum import MelodicComplexity
 
 class AdvancedConfigTab: 
     def __init__(self, tab):
         self.tab = tab
 
     def setUp(self):
-        ttk.Label(self.tab, text="Generador de Melodías:         ").grid(row=0, column=0)
+        ttk.Label(self.tab, text="Generador de Melodías:  ").grid(row=0, column=0)
         self.generationMode = StringVar()
         self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in GenerationMode],
                                         textvariable=self.generationMode, state="readonly")
         self.comboGeneration.grid(row=0, column=1)
 
-        ttk.Label(self.tab, text="Variar tonalidad (semitonos):  ").grid(row=1, column=0)
+        ttk.Label(self.tab, text="Complejidad melódica:    ").grid(row=1, column=0)
+        self.complejidad = StringVar()
+        self.comboComplejidad = ttk.Combobox(self.tab, values=[option.value for option in MelodicComplexity],
+                                        textvariable=self.complejidad, state="readonly")
+        self.comboComplejidad.grid(row=1, column=1)
+
+        ttk.Label(self.tab, text="Variar tonalidad:              ").grid(row=2, column=0)
         self.variarSemitonos = StringVar()
         self.comboSemitonos = ttk.Combobox(self.tab, values=[option.value for option in Semitones],
                                         textvariable=self.variarSemitonos, state="readonly")
-        self.comboSemitonos.grid(row=1, column=1)
+        self.comboSemitonos.grid(row=2, column=1)
+
 
 
         ttk.Label(self.tab, text="                                     ", justify=RIGHT).grid(row=0, column=2)
