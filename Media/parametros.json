@@ -17,9 +17,9 @@
     "entorno": 0,
     "lofi": false,
     "retro": false,
-    "agua": true,
+    "agua": false,
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed": "iTeGb"
+    "seed": ":)"
 }

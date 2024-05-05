@@ -15,7 +15,7 @@ STEP_VALUE = 1/4
 MAX_SILENCE_STEPS = 8
 MAX_SILENCE_SECONDS = 2
 
-has_silences = False
+has_silences = True
 
 name_pitch = {
     "C": 0,
@@ -54,7 +54,7 @@ def clean_dataset(path = "https://storage.googleapis.com/magentadata/datasets/ba
     #lee el json line desde la url y lo convierte en dataframe de pandas
     notes = collections.defaultdict(list)
 
-    for m in range(4):
+    for m in range(9):
 
         path = "https://storage.googleapis.com/magentadata/datasets/bach-doodle/bach-doodle.jsonl-0000" + str(m) + "-of-00192.gz"
         df = pd.read_json(path, lines=True)
@@ -233,7 +233,12 @@ def transform_to_label_rnn():
     # print(df)
 
     # Combina las columnas 'pitch' y 'duration' en una nueva columna 'curr_note'
-    df['next_note'] = df['next_note_pitch'].astype(str) + '_' + df['next_note_duration'].astype(str)
+    # df['next_note'] = df['next_note_pitch'].astype(str) + '_' + df['next_note_duration'].astype(str)
+
+    # Divide la columna 'next_note' en dos columnas: 'next_note_pitch' y 'next_note_duration'
+    df[['next_note_pitch', 'next_note_duration']] = df['next_note'].str.split('_', expand=True)
+
+
     df.to_csv("Datasets/Cleaned/dataset_rnn_labeled.csv", index=False)
 
 if __name__ == '__main__':

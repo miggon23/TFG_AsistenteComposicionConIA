@@ -116,6 +116,20 @@ def json_to_noteSeq(noteSeq_json):
 
     return ns
 
+def to_noteseq(note_list, start_time, duration):
+    ns = NoteSequence()
+
+    #a partir de la duracion obtenemos el end_time
+    end_time = start_time + duration
+
+    for note_pitch in note_list:
+        if (note_pitch != 0):
+            #añadimos la nota al NoteSequence
+            note = NoteSequence.Note(pitch=note_pitch, velocity=100)
+
+            note.quantized_start_step = int(start_time)
+            note.quantized_end_step = int(end_time)
+
 def save_to_midi(noteseq, output):
     midi_io.sequence_proto_to_midi_file(noteseq, output)
 

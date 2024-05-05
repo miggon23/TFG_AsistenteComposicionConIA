@@ -28,10 +28,6 @@ rnn_temperature = parseInt(process.argv[4]);
 function generate() {
 
     const INPUT_MEL = input_melody;
-    // const qns = core.sequences.quantizeNoteSequence(INPUT_MEL, 4);
-
-    // const jsonSequence = JSON.stringify(INPUT_MEL);
-    // process.stdout.write(jsonSequence);
 
     music_rnn
         .continueSequence(INPUT_MEL, rnn_steps, rnn_temperature)
