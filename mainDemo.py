@@ -26,7 +26,7 @@ def generate_markov(generator, n_bar, n_sims):
     return generator.run_markov_chain(num_bar = n_bar * 2, num_simulations = n_sims)
 
 def generate_magenta(n_bar, n_sims, temperature):
-    return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 2, temperature=temperature)
+    return magentaPython.generate_melodies(n_melodies=n_sims, n_steps=n_bar * 8, temperature=temperature)
 
 def generate_rnn(n_bar, temperature):
     return rnnGenerator.generate(n_bar*8, temperature)

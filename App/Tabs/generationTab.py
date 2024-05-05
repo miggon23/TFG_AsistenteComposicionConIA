@@ -54,16 +54,19 @@ class GenerationTab:
         print("Generando")
         self.bars = 8
 
-        temperature = 1.5
+        temperature = 2
 
         # MARKOV
         # self.melody = demo.generate_markov(self.mkv_generator, self.bars, 1)[0]
+        # self.melody = demo.generate_markov(self.mkv_generator, 64, 1)[0]
         
         # MAGENTA
         # self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
+        self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
         # RNN
-        self.melody = demo.generate_rnn(self.bars, temperature)[0]
+        # self.melody = demo.generate_rnn(self.bars, temperature)[0]
+        # self.melody = demo.generate_rnn(64, temperature)[0]
 
         # CARGAR MELODIA EXISTENTE 
         # (es solamente pasarle la ruta, porque todo los generate devuelven un array con la ruta)

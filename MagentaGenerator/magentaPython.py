@@ -20,15 +20,21 @@ def generate_melodies(n_melodies, n_steps = 16, temperature = 1):
     i = 0
     melodies = json.loads(output)
 
-    for melody_json in melodies:
-        indexStr = ""
-        if i > 0:
-            indexStr = "_" + str(i)
-        out = "./Media/midi/output_song" + indexStr + ".mid"
-        nc.save_to_midi(nc.json_to_noteSeq(melody_json), out)
-        outputs.append(out)
-        i += 1
-        print(f"Saved midi to {out}")
+    out = "./Media/midi/output_song.mid"
+    nc.save_to_midi(nc.json_to_noteSeq(melodies), out)
+    outputs.append(out)
+    print(f"Saved midi to {out}")
+
+
+    # for melody_json in melodies:
+    #     indexStr = ""
+    #     if i > 0:
+    #         indexStr = "_" + str(i)
+    #     out = "./Media/midi/output_song" + indexStr + ".mid"
+    #     nc.save_to_midi(nc.json_to_noteSeq(melody_json), out)
+    #     outputs.append(out)
+    #     i += 1
+    #     print(f"Saved midi to {out}")
 
     return outputs
 
@@ -62,7 +68,7 @@ def continue_melody_midi(melody_midi, n_steps = 16, temperature = 1.5):
 
     return continue_melody_noteseq(quantized_seq, n_steps, temperature)
 
-# out = generate_melodies(1, 16)
+# out = generate_melodies(1, 128)
 
 # continue_melody_midi(out[0], 16)
-# continue_melody_midi("midi/output_song.mid", 16)
+# continue_melody_midi("Media/midi/output_song.mid", 48)
