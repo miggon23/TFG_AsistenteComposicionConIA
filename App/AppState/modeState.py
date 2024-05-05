@@ -6,7 +6,7 @@ class ModeState:
     tematica_pistas = [0,1,2,3,4,5,6]
     tematicas_aleatorias = False
     mezclar_tematicas = False
-    mezclar_melodias  = True
+    complejidad = 3
     semitonos = 3
     reverb = True
     entorno = 0
@@ -25,7 +25,7 @@ class ModeState:
             "tematica_pistas": self.tematica_pistas,
             "tematicas_aleatorias": self.tematicas_aleatorias,
             "mezclar_tematicas": self.mezclar_tematicas,
-            "mezclar_melodias": self.mezclar_melodias,
+            "complejidad": self.complejidad,
             "semitonos": self.semitonos,
             "reverb": self.reverb,
             "entorno": self.entorno,
@@ -35,7 +35,8 @@ class ModeState:
             "espacial": self.espacial,
             "dream": self.dream,
             "vintage": self.vintage,
-            "seed": self.seed
+            "seed_instrumentos": self.seed,
+            "seed_arreglo": self.seed
         }
    
         return jsonMap

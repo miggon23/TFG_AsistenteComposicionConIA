@@ -92,7 +92,7 @@ def cargarDrums(tematica, patron):
     for item in patron:
         cargarMidi("midi/output_"+estilo+"_drumPattern"+ item +".mid")
 
-def cargarMelodia(tematica, patron, recortar = False, pos = -1):
+def cargarMelodia(complejidad, tematica, patron, recortar = False, pos = -1):
 
     estilo = "output_song"
 
@@ -124,19 +124,31 @@ def cargarMelodia(tematica, patron, recortar = False, pos = -1):
         estilo = ""
 
 
-
+    
     if not recortar:
         cont= 0
-        for _ in range(2):
+        if(complejidad == 0):
+            for _ in range(2):
+                for item in patron:
+                    if(pos != -1):
+                        RPR_SetEditCurPos(pos + cont*2, True, True)
+                        cont += 1
+                    cargarMidi("midi/output_melody"+ estilo + item +".mid")
+        elif(complejidad == 1):
             for item in patron:
-                if(pos != -1):
-                    RPR_SetEditCurPos(pos + cont*2, True, True)
-                    cont += 1
-                cargarMidi("midi/output_melody"+ estilo + item +".mid")
+                    if(pos != -1):
+                        RPR_SetEditCurPos(pos + cont*4, True, True)
+                        cont += 1
+                    cargarMidi("midi/output_melody"+ estilo + item +".mid")
+        elif(complejidad == 2):
+            cargarMidi("midi/output_melody"+ estilo + ".mid")
+        elif(complejidad == 3):         # Melodias 64 barras
+            cargarMidi("midi/output_melody"+ estilo + ".mid")
+
     else:
         cargarMidi("midi/output_melody" + estilo + patron[3] +".mid")
 
-def cargarArmonia(tematica, recortar = False, estandar = False):
+def cargarArmonia(complejidad, tematica, recortar = False, estandar = False):
 
     estilo = "output_harmony"
 
@@ -174,7 +186,7 @@ def cargarArmonia(tematica, recortar = False, estandar = False):
         nombre = "output_harmony"+estilo
 
     cargarMidi("midi/"+nombre+".mid")
-    if not recortar:
+    if not recortar and not complejidad == 3:
         cargarMidi("midi/"+nombre+".mid")
 
 
@@ -1457,14 +1469,19 @@ rutaJson = os.path.join(bufOut, "parametros.json")  # Use os.path.join to concat
 with open(rutaJson, 'r') as file:
     parametros = json.load(file)
 
-string_seed = parametros["seed"]
+string_seed = parametros["seed_instrumentos"]
 hashed_obj = hashlib.sha256(string_seed.encode())
 hash_hex = hashed_obj.hexdigest()
-hash_int = int(hash_hex, 16)
-hash_int = hash_int % 1000000000000
+hash_int_seed_instrumentos = int(hash_hex, 16)
+hash_int_seed_instrumentos = hash_int_seed_instrumentos % 1000000000000
 
-#RPR_ShowMessageBox("Tegucigalpa", "Semilla:", 0)
-random.seed(hash_int) 
+string_seed = parametros["seed_arreglo"]
+hashed_obj = hashlib.sha256(string_seed.encode())
+hash_hex = hashed_obj.hexdigest()
+hash_int_seed_arreglo = int(hash_hex, 16)
+hash_int_seed_arreglo = hash_int_seed_arreglo % 1000000000000
+
+random.seed(hash_int_seed_instrumentos) 
 
 for i in range (20):
     RPR_DeleteTrack(RPR_GetTrack(0, 0))
@@ -1485,7 +1502,7 @@ tematica = parametros["tematica"]
 tematica_pistas = parametros["tematica_pistas"]
 tematicas_aleatorias = parametros["tematicas_aleatorias"]
 mezclar_tematicas = parametros["mezclar_tematicas"]
-mezclar_melodias = parametros["mezclar_melodias"]
+complejidad = parametros["complejidad"]
 semitonos = parametros["semitonos"]
 reverb = parametros["reverb"]
 entorno = parametros["entorno"]
@@ -1612,6 +1629,10 @@ for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
 crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, entorno, vintage, dream, agua)
+
+
+
+random.seed(hash_int_seed_arreglo) 
 
 
 
@@ -1752,76 +1773,101 @@ for col in range(len(arreglo[0])):
 RPR_SetEditCurPos(0, True, True)
 
 
-#Generamos patrones de melodía variados
-n_patrones = 3
-patrones_melodia = []
-patrones_melodia.append(["A1", "A2", "B1", "B2"])
+if(complejidad == 3):
+    RPR_SetEditCurPos(0, True, True)
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 0), "I_SELECTED", 1)
+    cargarMelodia(complejidad, tematica, -1, pos = 0)
+    
+    RPR_SetEditCurPos(0, True, True)
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 1), "I_SELECTED", 1)
+    cargarMelodia(complejidad, tematica, -1, pos = 0)
 
-for _ in range(n_patrones - 1):
-    patron_melodia = []
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 2), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-    if mezclar_melodias:
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 3), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
+
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 4), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
+
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 5), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica, estandar=True)
+
+
+else:
+    #Generamos patrones de melodía variados
+    n_patrones = 3
+    patrones_melodia = []
+    patrones_melodia.append(["A1", "A2", "B1", "B2"])
+
+    for _ in range(n_patrones - 1):
+        patron_melodia = []
+
         most_probable = random.choice(["A1", "A2", "B1", "B2"])
         for _ in range(4):
             if random.randint(1, 10) <= 4:
                 patron_melodia.append(most_probable)
             else:
                 patron_melodia.append(random.choice(["A1", "A2", "B1", "B2"]))
-    else:
-        patron_melodia = ["A1", "A2", "B1", "B2"]
 
-    patrones_melodia.append(patron_melodia)
+        patrones_melodia.append(patron_melodia)
 
-patrones_orden = [random.randint(0, n_patrones-1) for _ in range(8)]
+    patrones_orden = [random.randint(0, n_patrones-1) for _ in range(8)]
 
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 0), "I_SELECTED", 1)
-i = 0
-for value in arreglo[0]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarMelodia(tematica, patrones_melodia[patrones_orden[i]], pos = i * 16)
-    i += 1
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 0), "I_SELECTED", 1)
+    i = 0
+    for value in arreglo[0]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarMelodia(complejidad, tematica, patrones_melodia[patrones_orden[i]], pos = i * 16)
+        i += 1
 
 
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 1), "I_SELECTED", 1)
-i = 0
-for value in arreglo[1]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarMelodia(tematica, patrones_melodia[patrones_orden[i]], pos = i * 16)
-    i += 1
-i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 1), "I_SELECTED", 1)
+    i = 0
+    for value in arreglo[1]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarMelodia(complejidad, tematica, patrones_melodia[patrones_orden[i]], pos = i * 16)
+        i += 1
+    i = 0
 
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 2), "I_SELECTED", 1)
-for value in arreglo[2]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
-i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 2), "I_SELECTED", 1)
+    for value in arreglo[2]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
+    i = 0
 
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 3), "I_SELECTED", 1)
-for value in arreglo[3]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
-i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 3), "I_SELECTED", 1)
+    for value in arreglo[3]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
+    i = 0
 
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 4), "I_SELECTED", 1)
-for value in arreglo[4]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 4), "I_SELECTED", 1)
+    for value in arreglo[4]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
 
-i = 0
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 5), "I_SELECTED", 1)
-for value in arreglo[5]:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica, estandar=True)
-    i += 1
+    i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 5), "I_SELECTED", 1)
+    for value in arreglo[5]:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica, estandar=True)
+        i += 1
+
 
 
 
@@ -1837,37 +1883,57 @@ for value in arreglo[6]:
 
     i += 1
 
-i = 0
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 7), "I_SELECTED", 1)
-for value in riser:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
 
-i = 0
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 8), "I_SELECTED", 1)
-for value in riser:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
+if(complejidad == 3):
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 7), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
     
-i = 0
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 9), "I_SELECTED", 1)
-for value in downriser:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1 
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 8), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
+    
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 9), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-i = 0
-RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 10), "I_SELECTED", 1)
-for value in downriser:
-    if value:
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-    i += 1
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 10), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
+
+else:
+
+    i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 7), "I_SELECTED", 1)
+    for value in riser:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
+
+    i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 8), "I_SELECTED", 1)
+    for value in riser:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
+        
+    i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 9), "I_SELECTED", 1)
+    for value in downriser:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1 
+
+    i = 0
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 10), "I_SELECTED", 1)
+    for value in downriser:
+        if value:
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+        i += 1
 
 fill_n = 0
 RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 11), "I_SELECTED", 1)
@@ -1902,55 +1968,70 @@ for i in range(8):
             
             fill_n += 1
 
-i = 0
-pista = 12
-for value in candy:
-    if value:
-        
-        RPR_SetOnlyTrackSelected(RPR_GetTrack(0, pista))
-        RPR_SetEditCurPos(i * 16, True, True)
-        cargarArmonia(tematica)
-        
-        pista += 1
-        if pista == 16:
-            pista = 12
 
-    i += 1
+if(complejidad == 3):
+    
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 12), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-for col in range(8):
-    for fila in range(7):
-        if arreglo_adelantar[fila][col]:
-            if(fila < 2):
-                RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-                RPR_SetEditCurPos(col * 16 + 14, True, True)
-                cargarMelodia(tematica, patrones_melodia[patrones_orden[col]], recortar = True)
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 13), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-                cont = 0
-                for i in range(col):
-                    if arreglo[fila][i]:
-                        cont += 4
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 14), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-                #RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
-                #RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+    RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, 15), "I_SELECTED", 1)
+    RPR_SetEditCurPos(0, True, True)
+    cargarArmonia(complejidad, tematica)
 
-            else:
-                RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-                RPR_SetEditCurPos(col * 16 + 8, True, True)
+else:
+    i = 0
+    pista = 12
+    for value in candy:
+        if value:
+            
+            RPR_SetOnlyTrackSelected(RPR_GetTrack(0, pista))
+            RPR_SetEditCurPos(i * 16, True, True)
+            cargarArmonia(complejidad, tematica)
+            
+            pista += 1
+            if pista == 16:
+                pista = 12
 
-                if(fila == 5):
-                    cargarArmonia(tematica, recortar = True, estandar = True)
+        i += 1
+
+    for col in range(8):
+        for fila in range(7):
+            if arreglo_adelantar[fila][col]:
+                if(fila < 2):
+                    RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
+                    RPR_SetEditCurPos(col * 16 + 14, True, True)
+                    cargarMelodia(complejidad, tematica, patrones_melodia[patrones_orden[col]], recortar = True)
+
+                    cont = 0
+                    for i in range(col):
+                        if arreglo[fila][i]:
+                            cont += 4
+
                 else:
-                    cargarArmonia(tematica, recortar = True)
+                    RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
+                    RPR_SetEditCurPos(col * 16 + 8, True, True)
 
-                cont = 0
-                for i in range(col):
-                    if arreglo[fila][i]:
-                        cont += 2
+                    if(fila == 5):
+                        cargarArmonia(complejidad, tematica, recortar = True, estandar = True)
+                    else:
+                        cargarArmonia(complejidad, tematica, recortar = True)
 
-                RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
-                RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+                    cont = 0
+                    for i in range(col):
+                        if arreglo[fila][i]:
+                            cont += 2
 
-
+                    RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                    RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
 
 
 
@@ -1978,7 +2059,7 @@ for value in riser:
             pista = 7
 
     i += 1
-              
+            
 i = 0
 pista = 9 
 for value in downriser:
@@ -2003,7 +2084,7 @@ for value in downriser:
             pista = 9
 
     i += 1
-                
+            
 
 
 
