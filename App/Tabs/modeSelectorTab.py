@@ -13,6 +13,7 @@ from App.AppState.tooltip import Tooltip
 from App.AppState.presetsManager import PresetManager
 from App.AppState.backgroundSystem import BackgroundSystem
 from App.AppEnums.tematicEnum import TematicEnum
+from App.AppEnums.reverbModesEnum import ReverbEnum
 from Utils import globalConsts
 from Utils import stringUtils
 
@@ -142,7 +143,16 @@ class ModeSelectorTab:
         y = (648) / 2 - 270
         self.combo.place(x=x, y=y)
 
-        print("combobox packed")
+        
+        self.current_reverb = StringVar()
+        self.comboReverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
+                                  textvariable=self.current_reverb, state="readonly")
+
+        self.comboReverb.bind("<<ComboboxSelected>>", self.selectTematic)
+        x = (1152) / 2 - 130
+        y = (648) / 2 - 310
+        self.comboReverb.place(x=x, y=y)
+
 
     def displayPresetSelector(self):
         
