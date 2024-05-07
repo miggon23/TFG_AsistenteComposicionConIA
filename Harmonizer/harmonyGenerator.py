@@ -143,9 +143,9 @@ class HarmonyGenerator:
                 print(f"Tonica {mode}: {song.tonic.name}")
                 song.print_best_chords()
                 
-                output_melody_mode = output_melody[:-4] + "_" + mode + ".mid" 
-                output_harmony_mode = output_harmony[:-4] + "_" + mode + ".mid"
-                output_std_harmony_mode = output_std_harmony[:-4] + "_"  + mode + ".mid"
+                output_melody_mode = output_melody[:-4] + mode + ".mid" 
+                output_harmony_mode = output_harmony[:-4] + mode + ".mid"
+                output_std_harmony_mode = output_std_harmony[:-4] + mode + ".mid"
                 MidiUtils.write_midi_song(output_melody_mode, song.notes, ticksPerBeat)
                 MidiUtils.write_midi_song(output_harmony_mode, harmony, ticksPerBeat)
                 MidiUtils.write_midi_song(output_std_harmony_mode, harmony_std, ticksPerBeat)
@@ -266,9 +266,9 @@ class HarmonyGenerator:
                 song.choose_sacle(modalPerspective.modalScale, tonic)
                 song.fit_notes()
                 
-                output_melody_mode = output_melody[:-4] + "_" + mode + ".mid" 
-                output_harmony_mode = output_harmony[:-4] + "_" + mode + ".mid"
-                output_std_harmony_mode = output_std_harmony[:-4] + "_"  + mode + ".mid"
+                output_melody_mode = output_melody[:-4] + mode + ".mid" 
+                output_harmony_mode = output_harmony[:-4] + mode + ".mid"
+                output_std_harmony_mode = output_std_harmony[:-4] + mode + ".mid"
                 MidiUtils.write_midi_song(output_melody_mode, song.notes, ticksPerBeat)
                 MidiUtils.write_midi_song(output_harmony_mode, harmony, ticksPerBeat)
                 MidiUtils.write_midi_song(output_std_harmony_mode, harmony_std, ticksPerBeat)
@@ -370,9 +370,9 @@ class HarmonyGenerator:
                 print(f"Tonica {mode}: {song.tonic.name}")
                 song.print_best_chords()
                 
-                output_melody_mode = output_melody[:-4] + "_" + mode + ".mid" 
-                output_harmony_mode = output_harmony[:-4] + "_" + mode + ".mid"
-                output_std_harmony_mode = output_std_harmony[:-4] + "_"  + mode + ".mid"
+                output_melody_mode = output_melody[:-4] + mode + ".mid" 
+                output_harmony_mode = output_harmony[:-4] + mode + ".mid"
+                output_std_harmony_mode = output_std_harmony[:-4] + mode + ".mid"
                 MidiUtils.write_midi_song(output_melody_mode, song.notes, ticksPerBeat)
                 MidiUtils.write_midi_song(output_harmony_mode, harmony, ticksPerBeat)
                 MidiUtils.write_midi_song(output_std_harmony_mode, harmony_std, ticksPerBeat)
