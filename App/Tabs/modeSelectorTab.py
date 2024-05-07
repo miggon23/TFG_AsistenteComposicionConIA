@@ -30,13 +30,15 @@ class ModeSelectorTab:
         self.canvas = Canvas(self.tab, width = 1152, height = 648)
         self.canvas.pack(fill="both", expand=True)
 
+    # MARK: SET UP
+
     def setUp(self, root):
         self.root = root
         self.backgroundSys = BackgroundSystem(self.canvas, self.tab)
         self.backgroundSys.init()
 
         self.setCheckboxes()
-        self.displayEnumSelectors()
+        self.displayComboboxes()
         self.displayPresetSelector()
         self.setButtons()
 
@@ -84,9 +86,6 @@ class ModeSelectorTab:
         ToolTip(self.themes_combo, msg="Themes", delay=self.tooltip_delay)
         ToolTip(self.all_random_button, msg="Randomize seed", delay=self.tooltip_delay)        
 
-    def playButtonACtivation(self):
-        print("PlayBUttons")
-
     def setButtons(self):
       
         original_image = Image.open("App/Images/playButton.png")
@@ -97,7 +96,7 @@ class ModeSelectorTab:
 
         # Calcula las coordenadas para centrar el botón
         x = (1152) / 2 - 85
-        y = (648) / 2 - 230
+        y = (648) * 0.16
 
         # Crea y coloca el botón en las coordenadas calculadas
         self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
@@ -135,7 +134,7 @@ class ModeSelectorTab:
         self.savePreset_button.place(x=x, y=y)
 
 
-    def displayEnumSelectors(self):
+    def displayComboboxes(self):
         self.current_tematic = StringVar()
         self.themes_combo = ttk.Combobox(self.canvas, values=[option.value for option in TematicEnum],
                                   textvariable=self.current_tematic, state="readonly")
@@ -162,7 +161,7 @@ class ModeSelectorTab:
         self.presetName = StringVar()
         self.presetCombobox = ttk.Combobox(self.canvas, values=None,
                                   textvariable=self.presetName, state="readonly")
-        self.presetCombobox.place(x=0, y=0)
+        self.presetCombobox.place(x=10, y=10)
         self.refreshPresets()
         self.presetCombobox.bind("<<ComboboxSelected>>", self.recoverPresetAction)
 
