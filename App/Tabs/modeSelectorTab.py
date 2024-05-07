@@ -34,6 +34,7 @@ class ModeSelectorTab:
         self.root = root
         self.backgroundSys = BackgroundSystem(self.canvas, self.tab)
         self.backgroundSys.init()
+
         self.setCheckboxes()
         self.displayEnumSelectors()
         self.displayPresetSelector()
@@ -54,6 +55,7 @@ class ModeSelectorTab:
         
     def onEntryTab(self):
         self.resize_image()
+
 
     def setCheckboxes(self):
         self.retro = BooleanVar()
@@ -149,7 +151,7 @@ class ModeSelectorTab:
         self.comboReverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
                                   textvariable=self.current_reverb, state="readonly")
 
-        self.comboReverb.bind("<<ComboboxSelected>>", self.selectTematic)
+        self.comboReverb.bind("<<ComboboxSelected>>", self.selectReverb)
         x = (1152) / 2 - 130
         y = (648) / 2 - 310
         self.comboReverb.place(x=x, y=y)
@@ -168,14 +170,22 @@ class ModeSelectorTab:
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
         self.redreshButton_Image = ImageTk.PhotoImage(resized_image)
 
+    # MARK: COMBOBOX CALLBACKS
+
     def selectTematic(self, event):
         # Guardamos la temática seleccionada en el evento
         tematic = self.current_tematic.get()
         print("Seleccionado: ", tematic)
 
-        self.modeState.tematica = self.NameEnumToId(tematic)
+        self.modeState.tematica = self.NameEnumToId(tematic, TematicEnum)
         self.setBackground()
         self.resize_image()
+
+    def selectReverb(self, event):
+        reverb = self.current_reverb.get()
+
+        self.modeState.reverb = self.NameEnumToId(reverb, ReverbEnum)
+        return
 
     def onSelectCheckbox(self):
         self.modeState.agua = self.underWater.get()
@@ -189,7 +199,7 @@ class ModeSelectorTab:
         self.resize_image()
 
     def setBackground(self):           
-        themeName = self.idToEnumValue(self.modeState.tematica)
+        themeName = self.idToEnumValue(self.modeState.tematica, TematicEnum)
         self.background_image_array = self.backgroundSys.configure_background(theme=themeName, 
                                                                 dream= self.modeState.dream,
                                                                 lofi=self.modeState.lofi,
@@ -200,15 +210,22 @@ class ModeSelectorTab:
                                                                 )
               
     
-
     def resize_image(self, event = None):
         self.backgroundSys.resize_image(self.tab) 
-        
+      
 
     def playReaper(self):
         self.modeState.seed = self.seedString.get()
         self.saveState()
         self.reaperStream.SetUp()
+
+    def idToEnumValue(self, id, enum):
+        return list(enum)[id].value
+    
+    def NameEnumToId(self, themeName, enum):
+        return [member.value for member in enum].index(themeName)
+    
+    # MARK: PERSISTENCE
 
     def recoverState(self, modeState):
         self.modeState = modeState
@@ -221,14 +238,11 @@ class ModeSelectorTab:
         self.dream.set(self.modeState.dream)
         self.seedString.set(self.modeState.seed)
         
-        tematica_value = self.idToEnumValue(self.modeState.tematica)
+        tematica_value = self.idToEnumValue(self.modeState.tematica, TematicEnum)
         self.current_tematic.set(tematica_value)
 
-    def idToEnumValue(self, id):
-        return list(TematicEnum)[id].value
-    
-    def NameEnumToId(self, themeName):
-        return [member.value for member in TematicEnum].index(themeName)
+        reverb_value = self.idToEnumValue(self.modeState.reverb, ReverbEnum)
+        self.current_reverb.set(reverb_value)
 
     def recoverStateFromFile(self):
         jsonPath = globalConsts.Paths.mediaSettings
@@ -242,6 +256,8 @@ class ModeSelectorTab:
         # Abre el archivo JSON en modo escritura
         with open(jsonPath, "w") as archivo:
             json.dump(dataJSONString, archivo, indent=4)
+
+    # MARK: PRESETS
 
     def savePresetAction(self):
         self.presetManager.show_save_preset_popup(tab = self.tab, modeState=self.modeState, onSavedCallback=self.refreshPresets)
@@ -263,6 +279,8 @@ class ModeSelectorTab:
         self.presetCombobox['values'] = filesWithNoExtension
         self.presetCombobox.update()
         
+    # MARK: SEEDS
+
     def rerollSeed(self):
         self.seedString.set(stringUtils.generate_random_string(5, None))
         self.modeState.seed = self.seedString.get()

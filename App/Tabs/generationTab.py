@@ -1,5 +1,6 @@
 from tkinter import ttk
 from tkinter import *
+from tkinter import filedialog
 
 from timidity import Parser, play_notes
 import numpy as np
@@ -40,17 +41,30 @@ class GenerationTab:
         style = ttk.Style()
         style.configure("TButton", padding=6, relief="flat", background="#ccc")
 
-        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0, padx=200)
+        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0, padx=150)
 
     def setButtons(self):
-        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=200, pady=10)
-        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=200, pady=10)
+        ttk.Button(self.tab, text="Cargar archivo MIDI", command=self.selectMIDIFile).grid(column=0, row=0, padx=150, pady=10)
+        self.file_loaded_label = ttk.Label(self.tab, text="No hay archivo cargado", font=("Arial", 10, "italic"), foreground="white")
+        self.file_loaded_label.grid(column=2, row=0, padx=10, pady=10)
+        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=150, pady=10)
+        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=150, pady=10)
         ttk.Button(self.tab, text= "Stop", command= self.stopPreview).grid(column=1, row=2)
-        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=200, pady=10)
-        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=200, pady=10)
+        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=150, pady=10)
+        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=150, pady=10)
         
+    def selectMIDIFile(self):
+        file_path = filedialog.askopenfilename(filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")])
+        if file_path:
+            self.melody = file_path
+            self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
+
+            self.file_loaded_label.config(text="Archivo cargado correctamente: \n" + file_path, foreground="green")
+
     
     def generateMelodies(self):
+        self.file_loaded_label.config(text="No hay archivo cargado", foreground="white")
+
         print("Generando")
         self.bars = 8
 

@@ -8,7 +8,7 @@ class ModeState:
     mezclar_tematicas = False
     complejidad = 3
     semitonos = 3
-    reverb = True
+    reverb = 0
     entorno = 0
     lofi = False
     retro = True
