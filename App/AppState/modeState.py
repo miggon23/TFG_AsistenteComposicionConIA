@@ -9,7 +9,6 @@ class ModeState:
     complejidad = 3
     semitonos = 3
     reverb = 0
-    entorno = 0
     lofi = False
     retro = True
     agua = False
@@ -28,7 +27,6 @@ class ModeState:
             "complejidad": self.complejidad,
             "semitonos": self.semitonos,
             "reverb": self.reverb,
-            "entorno": self.entorno,
             "lofi": self.lofi,
             "retro": self.retro,
             "agua": self.agua,
