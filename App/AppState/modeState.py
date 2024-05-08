@@ -15,7 +15,8 @@ class ModeState:
     espacial = False
     dream = False
     vintage = False
-    seed = "1p0mC"
+    seed_instrument = "1p0mC"
+    seed_arrangement = "4g8Hv"
 
     # Devuelve una cadena con el formato JSON listo para guardar
     def toJSON(self):
@@ -33,8 +34,8 @@ class ModeState:
             "espacial": self.espacial,
             "dream": self.dream,
             "vintage": self.vintage,
-            "seed_instrumentos": self.seed,
-            "seed_arreglo": self.seed
+            "seed_instrumentos": self.seed_instrument,
+            "seed_arreglo": self.seed_arrangement
         }
    
         return jsonMap
