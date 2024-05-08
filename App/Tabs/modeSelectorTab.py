@@ -58,6 +58,7 @@ class ModeSelectorTab:
     def onEntryTab(self):
         self.resize_image()
 
+    # MARK: CHECKBOXES
     
     def setCheckboxes(self):
         self.retro = BooleanVar()
@@ -78,6 +79,8 @@ class ModeSelectorTab:
         self.spatial = BooleanVar()
         Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox, selectcolor="black").place(x=30, y=510)
    
+    # MARK: TOOLTIPS
+
     def setTooltips(self):
         ToolTip(self.instrument_seedEntry, msg = "Semilla de instrumentos", delay = self.tooltip_delay)
         ToolTip(self.instrument_seedEntry, msg = "Semilla de arreglos", delay = self.tooltip_delay)
@@ -88,6 +91,8 @@ class ModeSelectorTab:
         ToolTip(self.all_random_button, msg="Aleatorizar todas las semillas", delay=self.tooltip_delay)  
         ToolTip(self.instrument_random_button, msg="Aleatorizar semilla de instrumentos", delay=self.tooltip_delay)      
         ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)      
+
+    # MARK: BUTTONS
 
     def setButtons(self):
       
@@ -169,6 +174,7 @@ class ModeSelectorTab:
         self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
         self.savePreset_button.place(x=x, y=y)
 
+    # MARK: COMBOBOXES
 
     def displayComboboxes(self):
         self.current_tematic = StringVar()

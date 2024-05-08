@@ -6,6 +6,9 @@ from App.AppEnums.semitonesEnum import Semitones
 from App.AppEnums.melodicComplexityEnum import MelodicComplexity
 
 class AdvancedConfigTab: 
+    generationComboboxes = []
+    generationLabels = []
+
     def __init__(self, tab):
         self.tab = tab
 
@@ -60,51 +63,72 @@ class AdvancedConfigTab:
         ttk.Label(self.tab, text="                                     ", justify=RIGHT).grid(row=0, column=2)
 
         self.mezclarTematicas = BooleanVar()
-        ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclarTematicas).grid(row=0, column=3)
+        ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclarTematicas, command=self.toggleMixedThemes).grid(row=0, column=3)
         self.tematicasAleatorias = BooleanVar()
         ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicasAleatorias).grid(row=1, column=3)
         
-        ttk.Label(self.tab, text="Temática melodía 1:                  ").grid(row=2, column=3)
+        self.tLabel1 = ttk.Label(self.tab, text="Temática melodía 1:                  ")
+        self.tLabel1.grid(row=2, column=3)
         self.tematicaPista1 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration1 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista1, state="readonly")
-        self.comboGeneration.grid(row=2, column=4)
+        self.comboGeneration1.grid(row=2, column=4)
+        self.generationComboboxes.append(self.comboGeneration1)
+        self.generationLabels.append(self.tLabel1)
 
-        ttk.Label(self.tab, text="Temática melodía 2:                 ").grid(row=3, column=3)
+        self.tLabel2 = ttk.Label(self.tab, text="Temática melodía 2:                 ")
+        self.tLabel2.grid(row=3, column=3)
         self.tematicaPista2 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration2 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista2, state="readonly")
-        self.comboGeneration.grid(row=3, column=4)
+        self.comboGeneration2.grid(row=3, column=4)
+        self.generationComboboxes.append(self.comboGeneration2)
+        self.generationLabels.append(self.tLabel2)
 
-        ttk.Label(self.tab, text="Temática acompañamiento 1:   ").grid(row=4, column=3)
+        self.tLabel3 = ttk.Label(self.tab, text="Temática acompañamiento 1:   ")
+        self.tLabel3.grid(row=4, column=3)
         self.tematicaPista3 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration3 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista3, state="readonly")
-        self.comboGeneration.grid(row=4, column=4)
+        self.comboGeneration3.grid(row=4, column=4)
+        self.generationComboboxes.append(self.comboGeneration3)
+        self.generationLabels.append(self.tLabel3)
 
-        ttk.Label(self.tab, text="Temática acompañamiento 2:  ").grid(row=5, column=3)
+        self.tLabel4 = ttk.Label(self.tab, text="Temática acompañamiento 2:  ")
+        self.tLabel4.grid(row=5, column=3)
         self.tematicaPista4 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration4 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista4, state="readonly")
-        self.comboGeneration.grid(row=5, column=4)
+        self.comboGeneration4.grid(row=5, column=4)
+        self.generationComboboxes.append(self.comboGeneration4)
+        self.generationLabels.append(self.tLabel4)
 
-        ttk.Label(self.tab, text="Temática pads:                         ").grid(row=6, column=3)
+        self.tLabel5 = ttk.Label(self.tab, text="Temática pads:                         ")
+        self.tLabel5.grid(row=6, column=3)
         self.tematicaPista5 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration5 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista5, state="readonly")
-        self.comboGeneration.grid(row=6, column=4)
+        self.comboGeneration5.grid(row=6, column=4)
+        self.generationComboboxes.append(self.comboGeneration5)
+        self.generationLabels.append(self.tLabel5)
 
-        ttk.Label(self.tab, text="Temática bajo:                         ").grid(row=7, column=3)
+        self.tLabel6 = ttk.Label(self.tab, text="Temática bajo:                         ")
+        self.tLabel6.grid(row=7, column=3)
         self.tematicaPista6 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration6 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista6, state="readonly")
-        self.comboGeneration.grid(row=7, column=4)
+        self.comboGeneration6.grid(row=7, column=4)
+        self.generationComboboxes.append(self.comboGeneration6)
+        self.generationLabels.append(self.tLabel6)
 
-        ttk.Label(self.tab, text="Temática batería:                     ").grid(row=8, column=3)
+        self.tLabel7 = ttk.Label(self.tab, text="Temática batería:                     ")
+        self.tLabel7.grid(row=8, column=3)
         self.tematicaPista7 = StringVar()
-        self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration7 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista7, state="readonly")
-        self.comboGeneration.grid(row=8, column=4)
+        self.comboGeneration7.grid(row=8, column=4)
+        self.generationComboboxes.append(self.comboGeneration7)
+        self.generationLabels.append(self.tLabel7)
 
     def saveSemitones(self, event):
         semitones = self.semitones_var.get()
@@ -121,4 +145,31 @@ class AdvancedConfigTab:
         return
     
     def onEntryTab(self):
+        self.toggleMixedThemes()
+    
+    # MARK: Callback
+
+    def toggleMixedThemes(self):
+        mixThemes = self.mezclarTematicas.get()
+
+        if(mixThemes):
+            self.showCombo()
+        else:
+            self.hideCombo()
+
+    def showCombo(self):
+        for combo in self.generationComboboxes:
+            combo.grid()
+
+        for label in self.generationLabels:
+            label.grid()
+        return
+
+
+    def hideCombo(self):
+        for combo in self.generationComboboxes:
+            combo.grid_remove()
+
+        for label in self.generationLabels:
+            label.grid_remove()
         return
