@@ -52,6 +52,7 @@ class ModeState:
         instance = cls()
         for key, value in json_data.items():
             setattr(instance, key, value)
+            
         return instance
 
         

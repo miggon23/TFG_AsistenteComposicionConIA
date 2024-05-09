@@ -68,7 +68,7 @@ class App:
         # Creamos las clases que representan cada pestaña de la App
         self.generationTab = generationTab.GenerationTab(self.frame1)
         self.modeSelectorTab = modeSelectorTab.ModeSelectorTab(self.frame2)
-        self.advancedConfig = advancedConfigTab.AdvancedConfigTab(self.frame3)
+        self.advancedConfig = advancedConfigTab.AdvancedConfigTab(self.frame3, modeSelectorTab=self.modeSelectorTab)
         self.configTab = configurationTab.ConfigurationTab(self.frame4)
 
         self.modeSelectorTab.setUp(self.root)

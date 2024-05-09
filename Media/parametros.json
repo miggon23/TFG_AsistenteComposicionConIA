@@ -1,13 +1,13 @@
 {
     "tematica": 1,
     "tematica_pistas": [
-        0,
-        1,
-        2,
-        3,
+        10,
+        11,
+        12,
         4,
-        5,
-        6
+        9,
+        1,
+        3
     ],
     "tematicas_aleatorias": false,
     "mezclar_tematicas": false,
@@ -20,6 +20,6 @@
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed_instrumentos": "PYA1t",
-    "seed_arreglo": "GhnQK"
+    "seed_instrumentos": "2NZV0",
+    "seed_arreglo": "qt6fJ"
 }

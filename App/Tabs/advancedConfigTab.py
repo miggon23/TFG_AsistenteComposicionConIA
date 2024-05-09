@@ -13,8 +13,9 @@ class AdvancedConfigTab:
     generationComboboxes = []
     generationLabels = []
 
-    def __init__(self, tab):
+    def __init__(self, tab, *, modeSelectorTab):
         self.tab = tab
+        self.modeSelectorTab = modeSelectorTab
 
     def setUp(self):
        self.setCombobox()
@@ -79,6 +80,8 @@ class AdvancedConfigTab:
         self.comboGeneration1 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista1, state="readonly")
         self.comboGeneration1.grid(row=2, column=4)
+        self.comboGeneration1.bind("<<ComboboxSelected>>", self.save_mixed_themes)
+
         self.generationComboboxes.append(self.comboGeneration1)
         self.generationLabels.append(self.tLabel1)
 
@@ -88,6 +91,7 @@ class AdvancedConfigTab:
         self.comboGeneration2 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista2, state="readonly")
         self.comboGeneration2.grid(row=3, column=4)
+        self.comboGeneration2.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.generationComboboxes.append(self.comboGeneration2)
         self.generationLabels.append(self.tLabel2)
 
@@ -97,6 +101,7 @@ class AdvancedConfigTab:
         self.comboGeneration3 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista3, state="readonly")
         self.comboGeneration3.grid(row=4, column=4)
+        self.comboGeneration3.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.generationComboboxes.append(self.comboGeneration3)
         self.generationLabels.append(self.tLabel3)
 
@@ -106,6 +111,7 @@ class AdvancedConfigTab:
         self.comboGeneration4 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista4, state="readonly")
         self.comboGeneration4.grid(row=5, column=4)
+        self.comboGeneration4.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.generationComboboxes.append(self.comboGeneration4)
         self.generationLabels.append(self.tLabel4)
 
@@ -114,6 +120,7 @@ class AdvancedConfigTab:
         self.tematicaPista5 = StringVar()
         self.comboGeneration5 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista5, state="readonly")
+        self.comboGeneration5.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.comboGeneration5.grid(row=6, column=4)
         self.generationComboboxes.append(self.comboGeneration5)
         self.generationLabels.append(self.tLabel5)
@@ -124,6 +131,7 @@ class AdvancedConfigTab:
         self.comboGeneration6 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista6, state="readonly")
         self.comboGeneration6.grid(row=7, column=4)
+        self.comboGeneration6.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.generationComboboxes.append(self.comboGeneration6)
         self.generationLabels.append(self.tLabel6)
 
@@ -132,8 +140,8 @@ class AdvancedConfigTab:
         self.tematicaPista7 = StringVar()
         self.comboGeneration7 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista7, state="readonly")
-
         self.comboGeneration7.grid(row=8, column=4)
+        self.comboGeneration7.bind("<<ComboboxSelected>>", self.save_mixed_themes)
         self.generationComboboxes.append(self.comboGeneration7)
         self.generationLabels.append(self.tLabel7)
 
@@ -192,7 +200,26 @@ class AdvancedConfigTab:
             theme = random.choice(list(TematicEnum))
             combo.set(theme.value)
 
+        self.save_mixed_themes()
+
+
+    def save_mixed_themes(self, event):
+        themes_array = []
+
+        for combo in self.generationComboboxes:
+            theme = combo.get()
+            if(theme is not ""):
+                themes_array.append(self.NameEnumToId(theme, TematicEnum))
+
+        modeState = self.modeSelectorTab.get_state()
+        modeState.tematica_pistas = themes_array
+
+    def idToEnumValue(self, id, enum):
+        return list(enum)[id].value
     
+    def NameEnumToId(self, themeName, enum):
+        return [member.value for member in enum].index(themeName)
+
     def saveGenerator(self, event = None):
         generator = self.generation_mode_var.get()
         jsonPath = globalConsts.Paths.appConfigPath

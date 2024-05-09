@@ -79,6 +79,10 @@ class ModeSelectorTab:
         self.spatial = BooleanVar()
         Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox, selectcolor="black").place(x=30, y=510)
    
+
+    def get_state(self):
+        return self.modeState
+
     # MARK: TOOLTIPS
 
     def setTooltips(self):
@@ -197,7 +201,6 @@ class ModeSelectorTab:
         x = (1152) / 2 - 130
         y = (648) / 2 - 310
         self.combo_reverb.place(x=x, y=y)
-
 
     def displayPresetSelector(self):
         
