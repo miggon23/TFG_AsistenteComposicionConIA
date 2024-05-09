@@ -90,7 +90,8 @@ class ModeSelectorTab:
         ToolTip(self.themes_combo, msg="Themes", delay=self.tooltip_delay)
         ToolTip(self.all_random_button, msg="Aleatorizar todas las semillas", delay=self.tooltip_delay)  
         ToolTip(self.instrument_random_button, msg="Aleatorizar semilla de instrumentos", delay=self.tooltip_delay)      
-        ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)      
+        ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)    
+        ToolTip(self.combo_reverb, msg = "Entorno", delay=self.tooltip_delay)  
 
     # MARK: BUTTONS
 
@@ -189,13 +190,13 @@ class ModeSelectorTab:
 
         
         self.current_reverb = StringVar()
-        self.comboReverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
+        self.combo_reverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
                                   textvariable=self.current_reverb, state="readonly")
 
-        self.comboReverb.bind("<<ComboboxSelected>>", self.selectReverb)
+        self.combo_reverb.bind("<<ComboboxSelected>>", self.selectReverb)
         x = (1152) / 2 - 130
         y = (648) / 2 - 310
-        self.comboReverb.place(x=x, y=y)
+        self.combo_reverb.place(x=x, y=y)
 
 
     def displayPresetSelector(self):

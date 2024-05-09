@@ -149,6 +149,7 @@ class AdvancedConfigTab:
         return
     
     def onEntryTab(self):
+        self.recover_state()
         self.toggleMixedThemes()
     
     # MARK: CALLBACKS
@@ -191,3 +192,13 @@ class AdvancedConfigTab:
         # Abre el archivo JSON en modo escritura
         with open(jsonPath, "w") as archivo:
             json.dump(datos, archivo, indent=4)
+
+    def recover_state(self):
+        jsonPath = globalConsts.Paths.appConfigPath
+
+        with open(jsonPath, "r") as archivo:
+            datos = json.load(archivo)
+
+        generator = datos["melodyGenerator"]
+
+        self.generation_mode_var.set(generator)

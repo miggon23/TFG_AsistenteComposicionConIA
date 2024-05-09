@@ -69,13 +69,11 @@ class GenerationTab:
     def generateMelodies(self):
         self.file_loaded_label.config(text="No hay archivo cargado", foreground="white")
 
-        print("Generando")
         self.bars = 8
 
         temperature = 1.5
 
         # MAGENTA
-        print(self.generation_strategy)
         self.melody = self.generation_strategy.generate_melodies(markov=self.mkv_generator, n_bars=self.bars, n_sims=1, temperature=temperature)[0]
         # self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
