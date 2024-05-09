@@ -7,6 +7,7 @@ from App.AppEnums.tematicEnum import TematicEnum
 from App.AppEnums.semitonesEnum import Semitones
 from App.AppEnums.melodicComplexityEnum import MelodicComplexity
 from Utils import globalConsts
+import random
 
 class AdvancedConfigTab: 
     generationComboboxes = []
@@ -68,8 +69,9 @@ class AdvancedConfigTab:
 
         self.mezclarTematicas = BooleanVar()
         ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclarTematicas, command=self.toggleMixedThemes).grid(row=0, column=3)
-        self.tematicasAleatorias = BooleanVar()
-        ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicasAleatorias).grid(row=1, column=3)
+        self.tematicas_aleatorias_var = BooleanVar()
+        self.tematica_aleatoria_checkbutton = ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicas_aleatorias_var, command=self.mixThemes)
+        self.tematica_aleatoria_checkbutton.grid(row=1, column=3)
         
         self.tLabel1 = ttk.Label(self.tab, text="Temática melodía 1:                  ")
         self.tLabel1.grid(row=2, column=3)
@@ -130,6 +132,7 @@ class AdvancedConfigTab:
         self.tematicaPista7 = StringVar()
         self.comboGeneration7 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
                                         textvariable=self.tematicaPista7, state="readonly")
+
         self.comboGeneration7.grid(row=8, column=4)
         self.generationComboboxes.append(self.comboGeneration7)
         self.generationLabels.append(self.tLabel7)
@@ -163,20 +166,32 @@ class AdvancedConfigTab:
             self.hideCombo()
 
     def showCombo(self):
+        self.tematica_aleatoria_checkbutton.grid()
+
         for combo in self.generationComboboxes:
             combo.grid()
 
         for label in self.generationLabels:
             label.grid()
-        return
+  
 
     def hideCombo(self):
+        self.tematica_aleatoria_checkbutton.grid_remove()
+
         for combo in self.generationComboboxes:
             combo.grid_remove()
 
         for label in self.generationLabels:
             label.grid_remove()
-        return
+
+    def mixThemes(self):
+        if not self.tematicas_aleatorias_var.get():
+            return
+        print("qlo")
+        for combo in self.generationComboboxes:
+            theme = random.choice(list(TematicEnum))
+            combo.set(theme.value)
+
     
     def saveGenerator(self, event = None):
         generator = self.generation_mode_var.get()
