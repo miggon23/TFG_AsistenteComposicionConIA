@@ -4,6 +4,7 @@ from tkinter import filedialog
 
 from timidity import Parser, play_notes
 import numpy as np
+import json
 
 import mainDemo as demo
 from Cadenas_Markov import markovGenerator
@@ -13,6 +14,8 @@ from Drums import drumGenerator
 from Basslines import basslineGenerator
 from Harmonizer import harmonyGenerator
 from Harmonizer import models as Models
+from App.Strategies import generationStrategy
+from Utils import globalConsts
 import shutil
 
 
@@ -32,8 +35,8 @@ class GenerationTab:
         self.setStyle()
         self.setButtons()
 
-    def onEntryTab(self):   
-        return
+    def onEntryTab(self):  
+        self.load_generation_strategy_() 
     
     def update(self):
         return
@@ -71,22 +74,11 @@ class GenerationTab:
 
         temperature = 1.5
 
-        # MARKOV
-        # self.melody = demo.generate_markov(self.mkv_generator, self.bars, 1)[0]
-        # self.melody = demo.generate_markov(self.mkv_generator, 64, 1)[0]
-        
         # MAGENTA
-        self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
+        print(self.generation_strategy)
+        self.melody = self.generation_strategy.generate_melodies(markov=self.mkv_generator, n_bars=self.bars, n_sims=1, temperature=temperature)[0]
         # self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
-        # RNN
-        # self.melody = demo.generate_rnn(self.bars, temperature)[0]
-        # self.melody = demo.generate_rnn(64, temperature)[0]
-
-        # CARGAR MELODIA EXISTENTE 
-        # (es solamente pasarle la ruta, porque todo los generate devuelven un array con la ruta)
-        # self.melody = "./Media/midi/output_song.mid"
-
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
 
 
@@ -183,4 +175,17 @@ class GenerationTab:
         self.preview_player.stop()
         self.preview_player = None
     
+    def load_generation_strategy_(self):
+        jsonPath = globalConsts.Paths.appConfigPath
+
+        # Leemos el JSON
+        with open(jsonPath, "r") as archivo:
+            datos = json.load(archivo)
+
+        # Modifica la variable deseada en el diccionario
+        generator = datos["melodyGenerator"]
+
+        if generator in generationStrategy.strategy_per_mode:
+            self.generation_strategy = generationStrategy.strategy_per_mode[generator]
+        
 
