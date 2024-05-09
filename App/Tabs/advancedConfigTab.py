@@ -187,7 +187,7 @@ class AdvancedConfigTab:
     def mixThemes(self):
         if not self.tematicas_aleatorias_var.get():
             return
-        print("qlo")
+
         for combo in self.generationComboboxes:
             theme = random.choice(list(TematicEnum))
             combo.set(theme.value)
