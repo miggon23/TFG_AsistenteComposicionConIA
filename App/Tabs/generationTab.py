@@ -18,7 +18,8 @@ import shutil
 
 class GenerationTab:
     
-    previewPlayer = None
+    preview_player = None
+    generation_strategy = None
 
     def __init__(self, tab):
         self.tab = tab
@@ -168,18 +169,18 @@ class GenerationTab:
         print("Tamborizacion completa")
 
     def playPreview(self):
-        if(self.previewPlayer != None and self.previewPlayer.is_playing()):
-            self.previewPlayer.stop()
+        if(self.preview_player != None and self.preview_player.is_playing()):
+            self.preview_player.stop()
 
         ps = Parser("./Media/midi/trasposed_song.mid")
         # TODO salida de errores si falla al parsear .mid
-        audio, self.previewPlayer = play_notes(*ps.parse(), np.sin, wait_done=False)
+        audio, self.preview_player = play_notes(*ps.parse(), np.sin, wait_done=False)
 
     def stopPreview(self):
-        if(self.previewPlayer == None):
+        if(self.preview_player == None):
             return
         
-        self.previewPlayer.stop()
-        self.previewPlayer = None
+        self.preview_player.stop()
+        self.preview_player = None
     
 

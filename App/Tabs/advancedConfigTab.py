@@ -1,9 +1,12 @@
 from tkinter import ttk
 from tkinter import *
+import json
+
 from App.AppEnums.generationModesEnum import GenerationMode
 from App.AppEnums.tematicEnum import TematicEnum
 from App.AppEnums.semitonesEnum import Semitones
 from App.AppEnums.melodicComplexityEnum import MelodicComplexity
+from Utils import globalConsts
 
 class AdvancedConfigTab: 
     generationComboboxes = []
@@ -41,10 +44,11 @@ class AdvancedConfigTab:
 
     def setCombobox(self):
         ttk.Label(self.tab, text="Generador de Melodías:  ").grid(row=0, column=0)
-        self.generationMode = StringVar()
+        self.generation_mode_var = StringVar()
         self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in GenerationMode],
-                                        textvariable=self.generationMode, state="readonly")
+                                        textvariable=self.generation_mode_var, state="readonly")
         self.comboGeneration.grid(row=0, column=1)
+        self.comboGeneration.bind("<<ComboboxSelected>>", self.saveGenerator)
 
         ttk.Label(self.tab, text="Complejidad melódica:    ").grid(row=1, column=0)
         self.complejidad = StringVar()
@@ -147,7 +151,7 @@ class AdvancedConfigTab:
     def onEntryTab(self):
         self.toggleMixedThemes()
     
-    # MARK: Callback
+    # MARK: CALLBACKS
 
     def toggleMixedThemes(self):
         mixThemes = self.mezclarTematicas.get()
@@ -165,7 +169,6 @@ class AdvancedConfigTab:
             label.grid()
         return
 
-
     def hideCombo(self):
         for combo in self.generationComboboxes:
             combo.grid_remove()
@@ -173,3 +176,18 @@ class AdvancedConfigTab:
         for label in self.generationLabels:
             label.grid_remove()
         return
+    
+    def saveGenerator(self, event = None):
+        generator = self.generation_mode_var.get()
+        jsonPath = globalConsts.Paths.appConfigPath
+
+        # Leemos el JSON
+        with open(jsonPath, "r") as archivo:
+            datos = json.load(archivo)
+
+        # Modifica la variable deseada en el diccionario
+        datos["melodyGenerator"] = generator
+
+        # Abre el archivo JSON en modo escritura
+        with open(jsonPath, "w") as archivo:
+            json.dump(datos, archivo, indent=4)
