@@ -95,10 +95,10 @@ class ModeSelectorTab:
     def setTooltips(self):
         ToolTip(self.instrument_seedEntry, msg = "Semilla de instrumentos", delay = self.tooltip_delay)
         ToolTip(self.instrument_seedEntry, msg = "Semilla de arreglos", delay = self.tooltip_delay)
-        ToolTip(self.savePreset_button, msg = "Save preset", delay=self.tooltip_delay)
+        ToolTip(self.savePreset_button, msg = "Guardar preset", delay=self.tooltip_delay)
         ToolTip(self.playButton, msg = "Guardar cambios y reproducir", delay=self.tooltip_delay)
-        ToolTip(self.presetCombobox, msg= "Saved presets", delay=self.tooltip_delay)
-        ToolTip(self.themes_combo, msg="Themes", delay=self.tooltip_delay)
+        ToolTip(self.presetCombobox, msg= "presets guardados", delay=self.tooltip_delay)
+        ToolTip(self.themes_combo, msg="Temáticas", delay=self.tooltip_delay)
         ToolTip(self.all_random_button, msg="Aleatorizar todas las semillas", delay=self.tooltip_delay)  
         ToolTip(self.instrument_random_button, msg="Aleatorizar semilla de instrumentos", delay=self.tooltip_delay)      
         ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)    
@@ -189,11 +189,11 @@ class ModeSelectorTab:
 
         #  -----------  Botón de guardar presets ---------------
         original_image = Image.open("App/Images/saveIcon.png")
-        resized_image = original_image.resize((60, 60), Image.LANCZOS) 
+        resized_image = original_image.resize((30, 30), Image.LANCZOS) 
         self.savePreset_image = ImageTk.PhotoImage(resized_image)
 
-        x = tab_width * 0.85
-        y = tab_height * 0.04
+        x = 220
+        y = 8
 
         self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
         self.savePreset_button.place(x=x, y=y)

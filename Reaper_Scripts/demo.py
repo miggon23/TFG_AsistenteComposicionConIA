@@ -146,7 +146,11 @@ def cargarMelodia(complejidad, tematica, patron, recortar = False, pos = -1):
             cargarMidi("midi/output_melody"+ estilo + ".mid")
 
     else:
-        cargarMidi("midi/output_melody" + complejidad_str + estilo + patron[3] +".mid")
+        if(complejidad == 2):
+            cargarMidi("midi/output_melody" + complejidad_str + estilo +".mid")
+        else:
+            cargarMidi("midi/output_melody" + complejidad_str + estilo + patron[3] +".mid")
+
 
 def cargarArmonia(complejidad, tematica, recortar = False, estandar = False):
 
@@ -2061,7 +2065,7 @@ else:
                                 if(complejidad == 1):   
                                     cont += 4
                                 else:
-                                    cont += 2
+                                    cont += 1
                     
                         RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
                         RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
