@@ -278,9 +278,11 @@ class AdvancedConfigTab:
         mix_themes_array = modeState.tematica_pistas
 
         i = 0
-        for combo in self.generationComboboxes:
+        for combo in self.generationComboboxes[:-1]:
             combo.set(self.idToEnumValue(mix_themes_array[i], TematicEnum))
             i+=1
+
+        self.generationComboboxes[-1].set(self.idToEnumValue(mix_themes_array[i], TematicDrumEnum))
 
     # MARK: PERSISTENCE
 
