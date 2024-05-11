@@ -1,16 +1,16 @@
 {
     "tematica": 1,
     "tematica_pistas": [
-        10,
-        11,
-        12,
-        4,
-        9,
         1,
-        3
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
     ],
     "tematicas_aleatorias": false,
-    "mezclar_tematicas": false,
+    "mezclar_tematicas": true,
     "complejidad": 2,
     "semitonos": 0,
     "reverb": 4,
@@ -21,5 +21,5 @@
     "dream": false,
     "vintage": false,
     "seed_instrumentos": "1p0mC",
-    "seed_arreglo": "JNn7r"
+    "seed_arreglo": "wAg7t"
 }

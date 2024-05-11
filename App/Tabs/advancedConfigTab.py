@@ -170,6 +170,7 @@ class AdvancedConfigTab:
         self.toggleMixedThemes()
     
     def onExitTab(self):
+        self.save_mixed_themes()
         self.save_configuration_()
 
     # MARK: CALLBACKS
@@ -205,14 +206,16 @@ class AdvancedConfigTab:
             label.grid_remove()
 
     def mix_themes(self):
-        if not self.tematicas_aleatorias_var.get():
-            return
 
-        for combo in self.generationComboboxes:
-            theme = random.choice(list(TematicEnum))
-            combo.set(theme.value)
-
-        self.save_mixed_themes()
+        if self.tematicas_aleatorias_var.get() == True:
+            for combo in self.generationComboboxes:
+                theme = random.choice(list(TematicEnum))
+                combo.set(theme.value)
+        else:
+            current_theme = self.modeSelectorTab.get_state().tematica
+            theme_string = self.idToEnumValue(current_theme, TematicEnum)
+            for combo in self.generationComboboxes:
+                combo.set(theme_string)
 
 
     def save_mixed_themes(self, event = None):
@@ -264,7 +267,7 @@ class AdvancedConfigTab:
         semitones = modeState.semitonos
         self.semitones_var.set(semitones)
         self.update_semitones()
-
+  
         complexity = self.idToEnumValue(modeState.complejidad, MelodicComplexity)
         self.complexity_var.set(complexity)
 
