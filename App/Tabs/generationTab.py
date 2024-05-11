@@ -38,6 +38,10 @@ class GenerationTab:
     def onEntryTab(self):  
         self.load_generation_strategy_() 
     
+    
+    def onExitTab(self):
+        return
+
     def update(self):
         return
 
@@ -71,10 +75,9 @@ class GenerationTab:
 
         self.bars = 8
 
-        temperature = 1.5
-
+        print(f"Generando con {self.temperature} de temperatura")
         # MAGENTA
-        self.melody = self.generation_strategy.generate_melodies(markov=self.mkv_generator, n_bars=self.bars, n_sims=1, temperature=temperature)[0]
+        self.melody = self.generation_strategy.generate_melodies(markov=self.mkv_generator, n_bars=self.bars, n_sims=1, temperature=self.temperature)[0]
         # self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
@@ -176,14 +179,17 @@ class GenerationTab:
     def load_generation_strategy_(self):
         jsonPath = globalConsts.Paths.appConfigPath
 
-        # Leemos el JSON
         with open(jsonPath, "r") as archivo:
             datos = json.load(archivo)
 
-        # Modifica la variable deseada en el diccionario
         generator = datos["melodyGenerator"]
+        temperature = datos["temperature"]
 
         if generator in generationStrategy.strategy_per_mode:
             self.generation_strategy = generationStrategy.strategy_per_mode[generator]
+
+        # Recuperamos también la temperatura para el generador
+        self.temperature = temperature
+        
         
 

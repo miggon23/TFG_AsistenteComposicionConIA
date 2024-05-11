@@ -33,6 +33,8 @@ class ConfigurationTab:
         reaper_path = datos["reaperPath"]
         self.pathString.set(reaper_path)
 
+    def onExitTab(self):
+        return
 
     def update(self):
         return

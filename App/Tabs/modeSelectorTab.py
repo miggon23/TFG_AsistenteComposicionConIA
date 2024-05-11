@@ -62,6 +62,9 @@ class ModeSelectorTab:
         self.resize_image()
         self.check_mixed_themes()
 
+    def onExitTab(self):
+        return
+
     # MARK: CHECKBOXES
     
     def setCheckboxes(self):
@@ -279,7 +282,7 @@ class ModeSelectorTab:
     def playReaper(self):
         self.onUpdateSeed()
 
-        self.saveState()
+        self.save_state()
         self.reaperStream.SetUp()
 
     def idToEnumValue(self, id, enum):
@@ -313,7 +316,7 @@ class ModeSelectorTab:
         modeState = ModeState.fromJSON(jsonPath)
         self.recoverState(modeState)
 
-    def saveState(self):
+    def save_state(self):
         jsonPath = globalConsts.Paths.mediaSettings
         dataJSONString = self.modeState.toJSON()
 

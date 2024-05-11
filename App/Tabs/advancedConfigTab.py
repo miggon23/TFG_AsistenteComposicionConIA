@@ -32,8 +32,8 @@ class AdvancedConfigTab:
             background=[("active", "red")],
             foreground=[("active", "red")]
             )
-        self.temperature_var = IntVar()
-        self.slider_temperature = ttk.Scale(self.tab, from_=0, to=4, style="TScale", command=self.saveTemperature, variable=self.temperature_var)
+        self.temperature_var = DoubleVar()
+        self.slider_temperature = ttk.Scale(self.tab, from_=1.0, to=4.0, style="TScale", command=self.update_temperature, variable=self.temperature_var)
         self.slider_temperature.grid(row=2, column=1)
 
         # ---- Semitones ----
@@ -41,7 +41,7 @@ class AdvancedConfigTab:
         self.vary_semitones_label.grid(row=3, column=0)
 
         self.semitones_var = IntVar()
-        slider = ttk.Scale(self.tab, from_=-6, to=6, orient="horizontal", command=self.saveSemitones, value= 0, variable=self.semitones_var)
+        slider = ttk.Scale(self.tab, from_=-6, to=6, orient="horizontal", command=self.update_semitones, value= 0, variable=self.semitones_var)
         slider.grid(row=3, column=1)
 
     def setCombobox(self):
@@ -145,12 +145,15 @@ class AdvancedConfigTab:
         self.generationComboboxes.append(self.comboGeneration7)
         self.generationLabels.append(self.tLabel7)
 
-    def saveSemitones(self, event):
+    def update_semitones(self, event = None):
         semitones = self.semitones_var.get()
         self.vary_semitones_label.config(text = f"Variar semitonos: {semitones}")
 
-    def saveTemperature(self, event):
+    def update_temperature(self, event = None):
         temperature = self.temperature_var.get()
+        temperature = round(temperature, 1)
+        self.temperature_var.set(temperature)
+
         self.temperature_label.config(text=f"Temperatura: {temperature}")
 
     def setTooltips():
@@ -163,6 +166,9 @@ class AdvancedConfigTab:
         self.recover_state()
         self.toggleMixedThemes()
     
+    def onExitTab(self):
+        self.save_configuration_()
+
     # MARK: CALLBACKS
 
     def toggleMixedThemes(self):
@@ -211,7 +217,7 @@ class AdvancedConfigTab:
 
         for combo in self.generationComboboxes:
             theme = combo.get()
-            if(theme is not ""):
+            if(theme != ""):
                 themes_array.append(self.NameEnumToId(theme, TematicEnum))
 
         modeState = self.modeSelectorTab.get_state()
@@ -245,13 +251,41 @@ class AdvancedConfigTab:
             datos = json.load(archivo)
 
         generator = datos["melodyGenerator"]
+        temperature = datos["temperature"]
 
         self.generation_mode_var.set(generator)
+        self.temperature_var.set(temperature)
+        self.update_temperature()
 
         modeState = self.modeSelectorTab.get_state()
+        semitones = modeState.semitonos
+        self.semitones_var.set(semitones)
+        self.update_semitones()
         mix_themes_array = modeState.tematica_pistas
 
         i = 0
         for combo in self.generationComboboxes:
             combo.set(self.idToEnumValue(mix_themes_array[i], TematicEnum))
             i+=1
+
+    # MARK: PERSISTENCE
+
+    def save_configuration_(self):
+        temperature = self.temperature_var.get()
+
+        jsonPath = globalConsts.Paths.appConfigPath
+
+        with open(jsonPath, "r") as archivo:
+            datos = json.load(archivo)
+
+        datos["temperature"] = temperature
+
+        with open(jsonPath, "w") as archivo:
+            json.dump(datos, archivo, indent=4)
+
+        semitones = self.semitones_var.get()
+        modeState = self.modeSelectorTab.get_state()
+        modeState.semitonos = semitones
+        self.modeSelectorTab.save_state()
+
+
