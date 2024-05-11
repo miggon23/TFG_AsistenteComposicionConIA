@@ -44,6 +44,8 @@ class AdvancedConfigTab:
         slider = ttk.Scale(self.tab, from_=-6, to=6, orient="horizontal", command=self.update_semitones, value= 0, variable=self.semitones_var)
         slider.grid(row=3, column=1)
 
+    # MARK: COMBOBOX
+
     def setCombobox(self):
         ttk.Label(self.tab, text="Generador de Melodías:  ").grid(row=0, column=0)
         self.generation_mode_var = StringVar()
@@ -69,8 +71,8 @@ class AdvancedConfigTab:
 
         ttk.Label(self.tab, text="                                     ", justify=RIGHT).grid(row=0, column=2)
 
-        self.mezclarTematicas = BooleanVar()
-        ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclarTematicas, command=self.toggleMixedThemes).grid(row=0, column=3)
+        self.mezclar_tematicas_var = BooleanVar()
+        ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclar_tematicas_var, command=self.toggleMixedThemes).grid(row=0, column=3)
         self.tematicas_aleatorias_var = BooleanVar()
         self.tematica_aleatoria_checkbutton = ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicas_aleatorias_var, command=self.mix_themes)
         self.tematica_aleatoria_checkbutton.grid(row=1, column=3)
@@ -176,7 +178,7 @@ class AdvancedConfigTab:
     # MARK: CALLBACKS
 
     def toggleMixedThemes(self):
-        mixThemes = self.mezclarTematicas.get()
+        mixThemes = self.mezclar_tematicas_var.get()
 
         if(mixThemes):
             self.show_combo()
@@ -267,6 +269,7 @@ class AdvancedConfigTab:
         semitones = modeState.semitonos
         self.semitones_var.set(semitones)
         self.update_semitones()
+        self.mezclar_tematicas_var.set(modeState.mezclar_tematicas)
   
         complexity = self.idToEnumValue(modeState.complejidad, MelodicComplexity)
         self.complexity_var.set(complexity)
