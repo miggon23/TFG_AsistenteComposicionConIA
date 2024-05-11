@@ -79,6 +79,8 @@ def estiloDrums(tematica):
         estilo = random.choice(["BASIC", "LATIN", "ROCK"])
     elif(tematica == 12):
         estilo = random.choice(["DISCO", "DISCO", "DISCO"])
+    elif(tematica == 13):
+        estilo = random.choice(["DEMBOW", "DEMBOW", "DEMBOW"])
 
     return estilo
 
@@ -1092,6 +1094,11 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    
+    # Dembow
+    elif(tematica == 13):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cassette 909 (BPB) (32 out)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista7tematica12_5")
         
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
@@ -1105,9 +1112,9 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cymatics Diablo Lite (Cymatics)", False, -1)
-    if (tematica == 10):
+    if (tematica == 10 or tematica == 13):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums2")
-    else:
+    else:  
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
 
     if dream:        

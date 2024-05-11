@@ -133,6 +133,10 @@ class Make_Beat:
                     elif rushed: j -= rushedN
                     list[j] = Note.AcousticSnare.value
                     if double2: list[j + double2N] = Note.AcousticSnare.value
-                    
+        
+        elif(style.value == Style.DEMBOW.value):
+            for i in range(4):
+                j = (i-1)*4
+                list[j] = Note.BassDrum.value   
+        
         return list
-    

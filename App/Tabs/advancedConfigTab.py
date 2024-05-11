@@ -4,6 +4,7 @@ import json
 
 from App.AppEnums.generationModesEnum import GenerationMode
 from App.AppEnums.tematicEnum import TematicEnum
+from App.AppEnums.tematicEnum import TematicDrumEnum
 from App.AppEnums.semitonesEnum import Semitones
 from App.AppEnums.melodicComplexityEnum import MelodicComplexity
 from Utils import globalConsts
@@ -141,7 +142,7 @@ class AdvancedConfigTab:
         self.tLabel7 = ttk.Label(self.tab, text="Temática batería:                     ")
         self.tLabel7.grid(row=8, column=3)
         self.tematicaPista7 = StringVar()
-        self.comboGeneration7 = ttk.Combobox(self.tab, values=[option.value for option in TematicEnum],
+        self.comboGeneration7 = ttk.Combobox(self.tab, values=[option.value for option in TematicDrumEnum],
                                         textvariable=self.tematicaPista7, state="readonly")
         self.comboGeneration7.grid(row=8, column=4)
         self.comboGeneration7.bind("<<ComboboxSelected>>", self.save_mixed_themes)
@@ -226,7 +227,7 @@ class AdvancedConfigTab:
         for combo in self.generationComboboxes:
             theme = combo.get()
             if(theme != ""):
-                themes_array.append(self.NameEnumToId(theme, TematicEnum))
+                themes_array.append(self.NameEnumToId(theme, TematicDrumEnum))
 
         modeState = self.modeSelectorTab.get_state()
         modeState.tematica_pistas = themes_array
