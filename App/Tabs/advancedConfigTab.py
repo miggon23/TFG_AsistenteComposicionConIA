@@ -50,7 +50,7 @@ class AdvancedConfigTab:
         self.comboGeneration = ttk.Combobox(self.tab, values=[option.value for option in GenerationMode],
                                         textvariable=self.generation_mode_var, state="readonly")
         self.comboGeneration.grid(row=0, column=1)
-        self.comboGeneration.bind("<<ComboboxSelected>>", self.saveGenerator)
+        self.comboGeneration.bind("<<ComboboxSelected>>", self.save_generator)
 
         ttk.Label(self.tab, text="Complejidad melódica:    ").grid(row=1, column=0)
         self.complejidad = StringVar()
@@ -71,7 +71,7 @@ class AdvancedConfigTab:
         self.mezclarTematicas = BooleanVar()
         ttk.Checkbutton(self.tab, text="Mezclar temáticas              ", variable=self.mezclarTematicas, command=self.toggleMixedThemes).grid(row=0, column=3)
         self.tematicas_aleatorias_var = BooleanVar()
-        self.tematica_aleatoria_checkbutton = ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicas_aleatorias_var, command=self.mixThemes)
+        self.tematica_aleatoria_checkbutton = ttk.Checkbutton(self.tab, text="Temáticas aleatorias           ", variable=self.tematicas_aleatorias_var, command=self.mix_themes)
         self.tematica_aleatoria_checkbutton.grid(row=1, column=3)
         
         self.tLabel1 = ttk.Label(self.tab, text="Temática melodía 1:                  ")
@@ -169,11 +169,14 @@ class AdvancedConfigTab:
         mixThemes = self.mezclarTematicas.get()
 
         if(mixThemes):
-            self.showCombo()
+            self.show_combo()
         else:
-            self.hideCombo()
+            self.hide_combo()
 
-    def showCombo(self):
+        modeState = self.modeSelectorTab.get_state()
+        modeState.mezclar_tematicas = mixThemes
+
+    def show_combo(self):
         self.tematica_aleatoria_checkbutton.grid()
 
         for combo in self.generationComboboxes:
@@ -183,7 +186,7 @@ class AdvancedConfigTab:
             label.grid()
   
 
-    def hideCombo(self):
+    def hide_combo(self):
         self.tematica_aleatoria_checkbutton.grid_remove()
 
         for combo in self.generationComboboxes:
@@ -192,7 +195,7 @@ class AdvancedConfigTab:
         for label in self.generationLabels:
             label.grid_remove()
 
-    def mixThemes(self):
+    def mix_themes(self):
         if not self.tematicas_aleatorias_var.get():
             return
 
@@ -203,7 +206,7 @@ class AdvancedConfigTab:
         self.save_mixed_themes()
 
 
-    def save_mixed_themes(self, event):
+    def save_mixed_themes(self, event = None):
         themes_array = []
 
         for combo in self.generationComboboxes:
@@ -220,7 +223,7 @@ class AdvancedConfigTab:
     def NameEnumToId(self, themeName, enum):
         return [member.value for member in enum].index(themeName)
 
-    def saveGenerator(self, event = None):
+    def save_generator(self, event = None):
         generator = self.generation_mode_var.get()
         jsonPath = globalConsts.Paths.appConfigPath
 
@@ -244,3 +247,11 @@ class AdvancedConfigTab:
         generator = datos["melodyGenerator"]
 
         self.generation_mode_var.set(generator)
+
+        modeState = self.modeSelectorTab.get_state()
+        mix_themes_array = modeState.tematica_pistas
+
+        i = 0
+        for combo in self.generationComboboxes:
+            combo.set(self.idToEnumValue(mix_themes_array[i], TematicEnum))
+            i+=1

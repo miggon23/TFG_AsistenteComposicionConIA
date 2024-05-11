@@ -24,6 +24,9 @@ class ModeSelectorTab:
 
     background_filter_id = None
 
+    tab_width = 1152
+    tab_height = 648
+
     def __init__(self, tab):
         self.tab = tab
 
@@ -57,6 +60,7 @@ class ModeSelectorTab:
         
     def onEntryTab(self):
         self.resize_image()
+        self.check_mixed_themes()
 
     # MARK: CHECKBOXES
     
@@ -96,6 +100,18 @@ class ModeSelectorTab:
         ToolTip(self.instrument_random_button, msg="Aleatorizar semilla de instrumentos", delay=self.tooltip_delay)      
         ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)    
         ToolTip(self.combo_reverb, msg = "Entorno", delay=self.tooltip_delay)  
+
+    def check_mixed_themes(self):
+        x = (self.tab_width) / 2 - 130
+        y = (self.tab_height) / 2 - 270
+
+        if self.modeState.mezclar_tematicas:
+            self.themes_combo.place_forget()
+            self.mixed_themes_label.place(x = x + 25, y = y + 10)
+        else:
+            self.themes_combo.place(x = x, y = y)
+            self.mixed_themes_label.place_forget()
+
 
     # MARK: BUTTONS
 
@@ -191,6 +207,7 @@ class ModeSelectorTab:
         x = (1152) / 2 - 130
         y = (648) / 2 - 270
         self.themes_combo.place(x=x, y=y)
+        self.mixed_themes_label = Label(self.canvas, text="\"Mezclar temáticas activo\"", foreground="green")
 
         
         self.current_reverb = StringVar()
