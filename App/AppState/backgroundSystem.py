@@ -105,6 +105,12 @@ class BackgroundSystem:
 
             i += 1
 
+        clave = "color_mezcla"
+        route = "color_mezcla"
+        valor = load_image(route)
+        self.img_map[clave] = valor
+
+
     def initBackground_(self):            
 
         self.placeholder = self.img_map["dream"]
@@ -224,6 +230,7 @@ class BackgroundSystem:
         if(self.background_color_id != None):
             self.canvas.delete(self.background_color_id)
             self.background_color_id = None
+
 
         self.background_color_pil = self.img_map[theme+"_color"]
         self.background_color = ImageTk.PhotoImage(self.background_color_pil)
