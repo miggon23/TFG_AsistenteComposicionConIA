@@ -1,5 +1,5 @@
 {
     "reaperPath": "C:\\Program Files\\REAPER (x64)\\reaper.exe",
-    "melodyGenerator": "RNN",
+    "melodyGenerator": "MAGENTA",
     "temperature": 1.5
 }

@@ -52,11 +52,12 @@ class AdvancedConfigTab:
         self.comboGeneration.grid(row=0, column=1)
         self.comboGeneration.bind("<<ComboboxSelected>>", self.save_generator)
 
-        ttk.Label(self.tab, text="Complejidad melódica:    ").grid(row=1, column=0)
-        self.complejidad = StringVar()
-        self.comboComplejidad = ttk.Combobox(self.tab, values=[option.value for option in MelodicComplexity],
-                                        textvariable=self.complejidad, state="readonly")
-        self.comboComplejidad.grid(row=1, column=1)
+        self.complexity_label = ttk.Label(self.tab, text="Complejidad melódica:    ")
+        self.complexity_label.grid(row=1, column=0)
+        self.complexity_var = StringVar()
+        self.comboComplexity = ttk.Combobox(self.tab, values=[option.value for option in MelodicComplexity],
+                                        textvariable=self.complexity_var, state="readonly")
+        self.comboComplexity.grid(row=1, column=1)
 
         # ttk.Label(self.tab, text="Variar tonalidad:              ").grid(row=2, column=0)
         # self.variarSemitonos = StringVar()
@@ -155,6 +156,8 @@ class AdvancedConfigTab:
         self.temperature_var.set(temperature)
 
         self.temperature_label.config(text=f"Temperatura: {temperature}")
+
+    
 
     def setTooltips():
         return
@@ -261,6 +264,10 @@ class AdvancedConfigTab:
         semitones = modeState.semitonos
         self.semitones_var.set(semitones)
         self.update_semitones()
+
+        complexity = self.idToEnumValue(modeState.complejidad, MelodicComplexity)
+        self.complexity_var.set(complexity)
+
         mix_themes_array = modeState.tematica_pistas
 
         i = 0
@@ -284,8 +291,12 @@ class AdvancedConfigTab:
             json.dump(datos, archivo, indent=4)
 
         semitones = self.semitones_var.get()
+        complexity = self.complexity_var.get()
+
         modeState = self.modeSelectorTab.get_state()
         modeState.semitonos = semitones
+        modeState.complejidad = self.NameEnumToId(complexity, MelodicComplexity)
+
         self.modeSelectorTab.save_state()
 
 

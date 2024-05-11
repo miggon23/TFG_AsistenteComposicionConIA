@@ -6,7 +6,7 @@ class ModeState:
     tematica_pistas = [0,1,2,3,4,5,6]
     tematicas_aleatorias = False
     mezclar_tematicas = False
-    complejidad = 3
+    complejidad = 1
     semitonos = 0
     reverb = 0
     lofi = False

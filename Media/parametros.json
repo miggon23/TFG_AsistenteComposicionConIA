@@ -11,7 +11,7 @@
     ],
     "tematicas_aleatorias": false,
     "mezclar_tematicas": false,
-    "complejidad": 0,
+    "complejidad": 2,
     "semitonos": 0,
     "reverb": 4,
     "lofi": false,
@@ -20,6 +20,6 @@
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed_instrumentos": "2NZV0",
-    "seed_arreglo": "qt6fJ"
+    "seed_instrumentos": "1p0mC",
+    "seed_arreglo": "JNn7r"
 }
