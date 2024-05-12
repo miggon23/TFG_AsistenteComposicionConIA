@@ -1097,8 +1097,8 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     
     # Dembow
     elif(tematica == 13):
-        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cassette 909 (BPB) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista7tematica12_5")
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "AfroPlugin (AfroPlug) (32 out)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista7tematica13")
         
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
