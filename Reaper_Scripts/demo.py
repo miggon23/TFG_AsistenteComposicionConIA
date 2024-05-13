@@ -209,9 +209,7 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset, semitonos):
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     if(i == 1):
-        if(tematica == 10):
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveDown") 
-        elif(tematica == 11 or tematica == 12):
+        if(tematica == 11 or tematica == 12):
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "") 
         else:
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveUp")
@@ -918,7 +916,9 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_bajo, preset_arpegio,
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "dream"+str(random.randint(0, 9))) 
-
+    elif (tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "sidechain1")
 
 #Batería instrumento 7   
 def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
@@ -1112,7 +1112,7 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cymatics Diablo Lite (Cymatics)", False, -1)
-    if (tematica == 10 or tematica == 13):
+    if (tematica == 10 or tematica == 12 or tematica == 13):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums2")
     else:  
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
@@ -1959,7 +1959,7 @@ for i in range(8):
         RPR_SetEditCurPos(i * 16 + 14, True, True)
         cargarMidi("midi/fillTemplate.mid")
         fill_n += 1
-    if (tematica_pistas[6] != 12):
+    if (tematica_pistas[6] != 12 and tematica_pistas[6] != 13):
         if arreglo[6][i]:
             
             if(i < 6):
