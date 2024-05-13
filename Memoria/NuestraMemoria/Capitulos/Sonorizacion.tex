@@ -1,24 +1,166 @@
 \chapter{Sonorización del Proyecto}
 
 \section{¿Qué es una DAW?}
+Una DAW (Digital Audio Workstation) o estación de trabajo de audio digital, es un programa capaz de grabar y editar audio, producir, mezclar y masterizar música. Algunos ejemplos de DAWs populares son Ableton Live, Pro Tools, FL Studio o Reaper(\ref{sec:reaper}), siendo esta última la que usaremos en nuestra herramienta.
+%Logos de un par de DAWs?
+
+\section{REAPER}\label{sec:reaper}
+Reaper es la DAW que usaremos para generar sonido usando nuestra app. Hemos escogido esta DAW por la facilidad que nos brinda para lanzar scripts sobre ella y por su precio, ya que cuenta con un periodo de prueba gratuito de 60 días con todas las funiconalidades del programa completo.
+
+Para preparar Reaper para trabajar con nuestra herramienta, consular el manual de usuario (\ref{subsec:manual-reaper}).
+
+\subsection{ReaScript}\label{subsec:reascripy}
+
+Uno de los puntos fuertes de Reaper es su capacidad para ejecutar scripts, contando incluso con un editor de texto integrado donde podemos escribir scripts en Lua y Eel (un lenguaje de scripting propio de Reaper). 
+
+A parte de usando esos dos lenguajes, podemos llamar a las funciones de la API de ReaScript usando Python. Esta es la opción que hemos elegido por la comodidad que ofrece a la hora de programar.
+
+Una vez escrito un script de python y habilitado python (manual de usuario \ref{subsec:manual-reaper}) podremos usar las acciones de Reaper para lanzar nuestro script. De forma alternativa, podemos lanzar el script sobre python desde fuera, como lo hacemos desde la ventana de la herramienta (\ref{sec:TK:app})
+
 \section{Instrumentos}
+Para poder generar audio usando una DAW, necesitamos alguna forma de sintetizar o de reproducir sonidos. Para obtener esos sonidos, la primera opción que tenemos en una DAW es grabar audio, pero en nuestro caso no es una opción a tener en cuenta, ya que requiere de bastante intervención humana. 
+
+La forma entonces en la que podemos usar una DAW es reproducir sonidos sampleados o sintetizar sonidos en tiempo real. En una DAW, podemos cargar música simbólica, generalmente en formato MIDI (\ref{subsec:que-es-midi}), en una pista. A continuación, podemos añadirle a esa pista un plugin de instrumento virtual, el cuál convertirá el MIDI en sonido.
 
 \subsection{¿Qué es un plugin?}\label{subsec:plugin}
+Un plugin es un software externo (generalmente) que se carga en una DAW, en nuestro caso Reaper, para añadir distintas funcionalidades. En el ámbito de la producción musical, los plugins son fundamentales, ya que nos proporcionan instrumentos virtuales para generar sonidos y distintos efectos para manipular ese sonido.
 
-\section{REAPER}
+Argunos formatos comunes de plugins en Windows son los VSTs o las DLLs. Hay algunos otros formatos como AAX o AU, por ejemplo para dispositivos MAC, pero los que usaremos en nuestra herramienta son los .vst3 y .dll. 
 
-\subsection{Plugins utilizados}
+Podemos separar los plugins en varios tipos. Las dos categorías más comunes son la de los efectos de audio y la de los instrumentos virtuales. 
 
-    \subsubsection{BlueArp}\label{subsec:bluearp}
-    \subsubsection{Humanizador}
-    \subsubsection{Reverb}
-    \subsubsection{Mezcla}
-    \subsubsection{Efectos en la mezcla}
+A su vez, los instrumentos virtuales pueden separarse en varias categorías:
+\begin{itemize}
+    \item \textbf{Instrumentos sampleados}: Para la mayoría de timbres, ofrecen la mejor calidad de audio posible, ya que lo que hacen es reproducir una muestra pregrabada al recibir un input MIDI. El número de muestras puede variar desde una muestra cada varias notas hasta decenas de muestras por nota, dependiendo de la velocidad de la nota (en un piano la intensidad con la que se toca una tecla, por ejemplo), o incluso varias muestras para una misma nota y misma velocidad (por ejemplo en un instrumento de percusión, golpeando en distintas zonas del tambor). Son instrumentos que ocupan muchos gigabytes de almacenamiento, ya que las muestras en formatos de buena calidad (como el wav) ocupan mucha memoria.
+    \item \textbf{Sintetizadores}: Crean sonido a mezclando distintas formas de onda, envolventes y efectos\footnote{\url{https://es.wikipedia.org/wiki/Sintetizador}}. Suelen usarse tradicionalmente en géneros de música más tirando a electrónica, pero hoy en día hay muchos usos para este tipo de instrumentos, ya que pueden usarse para recrear de forma más o menos realista la mayoría de timbres que podamos necesitar. Al no usar sonidos pregrabados, son alternativas muy ligeras a los instrumentos sampleados.
+    \item \textbf{Instrumentos mixtos}: Son menos comunes pero no por ello ofrecen menos posibilidades, combinan muestras de sonidos o instrumentos reales con sonidos sintetizados en tiempo real.
+\end{itemize}
+Habiendo visto las opciones que tenemos, hemos decidido decantarnos principalmente por los instrumentos sintetizados, que si bien no nos proporcionan la mayor calidad posible, nos permiten contar con un catálogo de timbres muy diversos. Además, el usuario final de la herramienta puede cambiar facilmente dentro de Reaper los instrumentos cargados por otros plugins externos de su elección que haya instalado.
+
+Además de generar sonidos, hay multitud de tareas que pueden realizar los plugins, como transformar el sonido o el MIDI, añadir reverberación, eco u otros efectos que veremos a continuación. Estos plugins se denominan plugins de efectos.
+
+Reaper incluye algunos plugins de efectos de base, pero apenas tiene instrumentos virtuales, al contrario que otras DAWs populares que incluyen una buena cantidad de estos en su versión básica. Los efectos principales se nombran más adelante (\ref{subsec:plugins-utilizados}).
 
 \subsection{Presets}
+Reaper nos permite guardar configuraciones de un plugin para usarlas más adelante, esto es lo que se conoce como \textit{preset}. La mayoría de plugins también permiten la opción de guardar presets dentro de su propia interfaz. Y de hecho, suelen traer algunos presets ya creados por el fabricante del plugin con sonidos o efectos que funcionan y que hemos aprovechado para nuestros presets.
 
-\section{Temáticas musicales}
+\subsection{Plugins utilizados}\label{subsec:plugins-utilizados}
+Vamos a detallar los timbres y los efectos más importantes presentes en las canciones generadas por la herramienta así como los plugins concretos que hemos usado para generarlos. 
 
-\section{Algoritmos de sonorización de MIDI}
+En la figura \ref{fig:Efectos-acompañamiento} podemos ver la cadena de efectos que utilizamos para una pista de acompañamiento (\ref{subsec:instrumentos-principales}). Es similar a la cadena de efectos que usamos en otras pistas, añadiendo o quitando algún plugin dependiendo de las necesidades que hay que cumplir
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{Imagenes/Bitmap/EfectosPistaAcompañamiento.png}
+    \caption{Plugins en la pista de acompañamiento}
+    \label{fig:Efectos-acompañamiento}
+\end{figure}
+
+La lista completa de plugins que hemos utilizado puede encontrarse en el Apéndice \ref{Appendix:Key1}.
+
+    \subsubsection{Instrumentos virtuales}\label{subsubsec:bluearp}
+Hemos usado un gran número de plugins de instrumentos virtuales para lograr un amplio catálogo de timbres que cubren las distintas temáticas (\ref{sec:tematicas}) y ofrecen variedad tímbrica para estas, ya que tenemos varios presets para cada pista (\ref{sec:pistas}) y temática. Hemos priorizado la facilidad de instalación a la vez que la variedad, por eso usamos principalmente instrumentos sintetizados que simulan los timbres que buscamos.
+
+En la figura \ref{fig:Efectos-acompañamiento}, el instrumento virtual que hay cargado es el cuarto elemento (DPiano-A).
+
+\subsubsection{Plugins auxiliares}\label{subsubsec:bluearp}
+Utilizamos algunos plugins que nos proporciona Reaper para realizar algunas tareas:
+
+\begin{itemize}
+    \item \textbf{Transponer notas}: modificamos la señal MIDI recibida para subir o bajar semitonos dependiendo de la configuración recibida desde la app. En algunas pistas también usamos este plugin para subir o bajar una octava entera.
+
+    \item \textbf{Comprimir y limitar}: cargamos dos plugins, ReaComp y ReaLimit, para intentar igualar el volumen lo máximo posible entre los distintos instrumentos.
+    
+    \item \textbf{Ecualizar}: cargamos un plugin ReaEQ para ecualizar el sonido. Junto con la compresión, logramos que el sonido de la pista se mezcle con el del resto de pistas de la mejor forma posible, dando a cada pista su espacio en el espectro de frecuencias.  
+    
+\end{itemize}
+
+
+
+    \subsubsection{\textit{BlueArp}}\label{subsubsec:bluearp}
+\textit{BlueArp} es uno de los plugins de efectos principales que utilizamos. Es un tipo de plugin que recibe una señal MIDI (\ref{subsec:que-es-midi}) y la convierte en otra. Para que esto funcione debemos colocarlo antes en la cadena de efectos que los instrumentos virtuales, para transformar el MIDI antes de que sea convertido en sonido.
+
+El principal uso de el plugin \textit{BlueArp} es hacer el trabajo de un arpegiador. Los arpegiadores reciben un acorde y lo transforman en un acorde arpegiado (\ref{subsec:arpegios}). En nuestro caso, a parte de usarlo como arpegiador, lo usamos también para generar ritmos de acordes, líneas de bajo (\ref{sec:lineas-de-bajo}), \textit{drum fills} (\ref{subsubsec:drum-fills}), \textit{ear candy} (\ref{sec:ear-candy})
+
+En la figura \ref{fig:BlueArp} podemos ver la interfaz del plugin \textit{BlueArp}. En la parte derecha de esta imagen podemos observar el patrón que transformará el MIDI entrante, un patrón de arpegio común. Este patrón tiene en cuenta la posición de las notas en un acorde comenzando por la nota más grave teniendo en cuenta que el acorde puede estar invertido (\ref{subsec:inversiones})
+
+En la figura \ref{fig:CArpegiadoenMIDI} podemos ver primero un acorde de C en su forma básica. Esta será la señal MIDI que reciba el plugin arpegiador. A su derecha, la transformación que ha sufrido el MIDI tras pasar por BlueArp (con la configuración de la figura \ref{fig:BlueArp}). 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.9\textwidth]{Imagenes/Bitmap/BlueArp.png}
+    \caption{Interfaz de BlueArp haciendo un arpegio}
+    \label{fig:BlueArp}
+\end{figure}
+    
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.45\textwidth]{Imagenes/Bitmap/DoMayorMidi.png}
+    \includegraphics[width = 0.45\textwidth]{Imagenes/Bitmap/DoMayorMidiArpegiado.png}
+    \caption{Acorde de C en MIDI arpegiado}
+    \label{fig:CArpegiadoenMIDI}
+\end{figure}
+
+A parte de generar arpegios, de manera similar podemos usar \textit{BlueArp} para generar acordes enteros en una misma figura (en lugar de sólo una nota).
+
+Lo mismo sucede cuando queremos hacer una línea de bajo (\ref{sec:lineas-de-bajo}), 
+cargamos un MIDI con acordes en la pista del bajo y usamos \textit{BlueArp} para que la señal MIDI resultante sólo tenga una nota cada vez, que será principalmente la nota fundamental del acorde.
+    
+    \subsubsection{Humanizador}\label{subsubsec:humanizador}
+A la hora de producir una canción, si vas a crear los sonidos usando instrumentos virtuales en lugar de grabarlos, el productor puede encontrarse con que la música generada puede sonar robótica, sin vida. Esto se debe a que el MIDI es muy preciso en velocidad y tempo, hasta el punto de que no es realista el sonido que se obtiene, ya que ningún músico toca con la precisión perfecta de un ordenador.
+
+Para solucionar este problema existe la humanización. En Reaper, podemos humanizar las notas en el propio rodillo de piano pulsando la tecla H. Como la idea es que nuestra herramienta requiera la menor intervención humana posible, podemos explorar otras alternativas para humanizar el MIDI.
+
+Usaremos un plugin de efectos, que transformará el MIDI en otra señal MIDI, al igual que hacía \textit{BlueArp}. En concreto, hemos elegido el \textit{Humanisator} de \textit{Toby Bear}. Con este plugin transformamos una señal MIDI con una velocidad fija y a tempo exacto en una señal MIDI humanizada. Por ejemplo, en la figura \ref{fig:CArpegiadoenMIDIHumanizado} convertimos el acorde que arpegiamos con BlueArp en la figura \ref{fig:CArpegiadoenMIDI} en un acorde arpegiado humanizado (el color representa la velocidad de la nota), que ahora se parecería bastante a lo que un teclista grabaría con un controlador MIDI\footnote{\url{https://soundsmarket.com/blog/controlador-midi}}.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.45\textwidth]{Imagenes/Bitmap/DoMayorMidiArpegiado.png}
+    \includegraphics[width = 0.45\textwidth]{Imagenes/Bitmap/DoMayorMidiArpegiadoHumanizado.png}
+    \caption{Acorde de C en MIDI arpegiado humanizado}
+    \label{fig:CArpegiadoenMIDIHumanizado}
+\end{figure}
+
+    \subsubsection{\textit{Delay}}\label{subsubsec:delay}
+El efecto de \textit{delay} genera un eco de un sonido recibido, repitiendo ese sonido de forma atenuada cierto tiempo después. 
+
+Usamos este efecto para añadir algo más de presencia a los \textit{ear candy} (\ref{sec:ear-candy}) en algunas ocasiones. Para lograr este efecto, usamos el plugin CRMBL de UnplugRed.
+
+    \subsubsection{\textit{Reverb}}\label{subsubsec:reverb}
+La reverberación es el efecto encargado de colocar un sonido en un entorno concreto, pues simula el rebote del sonido en distintas superficies. Sin nada de reverberación, es más dificil lograr que un sonido suene natural.
+
+La reverberación puede añadirse a un sólo sonido o a una mezcla de sonidos, lo que hace que suenen mejor en conjunto, como si estuvieran situados en el mismo sitio.
+
+La manera correcta de añadir reverb a una mezcla es realizar un envío\footnote{\url{https://dnamusic.edu.co/los-efectos-de-envio/}} desde todas las pistas a una nueva pista, en la cual cargaremos nuestro plugin de reverb con la señal \textit{dry} a menos infinito, es decir, en esta pista sólo sonará la reverb. De esta forma podemos controlar cuanta señal enviamos desde cada pista a la reverb. Esto es muy útil por ejemplo para enviar más señal de los instrumentos principales, o para enviar menos señal del bajo o la batería y así no ocupen más espacio del que les toca en la mezcla.
+
+Esta forma de trabajar con la reverberación es muy cómoda y sencilla de montar para un usuario de Reaper. Pero no hemos conseguido montarla con ReaScript (\ref{subsec:reascripy}) debido a sus limitaciones. Es por eso por lo que hemos añadido la reverberación a los efectos del máster, lo cuál no nos proporciona todo el control que nos gustaría sobre el sonido de la reverberación, pero cumple su función.
+
+    \subsubsection{Mezcla}
+El máster en reaper es una pista por la que pasan todos los sonidos del resto de pistas, es la pista con el sonido de la mezcla final. Por tanto, cuando cargamos un plugin en la pista de máster, afecta a todos los sonidos de la canción. Los plugins que cargamos en el máster de base se pueden ver en la figura \ref{fig:Efectos-master}.
+    
+Como se explica en el apartado de la reverberación (\ref{subsubsec:reverb}), cargaremos un plugin de reverberación en el máster que afectará a todas las demás pistas y aportará coherencia a la mezcla resultante. Usaremos para esto el plugin \textit{OrilRiver} de Denis Tihanov, aunque el usuario de la herramienta puede reemplazarlo por cualquier otro plugin de reverberación de su elección que tenga instalado.
+
+A continuación usamos un compresor y un limitador para darle algo más de volumen y cohesión a la mezcla final, un ecualizador para tratar distintas frecuencias dependiendo de la temática de la canción, de nuevo una instancia del \textit{OrilRiver} para expandir el estéreo de la mezcla y por último un plugin \textit{AFTER} de TWestProductions, que se encarga de masterizar\footnote{\url{https://www.landr.com/es/que-es-la-masterizacion/}} de forma muy sencilla la canción.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{Imagenes/Bitmap/EfectosMaster.png}
+    \caption{Plugins en el master}
+    \label{fig:Efectos-master}
+\end{figure}    
+
+    \subsubsection{Efectos en la mezcla}
+Desde la ventana de la herramienta (\ref{sec:TK:app}) podemos marcar algunos \textit{checkboxes} que añadirán varios plugins de efectos adicionales al máster para modificar el sonido final de la canción.
+
+Estos plugins son los encargados de que la mezcla final suene retro, vintage, lofi, etc. Pueden llegar a modificar bastante la señal de audio original que llega al máster, por lo que al aplicar varios de ellos a la vez la calidad del sonido puede disminuir drasticamente y llegar a hacer que la mezcla suene mal.
+    
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{Imagenes/Bitmap/EfectosMasterEfectos.png}
+    \caption{Plugins en el master con varios efectos aplicados}
+    \label{fig:Efectos-master-efectos}
+\end{figure}
 
 

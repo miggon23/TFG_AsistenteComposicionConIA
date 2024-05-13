@@ -1,23 +1,88 @@
 \chapter{Dependencias de Instalación}
 \label{Appendix:Key1}
 
-Para poder hacer uso nuestra aplicación, se requiere tener instaladas herramientas de terceros. Estas herramientas son esenciales para el funcionamiento correcto de nuestra aplicación.
-Cada dependencia tiene asociado el enlace donde se puede descargar este contenido, véase
+Para poder hacer uso nuestra aplicación, se requiere tener instaladas herramientas de terceros. Algunas de estas herramientas son esenciales para el funcionamiento correcto de nuestra aplicación, mientras que otras, como se indica más adelante, son orientativas.
+Cada dependencia tiene asociado el enlace donde se puede descargar este contenido.
 
+\section{Dependencias fundamentales}
 
-\begin{table}
+En la Tabla \ref{tab:programas-externos} tenemos los programas que se requiere tener para el correcto funcionamiento de la herramienta. Aunque es posible que todo funcione correctamente con otras versiones de los programas, a veces hay problemas con eso, por lo que recomendamos usar las versiones indicadas en la tabla.
+
+\begin{table}[h]
     \centering
 	\begin{tabular}{c|c|c|c}
 		\textbf{Herramienta} & \textbf{Versión recomendada} & \textbf{Enlace} & \textbf{Fecha Enlace} \\
 		\hline\hline
-		python & 3.9 & \href{https://www.python.org/downloads/release/python-390/}{downloads} & \today\\
-		Reaper & 7.14 & \href{https://www.reaper.fm/download.php}{downloads} & \today\\
-		Node & 20.12.2 & \href{https://nodejs.org/en/download}{downloads} & \today\\
-		2 & 4.88 & 5.30 & \today\\
-		4 & 3.50 & 2.90 & \today\\
-		5 & 7.40 & 4.70 & \today\\
+		python & 3.9 & \href{https://www.python.org/downloads/release/python-390/}{descarga} & \today\\
+		Reaper & 7.14 & \href{https://www.reaper.fm/download.php}{descarga} & \today\\
+		Node & 20.12.2 & \href{https://nodejs.org/en/download}{descarga} & \today\\
 		\hline
 	\end{tabular}
-	\caption{Tabla de ejemplo}
-	\label{tab:sampleTable}
+	\caption{Programas externos fundamentales}
+	\label{tab:programas-externos}
+\end{table}
+
+En la Tabla \ref{tab:plugins-efectos-fundamentales} indicamos los plugins de efectos que recomendamos instalar, debido a que la herramienta está preparada para cargar presets de estos. Aún así, si el usuario quiere cambiar cualquiera de estos por otro plugin de su elección, podrá hacerlo. Eso sí, deberá añadirlos manualmente a sus pistas correspondiente, ya que la herramienta no los cargará en Reaper. Todos los plugins utilizados son gratuitos, pero instamos al usuario final a leer las licencias individuales de cada plugin.
+
+\begin{table}[h]
+    \centering
+	\begin{tabular}{c|c|c|c}
+		\textbf{Plugin} & \textbf{Versión recomendada} & \textbf{Enlace} & \textbf{Fecha Enlace} \\
+		\hline\hline
+		Humanisator & 1.0 & \href{https://plugins4free.com/plugin/1562/}{descarga} & \today\\
+		BlueARP & 2.5.1 & \href{https://omg-instruments.com/wp/}{descarga} & \today\\
+		Cymatics Diablo Lite & 1.1.0 & \href{https://cymatics.fm/pages/diablo-lite}{descarga} & \today\\	
+            Valhalla Supermassive & 3.0.0 & \href{https://valhalladsp.com/shop/reverb/valhalla-supermassive/}{descarga} & \today\\
+
+            Flux Mini 2 & 1.0.0 & \href{https://www.caelumaudio.com/CaelumAudio/?Page=FluxMini2}{descarga} & \today\\
+            
+            CRMBL & no especificada & \href{https://vst.unplug.red/crmbl}{descarga} & \today\\
+            
+            OrilRiver & 2.0.3 & \href{https://plugins4free.com/plugin/2538/}{descarga} & \today\\
+            
+            After & 1.2 & \href{https://plugins4free.com/plugin/1728/}{descarga} & \today\\
+            
+            Delta Modulator & 1.0 & \href{https://plugins4free.com/plugin/1225/}{descarga} & \today\\
+            
+            Unison Zen Master & 1.0.0 & \href{https://unison.audio/zen-master}{descarga} & \today\\
+            
+            Cymatics Deja Vu & 1.0.0 & \href{https://cymatics.fm/products/deja-vu-plugin}{descarga} & \today\\
+            
+            Overheat & 1.0.6 & \href{https://sampleson.com/overheat.html}{descarga} & \today\\
+            
+            Ratshack Reverb & 2.2.0 & \href{https://plugins4free.com/plugin/3729/}{descarga} & \today\\
+            
+            Devil Spring Reverb & 1.1.7 & \href{https://plugins4free.com/plugin/3216/}{descarga} & \today\\
+            
+            BPB Dirty VHS & 1.0.0017 & \href{https://bedroomproducersblog.com/free-vst-plugins/bpb-dirty-vhs/}{descarga} & \today\\
+            
+            FreeTILT & 1.0.0 & \href{https://plugins4free.com/plugin/3743/}{descarga} & \today\\
+            
+            Cymatics Memory & 1.0.0 & \href{https://cymatics.fm/collections/plugins/products/memory-plugin}{descarga} & \today\\
+            
+		\hline
+	\end{tabular}
+	\caption{Plugins de efectos fundamentales}
+	\label{tab:plugins-efectos-fundamentales}
+\end{table}
+
+
+\section{Instrumentos virtuales recomendados}
+
+En la Tabla \ref{tab:instrumentos-virtuales-recomendados} indicamos los plugins de instrumentos virtuales recomendados para el uso completo de la herramienta. Estos plugins son los encargados de dar sonido a las canciones generadas, no son un requisito indispensable para que la herramienta funcione, pero si el usuario los tiene descargados se cargarán automáticamente en Reaper con los presets adecuados en cada momento. Igual que sucedía con los plugins de efectos, el usuario puede cargar sus propios plugins de forma manual en Reaper si no quiere usar los instrumentos virtuales recomendados. Todos los plugins utilizados son gratuitos, pero instamos al usuario final a leer las licencias individuales de cada plugin.
+
+\begin{table}[h]
+    \centering
+	\begin{tabular}{c|c|c|c}
+		\textbf{Plugin} & \textbf{Versión recomendada} & \textbf{Enlace} & \textbf{Fecha Enlace} \\
+		\hline\hline
+		
+            nombre & 1.0.0 & \href{https://plugins4free.com/plugin/3743/}{descarga} & \today\\
+            
+            nombre & 1.0.0 & \href{https://cymatics.fm/collections/plugins/products/memory-plugin}{descarga} & \today\\
+            
+		\hline
+	\end{tabular}
+	\caption{Instrumentos vitrtuales recomendados}
+	\label{tab:instrumentos-virtuales-recomendados}
 \end{table}

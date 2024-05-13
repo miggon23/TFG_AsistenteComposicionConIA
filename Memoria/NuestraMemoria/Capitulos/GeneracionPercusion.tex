@@ -20,7 +20,7 @@ Para la generación de baterías hemos barajado distintas opciones, entre ellas 
 
     \subsection{Generación de percusión propia}
     \label{subsec:generacion-percusion-propia}
-    Una vez visto las herramientas que nos brinda Magenta para la generación de MIDIs de percusión, llegamos a la conclusión de que era algo que, si bien funcionaba, era demasiado genérico para lo que buscábamos. Por esta razón, implementamos nuestro propio generador de baterías que nos permitiera trabajar mejor en los estilos (TODO: referencia? anexo?) que buscábamos.
+    Una vez visto las herramientas que nos brinda Magenta para la generación de MIDIs de percusión, llegamos a la conclusión de que era algo que, si bien funcionaba, era demasiado genérico para lo que buscábamos. Por esta razón, implementamos nuestro propio generador de baterías que nos permitiera trabajar mejor en los estilos (\ref{subsubsec:estilos-percusion}) que buscábamos.
 
     Nuestro generador de baterías no recibe ningún archivo MIDI como hacía el de Magenta (\ref{subsec:generacion-percusion-magenta}), si no que recibe de input un género musical o temática. Por temas de eficiencia temporal, generamos de una vez todos los archivos MIDI que podamos necesitar. 
     
@@ -28,7 +28,19 @@ Para la generación de baterías hemos barajado distintas opciones, entre ellas 
 
     \subsection{¿Cómo enfocamos la percusión?}
 
-    Como se cuenta en este video: \url{https://www.youtube.com/watch?v=FoMmVlAvjmM}
+    Con el fin de poder programar algún tipo de generador de ritmos de batería, vamos a tratar de simplificar al máximo la forma de crear partes de percusión para una canción.
 
-    Separamos las baterías en tres partes principales: engine, beat y constant. Además añadimos también los drum fills.
+    El enfoque que vamos a darle es similar al que se explica en el vídeo de YouTube del canal 8-bit Music Theory, (\cite{DrumPartsForNoDrummers})
+
+    Separamos las baterías en tres partes principales: \textit{engine}, \textit{beat} y \textit{constant}. Además añadimos también los \textit{drum fills}.
+
+    \subsubsection{Engine}
+    
+    \subsubsection{Beat}
+    \subsubsection{Constant}
+    \subsubsection{Drum Fills}
+    \label{subsubsec:drum-fills}
+    \subsubsection{Estilos}
+    \label{subsubsec:estilos-percusion}
+    
     
