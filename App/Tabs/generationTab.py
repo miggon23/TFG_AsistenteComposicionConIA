@@ -26,7 +26,7 @@ class GenerationTab:
 
     def __init__(self, tab):
         self.tab = tab
-
+        self.melody = None
         # Ver si se genera por Magenta o por Markov
         self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
         demo.load_markov_chain(self.mkv_generator)
@@ -60,7 +60,10 @@ class GenerationTab:
         ttk.Button(self.tab, text= "Stop", command= self.stopPreview).grid(column=1, row=2)
         ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=30, pady=10)
         ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=30, pady=10)
-        
+        ttk.Button(self.tab, text = "Guardar melodía", command = self.saveMelody).grid(column=0, row = 5, padx=30, pady=10)
+        self.melody_saved_lavel = ttk.Label(self.tab, text="", font=("Arial", 10, "italic"), foreground="white")
+        self.melody_saved_lavel.grid(column=2, row=5, padx=10, pady=10)
+
     def selectMIDIFile(self):
         file_path = filedialog.askopenfilename(filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")])
         if file_path:
@@ -69,9 +72,19 @@ class GenerationTab:
 
             self.file_loaded_label.config(text="Archivo cargado correctamente: \n" + file_path, foreground="green")
 
+    def saveMelody(self):
+        file_path = filedialog.asksaveasfilename(filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")])
+        if file_path and self.melody:
+            if not file_path.lower().endswith(".mid"):
+                file_path += ".mid"
+
+            shutil.copyfile(self.melody, file_path)
+
+            self.melody_saved_lavel.config(text="Melodía guardada correctamente en: \n" + file_path, foreground="white")
     
     def generateMelodies(self):
         self.file_loaded_label.config(text="No hay archivo cargado", foreground="white")
+        self.melody_saved_lavel.config(text="", foreground="white")
 
         self.bars = 8
 
