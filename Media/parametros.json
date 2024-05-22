@@ -1,5 +1,5 @@
 {
-    "tematica": 1,
+    "tematica": 10,
     "tematica_pistas": [
         1,
         1,
@@ -10,16 +10,16 @@
         1
     ],
     "tematicas_aleatorias": false,
-    "mezclar_tematicas": true,
+    "mezclar_tematicas": false,
     "complejidad": 2,
     "semitonos": 0,
-    "reverb": 4,
+    "reverb": 3,
     "lofi": false,
     "retro": false,
     "agua": false,
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed_instrumentos": "1p0mC",
-    "seed_arreglo": "WvPnh"
+    "seed_instrumentos": "l0zix",
+    "seed_arreglo": "t9PBE"
 }

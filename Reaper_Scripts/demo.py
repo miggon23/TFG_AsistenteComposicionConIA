@@ -1051,19 +1051,13 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
         if(preset <= 4):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        elif(preset <= 7):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
              
     elif(tematica == 11):
         if(preset <= 2):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        elif(preset <= 3):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
@@ -1385,7 +1379,24 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "gain13")
 
 
-def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, vintage, dream, agua):
+def crearPistaReverb(tematica,reverb, espacial, vintage):
+    if(not espacial and not vintage):
+        RPR_InsertTrackAtIndex(16, True)
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, 16), "OrilRiver (Denis Tihanov)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, 16), 0, "entorno"+str(reverb))
+
+        if(tematica == 1):
+            volumen_envios = [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
+        else:
+            volumen_envios = [1,1,0.25,0.25,0.4,0.05,0.1,0.25,0.25,0.25,0.25,0.15,0.4,0.4,0.4,0.4]
+
+        for i in range (16):
+            envio = RPR_CreateTrackSend(RPR_GetTrack(0, i), RPR_GetTrack(0, 16))
+            RPR_SetTrackSendInfo_Value(RPR_GetTrack(0, i), 0, envio, "D_VOL", volumen_envios[i])
+
+
+
+def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, vintage, dream, agua):
     RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
     if retro:
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "retro1") 
@@ -1404,11 +1415,8 @@ def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset,
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "espacial"+str(espacial_preset)) 
     else:    
-        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-        if(not vintage):
-            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "entorno"+str(reverb)) 
-        else:
-            RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
 
     if(dream or agua): 
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Deja Vu (Cymatics)", False, -1)
@@ -1645,7 +1653,9 @@ for i in range(5):
 for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
-crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, vintage, dream, agua)
+
+crearPistaReverb(tematica, reverb, espacial, vintage)
+crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, vintage, dream, agua)
 
 
 
