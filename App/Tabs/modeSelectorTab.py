@@ -93,7 +93,7 @@ class ModeSelectorTab:
 
     def setTooltips(self):
         ToolTip(self.instrument_seedEntry, msg = "Semilla de instrumentos", delay = self.tooltip_delay)
-        ToolTip(self.instrument_seedEntry, msg = "Semilla de arreglos", delay = self.tooltip_delay)
+        ToolTip(self.arrangement_seedEntry, msg = "Semilla de arreglos", delay = self.tooltip_delay)
         ToolTip(self.savePreset_button, msg = "Guardar preset", delay=self.tooltip_delay)
         ToolTip(self.playButton, msg = "Guardar cambios y reproducir", delay=self.tooltip_delay)
         ToolTip(self.presetCombobox, msg= "presets guardados", delay=self.tooltip_delay)
