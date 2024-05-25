@@ -4,6 +4,7 @@ import os
 from tkinter import ttk
 from tkinter import *
 from tktooltip import ToolTip
+from tkinter import messagebox
 
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
@@ -281,7 +282,12 @@ class ModeSelectorTab:
         self.onUpdateSeed()
 
         self.save_state()
-        self.reaperStream.SetUp()
+        try:
+            self.reaperStream.SetUp()
+        except Exception as e:
+            messagebox.showerror("Error", "Algo falló al iniciar Reaper.\n Verifica la ruta al .exe de REAPER en la pestaña de configuración.")
+
+    
 
     def idToEnumValue(self, id, enum):
         return list(enum)[id].value
