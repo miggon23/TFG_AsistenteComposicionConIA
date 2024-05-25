@@ -1,10 +1,8 @@
 import json
 import os
-import random
 
 from tkinter import ttk
 from tkinter import *
-from enum import Enum
 from tktooltip import ToolTip
 
 from PIL import Image, ImageTk

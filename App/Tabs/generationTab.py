@@ -7,14 +7,10 @@ import numpy as np
 import json
 
 import mainDemo as demo
-from Cadenas_Markov import markovGenerator
-from Basslines import basslineGenerator
-from Drums import enums
-from Drums import drumGenerator
-from Basslines import basslineGenerator
-from Harmonizer import harmonyGenerator
-from Harmonizer import models as Models
 from App.Strategies import generationStrategy
+from Cadenas_Markov import markovGenerator
+from Harmonizer import harmonyGenerator
+from Drums import drumGenerator
 from Utils import globalConsts
 import shutil
 

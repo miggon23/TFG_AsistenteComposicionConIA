@@ -5,7 +5,6 @@ import json
 from App.AppEnums.generationModesEnum import GenerationMode
 from App.AppEnums.tematicEnum import TematicEnum
 from App.AppEnums.tematicEnum import TematicDrumEnum
-from App.AppEnums.semitonesEnum import Semitones
 from App.AppEnums.melodicComplexityEnum import MelodicComplexity
 from Utils import globalConsts
 import random
@@ -61,13 +60,6 @@ class AdvancedConfigTab:
         self.comboComplexity = ttk.Combobox(self.tab, values=[option.value for option in MelodicComplexity],
                                         textvariable=self.complexity_var, state="readonly")
         self.comboComplexity.grid(row=1, column=1)
-
-        # ttk.Label(self.tab, text="Variar tonalidad:              ").grid(row=2, column=0)
-        # self.variarSemitonos = StringVar()
-        # self.comboSemitonos = ttk.Combobox(self.tab, values=[option.value for option in Semitones],
-        #                                 textvariable=self.variarSemitonos, state="readonly")
-        # self.comboSemitonos.grid(row=2, column=1)
-
 
 
         ttk.Label(self.tab, text="                                     ", justify=RIGHT).grid(row=0, column=2)
