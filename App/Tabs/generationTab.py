@@ -99,7 +99,7 @@ class GenerationTab:
 
     def armonice(self):
 
-        if(os.path.exists("./Media/midi/trasposed_song.mid")):
+        if not os.path.exists("./Media/midi/trasposed_song.mid"):
             AppWarning("No se ha encontrado melodía para armonizar").show()
             return
 
