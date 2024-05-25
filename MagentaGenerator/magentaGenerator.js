@@ -2,8 +2,6 @@
 // sera recogida por python con subprocess
 
 const mm = require('@magenta/music/node/music_rnn');
-// const mm = require('@magenta/music/node/music_vae');
-// require('@tensorflow/tfjs-node');
 
 // Guardar la referencia de la salida estándar original
 const originalStdoutWrite = process.stdout.write;
@@ -19,13 +17,6 @@ music_rnn.initialize().then(() => {
     // generamos la secuencia de notas
     generate();
 });
-
-// music_vae = new mm.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_4bar_small_q2');
-// music_vae.initialize().then(() => {
-//     process.stdout.write = originalStdoutWrite;
-//     // generamos la secuencia de notas
-//     generate();
-// });
 
 n_melodies = parseInt(process.argv[2]);
 rnn_steps = parseInt(process.argv[3]);
@@ -50,12 +41,4 @@ function generate() {
             const jsonSequence = JSON.stringify(samples);
             process.stdout.write(jsonSequence + '\n');
         });
-
-    // music_vae
-    //     .sample(n_melodies, temperature)
-    //     .then(samples => {
-    //         // Convertir NoteSequence a JSON y enviarlo a la salida estándar
-    //         const jsonSequence = JSON.stringify(samples);
-    //         process.stdout.write(jsonSequence + '\n');
-    //     });
 }
