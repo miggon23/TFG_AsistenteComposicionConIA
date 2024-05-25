@@ -39,58 +39,6 @@ class Chain:
               
 class ModalPerspective():
 
-    # modalChordProgressions = {
-    #     "Dorian" : [
-    #         {"Progression": [("1", "-"), ("4", "")],
-    #         "Transitions": [("1", "-")]},
-    #         {"Progression": [("1", "-"), ("5", "-")],
-    #         "Transitions": [("1", "-")]},
-    #         {"Progression": [("1", "-"), ("7", ""), ("4", "")],
-    #         "Transitions": [("1", "-")]},
-    #         {"Progression": [("1", "-"), ("3", ""), ("4", "")],
-    #         "Transitions": [("1", "-")]}
-    #     ],
-    #     "Phrygian" : [
-    #         {"Progression": [("1", "-"), ("4", "-")],
-    #         "Transitions": [("1", "-")]},
-    #         {"Progression": [("1", "-"), ("7", "-")],
-    #         "Transitions": [("1", "-")]},
-    #         {"Progression": [("1", "-"), ("b3", ""), ("4", "-")],
-    #         "Transitions": [("1", "-")]}
-    #     ],
-    #     "Lydian" : [
-    #         {"Progression": [("1", ""), ("5", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("3", ""), ("5", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("3", ""), ("6", "-")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("5", ""), ("2", "")],
-    #         "Transitions": [("1", "")]}
-    #     ],
-    #     "Mixolydian" : [
-    #         {"Progression": [("1", ""), ("4", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("5", "-")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("7", ""), ("4", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("6", "-"), ("4", "")],
-    #         "Transitions": [("1", "")]}
-    #     ],
-    #     "Locrian" : [
-    #         {"Progression": [("1", ""), ("4", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("5", "-")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("7", ""), ("4", "")],
-    #         "Transitions": [("1", "")]},
-    #         {"Progression": [("1", ""), ("6", "-"), ("4", "")],
-    #         "Transitions": [("1", "")]}
-    #     ]
-    # }
-
-
     modes = [None, "Dorian", "Phrygian", "Lydian", "Mixolydian", None, "Locrian"]
 
     possibleChords = {

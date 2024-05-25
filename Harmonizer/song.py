@@ -41,7 +41,10 @@ class Song:
 
         self.ticksPerBeat = ticksPerBeat
 
-        self.notes = notes
+        self.notes = notes    
+
+        if not self.notes:
+            return
 
         self.tonic = Note.Note(self.notes[0]['note'] % 12)     
         pTonic = -(self.tonic.pitch - 12) 
@@ -145,11 +148,10 @@ class Song:
                 bestSol = sol
                 bestTonic = self.tonic
 
-
-        if bestTonic is None:
-            print("No hay solución")
-        else:
-            self.tonic = bestTonic
+        self.tonic = bestTonic
+        if self.tonic is None:
+            return None, None, 0
+        else:        
             self.__rebuild_solution(bestSol)
             self.__combine_best_chords(timeSignatures[-1].measure_size())
             return self.__absolutized_inverted_harmony(), self.__absolutized_harmony(), bestSol.weight
@@ -619,8 +621,8 @@ class Song:
         elif type == "off":
             self.__off_armonize(chordWeights, timeSignatures[0], notPlayingAtTickPen, offset)
             self.__combine_best_chords(offset.measure_size())
-        
-        return self.__absolutized_inverted_harmony()
+           
+        return self.__absolutized_inverted_harmony(), self.__absolutized_harmony()
     
     def __off_armonize(self, chordWeights, timeSignature, notPlayingAtTickPen, offset):
 

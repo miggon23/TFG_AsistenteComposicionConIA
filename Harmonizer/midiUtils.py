@@ -75,6 +75,10 @@ def write_midi_song(midiFilePath, song, ticksPerBeat):
     track.append(mido.MetaMessage('set_tempo', tempo = 500000))  # Tempo en microsegundos por negra (cambia según tus necesidades)
     track.append(mido.MetaMessage('time_signature', numerator= 4, denominator=4, clocks_per_click=24, notated_32nd_notes_per_beat=8))
 
+    if not song:
+        mid.save(midiFilePath)
+        return
+
     noteSeq = note_seq(song)
     firstNoteTick = next(iter(noteSeq))
 

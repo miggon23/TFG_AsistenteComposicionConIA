@@ -76,7 +76,7 @@ def main():
                 outputs = generate_markov(generator, bar * 2, 1)
             elif (option == "a"):
                 bassline = basslineGenerator.BasslineGenerator.generate()
-                harmonyGenerator.HarmonyGenerator.generate(bassline, outputs[0])
+                harmonyGenerator.HarmonyGenerator.super_repetitiva(bassline, outputs[0])
             elif (option == "q"):
                 exit = True
                 break
