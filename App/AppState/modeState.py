@@ -44,7 +44,7 @@ class ModeState:
     @classmethod
     def fromJSON(cls, jsonPath):
 
-        with open(jsonPath, "r") as archivo:    
+        with open(jsonPath, "r") as archivo:
             json_data = json.load(archivo)
 
         print(json_data)

@@ -4,9 +4,8 @@ Hemos elegido TKINter como frontend para nuestra aplicación. El frontend es la 
 
 \section{TKInter}
 \label{sec:TK}
-\href{https://docs.python.org/es/3/library/tkinter.html}{TKInter} es la biblioteca por defecto que trae Python para la creación de GUI, interfaaz gráfica de usuario por sus siglas en inglés.
+\href{https://docs.python.org/es/3/library/tkinter.html}{TKInter} es la biblioteca por defecto de Python para la creación de GUI, interfaz gráfica de usuario por sus siglas en inglés.
 
-Al venir integrado con python, es una herramienta de fácil inclusión en los proyectos que usen python. TKInter brinda una interfaz fácil de usar, pero muy sencilla en cuanto a posibilidades. Hemos priorizado la funcionalidad frente a la estética, política que casa muy bien con TKInter.
 
 \subsection{Widgets de TKInter}
 Los \textit{widgets} de TKInter son elementos de UI a los que se les puede vincular acciones de código propio. Estos \textit{widgets} van asociados a una ventana para poder renderizarse en pantalla y así recibir acciones del usuario o mostrar información. Veremos en las subsecciones siguientes las funciones de la aplicación, los widgets asociados y el funcionamiento de nuestra aplicación por debajo.
@@ -21,26 +20,24 @@ Los \textit{widgets} de TKInter son elementos de UI a los que se les puede vincu
 \subsection{Generación Musical}
 Pestaña de la aplicación que permite generar el MIDI. Esto se realiza vinculando los \textit{widgets} de botón de TKInter con los apartados de generación y armonía.
 
-** referencias a generación de Rodrigo y armonización de VM **
+La Sección \ref{cap:generacionMusical} detalla más sobre la generación musical, y la Sección \ref{cap:armonizacion}, sobre la armonización
 
 \subsection{Temáticas y sonorización}
 \label{subsec:TK:TematicasYSonorizacion}
-La pestaña \tematicTabName{} anexiona las principales funcionalidades de la aplicación. El MIDI generado en la pestaña \generationTabName{} se sonoriza de acuerdo a la configuración de la pestaña \tematicTabName{}. 
+La pestaña \textit{\tematicTabName{}} anexiona las principales funcionalidades de la aplicación. El MIDI generado en la pestaña \textit{\generationTabName{}} se sonoriza de acuerdo a la configuración de la pestaña \textit{\tematicTabName{}}. 
 
-**referencias a Sonorización de Javi**
+En la guía de uso de la aplicación (Sección \ref{subsec:app:themes}) se muestra las temáticas seleccionables.
 
 \subsubsection{Semilla}
 La semilla es la fuente de generador aleatoria que permite obtener los mismos valores cuando se obtiene un nuevo \textit{random()} de un generador.
 
-Nos interesa poder generar distintas semillas, que den variedad a los resultados generados por la aplicación. Conociendo que semilla se ha generado, podemos guardarlas (ver \nameref{subsub:TK:serializacionYPresets}).
-
-** referncia a arreglos en REAPER de Javi **
+Nos interesa poder generar distintas semillas, que den variedad a los resultados generados por la aplicación. Conociendo qué semilla se ha generado, podemos guardarlas persistiendo el actual estado de la aplicación en un fichero .json (ver la Sección \ref{subsub:TK:serializacionYPresets}).
 
 \subsubsection{Serialización y presets}
 \label{subsub:TK:serializacionYPresets}
-La aplicación cuenta con la posibilidad de guardar su estado en momentos específicos. Esto lo hacemos leyendo los atributos de una clase llamada AppModeState y serializándolos a un objeto Json. Una vez tenemos este objeto Json, lo persistimos a un fichero .json con un nombre que nos de el usuario. Estos ficheros que guardan la configuración del estado de la aplicación reciben el nombre de \textit{presets}. 
+La aplicación cuenta con la posibilidad de guardar su estado en momentos específicos. Esto lo hacemos leyendo los atributos de una clase llamada AppModeState y serializándolos a un JSON. Una vez tenemos este objeto JSON, lo persistimos a un fichero \textit{.json} con un nombre que nos de el usuario. Estos ficheros que guardan la configuración del estado de la aplicación reciben el nombre de \textit{presets}. 
 
-Estos presets pueden ser recuperados para establecer el estado de la aplicación a la información contenida en el json. Esta característica permite al usuario guardar la configuración de temática, checkboxes (modificadores) y semillas que quiera recuperar possteriormente.
+Estos presets pueden ser recuperados para establecer el estado de la aplicación a la información contenida en el JSON. Esta característica permite al usuario guardar la configuración de temática, checkboxes (modificadores) y semillas que quiera recuperar posteriormente.
 
 \subsection{Modo avanzado}
 La pestaña \advancedTabName{} de la aplicación dota al usuario de un control más exhaustivo de la aplicación. Esta pestaña está apartada del público general debido a que ofrece una visión más compleja de la aplicación, estando dirigida a usuarios de la aplicación avanzados o personas con conocimientos musicales avanzados.

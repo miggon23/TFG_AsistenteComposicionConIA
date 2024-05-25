@@ -1,0 +1,97 @@
+\chapter{Búsqueda de nuevos cromatismos musicales}
+\label{cap:nuevos_colores}
+
+Este capítulo representa un punto de enlace entre melodía (Capítulo \ref{cap:generacionMusical}) y armonía (Capítulo \ref{cap:armonizacion}), en relación con apartados posteriores que tratan sobre la creación de diversas temáticas (Sección \ref{sec:tematicas}). Dichas temáticas no solo varían en la utilización de instrumentos y técnicas a la hora de hacer arreglos musicales, sino en el uso de escalas y armonías que aporten sonoridades diferentes. Básicamente, se busca modificar las melodías originales con el objetivo de crear nuevos colores, que aporten una capa más de profundidad a la hora de crear nuevas temáticas. 
+
+\section{Tratamiento de la melodía original}
+
+Debido a la incertidumbre y pseudo aleatoriedad de las melodías generadas en el Capítulo \ref{cap:generacionMusical}, sobre todo por Magenta (Sección \ref{sec:magenta}), es necesario realizar un tratamiento previo de las melodías generadas.
+
+El primer y más sencillo paso consiste en transportar toda la entrada a un rango de octavas razonable para una melodía. Para ello se calcula el \textit{pitch} medio y se transportan todas las notas de la melodía de forma que el nuevo \textit{pitch} medio se encuentre entre la quinta y la sexta octava. Las notas se pueden transportar una o varas octavas arriba o abajo, es decir, en un número negativo o positivo de semitonos múltiplo de 12. De esta forma se respeta la supuesta tónica original de la melodía.
+
+El siguiente paso consiste en corregir las notas que se salen de la escala. Para ello, se ha de identificar primero la tonalidad de la melodía. El proceso es el siguiente: se armoniza la canción dos veces, la primera para un conjunto de progresiones propias de la escala mayor y la segunda, para un conjunto de progresiones propias de la escala menor. Recordemos que el armonizador nos facilita las tónicas para sendas generaciones. Se comparan los pesos de la mejor solución de ambas salidas y finalmente se elige la escala y tónica de la armonización ganadora. Con estos datos se ajusta la melodía a la tonalidad y se vuelve a armonizar fijando la tónica, mitigando así el coste del proceso. No es necesario realizar el algoritmo para cada nota posible ya que conocemos la tónica. Aunque se podría pensar que este último paso es redundante ya que se podría utilizar la última salida asociada a la tonalidad ganadora, el hecho de ajustar las notas de la melodía podría provocar que la solución anterior variase, pudiéndose mejorar aún más la solución final.
+
+La melodía ajustada y su armonía asociada se consideran la generación base y también serán utilizadas en parte de las temáticas.
+
+\section{Modos griegos}
+
+Una vez procesada la melodía original, se hará uso de la armonía modal (Sección \ref{sec:modos}) para crear nuevos colores. La idea es que dependiendo de la temática elegida se utilice la melodía base o uno de los modos griegos dependiendo del sonido buscado. El primer paso para conseguir dicho objetivo es ajustar la escala a la del modo griego, utilizando como tónica la calculada anteriormente y priorizando el ajuste de las notas ajenas a la propia tónica y a la nota de color.
+
+\subsection{Nota de color}
+
+La nota de color es una característica propia de los modos griegos. Para saber de dónde viene hay que entender que los modos griegos se pueden dividir en mayores y menores, dependiendo del acorde que se forme en el primer grado de la escala: si se forma una triada mayor, será un modo mayor, si por el contrario, se forma una triada menor en el primer grado, será un modo menor. La excepción es el modo locrio, en cuyo primer grado se forma una triada disminuida. Se considera un modo menor al presentar más similitudes con la escala menor que con la mayor, ya que su tercer grado también es una tercera menor.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c||c|c|c|c|c|c|c}
+    \textbf{Jónico} & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+        \hline
+        \hline
+        \textbf{Lidio} & 1 & 2 & 3 & \textbf{\#4} & 5 & 6 & 7 \\
+        \hline
+        \textbf{Mixolidio} & 1 & 2 & 3 & 4 & 5 & 6 & \textbf{b7} \\
+    \end{tabular}
+    \caption{Modos mayores}
+    \label{tab:modos_mayores}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c||c|c|c|c|c|c|c}
+        \textbf{Eólico} & 1 & 2 & b3 & 4 & 5 & b6 & b7 \\
+        \hline
+        \hline
+        \textbf{Dórico} & 1 & 2 & b3 & 4 & 5 & \textbf{6} & b7  \\
+        \hline
+        \textbf{Frigio} & 1 & \textbf{b2} & b3 & 4 & 5 & b6 & b7 \\
+        \hline
+        \textbf{*Locrio} & 1 & \textbf{b2} & b3 & 4 & \textbf{b5} & b6 & b7
+    \end{tabular}
+    \caption{Modos mayores}
+    \label{tab:modos_menores}
+\end{table}
+
+La nota de color de un modo se deduce comparándolo con la escala mayor o menor natural, según le corresponda. La nota de color es aquella que difiere entre ambas escalas. Dada esta definición se puede deducir que los modos jónico y eólico no tienen nota de color, ya que, como ya se explicó en la Sección \ref{sec:modos}, estos son los nombres que reciben las escalas mayor y menor en un contexto modal, es decir, son, respectivamente, la misma escala. Un ejemplo de nota de color: si se observa la Tabla \ref{tab:modos_menores}, la nota de color del modo dórico es la sexta, ya que difiere de la sexta menor de la escala menor natural. Por último, volver a resaltar la peculiaridad del modo locrio, a al cual le pertenecen dos notas de color. Entre la comunidad de compositores hay mucha divergencia de opiniones; algunos piensan que el modo locrio es demasiado raro y no merece la pena componer para él, mientras que otros sí que le dan una oportunidad.
+
+\subsection{Armonía modal}
+
+Una vez ajustada la melodía a la escala, priorizando la tónica y la nota de color, se han de elegir los acordes que pueden acompañar a dicha melodía. La teoría de la armonía modal nos ofrece varias pautas a seguir.
+
+La primera consiste en evitar el uso de acordes disonantes, que contengan un intervalo de quinta disminuida entre algunas de sus notas. Quedan por lo tanto descartadas las triadas y cuatríadas semidisminuidas y los acordes de dominante, los cuales se pueden encontrar de manera natural en la armonía tonal.
+
+La siguiente pauta consiste en establecer una jerarquía entre los acordes restantes, pudiendo estos ser:
+
+\begin{itemize}[label=$\bullet$]
+    \item \textbf{\textcolor{rojo}{Primario}:} todo acorde que pertenezca al primer grado de la escala. 
+    \item \textbf{\textcolor{azul}{Secundario}:} todo acorde que contenga la nota de color y no sea primario. 
+    \item \textbf{De paso:} todo acorde que no sea primario ni secundario. 
+\end{itemize}
+
+A continuación un ejemplo en el que se analiza la armonía de la escala del modo dórico teniendo en cuenta las normas establecidas por la teoría de la armonía modal utilizada: (Tabla \ref{tab:armonia_dorico})
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c|c|c} 
+        \multicolumn{1}{c|}{\textbf{Grados}} & \multicolumn{2}{c}{\textbf{Acordes}} \\
+        \hline
+        I & \colorbox{red!20}{\makebox[0.5em]{-}} & \colorbox{red!20}{\makebox[1em]{-7}} \\
+        II & \colorbox{blue!20}{\makebox[0.5em]{-}}   & \colorbox{blue!20}{\makebox[1em]{-7}}      \\
+        bIII &     & maj7    \\
+        IV &  \colorbox{blue!20}{\makebox[0.5em]{ }}   & \sout{7}        \\
+        V & -   & -7        \\
+        VI & \sout{-b5} & \sout{-7b5}  \\
+        bVII &     & \colorbox{blue!20}{\makebox[2em]{maj7}}    \\
+
+    \end{tabular}
+    \caption{Armonía del modo dórico}
+    \label{tab:armonia_dorico}
+\end{table}
+
+La idea a la hora de armonizar las melodías modales consiste en utilizar progresiones que hagan hincapié en el uso de los acordes primarios y secundarios, consiguiéndose así 5 variaciones de la melodía y armonía base con las que crear diversas temáticas. Nótese que son 5 los nuevos colores generados, ya que primero, se ha decidido utilizar también el modo locrio a pesar de sus peculiaridades y segundo, los modos jónico y eólico no son susceptibles de generar nuevas variaciones dada la teoría armónica modal utilizada.
+
+
+
+
+
+
+

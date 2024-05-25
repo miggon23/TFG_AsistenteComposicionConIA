@@ -1,4 +1,32 @@
-\chapter{Título del Apéndice B}
+\chapter{Representaciones de una canción}
 \label{Appendix:Key2}
 
-Se pueden añadir los apéndices que se consideren oportunos.
+    En el módulo al que se hace referencia durante toda la Sección \ref{cap:armonizacion} se manejan dos representaciones distintas de las notas:
+
+    \begin{enumerate}
+        \item \textbf{Lista de notas}: es la representación estándar en este módulo de la aplicación. Es la más cómoda para realizar operaciones simples con las notas, como por ejemplo recortar una canción, transponer todas las notas, etc... Se almacenan en una lista desordenada de estructuras con el siguiente formato:
+        \begin{enumerate}
+            \item[\textbullet] \textbf{note}: almacena el \textit{pitch} MIDI (tono) de la nota. Guardar el \textit{pitch} MIDI es similar a guardar la nota musical, ya que este almacena de forma implícita el nombre de la nota y su octava.
+                       
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{c||c|c|c|c|c|c|c|c|c|c|c|c}
+        \textbf{Nombre} & C & Db & D & Eb & E & F & Gb & G & Ab & A & Bb & B \\ 
+        \hline
+        \textbf{Pitch} &  0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+    \end{tabular}
+    \caption{Relación entre nota y su \textit{pitch} en la primera octava}
+\label{tab:nota_pitch}
+\end{table}
+
+         Por ejemplo, si calculamos a qué nota le corresponde el \textit{pitch} 40, sabemos que el nombre de la nota es E si nos fijamos en la tabla, ya que 40 mod 12 = 4 y sabemos que pertenece a cuarta octava, ya que 40 div 12 = 3 (se empieza en la octava 0).
+
+        \item[\textbullet] \textbf{start\_time}: tiempo en \textit{ticks} en el que empieza a sonar una nota desde que empieza la canción en el \textit{tick} 0.
+        \item[\textbullet] \textbf{duration}: tiempo en \textit{ticks} desde que empieza a sonar la nota hasta que para.
+    \end{enumerate}
+    \item \textbf{Diccionario de eventos}: se almacena en cada \textit{tick} clave el evento que ha ocurrido. Los eventos están ordenados de menor a mayor según el \textit{tick} en el que ocurren. Como tal, solo existen dos tipos de eventos: \textbf{note\_on} y \textbf{note\_off}.
+
+    A cada evento viene asociado el \textit{pitch} de la nota afectada. Esto puede suponer, a priori, un inconveniente, ya que, si hay dos notas del mismo \textit{pitch} superpuestas en el mismo espacio de tiempo, existe una ambigüedad a la hora de saber qué evento \textit{note\_off} le corresponde a cada una. Sin embargo, como esta representación es únicamente utilizada en la armonización por ventanas (Sección \ref{arm:sec:ventanas_normal}) para hacer un recorrido lineal de las notas de la melodía, este inconveniente no les afecta. 
+
+    Existen métodos para pasar de la anterior representación a esta, pero no al revés. De nuevo, esto se debe a que esta representación solo se utiliza para realizar la armonización por ventanas.
+\end{enumerate}

@@ -1,4 +1,4 @@
-% !TEX root = ./TFGTeXiS.tex
+  % !TEX root = ./TFGTeXiS.tex
 
 % ----------------------------------------------------------------------
 %
@@ -79,6 +79,11 @@ constantes,guionado,Cascaras/bibliografia,config%
 % compilación. Debe incluirse antes del paquete TeXiS/TeXiS.sty
 \include{config}
 
+\usepackage{float} % Paquete necesario para [H]
+
+\usepackage{enumitem}
+\usepackage{ulem}
+
 % Paquete de la plantilla
 \usepackage{TeXiS/TeXiS}
 
@@ -145,17 +150,16 @@ constantes,guionado,Cascaras/bibliografia,config%
 
 
 \include{Capitulos/Introduccion}
-\include{Capitulos/Preliminares}
 %\include{Capitulos/EstadoDeLaCuestion}
+\include{Capitulos/Preliminares}
 \include{Capitulos/ManualDeUsuario}
-%\include{Capitulos/DescripcionTrabajo}
 \include{Capitulos/GeneracionMusical}
 \include{Capitulos/ArmonizacionMusical}
+\include{Capitulos/BusquedaNuevosColores}
 \include{Capitulos/GeneracionPercusion}
 \include{Capitulos/Sonorizacion}
 \include{Capitulos/ComoArreglarUnaCancion}
 %\include{Capitulos/GUIconTKInter}
-%\include{Capitulos/Capitulo5}
 \include{Capitulos/ConclusionesTrabajoFuturo}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

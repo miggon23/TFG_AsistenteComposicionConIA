@@ -2,13 +2,115 @@
 \label{cap:contribucionesPersonales}
 \addcontentsline{toc}{chapter}{Contribuciones Personales}
 
-En caso de trabajos no unipersonales, cada participante indicará en la memoria su contribución al proyecto con una extensión de al menos dos páginas por cada uno de los participantes.
+\section*{Rodrigo Sánchez Torres}
+\subsection*{Procesamiento de datos}
+Para poder utilizar algoritmos de inteligencia artificial en nuestro trabajo era necesario tener un dataset limpio y adecuado para nuestros objetivos.
 
-En caso de trabajo unipersonal, elimina esta página en el fichero \texttt{TFGTeXiS.tex} (comenta o borra la línea \verb|\include{Capitulos/ContribucionesPersonales}|).
+La primera tarea fue buscar un dataset que contenga información sobre melodías. En la búsqueda se valoraron muchos tipos de datasets, finalmente, en la exploración de los datasets de Magenta se decidió utilizar el \textit{Bach Doodle Dataset}.
 
-\section*{Estudiante 1}
-Al menos dos páginas con las contribuciones del estudiante 1.
+Una vez elegido el dataset se procedió al tratamiento de este, con distintos acercamientos se fueron realizando limpiezas en principio superficiales, pero pronto se decidió que lo mejor era tener un dataset con solamente melodías que estén en la misma escala e incluso en un rango reducido de octavas. 
 
-\section*{Estudiante 2}
+También se exploraron las opciones de usar o no silencios, siendo en algoritmos como cadenas de Markov mejor no emplear silencios, pero en redes neuronales recurrentes se obtuvieron mejores resultados con silencios en el dataset.
+
+Finalmente se testeó tanto a usar tiempos absolutos en segundos como a normalizar el tiempo utilizando \textit{steps} y BPM (\textit{beats per minute}), dando mejor resultado tener el tiempo normalizado y homogéneo en el dataset.
+
+\subsection*{Algoritmos de \textit{Machine Learning}}
+Antes de poder elegir qué modelos serían más adecuados para la generación de melodías fue necesario realizar una amplia investigación sobre el tema, para poder conocer la mayor cantidad de técnicas y modelos que podemos aplicar a nuestro trabajo.
+
+Tras la investigación quedó claro que era necesario buscar un modelo que no fuera determinista, para poder generar melodías diferentes en cada ejecución. Es por esto que se decidió explorar los 3 modelos actuales: cadenas de Markov, redes neuronales recurrentes con capa \textit{softmax} y modelos de Magenta.
+
+En primer lugar se empezó a explorar la generación con Markov, para esto se realizó una investigación sobre el tema y sus posibles aplicaciones. Para poder utilizar correctamente las cadenas se utilizó una notación común a lo largo del proyecto en los algoritmos propios de generación, como era \textit{"pitch\_duration"}.
+
+Para poder utilizar cadenas de Markov se procesó manualmente el dataset, creando matrices de transición que sean interpretables por la librería utilizada. Finalmente, se consiguió tener un primer modelo de generación listo, que permitió continuar el desarrollo de otras ramas que se apoyan en éste.
+
+Una vez se tuvo el primer modelo de generación listo se podía dedicar más tiempo a desarrollar un modelo más complejo. Se decidió utilizar entonces una red neuronal recurrente. Pero esta tenía el problema de ser un modelo determinista, así que se añadió finalmente una capa \textit{softmax}, que permitía introducir una aleatoriedad a la generación controlada con un parámetro de temperatura.
+
+Este modelo fue el más complejo de desarrollar, pues había que realizar mucho trabajo de ajuste de \textit{súperparámetros} y diseño de la propia red. Además, se realizaron varias modificaciones al dataset, que finalmente no aportaban un mejor resultado. Al final tras un largo período de prueba ser decidió adoptar el diseño actual, teniendo una entrada de número reales, con el \textit{pitch}, duración y tiempo de inicio de la nota actual, y una salida con valores de tipo \textit{label}, siendo estas las posibles notas que podía elegir la red. Al utilizar salida con valores de tipo \textit{label} codificados mediantes \textit{one-hot encoding} se podía utilizar la capa \textit{softmax} mencionada anteriormente.
+
+La red conseguía finalmente un rendimiento aceptable, por lo que se realizaron pruebas para entrenarla de forma que indicara también el tiempo de inicio de cada nota, lo que podía generar melodías más interesantes sobre el papel. Sin embargo, la red no conseguía aprender patrones significativos sobre este, obteniendo una precisión tan baja que no merecía la pena utilizar dicho parámetro. Es por esto que se decidió introducir los silencios como notas adicionales. 
+
+Este modelo consiguió una generación mucho mejor a las cadenas de Markov, manteniendo patrones más típicos en la composición pero con limitaciones. Aún así se decidió mantener el modelo con Markov para tener una generación más experimental.
+
+Intercalado con el desarrollo de la red neuronal recurrente se integró Magenta al proyecto, con el fin de proporcionar una generación más elaborada que la de Markov para poder trabajar en otras ramas y producir mejores resultados. 
+
+La integración de Magenta supuso una gran cantidad de problemas, pues principalmente no se podía utilizar el paquete de Python en Windows. Tras realizar varias pruebas con binarios precompilados para Windows, migraciones a Ubuntu y diversos acercamientos se decidió que no era viable utilizar el paquete de Python, por lo que se exploró el uso del paquete de JavaScript.
+
+El principal conflicto era que el proyecto estaba íntegramente desarrollado en Python, por lo que el módulo de JavaScript tenía que estar separado de éste. Finalmente se consiguió comunicar el proyecto con un script (magentaPython.py) que actúa de puente entre Python y JavaScript. Este script utiliza el módulo \textit{subproccess} para lanzar un proceso de JavaScript, con el que nos podemos comunicar por medio de argumentos de dicho proceso y la salida estándar de éste. Con esta metodología podemos mandar melodías serializadas en JSON al proceso y recibir resultados de generación recogiendo la salida estándar con el mismo formato JSON.
+
+Este acercamiento permite utilizar Magenta en la aplicación, pero conlleva otros problemas de dependencia de paquetes y sobre todo de una conexión a internet para utilizar los modelos alojados en la base de datos de Google.
+
+\subsection*{Aportaciones a la aplicación}
+Además, se han realizado aportaciones al código de la aplicación. Se han introducido los módulos de generación a ésta, así como la posibilidad de elegir uno u otro desde código. También se han añadido las funcionalidades de carga de melodías existentes y guardado de una melodía generada, pudiendo elegir el nombre y ubicación del archivo.
+
+\section*{Víctor Manuel Estremera Herranz}
+
+Antes de empezar con las técnicas de armonización utilizadas, falta un paso previo crucial. Y es la creación de una estructura de clases y métodos que den soporte a todo lo explicado en el apartado \ref{sec:arm:armonia}. Existen clases que abstraen lo que representa una nota musical (\ref{arm:notas_musicales}), un intervalo (\ref{sec:arm:intervalos}), una escala (\ref{sec:arm:escalas}) y la armonía de una escala (\ref{arm:armonia_escala}) tal como se ha explicado. Un acorde (\ref{sec:arm:acordes}) es respresentado también como una escala. 
+
 Al menos dos páginas con las contribuciones del estudiante 2. En caso de que haya más estudiantes, copia y pega una de estas secciones.
+
+\section*{Javier Callejo Herrero}
+\subsection*{Generación de percusiones.}
+Lo primero que se hizo fue investigar los diferentes modelos de Magenta, tanto para tomar ideas como para decidir si podíamos usar dichos modelos en nuestra herramienta. 
+
+Una vez vistas las herramientas disponibles, se decidió que los resultados obtenidos no ofrecían la variedad que requería la herramienta, por lo que se implementó un generador de percusión propio. Este generador permite crear patrones de batería de varios géneros distintos (como el jazz, el rock, la música disco, etc.) Estos patrones generados nos servirán para las siguientes partes del trabajo, en concreto la del diseño de temáticas.
+
+\subsection*{Generación de líneas de bajo.}
+Tras haber implementado el generador de percusión, se implementó una primera versión de un generador de líneas de bajo, que cogía un ítem MIDI con acordes y usaba las notas más graves para crear de forma pseudoaleatoria una melodía monofónica que si  sirviera como línea de bajo. Más adelante se descartó el uso de este generador al descubrir formas mejores de afrontar este programa (el uso de un plugin arpegiador).
+
+\subsection*{Selección de plugins.}
+De forma paralela a los apartados anteriores, se realiza una investigación exhaustiva de plugins (de instrumentos virtuales principalmente). Continuamente nos encontramos con problemas de almacenamiento e instalación muy tediosa.
+
+Es más adelante cuando se reúnen finalmente todos los plugins de instrumentos virtuales que se usarán en la herramienta, plugins ligeros, de fácil instalación, pues son colocados los .vst o .dll en una única carpeta comprimida para facilitar la instalación tanto al usuario final como a los propios compañeros del trabajo.
+
+\subsection*{Programar en Reaper.}
+Se investiga el uso de ReaScript con Python para comenzar a automatizar tareas en Reaper. Primeramente se logran cargar instrumentos virtuales e ítems MIDI llamando a un script desde una acción de Reaper.
+
+A continuación, se diseña y se implementa la carga de plugins que cubren las necesidades concretas de cada pista. (Se continúa buscando plugins que cubran nuestras necesidades, en particular plugins de efectos).
+
+Desde ahí, se comienza a desarrollar una arquitectura que permite crear un arreglo para la primera temática (pradera). En este punto tenemos un script que carga ítems MIDI de melodía, armonía, batería y bajo. Además, añade de forma pseudoaleatoria plugins a las pistas y al máster: tenemos las primeras canciones generadas.
+
+En este momento se empiezan a diseñar las temáticas. Se habla de ello en el siguiente apartado.
+
+Se continúa hasta tener todas las temáticas programadas, añadiendo progresivamente mejoras y funcionalidades nuevas, como el subir o bajar semitonos, añadir diversos efectos a la mezcla o, finalmente, cambiar la complejidad de la melodía cargada.
+
+Cabe destacar que existe una investigación sobre conectar scripts externos con Reaper, pero no se logra dicho objetivo y pasa a un segundo plano hasta más avanzado el desarrollo (Sección de Miguel Comunicación entre Vanguard Music y Reaper).
+
+\subsection*{Diseño e implementación de las temáticas.}
+Se investigan los elementos tanto técnicos como creativos necesarios para crear las distintas temáticas para las canciones. A continuación, se diseñan e implementan en Reaper todas las temáticas que están disponibles en la herramienta.
+
+Para la implementación de las temáticas, ha sido requerido un exhaustivo trabajo de selección de timbres usando los instrumentos virtuales disponibles. El proceso es el siguiente: selección de plugin, elección o diseño del timbre dentro del plugin, guardado de un preset de Reaper y adición de dicho preset al script de Python para su posterior recuperación al lanzar el script en Reaper.
+
+\subsection*{Diseño de la interfaz gráfica.}
+Finalmente, se renderizaron en 3D usando Blender los diversos fondos presentes en la pestaña de sonorización de la aplicación y se colocaron en TKInter.
+
+
+\section*{Miguel González Pérez}
+
+\subsection*{Primera aproximación a la generación de MIDI con Magenta.}
+Uno de los primeros objetivos era conseguir generar melodías con música simbólica a través de la herramienta de Magenta. Dado que no fue posible para nosotros utilizar la API de Magenta desde Python en Windows, surgió la alternativa de utilizar la API de JavaScript, lo que implicaba integrar Node.js con el resto del desarrollo en Python. 
+
+Si bien logramos adquirir la melodía en forma de NoteSequence de Magenta en el contexto de JavaScript, no podíamos acceder a ello desde Python, por lo que más tarde se encargaría mi compañero Rodrigo de continuar y completar esta tarea.
+
+\subsection*{Arquitectura de la Aplicación en TKInter.}
+Tras el anterior apartado, mi siguiente tarea fue la de montar la arquitectura de la aplicación en TKInter con Python. Gran parte del trabajo en este apartado fue el del estudio de la documentación de \textit{TKInter}, la biblioteca estándar de Python para la creación de interfaces gráficas. 
+
+Utilizando estos conocimientos, diseñé la aplicación de forma que disgregase las funcionalidades principales en pestañas diferenciadas. Esto requería en cuanto a implementación diseñar el código de forma que gestionar y añadir varias pestañas fuera escalable y sostenible.
+
+El mantenimiento de un estado interno de la aplicación durante la ejecución y la posterior serialización a JSON y persistencia en ficheros en forma de presets son parte del trabajo que he realizado en el desarrollo de la aplicación. De este estado interno se sustrae la información necesaria, como temáticas y semillas, para la instrumentalización en Reaper. Esto implica también recuperar las configuraciones del estado interno de la aplicación guardadas por el usuario, de forma que no produzca errores.
+
+La configuración propia de la aplicación, como la ruta al ejecutable de Reaper, también fue parte de este proceso de persistencia en formato JSON.
+
+Para el desarrollo de la aplicación he aplicado algunos patrones de diseño software, como \textit{Strategy} a la hora de asignar el generador musical en la pestaña \textit{avanzado} o el propio sistema de pestañas de la aplicación, que aplica el patrón \textit{State} para manejar la entrado, actualización y salida de cada módulo de la aplicación.
+
+En un momento avanzado del desarrollo de la aplicación, encontramos la necesidad de explicar los distintos elementos de la interfaz de usuario de la aplicación de forma rápida y sencilla. Para esto se creó la clase \textit{Tooltip} que permitía mostrar un pequeño texto cuando pasabas el ratón por encima de un elemento de la interfaz. Más tarde, cuando la aplicación evolucionó, optamos por usar un plugin de TKInter que traía \textit{tooltips} integradas que funcionaban mejor, adaptándose al tema oscuro de la aplicación.
+
+\subsection*{Comunicación entre Vanguard Music y Reaper.}
+Uno de los principales retos de la aplicación era la comunicación con Reaper. Nuestra intención inicial era la de permitir al usuario utilizar la aplicación sin tener que preocuparse en exceso por Reaper. Esto planteaba varios desafíos, siendo uno de ellos el de añadir nuestros scripts de ejecución sin necesidad de que el usuario tenga que registrarlos manualmente en Reaper. 
+
+Reaper permite la ejecución de scripts en Python, \textit{LUA} y \textit{EEL} a través de su API \textit{ReaScript}. No obstante, estos scripts tienen que haber sido registrados en Reaper antes de poder ser ejecutad. Si bien éramos capaces de ejecutar los scripts ya registrados en Reaper desde nuestra aplicación gracias al trabajo de Javi, no podíamos registrar nuevos scripts desde código. Mi trabajo en esta sección fue la de estudiar la documentación de \textit{ReaScript} con el fin de enviar nuestros scripts a Reaper desde código. 
+
+Los scripts registrados en Reaper tienen un ID único asociado, no obstante este identificador hemos visto que se puede perder en algunos casos, por ejemplo, en cambios de versiones de Reaper, por lo que hacemos ahora es registrar de nuevo los scripts cuando lanzamos Reaper desde la aplicación, sustituyendo los scripts homónimos que hubiese registrado antes en el proceso.
+
+
+
 
