@@ -10,6 +10,7 @@ class Style(Enum):
     METAL = 7
     LATIN = 8
     ROCK = 9
+    DEMBOW = 10
 
 class Note(Enum):
     BassDrum = 36

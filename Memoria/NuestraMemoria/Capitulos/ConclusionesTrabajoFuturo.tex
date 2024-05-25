@@ -1,8 +1,59 @@
 \chapter{Conclusiones y Trabajo Futuro}
 \label{cap:conclusiones}
 
-Conclusiones del trabajo y líneas de trabajo futuro.
+Los objetivos del trabajo se han cumplido, obteniendo así una aplicación capaz de generar música simbólica y que se comunica con Reaper para reproducirla con una selección de instrumentos acordes a unas temáticas predefinidas. A continuación desglosamos los hitos más relevantes conseguidos en cada apartado del sistema.
 
-Antes de la entrega de actas de cada convocatoria, en el plazo que se indica en el calendario de los trabajos de fin de grado, el estudiante entregará en el Campus Virtual la versión final de la memoria en PDF.
+\section{Generación de melodías}
+La generación de melodías con \textit{machine learning} tiene la ventaja principal de poder ser automática, lo que permite crear melodías a todo tipo de usuario, sin requerir conocimientos musicales. En nuestro trabajo se exploran varios modelos, pero todos tienen algo en común, el usuario debe de ir escuchando cada melodía para comprobar si son de su agrado.
+
+En general, ni los algoritmos más sofisticados de Magenta consiguen una melodía aceptable el 100\% de las veces, pero la generación con esta metodología permite ir probando distintas melodías, lo que se ajusta perfectamente al ciclo de uso de nuestra aplicación.
+
+Finalmente podemos destacar que los modelos más complejos, Magenta y nuestra red neuronal recurrente, generan melodías interesantes. Resulta evidente que los resultados no parecen simplemente notas aleatorias, sino que se pueden reconocer estructuras de composiciones típicas. 
+
+\section{Armonización}
+
+La armonización por ventanas implica dividir la canción en fragmentos uniformes, en los cuales se selecciona el acorde predominante. Los pesos de los acordes en dichos fragmentos se determinan mediante una heurística rigurosa. La armonización por ventanas supuso un buen punto de partida y las bases para la evolución del algoritmo.
+
+Aún así, esta primera versión del algoritmo tenía un problema: asume que todos los acordes de la canción tienen la misma duración. Tanto la armonización por ventanas de diferentes como la armonización por desplazamiento de ventana solucionaron este problema. Ambas otorgan a la heurística una perspectiva más amplia del contexto musical, permitiendo fragmentar los acordes en tamaños irregulares de forma coherente. 
+
+Tener en cuenta las relaciones entre acordes fue lo más difícil de solucionar. Con un primer intento fallido, con la matriz de correspondencia entre acordes, se consiguió resolver el problema desde una perspectiva distinta: el reconocimiento de progresiones de acordes. El usuario define las progresiones de acordes que quiere que se detecten y el algoritmo maximiza el sumatorio de los pesos de las ventanas atendiendo a las restricciones impuestas. Esta solución permite tener más control y personalización de la salida esperada, consiguiéndose así un resultado que resuelve el problema planteado con creces.
+
+El algoritmo de armonización ha ido evolucionando, introduciendo las mejoras necesarias para satisfacer las problemáticas y necesidades que un compositor puede llegar a tener a la hora de acompañar una melodía, consiguiéndose finalmente superar incluso las expectativas iniciales.
+
+\section{Arreglos e instrumentalización}
+
+Hemos desarrollado una herramienta muy cómoda para el usuario final a la hora de conectar con Reaper, ya que hemos logrado automatizar el mayor número de tareas posibles.
+
+En términos de sonoridad, hemos logrado resultados más que aceptables teniendo en cuenta la poca intervención humana requerida. Las canciones resultantes son bastante variadas entre ellas, prácticamente nunca se van a generar dos canciones iguales sin buscarlo. No obstante, mediante el uso de las semillas y las distintas temáticas es muy sencillo generar dos canciones similares (para el mismo videojuego en distintas zonas, por ejemplo).
+
+Todas las canciones generadas son \textit{loopeables}, al igual que las distintas secciones dentro de una propia canción, por lo que dichas canciones son ideales para ser usadas en un videojuego, donde incluso puedes usar las distintas secciones y capas para montar fácilmente un proyecto de música adaptativa en una herramienta externa (por ejemplo, usando FMOD).
+
+\section{Aplicación}
+TKInter ha demostrado ser una biblioteca muy útil para el desarrollo de aplicaciones de prototipado rápido, por lo que ha cumplido con nuestras expectativas.
+
+Con TKInter hemos podido desarrollar una aplicación acorde con la idea inicial, ofrecer una interfaz sencilla que permita a los desarrolladores crear piezas musicales para sus videojuegos, sin necesidad de conocimientos musicales previos.
+
+Hoy en día el desarrollo de aplicaciones conlleva más infraestructura y servicios que el alcance que tiene Vanguard Music, como el inicio de sesión o base de datos en la nube, por mencionar un par. Somos conscientes de la extensibilidad de nuestra aplicación, por lo que lo hemos recogido en la sección de trabajo futuro.
+
+\section{Conclusiones generales}
+La aplicación \textit{Vanguard Music} cumple los objetivos que nos propusimos al inicio del trabajo. Permite generar música con distintas temáticas manteniendo la idea musical original, además, dentro de esta se generan 8 secciones que funcionan independientemente y se pueden combinar con cualquier número del resto de secciones y, \textit{loopean} entre sí perfectamente.
+
+El trabajo nos ha permitido combinar campos como el \textit{machine learning}, teoría y composición musical, producción musical, desarrollo de aplicaciones en Python y diseño de arquitecturas modulares. Esto nos ha permitido salir de nuestros campos de conocimientos, específicamente el desarrollo de videojuegos, e investigar diversas áreas para la construcción de esta herramienta.
+
+\section{Trabajo futuro}
+
+Aunque hemos conseguido buenos resultados en base a los objetivos que nos propusimos, existen diversas áreas en las que se puede expandir y mejorar el proyecto. A continuación se exponen algunas mejoras que se proponen para cada apartado de este.
+
+La parte de generación de melodías es altamente extensible. En primer lugar, al tener una aplicación modular que permite utilizar distintos módulos de generación, es posible desarrollar módulos para cualquier modelo de generación simbólica, por lo que se puede experimentar con modelos radicalmente distintos a los actuales para comparar resultados. Resulta especialmente interesante explorar modelos como KNN (\textit{K Nearest Neighbours}) o modelos que simulen las estrategias comunes de composición. Además, otra ruta de mejora es solucionar la dependencia de internet de Magenta, utilizando modelos preentrenados de dicha herramienta que se incluyan con la aplicación, sin embargo, esto no resulta sencillo con su API en JavaScript.
+
+En cuanto el armonizador, parte del trabajo futuro ya ha sido esbozado en las secciones que lo explican. Por ejemplo, una forma sencilla de mejorar el algoritmo sería mejorando la heurística inicial. En la Sección \ref{sec:arm:heuristica} se habla de tener en cuenta también la velocidad de la nota para calcular los pesos, pero se podrían tener en cuenta otros factores u otra metodología para llevar a cabo la heurística inicial. Las partes que más rango de mejora tendrían serían las de la matriz de correspondencia y el modelo de predicción de acordes (Secciones \ref{sec:arm:matriz_correspondencia} y \ref{sec:arm:prediccion_acordes} respectivamente) que pasaron a un segundo plano en nuestra implementación por falta de tiempo. Si los resultados fueran buenos, supondrían una mejora respecto al reconocimiento de progresiones de acordes ya que el coste del algoritmo volvería a ser lineal. Los resultados obtenidos representarían una especie de equilibrio entre aquello que compone comúnmente la gente (entrenamiento de los modelos) y las peculiaridades que pueda generar la heurística a la hora de calcular los pesos de los acordes. Más centrado en la parte del reconocimiento de progresiones de acordes, se podrían implementar las variantes de las políticas de elección de progresiones de las cuales se habla en la Sección \ref{arm:sebsebsec:politica}. Además, se podría mejorar la poda de los algoritmos ya existentes para mejorar sus rendimientos. Por último, y relacionado con todo el módulo en general, sería ideal implementar una interfaz accesible desde la aplicación para configurar los parámetros relacionados con el armonizador, ya que ahora mismo solamente se pueden modificar a nivel de código. Estos parámetros abarcarían desde la configuración de las ventanas de las primeras heurísticas, hasta la elección de las progresiones de acordes que se quieran detectar y sus transiciones.
+
+En cuanto el apartado de la búsqueda de nuevos colores existen muchas cosas que modificar y ampliar. La primera sería dividir el concepto de melodía y armonía base en mayor y menor, con el objetivo de tener un color más a la hora de generar temáticas. En vez de elegir la configuración con más peso, que es lo que está implementado actualmente, utilizar dos soluciones, una armonizando exclusivamente con progresiones mayores y otra con progresiones menores. Esto tendría más sentido y aportaría mayor riqueza a las temáticas. Así mismo, utilizar este mismo par de soluciones para realizar las modificación a los modos mayores y menores correspondientes también supondría una metodología más coherente que lo implementado en este producto final. Relacionado también con los modos, sería muy interesante y supondría una mejora atacar la armonía modal desde otra perspectiva. Ahora mismo se ajusta la melodía base a la escala del modo y se armoniza únicamente con los acordes que pertenecen a dicho modo. Es decir, no se sale del modo elegido. A la hora de componer con los modos griegos esto no es lo que se suele hacer realmente. Es mucho más común continuar en una escala diatónica (mayor o menor) y utilizar acordes de intercambio con el modo escogido para realizar la composición. Este es el cambio de perspectiva que estaría interesante explorar en un trabajo futuro. Lo último por mencionar sería el uso de las numerosas escalas adicionales que existen y que vagamente se han mencionado en este TFG para crear nuevos colores. Algunos ejemplos rápidos serían la doble armónica, con una sonoridad muy característica que mejoraría la temática de desierto actual o la hexatónica, que encajaría con temáticas más misteriosas. Estas y muchas más escalas podrían ser utilizadas para mejorar las temáticas existentes y crear otras nuevas.
+
+Por parte de la sonorización de la canción, sería interesante tratar de condensar todos los plugins necesarios en un número más reducido de estos. Un posible camino a seguir sería el uso de alguna suite de plugins (de pago o gratuita) como podría ser Kontakt de Native Access. Otra opción sería el uso de algún plugin de sintetizador mucho más completo que los que se utiliza, del estilo de Vital o de Serum, pudiendo de esta forma utilizar ese plugin para generar la mayoría de los timbres. Además de eso, actualmente es una herramienta bastante cerrada, que no permite ser extendida por los usuarios. Esto es algo que podría cambiar mediante la implementación de algún sistema de presets descargables (por ejemplo de manera similar a cómo lo hacen Vital o Serum), quizás de temáticas nuevas, soporte paga plugins que los usuarios elijan, etc. 
+
+
+La aplicación tiene aún mucha extensibilidad, la cual se escapa al alcance de este TFG. Actualmente, la mayoría de aplicaciones cuentan con registro de usuario y su correpondiente inicio de sesión, que permite distinguir a los usuarios. Combinado con el guardado de datos en la nube y una base de datos en línea, permite operar desde dispositivos distintos, recuperando la información de una misma cuenta y asegurando los datos en caso de desinstalar la aplicación. En el caso de Vanguard Music serviría para no perder los presets de la aplicación que defina el usuario.
+
 
 

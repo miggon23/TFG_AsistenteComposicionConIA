@@ -115,5 +115,11 @@ class Make_Engine:
                 if rushed: i -= rushedN
                 list[i] = Note.BassDrum.value
                 if double2: list[i - double2N] = Note.BassDrum.value
-                    
+        
+        elif(style.value == Style.DEMBOW.value):
+            list[3] = Note.AcousticSnare.value
+            list[6] = Note.AcousticSnare.value
+            list[11] = Note.AcousticSnare.value
+            list[14] = Note.AcousticSnare.value
+
         return list

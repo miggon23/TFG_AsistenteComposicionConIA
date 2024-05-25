@@ -79,6 +79,8 @@ def estiloDrums(tematica):
         estilo = random.choice(["BASIC", "LATIN", "ROCK"])
     elif(tematica == 12):
         estilo = random.choice(["DISCO", "DISCO", "DISCO"])
+    elif(tematica == 13):
+        estilo = random.choice(["DEMBOW", "DEMBOW", "DEMBOW"])
 
     return estilo
 
@@ -97,27 +99,27 @@ def cargarMelodia(complejidad, tematica, patron, recortar = False, pos = -1):
     estilo = "output_song"
 
     if(tematica == 0):
-        estilo = "_Lydian"
+        estilo = "Lydian"
     elif(tematica == 1):
         estilo = ""
     elif(tematica == 2):
-        estilo = "_Phrygian"
+        estilo = "Phrygian"
     elif(tematica == 3):
-        estilo = "_Dorian"
+        estilo = "Dorian"
     elif(tematica == 4):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 5):
-        estilo = "_Phrygian"
+        estilo = "Phrygian"
     elif(tematica == 6):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 7):
-        estilo = "_Locrian"
+        estilo = "Locrian"
     elif(tematica == 8):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 9):
-        estilo = "_Lydian"
+        estilo = "Lydian"
     elif(tematica == 10):
-        estilo = "_Dorian"
+        estilo = "Dorian"
     elif(tematica == 11):
         estilo = ""
     elif(tematica == 12):
@@ -133,60 +135,65 @@ def cargarMelodia(complejidad, tematica, patron, recortar = False, pos = -1):
                     if(pos != -1):
                         RPR_SetEditCurPos(pos + cont*2, True, True)
                         cont += 1
-                    cargarMidi("midi/output_melody"+ estilo + item +".mid")
+                    cargarMidi("midi/output_melody"+ complejidad_str + estilo + item +".mid")
         elif(complejidad == 1):
             for item in patron:
                     if(pos != -1):
                         RPR_SetEditCurPos(pos + cont*4, True, True)
                         cont += 1
-                    cargarMidi("midi/output_melody"+ estilo + item +".mid")
+                    cargarMidi("midi/output_melody"+ complejidad_str + estilo + item +".mid")
         elif(complejidad == 2):
-            cargarMidi("midi/output_melody"+ estilo + ".mid")
+            cargarMidi("midi/output_melody"+ complejidad_str + estilo + ".mid")
         elif(complejidad == 3):         # Melodias 64 barras
             cargarMidi("midi/output_melody"+ estilo + ".mid")
 
     else:
-        cargarMidi("midi/output_melody" + estilo + patron[3] +".mid")
+        if(complejidad == 2):
+            cargarMidi("midi/output_melody" + complejidad_str + estilo +".mid")
+        else:
+            cargarMidi("midi/output_melody" + complejidad_str + estilo + patron[3] +".mid")
+
 
 def cargarArmonia(complejidad, tematica, recortar = False, estandar = False):
 
     estilo = "output_harmony"
 
     if(tematica == 0):
-        estilo = "_Lydian"
+        estilo = "Lydian"
     elif(tematica == 1):
         estilo = ""
     elif(tematica == 2):
-        estilo = "_Phrygian"
+        estilo = "Phrygian"
     elif(tematica == 3):
-        estilo = "_Dorian"
+        estilo = "Dorian"
     elif(tematica == 4):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 5):
-        estilo = "_Phrygian"
+        estilo = "Phrygian"
     elif(tematica == 6):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 7):
-        estilo = "_Locrian"
+        estilo = "Locrian"
     elif(tematica == 8):
-        estilo = "_Mixolydian"
+        estilo = "Mixolydian"
     elif(tematica == 9):
-        estilo = "_Lydian"
+        estilo = "Lydian"
     elif(tematica == 10):
-        estilo = "_Dorian"
+        estilo = "Dorian"
     elif(tematica == 11):
         estilo = ""
     elif(tematica == 12):
         estilo = ""
 
+
     nombre = "output_harmony"
     if(estandar):
-        nombre = "output_std_harmony"+estilo
+        nombre = "output_std_harmony"+complejidad_str+estilo
     else:
-        nombre = "output_harmony"+estilo
+        nombre = "output_harmony"+complejidad_str+estilo
 
     cargarMidi("midi/"+nombre+".mid")
-    if not recortar and not complejidad == 3:
+    if not recortar and not complejidad == 3 and not complejidad == 2:
         cargarMidi("midi/"+nombre+".mid")
 
 
@@ -202,222 +209,228 @@ def crearPista1(i, tematica, preset, dream, ampli, ampli_preset, semitonos):
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
     if(i == 1):
-        if(tematica == 10):
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveDown") 
-        elif(tematica == 11 or tematica == 12):
+        if(tematica == 11 or tematica == 12):
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "") 
         else:
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "octaveUp")
 
+    if(tematica == 4):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "ritmoPirata") 
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
+        RPR_TrackFX_SetEnabled(RPR_GetTrack(0, i), 2, False)
+
+
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
-    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "humanisator2") 
+    RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "humanisator2") 
 
     if(tematica == 0):
         if(preset <= 0):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Acousti (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 1):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Nylon (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 2):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Steel (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK GuitarZ (x86) (DSK MusicSZZ)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Saxophones (DSK Music) (16 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 7):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         else:
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK AkoustiK Keyz (x86) (DSK MusicSZZ)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 1):
         if(preset == 0):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo0")
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pianoSolo0")
         elif(preset == 1):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Pianotone 600 v2 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo1")
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pianoSolo1")
         elif(preset == 2):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "EVM Grand Piano v1.1 (x86) (Etric van-mayer)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo2")
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pianoSolo2")
         elif(preset <= 7):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DPiano-A (Dead Duck Software)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pianoSolo"+str(preset))
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Upright Piano (audiolatry) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pianoSolo"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pianoSolo"+str(preset))
     elif(tematica == 2):
         if(preset <= 0):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Room Piano v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 2): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Zither Renaissance v2 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Sitar (x86) (Christopher Clews)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 6): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Indian DreamZ (x86) (DSK MusicSZZ)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Quilcom SIM-DIZI v1.002 (Rex Basterfield)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 3):
         if(preset <= 1): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Virtual Handpan (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Quilcom SIM-DIZI v1.002 (Rex Basterfield)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Dulcimator2 (x86) (Rock Hardbuns Global Entertainment)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 4):
         if(preset <= 1): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK World String (DSK Music) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 3): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Accordion (x86) (Safwan Matni)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Indian DreamZ (x86) (DSK MusicSZZ)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Ukulele (x86) (Christopher Clews) (mono)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 5):
         if(preset <= 0): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "VSCO2 Marimba (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "01 Pipa (DSK Music) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 6): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Indian DreamZ (x86) (DSK MusicSZZ)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 7): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Sonatina Xylopho (Maizesoft) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Quilcom SIM-MBIRA v1.00 (Rex Basterfield)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 6): 
         if(preset <= 2): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Strings (x86) (DSK)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 3): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Iowa Alto Flute (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Sonatina Oboe (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Sonatina Trombon (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 6): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Iowa Trumpet (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Iowa Trumpet (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 7):
         if(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Darksichord 3 Lite (ESL) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DVS Guitar (x86) (Martin Best)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 7): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Keyzone (x86) (Bitsonic LP)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK ChoirZ (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 8):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 9):
         if(preset <= 2): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Nu Guzheng v2 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK World String (DSK Music) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 7): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "01 Pipa (DSK Music) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 8): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Quilcom SIM-SHENG v1.002 (Rex Basterfield)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 10):
         if(preset <= 1): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "OMB2 (x86) (Christopher Clews)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DVS Guitar (x86) (Martin Best)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Karoryfer Cute E (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "StratAVarious (x86) (Ian Webster)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))   
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))   
     elif(tematica == 11):
         if(preset <= 0): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DSK Guitars Acousti (x86) (DSK Music)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 1): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Karoryfer Cute E (bigcat) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 2): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Upright Piano (audiolatry) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 4): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DPiano-A (Dead Duck Software)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Virtual Handpan (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9): 
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
     elif(tematica == 12):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "TAL-NoiseMaker (TAL-Togu Audio Line)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
 
     if(tematica == 10 and ampli):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "FA3 Full (x86) (Fretted Synth)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 4, "ampli"+str(ampli_preset))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "ampli"+str(ampli_preset))
     else:
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 5, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "gain"+str(pista))
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaLimit (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "gain"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "gain"+str(pista))
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaEQ (Cockos)", False, -1)
     if(tematica != 1):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "eqPista"+str(pista))
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "eqPista"+str(pista))
 
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "dream"+str(random.randint(0, 9))) 
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 9, "dream"+str(random.randint(0, 9))) 
     elif (tematica == 12):
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "sidechain1")
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 10, "sidechain1")
 
 #Acompañamiento instrumento 3 y 4   
 def crearPista3(i, tematica, preset, arpegiado, preset_acordes, preset_arpegio, dream, ampli, ampli_preset, semitonos):
@@ -789,9 +802,13 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_bajo, preset_arpegio,
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 1, "bajo0") 
     
 
-    RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
-    if(tematica == 1 or tematica == 8):
-        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "octaveDown") 
+    if(tematica == 4):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "BlueArp", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "ritmoPirata")
+    else:
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "JS: MIDI Transpose Notes", False, -1)
+        if(tematica == 1 or tematica == 8):
+            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 2, "octaveDown") 
     
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Humanisator (x86) (Tobybear)", False, -1)
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "humanisator1") 
@@ -911,7 +928,9 @@ def crearPista6(pista, tematica, preset, arpegiado, preset_bajo, preset_arpegio,
     if dream:        
         RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "dream"+str(random.randint(0, 9))) 
-
+    elif (tematica == 12):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Flux Mini 2 (Caelum Audio)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 8, "sidechain1")
 
 #Batería instrumento 7   
 def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
@@ -1044,19 +1063,13 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
         if(preset <= 4):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        elif(preset <= 7):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 9):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
+            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
              
     elif(tematica == 11):
         if(preset <= 2):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
-            RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
-        elif(preset <= 3):
-            RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Toy Keyboard v3 (SampleScience) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
         elif(preset <= 5):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Apari Tenpan (x86) (Apari)", False, -1)
@@ -1087,6 +1100,11 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
         elif(preset <= 9):
             RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "DrumPlayer v1 (99Sounds) (32 out)", False, -1)
             RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista"+str(pista)+"tematica"+str(tematica)+"_"+str(preset))
+    
+    # Dembow
+    elif(tematica == 13):
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "AfroPlugin (AfroPlug) (32 out)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 3, "pista7tematica13")
         
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "ReaComp (Cockos)", False, -1)
@@ -1100,9 +1118,9 @@ def crearPista7(pista, tematica, preset, fill, preset_fill, dream):
     RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "eqPista"+str(pista))
 
     RPR_TrackFX_AddByName(RPR_GetTrack(0, i), "Cymatics Diablo Lite (Cymatics)", False, -1)
-    if (tematica == 10):
+    if (tematica == 10 or tematica == 12 or tematica == 13):
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums2")
-    else:
+    else:  
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 7, "drums1")
 
     if dream:        
@@ -1373,7 +1391,24 @@ def crearPista13(pista, tematica, preset, preset2, preset3, preset4, preset_arpe
         RPR_TrackFX_SetPreset(RPR_GetTrack(0, i), 6, "gain13")
 
 
-def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, entorno, vintage, dream, agua):
+def crearPistaReverb(tematica,reverb, espacial, vintage):
+    if(not espacial and not vintage):
+        RPR_InsertTrackAtIndex(16, True)
+        RPR_TrackFX_AddByName(RPR_GetTrack(0, 16), "OrilRiver (Denis Tihanov)", False, -1)
+        RPR_TrackFX_SetPreset(RPR_GetTrack(0, 16), 0, "entorno"+str(reverb))
+
+        if(tematica == 1):
+            volumen_envios = [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
+        else:
+            volumen_envios = [1,1,0.25,0.25,0.4,0.05,0.1,0.25,0.25,0.25,0.25,0.15,0.4,0.4,0.4,0.4]
+
+        for i in range (16):
+            envio = RPR_CreateTrackSend(RPR_GetTrack(0, i), RPR_GetTrack(0, 16))
+            RPR_SetTrackSendInfo_Value(RPR_GetTrack(0, i), 0, envio, "D_VOL", volumen_envios[i])
+
+
+
+def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, vintage, dream, agua):
     RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "DeltaModulator (Xfer Records)", False, -1)
     if retro:
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 0, "retro1") 
@@ -1392,11 +1427,8 @@ def crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset,
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ValhallaSupermassive (Valhalla DSP, LLC)", False, -1)
         RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "espacial"+str(espacial_preset)) 
     else:    
-        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "OrilRiver (Denis Tihanov)", False, -1)
-        if(reverb and not vintage):
-            RPR_TrackFX_SetPreset(RPR_GetMasterTrack(0), 2, "entorno"+str(entorno)) 
-        else:
-            RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
+        RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "ReaEQ (Cockos)", False, -1)
+        RPR_TrackFX_SetEnabled(RPR_GetMasterTrack(0), 2, False)
 
     if(dream or agua): 
         RPR_TrackFX_AddByName(RPR_GetMasterTrack(0), "Cymatics Deja Vu (Cymatics)", False, -1)
@@ -1505,13 +1537,18 @@ mezclar_tematicas = parametros["mezclar_tematicas"]
 complejidad = parametros["complejidad"]
 semitonos = parametros["semitonos"]
 reverb = parametros["reverb"]
-entorno = parametros["entorno"]
 lofi = parametros["lofi"]
 retro = parametros["retro"]
 agua = parametros["agua"]
 espacial = parametros["espacial"]
 dream = parametros["dream"]
 vintage = parametros["vintage"]
+
+complejidad_str = "_X_"
+if(complejidad == 1):
+    complejidad_str = "_Y_"
+elif(complejidad == 2):
+    complejidad_str = "_Z_"
 
 lofi_preset = random.randint(0, 9)
 espacial_preset = random.randint(0, 9)
@@ -1628,7 +1665,9 @@ for i in range(5):
 for i in range(4):
     RPR_SetMediaTrackInfo_Value(RPR_GetTrack(0, i + 12), "D_PAN", (random.randint(-90, 90)/100))
 
-crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, reverb, entorno, vintage, dream, agua)
+
+crearPistaReverb(tematica, reverb, espacial, vintage)
+crearMasterFX(tematica, retro, lofi, lofi_preset, espacial, espacial_preset, vintage, dream, agua)
 
 
 
@@ -1942,7 +1981,7 @@ for i in range(8):
         RPR_SetEditCurPos(i * 16 + 14, True, True)
         cargarMidi("midi/fillTemplate.mid")
         fill_n += 1
-    if (tematica_pistas[6] != 12):
+    if (tematica_pistas[6] != 12 and tematica_pistas[6] != 13):
         if arreglo[6][i]:
             
             if(i < 6):
@@ -1987,6 +2026,37 @@ if(complejidad == 3):
     RPR_SetEditCurPos(0, True, True)
     cargarArmonia(complejidad, tematica)
 
+    
+    for i in range(16):
+        if(i != 6 and i != 11):
+            for j in range(8):
+                RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, j), j), j * 16)
+            if(i < 6):
+                cont = 0
+                for value in arreglo[i]:
+                    if value:
+                        cont += 1
+                    else:
+                        RPR_DeleteTrackMediaItem(RPR_GetTrack(0, i), RPR_GetTrackMediaItem(RPR_GetTrack(0, i), cont))
+
+
+
+    cont = [0,0,0,0]
+    for value in candy:
+        
+        pista = -1
+        if value:
+            
+            pista += 1
+            if pista == 4:
+                pista = 0
+        
+        for k in range(4):
+            if(k == pista):
+                cont[k] += 1
+            else:
+                RPR_DeleteTrackMediaItem(RPR_GetTrack(0, k + 12), RPR_GetTrackMediaItem(RPR_GetTrack(0, k + 12), cont[k]))
+
 else:
     i = 0
     pista = 12
@@ -2008,30 +2078,53 @@ else:
             if arreglo_adelantar[fila][col]:
                 if(fila < 2):
                     RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-                    RPR_SetEditCurPos(col * 16 + 14, True, True)
+                    if(complejidad == 0):
+                        RPR_SetEditCurPos(col * 16 + 14, True, True)
+                    elif(complejidad == 1):
+                        RPR_SetEditCurPos(col * 16 + 12, True, True)
+                    else:
+                        RPR_SetEditCurPos(col * 16, True, True)
+                    
                     cargarMelodia(complejidad, tematica, patrones_melodia[patrones_orden[col]], recortar = True)
 
-                    cont = 0
-                    for i in range(col):
-                        if arreglo[fila][i]:
-                            cont += 4
+                    if(complejidad == 1 or complejidad == 2):
+                        cont = 0
+                        for i in range(col):
+                            if arreglo[fila][i]:                            
+                                if(complejidad == 1):   
+                                    cont += 4
+                                else:
+                                    cont += 1
+                    
+                        RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                        RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
 
+                        
                 else:
                     RPR_SetOnlyTrackSelected(RPR_GetTrack(0, fila))
-                    RPR_SetEditCurPos(col * 16 + 8, True, True)
+                    if(complejidad == 0 or complejidad == 1):
+                        RPR_SetEditCurPos(col * 16 + 8, True, True)
+                    else:
+                        RPR_SetEditCurPos(col * 16, True, True)
 
                     if(fila == 5):
                         cargarArmonia(complejidad, tematica, recortar = True, estandar = True)
                     else:
                         cargarArmonia(complejidad, tematica, recortar = True)
 
-                    cont = 0
-                    for i in range(col):
-                        if arreglo[fila][i]:
-                            cont += 2
+                    
+                    if(complejidad == 0 or complejidad == 1 or complejidad == 2):
+                        cont = 0
+                        for i in range(col):
+                            if arreglo[fila][i]:
+                                if(complejidad == 2):
+                                    cont += 1
+                                else: 
+                                    cont += 2
 
-                    RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
-                    RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+                        RPR_SplitMediaItem(RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont), col * 16 + 14)
+                        RPR_DeleteTrackMediaItem(RPR_GetTrack(0, fila), RPR_GetTrackMediaItem(RPR_GetTrack(0, fila), cont))
+                    
 
 
 

@@ -1,28 +1,33 @@
+import os
+
 from tkinter import ttk
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox  
+
 
 from timidity import Parser, play_notes
 import numpy as np
+import json
 
 import mainDemo as demo
+from App.Strategies import generationStrategy
+from App.Exceptions.customExceptions import *
 from Cadenas_Markov import markovGenerator
-from Basslines import basslineGenerator
-from Drums import enums
-from Drums import drumGenerator
-from Basslines import basslineGenerator
 from Harmonizer import harmonyGenerator
-from Harmonizer import models as Models
+from Drums import drumGenerator
+from Utils import globalConsts
 import shutil
 
 
 class GenerationTab:
     
-    previewPlayer = None
+    preview_player = None
+    generation_strategy = None
 
     def __init__(self, tab):
         self.tab = tab
-
+        self.melody = None
         # Ver si se genera por Magenta o por Markov
         self.mkv_generator = markovGenerator.Markov_Generator(use_silences=False)
         demo.load_markov_chain(self.mkv_generator)
@@ -31,9 +36,13 @@ class GenerationTab:
         self.setStyle()
         self.setButtons()
 
-    def onEntryTab(self):   
-        return
+    def onEntryTab(self):  
+        self.load_generation_strategy_() 
     
+    
+    def onExitTab(self):
+        return
+
     def update(self):
         return
 
@@ -41,18 +50,21 @@ class GenerationTab:
         style = ttk.Style()
         style.configure("TButton", padding=6, relief="flat", background="#ccc")
 
-        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0, padx=150)
+        ttk.Label(self.tab, text="Generador Musical", font=30, padding=[30, 30, 30, 30]).grid(column = 0, row = 0, padx=30)
 
     def setButtons(self):
-        ttk.Button(self.tab, text="Cargar archivo MIDI", command=self.selectMIDIFile).grid(column=0, row=0, padx=150, pady=10)
+        ttk.Button(self.tab, text="Cargar archivo MIDI", command=self.selectMIDIFile).grid(column=1, row=1, padx=0, pady=10)
         self.file_loaded_label = ttk.Label(self.tab, text="No hay archivo cargado", font=("Arial", 10, "italic"), foreground="white")
         self.file_loaded_label.grid(column=2, row=0, padx=10, pady=10)
-        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=150, pady=10)
-        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=150, pady=10)
+        ttk.Button(self.tab, text = "Generar melodías", command = self.generateMelodies).grid(column=0, row = 1, padx=30, pady=10)
+        ttk.Button(self.tab, text = "Reproducir", command = self.playPreview).grid(column=0, row = 2, padx=30, pady=10)
         ttk.Button(self.tab, text= "Stop", command= self.stopPreview).grid(column=1, row=2)
-        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=150, pady=10)
-        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=150, pady=10)
-        
+        ttk.Button(self.tab, text = "Armonizar", command = self.armonice).grid(column=0, row = 3, padx=30, pady=10)
+        ttk.Button(self.tab, text = "Tamborizar", command = self.tamborice).grid(column=0, row = 4, padx=30, pady=10)
+        ttk.Button(self.tab, text = "Guardar melodía", command = self.saveMelody).grid(column=0, row = 5, padx=30, pady=10)
+        self.melody_saved_lavel = ttk.Label(self.tab, text="", font=("Arial", 10, "italic"), foreground="white")
+        self.melody_saved_lavel.grid(column=2, row=5, padx=10, pady=10)
+
     def selectMIDIFile(self):
         file_path = filedialog.askopenfilename(filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")])
         if file_path:
@@ -61,35 +73,36 @@ class GenerationTab:
 
             self.file_loaded_label.config(text="Archivo cargado correctamente: \n" + file_path, foreground="green")
 
+    def saveMelody(self):
+        file_path = filedialog.asksaveasfilename(filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")])
+        if file_path and self.melody:
+            if not file_path.lower().endswith(".mid"):
+                file_path += ".mid"
+
+            shutil.copyfile(self.melody, file_path)
+
+            self.melody_saved_lavel.config(text="Melodía guardada correctamente en: \n" + file_path, foreground="white")
     
     def generateMelodies(self):
         self.file_loaded_label.config(text="No hay archivo cargado", foreground="white")
+        self.melody_saved_lavel.config(text="", foreground="white")
 
-        print("Generando")
         self.bars = 8
 
-        temperature = 1.5
-
-        # MARKOV
-        # self.melody = demo.generate_markov(self.mkv_generator, self.bars, 1)[0]
-        # self.melody = demo.generate_markov(self.mkv_generator, 64, 1)[0]
-        
+        print(f"Generando con {self.temperature} de temperatura")
         # MAGENTA
-        self.melody = demo.generate_magenta(self.bars, 1, temperature)[0]
+        self.melody = self.generation_strategy.generate_melodies(markov=self.mkv_generator, n_bars=self.bars, n_sims=1, temperature=self.temperature)[0]
         # self.melody = demo.generate_magenta(64, 1, temperature)[0]
         
-        # RNN
-        # self.melody = demo.generate_rnn(self.bars, temperature)[0]
-        # self.melody = demo.generate_rnn(64, temperature)[0]
-
-        # CARGAR MELODIA EXISTENTE 
-        # (es solamente pasarle la ruta, porque todo los generate devuelven un array con la ruta)
-        # self.melody = "./Media/midi/output_song.mid"
-
         self.melody = harmonyGenerator.HarmonyGenerator.treatMelody(input=self.melody, output="./Media/midi/trasposed_song.mid")
 
 
     def armonice(self):
+
+        if(os.path.exists("./Media/midi/trasposed_song.mid")):
+            AppWarning("No se ha encontrado melodía para armonizar").show()
+            return
+
         print("Armonizando...")
 
         # A(2) + B(2) 
@@ -157,6 +170,9 @@ class GenerationTab:
                                                     output_harmony="./Media/midi/output_harmony_Z_.mid",
                                                     output_std_harmony="./Media/midi/output_std_harmony_Z_.mid")[0]
         
+        # except Exception as e:
+        #     messagebox.showerror("Error", f"{str(e)}")
+        
         print("Armonizacion completa")
 
 
@@ -167,18 +183,34 @@ class GenerationTab:
         print("Tamborizacion completa")
 
     def playPreview(self):
-        if(self.previewPlayer != None and self.previewPlayer.is_playing()):
-            self.previewPlayer.stop()
+        if(self.preview_player != None and self.preview_player.is_playing()):
+            self.preview_player.stop()
 
         ps = Parser("./Media/midi/trasposed_song.mid")
         # TODO salida de errores si falla al parsear .mid
-        audio, self.previewPlayer = play_notes(*ps.parse(), np.sin, wait_done=False)
+        audio, self.preview_player = play_notes(*ps.parse(), np.sin, wait_done=False)
 
     def stopPreview(self):
-        if(self.previewPlayer == None):
+        if(self.preview_player == None):
             return
         
-        self.previewPlayer.stop()
-        self.previewPlayer = None
+        self.preview_player.stop()
+        self.preview_player = None
     
+    def load_generation_strategy_(self):
+        jsonPath = globalConsts.Paths.appConfigPath
+
+        with open(jsonPath, "r") as archivo:
+            datos = json.load(archivo)
+
+        generator = datos["melodyGenerator"]
+        temperature = datos["temperature"]
+
+        if generator in generationStrategy.strategy_per_mode:
+            self.generation_strategy = generationStrategy.strategy_per_mode[generator]
+
+        # Recuperamos también la temperatura para el generador
+        self.temperature = temperature
+        
+        
 

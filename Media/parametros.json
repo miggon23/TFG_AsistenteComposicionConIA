@@ -1,26 +1,25 @@
 {
-    "tematica": 12,
+    "tematica": 10,
     "tematica_pistas": [
-        0,
         1,
-        2,
-        3,
-        4,
-        5,
-        6
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
     ],
     "tematicas_aleatorias": false,
     "mezclar_tematicas": false,
-    "complejidad": 3,
+    "complejidad": 2,
     "semitonos": 0,
-    "reverb": true,
-    "entorno": 0,
+    "reverb": 3,
     "lofi": false,
     "retro": false,
     "agua": false,
     "espacial": false,
     "dream": false,
     "vintage": false,
-    "seed_instrumentos": "s9nrr",
-    "seed_arreglo": "s9nrr"
+    "seed_instrumentos": "l0zix",
+    "seed_arreglo": "t9PBE"
 }

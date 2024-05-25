@@ -1,11 +1,10 @@
 import json
 import os
-import random
 
 from tkinter import ttk
 from tkinter import *
-from enum import Enum
 from tktooltip import ToolTip
+from tkinter import messagebox
 
 from PIL import Image, ImageTk
 from Reaper_Scripts import llamamosReaper
@@ -23,6 +22,9 @@ class ModeSelectorTab:
     current_tematic = TematicEnum.PRADERA
 
     background_filter_id = None
+
+    tab_width = 1152
+    tab_height = 648
 
     def __init__(self, tab):
         self.tab = tab
@@ -50,15 +52,20 @@ class ModeSelectorTab:
 
         self.reaperStream = llamamosReaper.ReaperStream()
         self.presetManager = PresetManager()
-        self.rerollSeed()
+        self.rerollAllSeeds()
 
     def update(self):
         self.backgroundSys.update()
         
     def onEntryTab(self):
         self.resize_image()
+        self.check_mixed_themes()
 
+    def onExitTab(self):
+        return
 
+    # MARK: CHECKBOXES
+    
     def setCheckboxes(self):
         self.retro = BooleanVar()
         Checkbutton(self.canvas, text="Retro", variable=self.retro, justify=LEFT, command=self.onSelectCheckbox, selectcolor="black").place(x=30, y=310)
@@ -78,16 +85,43 @@ class ModeSelectorTab:
         self.spatial = BooleanVar()
         Checkbutton(self.canvas, text="Espacial", variable=self.spatial, justify=LEFT, command=self.onSelectCheckbox, selectcolor="black").place(x=30, y=510)
    
+
+    def get_state(self):
+        return self.modeState
+
+    # MARK: TOOLTIPS
+
     def setTooltips(self):
-        ToolTip(self.seedEntry, msg = "Seed", delay = self.tooltip_delay)
-        ToolTip(self.savePreset_button, msg = "Save preset", delay=self.tooltip_delay)
-        ToolTip(self.playButton, msg = "Apply changes and play", delay=self.tooltip_delay)
-        ToolTip(self.presetCombobox, msg= "Saved presets", delay=self.tooltip_delay)
-        ToolTip(self.themes_combo, msg="Themes", delay=self.tooltip_delay)
-        ToolTip(self.all_random_button, msg="Randomize seed", delay=self.tooltip_delay)        
+        ToolTip(self.instrument_seedEntry, msg = "Semilla de instrumentos", delay = self.tooltip_delay)
+        ToolTip(self.arrangement_seedEntry, msg = "Semilla de arreglos", delay = self.tooltip_delay)
+        ToolTip(self.savePreset_button, msg = "Guardar preset", delay=self.tooltip_delay)
+        ToolTip(self.playButton, msg = "Guardar cambios y reproducir", delay=self.tooltip_delay)
+        ToolTip(self.presetCombobox, msg= "presets guardados", delay=self.tooltip_delay)
+        ToolTip(self.themes_combo, msg="Temáticas", delay=self.tooltip_delay)
+        ToolTip(self.all_random_button, msg="Aleatorizar todas las semillas", delay=self.tooltip_delay)  
+        ToolTip(self.instrument_random_button, msg="Aleatorizar semilla de instrumentos", delay=self.tooltip_delay)      
+        ToolTip(self.arrangement_random_button, msg="Aleatorizar semilla de arreglos", delay=self.tooltip_delay)    
+        ToolTip(self.combo_reverb, msg = "Entorno", delay=self.tooltip_delay)  
+
+    def check_mixed_themes(self):
+        x = (self.tab_width) / 2 - 130
+        y = (self.tab_height) / 2 - 270
+
+        if self.modeState.mezclar_tematicas:
+            self.themes_combo.place_forget()
+            self.mixed_themes_label.place(x = x + 25, y = y + 10)
+        else:
+            self.themes_combo.place(x = x, y = y)
+            self.mixed_themes_label.place_forget()
+
+
+    # MARK: BUTTONS
 
     def setButtons(self):
       
+        tab_width = 1152
+        tab_height = 648
+
         original_image = Image.open("App/Images/playButton.png")
 
         # Reduce el tamaño de la imagen
@@ -95,8 +129,8 @@ class ModeSelectorTab:
         self.playButtonImage = ImageTk.PhotoImage(resized_image)
 
         # Calcula las coordenadas para centrar el botón
-        x = (1152) / 2 - 85
-        y = (648) * 0.16
+        x = (tab_width) / 2 - 85
+        y = (tab_height) * 0.16
 
         # Crea y coloca el botón en las coordenadas calculadas
         self.playButton = ttk.Button(self.canvas, image=self.playButtonImage, command=self.playReaper)
@@ -106,33 +140,64 @@ class ModeSelectorTab:
         original_image = Image.open("App/Images/dado6.png")
 
         # Reduce el tamaño de la imagen
-        resized_image = original_image.resize((80, 80), Image.LANCZOS) 
+        resized_image = original_image.resize((100, 100), Image.LANCZOS) 
         self.generateAllRandom_buttonImage = ImageTk.PhotoImage(resized_image)
 
         # Calcula las coordenadas para centrar el botón
-        x = 1152 * 0.85
-        y = 648 * 0.7
+        x = tab_width * 0.84
+        y = tab_height * 0.52
 
-        # Crea y coloca el botón en las coordenadas calculadas
-        self.all_random_button = Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollSeed)
+        # Botón de re-roll de todas las semillas
+        self.all_random_button = Button(self.canvas, image=self.generateAllRandom_buttonImage, command=self.rerollAllSeeds)
         self.all_random_button.place(x=x, y=y)
 
-        self.seedString = StringVar()
-        self.seedEntry = Entry(self.canvas, textvariable=self.seedString, justify="center")
-        self.seedEntry.place(x=x, y=y-20, width=80)
-        self.seedEntry.bind("<KeyRelease>", self.onUpdateSeed)
+        y = tab_height * 0.75
+
+        # Semilla de instrumentos
+        x = tab_width * 0.9
+        instrument_image = Image.open("App/Images/dado5.png")
+
+        resized_image = instrument_image.resize((60, 60), Image.LANCZOS) 
+        self.generate_instrument_buttonImage = ImageTk.PhotoImage(resized_image)
+
+        self.instrument_random_button = Button(self.canvas, image=self.generate_instrument_buttonImage, command=self.rerollInstrumentSeed)
+        self.instrument_random_button.place(x=x, y=y)
+
+        self.seed_instrument_string = StringVar()
+
+        self.instrument_seedEntry = Entry(self.canvas, textvariable=self.seed_instrument_string, justify="center")
+        self.instrument_seedEntry.place(x=x, y=y-20, width=65)
+        self.instrument_seedEntry.bind("<KeyRelease>", self.onUpdateSeed)
+
+        # Semilla de arreglos
+        x = tab_width * 0.82
+        arrangement_image = Image.open("App/Images/dado3.png")
+
+        resized_image = arrangement_image.resize((60, 60), Image.LANCZOS) 
+        self.generate_arrangement_buttonImage = ImageTk.PhotoImage(resized_image)
+
+        self.arrangement_random_button = Button(self.canvas, image=self.generate_arrangement_buttonImage, command=self.rerollArrangementSeed)
+        self.arrangement_random_button.place(x=x, y=y)
+
+
+        self.seed_arrangement_string = StringVar()
+
+        self.arrangement_seedEntry = Entry(self.canvas, textvariable=self.seed_arrangement_string, justify="center")
+        self.arrangement_seedEntry.place(x=x, y=y-20, width=65)
+        self.arrangement_seedEntry.bind("<KeyRelease>", self.onUpdateSeed)
 
         #  -----------  Botón de guardar presets ---------------
         original_image = Image.open("App/Images/saveIcon.png")
         resized_image = original_image.resize((30, 30), Image.LANCZOS) 
         self.savePreset_image = ImageTk.PhotoImage(resized_image)
 
-        x = 1152 * 0.85
-        y = 648 * 0.04
+        x = 220
+        y = 8
 
         self.savePreset_button = Button(self.canvas, image=self.savePreset_image, command=self.savePresetAction)
         self.savePreset_button.place(x=x, y=y)
 
+    # MARK: COMBOBOXES
 
     def displayComboboxes(self):
         self.current_tematic = StringVar()
@@ -144,17 +209,17 @@ class ModeSelectorTab:
         x = (1152) / 2 - 130
         y = (648) / 2 - 270
         self.themes_combo.place(x=x, y=y)
+        self.mixed_themes_label = Label(self.canvas, text="\"Mezclar temáticas activo\"", foreground="green")
 
         
         self.current_reverb = StringVar()
-        self.comboReverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
+        self.combo_reverb = ttk.Combobox(self.canvas, values=[option.value for option in ReverbEnum],
                                   textvariable=self.current_reverb, state="readonly")
 
-        self.comboReverb.bind("<<ComboboxSelected>>", self.selectReverb)
+        self.combo_reverb.bind("<<ComboboxSelected>>", self.selectReverb)
         x = (1152) / 2 - 130
         y = (648) / 2 - 310
-        self.comboReverb.place(x=x, y=y)
-
+        self.combo_reverb.place(x=x, y=y)
 
     def displayPresetSelector(self):
         
@@ -214,9 +279,15 @@ class ModeSelectorTab:
       
 
     def playReaper(self):
-        self.modeState.seed = self.seedString.get()
-        self.saveState()
-        self.reaperStream.SetUp()
+        self.onUpdateSeed()
+
+        self.save_state()
+        try:
+            self.reaperStream.SetUp()
+        except Exception as e:
+            messagebox.showerror("Error", "Algo falló al iniciar Reaper.\n Verifica la ruta al .exe de REAPER en la pestaña de configuración.")
+
+    
 
     def idToEnumValue(self, id, enum):
         return list(enum)[id].value
@@ -235,7 +306,8 @@ class ModeSelectorTab:
         self.underWater.set(self.modeState.agua)
         self.retro.set(self.modeState.retro)
         self.dream.set(self.modeState.dream)
-        self.seedString.set(self.modeState.seed)
+        self.seed_instrument_string.set(self.modeState.seed_instrument)
+        self.seed_arrangement_string.set(self.modeState.seed_arrangement)
         
         tematica_value = self.idToEnumValue(self.modeState.tematica, TematicEnum)
         self.current_tematic.set(tematica_value)
@@ -248,7 +320,7 @@ class ModeSelectorTab:
         modeState = ModeState.fromJSON(jsonPath)
         self.recoverState(modeState)
 
-    def saveState(self):
+    def save_state(self):
         jsonPath = globalConsts.Paths.mediaSettings
         dataJSONString = self.modeState.toJSON()
 
@@ -280,9 +352,17 @@ class ModeSelectorTab:
         
     # MARK: SEEDS
 
-    def rerollSeed(self):
-        self.seedString.set(stringUtils.generate_random_string(5, None))
-        self.modeState.seed = self.seedString.get()
+    def rerollAllSeeds(self):
+        self.rerollInstrumentSeed()
+        self.rerollArrangementSeed()
 
-    def onUpdateSeed(self, event):
-        self.modeState.seed = self.seedString.get()
+    def rerollInstrumentSeed(self):
+        self.seed_instrument_string.set(stringUtils.generate_random_string(5, None))
+
+    def rerollArrangementSeed(self):
+        self.seed_arrangement_string.set(stringUtils.generate_random_string(5, None))
+        self.modeState.seed_arrangement = self.seed_arrangement_string.get()
+
+    def onUpdateSeed(self, event = None):
+        self.modeState.seed_instrument = self.seed_instrument_string.get()
+        self.modeState.seed_arrangement = self.seed_arrangement_string.get()

@@ -50,7 +50,7 @@ class Make_Constant:
                     if not((i == skipped1N and skipped1) or (i == skipped2N and skipped2) or (i == skipped3N and skipped3)):
                         list[i] = Note.ClosedHiHat.value
         
-        # En Style.KICK no hay constant
+        # En Style.KICK y Style.DEMBOW no hay constant
         
         elif(style.value == Style.JAZZ.value):                 
             list[4] = Note.OpenHiHat.value

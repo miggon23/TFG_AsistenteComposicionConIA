@@ -1,340 +1,20 @@
 \chapter{Armonización}
 \label{cap:armonizacion}
 
-
-
 \section{¿Qué es armonizar?}
-    \subsection{Pequeña introducción a la música}\label{sec:arm:armonia}
+\label{sec:arm:cuestion}    
 
-        Para entender lo explicado en posteriores secciones primero se hará en pequeño resumen de teoría musical. Vamos a definir la música como un conjunto de sonidos de duración variable organizados en el tiempo y que tienen cierto sentido estético, ya que pretenden transmitir emociones, ideas o belleza.
+    Aunque armonizar pueda tener diversas connotaciones dependiendo del contexto, a partir de ahora, en este módulo del TFG, el término 'armonizar' se referirá específicamente a la tarea de encontrar una armonía adecuada para una melodía dada. Es decir, buscar la mejor secuencia de acordes, según unas normas establecidas, que acompañen y enriquezcan a la melodía. Esta secuencia de acordes será utilizada por posteriores módulos de la aplicación.
 
-        Por lo tanto y, sintetizando al máximo, a nivel simbólico una canción la definen dos elementos: un conjunto de sonidos y un ritmo, es decir, la duración y el instante de tiempo en el que empieza cada sonido de ese conjunto. Nos centraremos por ahora en el primer elemento, ¿qué conjunto de sonidos se puede utilizar para componer una canción?
-        Técnicamente cualquiera, al tratarse de una disciplina artística existe libre albedrío para realizar una composición. 
+    Cabe dejar claro que, buscar 'la mejor' armonía para una melodía en términos absolutos no es algo de lo que se pueda hablar, ya que esta depende de la subjetividad de cada persona. Es por ello por lo que se prefiere hablar de buscar una armonía lo suficientemente coherente para una melodía dada, que forme parte del espectro de soluciones razonables, ya que, por lo general, una melodía puede ser acompañada por varios conjuntos de acordes distintos.
 
-        \label{arm:notas_musicales}
-        Sin embargo, nos centraremos en el estándar occidental, utilizado prácticamente en todas canciones que escuchamos diariamente, en el que los sonidos se dividen en conjuntos de 12 notas musicales, cada una con un nombre diferente, difiniendo nota musical como un símbolo que representa una frecuencia determinada. Para entender de dónde viene esta división utilizaremos como base la nota A4 (La4), con una frecuencia de 440Hz y duplicaremos su frecuencia a 880Hz, obteniendo así A5 (La5). Estas dos notas comparten nombre, ya que si las escucháramos nos sonarían muy familiares entre sí. Esto tiene una explicación física: al reproducir esa frecuencia (frotando una cuerda, elevando una columna de aire...), no solo se genera la frecuencia fundamental, sino que también se producen armónicos, que son múltiplos enteros de la frecuencia fundamental. Se llama octava a la distancia que separa una frecuencia de su duplicación, esto explica ahora los número escritos al lado de cada nota musical: A3 = 220Hz, A4 = 440Hz, A5 = 880Hz. Sabiendo esto se decidió entonces dividir la octava en 12 notas musicales, perceptualmente equidistantes, la cual difiere con una equidistancia a nivel de frecuencia, debido a la naturaleza exponencial de las frecuencias. Es la llamada afinación temperada:
+    Obsérvese que, al resolver este problema, se estaría construyendo de forma implícita un analizador armónico. Si la entrada a este módulo fuese, en vez de únicamente una melodía, una canción completa, la cual contiene mucha más información, la salida esperada sería la armonía de dicha canción. Esto tiene mucha utilidad, ya que el análisis armónico es fundamental para el estudio en profundidad de una obra. La armonía conforma los cimientos de una composición musical. 
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c}
-        \textbf{Nota Musical} & \textbf{Frecuencia (Hz)} \\
-        \hline
-        A4 & 440.00 \\
-        A\#4 & 466.16 \\
-        B4 & 493.88 \\
-        C5 & 523.25 \\
-        C\#5 & 554.37 \\
-        D5 & 587.33 \\
-        D\#5 & 622.25 \\
-        E5 & 659.26 \\
-        F5 & 698.46 \\
-        F\#5 & 739.99 \\
-        G5 & 783.99 \\
-        G\#5 & 830.61 \\
-        A5 & 880.00 \\
-    \end{tabular}
-    \caption{Tabla de Afinación Temperada de 12 Notas de A4 a A5}
-    \label{tab:temperedTuningTable_A4_A5}
-\end{table}
+\section{Armonización por ventanas}\label{arm:sec:ventanas_normal}
 
-        Sacamos como conclusión que el conjunto de sonidos utilizados está comprendido por las 12 notas musicales, cada una puediéndose encontrar en una octava distinta. Hemos cambiado ligeramente la definición simbólica de canción entonces, pasando esta a estar compuestas por un ritmo y un conjunto de notas musicales (en vez de un conjunto de sonidos).  
+    Este fue el primer algoritmo diseñado, el cual escalará y evolucionará en posteriores apartados. Se basa en una idea, a priori, sencilla: dividir la canción en ventanas. Una ventana es una idea propia, y se define como conjunto de pulsos consecutivos que comprenden las notas que se hallan en dicho segmento. Un pulso también se puede traducir como una negra, un \textit{beat} o un \textit{step}. La idea es dividir la canción en ventanas de un determinado número de pulsos y asignar a cada una, es decir, al conjunto de notas que abarca, el acorde que mejor encaje según una heurística.
 
-        Así mismo, y entrando en otra capa de profundidad, ese conjunto de notas musicales que conformar una canción puede ser dividida en dos partes:
-
-        \begin{enumerate}
-            \item[\textbullet] \textbf{Melodía}: línea principal o motivo musical que guía la dirección y el desarrollo de una pieza musical. Parte más reconocible de una canción. En una composición musical es la que generalmente se canta o se toca de manera prominente.
-            \item[\textbullet] \textbf{Armonía}: combinación simultánea de dos o más notas que se escuchan juntas y que suenan de manera agradable o consonante. La armonía proporciona un acompañamiento sonoro a la melodía principal y contribuye a enriquecer la textura musical. Se compone de acordes, que son grupos de notas tocadas simultáneamente.
-
-        \end{enumerate}
-
-    \subsection{Pequeña introducción a la armonía}
-
-        Como se acaba de explicar, la armonía se define como la combinación y disposición de notas musicales que suenan de manera agradable y coherente entre sí. Para entender tanto la armonía, como los algoritmos que se quieren mostrar en este apartado del TFG, es necesario interiorizar los siguientes conceptos, que se intentarán explicar de la manera más resumida posible. Cabe recalcar que la explicación se realiza en el contexto de la armonía moderna, la cual difiere en algunos puntos de la clásica, sin embargo, al tratarse de una introducción, la mayoría de conceptos que van a ser mostrados se comparten entre ambas doctrinas. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = 0.5\textwidth]{Imagenes/Bitmap/piano.png}
-    \caption{Notas en el Piano}
-    \label{fig:pianoImage}
-\end{figure}
-
-        \subsubsection{Intervalos}\label{sec:arm:intervalos}
-
-        Un intervalo es la distancia que existe entre dos notas. Un semitono es la distancia mínima que puede existir entre dos notas. Un tono es igual a dos semitonos. Por ejemplo, en la figura \ref{fig:pianoImage} se puede observar que la distancia entre el primer C y el primer E es de 4 semitonos (las teclas negras también cuentan como notas musicales aunque tengan nombres un poco especiales). Podemos encontrar esa distancia mínima de un semitono entre C y C\# o entre E y F, por ejemplo. Dependiendo del número de semitonos que tenga un intervalo, este tendrá un nombre y simbología diferente (también llamada grado en ciertos contextos que veremos posteriormente):
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c}
-        \textbf{Símbolo (grado)} & \textbf{Nombre} & \textbf{Nº Semitonos} \\
-        \hline
-        1 (T) & Tónica & 0 \\
-        b2 & Segunda menor & 1 \\
-        2 & Segunda Mayor & 2 \\
-        b3 & Tercera menor & 3 \\
-        3 & Tercera Mayor & 4 \\
-        4 & Cuarta Justa & 5 \\
-        \#4 & Cuarta Aumentada & 6 \\
-        5b & Quinta disminuida & 6 \\
-        5 & Quinta Justa & 7 \\
-        b6 & Sexta menor & 8 \\
-        6 & Sexta Mayor & 9 \\
-        b7 & Séptima menor & 10 \\
-        7 & Séptima Mayor & 11 \\
-        8 & Octava & 12 \\
-    \end{tabular}
-    \caption{Tabla de Intervalos}
-    \label{tab:tabla_intervalos}
-\end{table}
-
-    Al observar la tabla se puede deducir por contexto que el símbolo 'b' (bemol) reduce en uno el número de semitonos del grado original, así como el símbolo '\#' (sostenido) los aumenta en uno. Por ejemplo, \#6 sería equivalente a una séptima menor (b7), con 10 semitonos ambos. Así mismo estos símbolos se pueden apilar, por ejemplo, bb7 sería equivalente a una sexta Mayor (6), con 9 semitonos ambos.
-
-    Con la información de esta tabla, ya podríamos entender afirmaciones tales como 'la quinta Justa de C es G' o 'la tercera Mayor de B es D\#', por ejemplo, si nos ponemos a contar los semitonos más detenidamente.
-
-    Cabe recalcar que, evidentemente, existen intervalos que se salen de la octava, con más de 12 semitonos. Algunos no muy lejanos tienen incluso nombre propio, por ejemplo, una novena Mayor (9), de 14 semitonos. A pesar de ello, lo que se hará en estos casos es interpretar ese intervalo como su relativo si la nota estuviese en el 'mismo rango' que la tónica (nota desde la cual se mide el intervalo). Así, una novena Mayor sería equivalente a una segunda Mayor, de 2 semitonos y un intervalo de 42 semitonos será interpretado como una quinta disminuida (42 mod 12 = 6 semitonos), por ejemplo. De hecho, siguiendo esta definición, el propio intervalo de octava es redundante, ya que esta es equivalente a la tónica y cumple la misma función (12 mod 12 = 0 semitonos). Por ejemplo, la octava de C4 es C5. Por ello, el intervalo de octava también se debería quitar de la lista.
-
-    \subsubsection{Escalas}\label{sec:arm:escalas}
-
-    Se define escala como conjunto de 2 a 12 intervalos o grados ascencentes cuyo primer intervalo es siempre la tónica. Tradicionalmente, la mayoría de escalas están formadas por 7 grados, las más utilizadas en la música que escuchamos hoy en día son la Mayor y la menor.
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c|c|c|c}
-        \textbf{Escala Mayor} & 1 (T) & 2 & 3 & 4 & 5 & 6 & 7 \\
-        \hline
-        \hline
-        \textbf{Escala menor} & 1 (T) & 2 & b3 & 4 & 5 & b6 & b7 \\
-    \end{tabular}
-    \caption{Escalas Mayor y menor}
-    \label{tab:escalas}
-\end{table}
-
-    Este conjunto de intervalos representa una especie de esqueleto, un molde con el cual se puede crear una sucesión de notas musicales si se establece como tónica cualquiera de las 12 notas existentes. Aquí uno cuantos  ejemplos, utilizando como tónicas C, D y Bb:
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c|c|c|c}
-        \textbf{C Mayor} & C (T) & D & E & F & G & A & B \\
-        \hline
-        \textbf{D Mayor} & D (T) & E & F\# & G & A & B & C\# \\
-        \hline
-        \textbf{Bb Mayor} & Bb (T) & C & D & Eb & F & G & A \\
-        \hline
-        \hline
-        \textbf{C menor} & C (T) & D & Eb & F & G & Ab & Bb \\
-        \hline
-        \textbf{D menor} & D (T) & E & F & G & A & Bb & C \\
-        \hline
-        \textbf{Bb menor} & Bb (T) & C & Db & Eb & F & Gb & Ab \\
-    \end{tabular}
-    \caption{Escalas y Tónicas}
-    \label{tab:escalas_tonicas}
-\end{table}
-
-    Para poner un poco más en contexto decir que, a parte de estas dos escalas, existen muchas otras más que se utilizan regularmente a la hora de componer música. Incluso existen compositores más vanguardistas que inventan nuevos conjuntos de grados, experimentando con nuevas formas de escribir música. Elgunos ejemplos: 
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c|c|c|c}       
-        \textbf{pentatónica Mayor} & 1 (T) & 2 & 3 & 5 & \multicolumn{1}{c}{6} \\
-        \hline
-        \textbf{pentatónica menor} & 1 (T) & b3 & 4 & 5 & \multicolumn{1}{c}{b6} \\
-        \hline
-        \textbf{hexatónica} & 1 (T) & 2 & 3 & \#4 & \#5 & \multicolumn{1}{c}{\#6}  \\
-        \hline
-        \textbf{frigia} & 1 (T) & b2 & b3 & 4 & 5 & b6 & b7 \\
-        \hline
-        \textbf{mixolidia} & 1 (T) & 2 & 3 & 4 & 5 & 6 & b7 \\
-        \hline
-        \textbf{menor armónica} & 1 (T) & 2 & b3 & 4 & 5 & b6 & 7 \\      
-    \end{tabular}
-    \caption{Otras Escalas}
-    \label{tab:otras_escalas}
-\end{table}
-
-    \subsubsection{Acordes}\label{sec:arm:acordes}
-
-    Aunque no todo el mundo estaría de acuerdo con esta definición, vamos a decir que un acorde es un conjunto de dos o más notas tocadas de forma simultánea. La definición es en cierta medida similar a la de una escala, ya que un acorde no deja de ser un conjunto de intervalos ascendentes, en el que el primero es simpre la tónica del acorde. También se cumple esa propiedad de 'molde' a la hora de establecer una nota musical como tónica del acorde. Los acordes más comunes están formados por tres notas (tríadas) y dependiendo del conjunto de intervalos se pueden conseguir diferentes sonoridades:
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c}       
-        \textbf{Nombre} & \textbf{Símbolo} & \multicolumn{3}{c}{\textbf{Intervalos}} \\
-        \hline
-        \hline
-        \textbf{Acorde Mayor} & & 1 (T) & 3 & 5 \\
-        \hline
-        \textbf{Acorde menor} & - & 1 (T) & b3 & 5 \\
-        \hline
-        \textbf{Acorde Aumentado} & + & 1 (T) & 3 & \#5 \\
-        \hline
-        \textbf{Acorde disminuido} & -b5 & 1 (T) & b3 & b5 \\
-    \end{tabular}
-    \caption{tríadas}
-    \label{tab:triads}
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c}       
-        \textbf{Nombre} & \textbf{Símbolo} & \multicolumn{3}{c}{\textbf{Notas}} \\
-        \hline
-        \hline
-        \textbf{C Mayor} & C & C (T) & E & G \\
-        \hline
-        \textbf{C menor} & C- & C (T) & Eb & G \\
-        \hline
-        \textbf{C Aumentado} & C+ & C (T) & E & G\# \\
-        \hline
-        \textbf{C disminuido} & C-b5 & C (T) & Eb & Gb \\
-    \end{tabular}
-    \caption{tríadas en C}
-    \label{tab:triadsC}
-\end{table}
-
-    \label{arm:armonia_escala}
-    Se define como armonía de una escala el conjunto de acordes que se pueden formar utilizando únicamente las notas (o intervalos) de la escala. Esto puede chocar con la definición de acorde, ya que, como tal, puede haber miles de tipos de acordes diferentes si atendemos a toda la combinatoria, así que, por ahora, solo tendremos en cuenta los tipos de acordes definidos anteriormente, es decir, acordes mayores, menores, aumentados y disminuidos. Este concepto es más difícil de deducir y explicar, así que recomiendo la visualización de \href{https://www.youtube.com/watch?v=dMwVB3BWcjI}{este vídeo} en el que el autor encuentra la armonía de la escala C Mayor y pasa el resultado a grados, además de repasar otros conceptos vistos por encima anteriormente. Se obtiene el siguiente resultado:
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c||c|c}
-        \textbf{Grado} & \textbf{Acorde} & \textbf{Nota} & \textbf{Acorde} \\
-        \hline
-        1 (T) &  & C (T) & C \\
-        2 & - & D & D- \\
-        3 & - & E & E- \\
-        4 &  & F & F \\
-        5 &  & G & G \\
-        6 & - & A & A- \\
-        7 & -b5 & B & B-b5 \\
-    \end{tabular}
-    \caption{Escala Mayor en Grados y en C}
-    \label{tab:grados_C}
-\end{table}
-
-    Como se puede observar, en la escala Mayor se forma una tríada mayor a partir de los grados 1, 4 y 5, una menor a partir de los grados 2, 3 y 6, una disminuida a partir del grado 7 y no existe ningún grado del cual se forme una tríada aumentada. Esto significa que sea cual sea la tónica de una escala, en este caso, la escala Mayor, los acordes correspondientes a cada grado serán siempre del mismo tipo. Por lo tanto, si se quiere deducir la armonía de una escala diferente, por ejemplo, la escala menor, los acordes correspondientes a cada grado serán distintos a los de la escala Mayor, pero serán del mismo tipo si se varía la tónica. Además, el hecho de que solo se forme un acorde por cada grado es debido a una particularidad propia de la escala Mayor y a que hemos escogido un número muy reducido de acordes. Vamos a tener en cuenta ahora el siguiente grupo de acordes de cuatro notas (cuatríadas), que se sumarán al anterior grupo:
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c|c|c|c}       
-        \textbf{Nombre} & \textbf{Símbolo} & \multicolumn{4}{c}{\textbf{Intervalos}} \\
-        \hline
-        \hline
-        \textbf{Acorde Mayor séptima} & maj7 & 1 (T) & 3 & 5 & 7\\
-        \hline
-        \textbf{Acorde de Dominante} & 7 & 1 (T) & 3 & 5 & b7\\
-        \hline
-        \textbf{Acorde menor séptima} & -7 & 1 (T) & b3 & 5 & b7 \\
-        \hline
-        \textbf{Acorde semidisminuido} & -7b5 & 1 (T) & b3 & b5 & b7 \\
-        \hline
-        \textbf{Acorde disminuido} & º & 1 (T) & b3 & b5 & bb7 \\
-    \end{tabular}
-    \caption{Cuatríadas}
-    \label{tab:cuatriads}
-\end{table}
-
-    A continuación un par de ejemplos que evidencian el anterior párrafo: (Tabla \ref{tab:comparativa_scalas})
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c|c|c||c|c|c||c|c|c}
-        \multicolumn{3}{c}{} & \multicolumn{3}{c}{\textbf{Escala Mayor}}  \\
-        \hline  
-        \multicolumn{1}{c|}{\textbf{Grados}} & \multicolumn{2}{c||}{\textbf{Acordes}} & \multicolumn{1}{c|}{\textbf{Notas}} & \multicolumn{2}{c||}{\textbf{Acordes}} & \multicolumn{1}{c|}{\textbf{Notas}} & \multicolumn{2}{c}{\textbf{Acordes}} \\
-           \hline
-    1 (T) &     & maj7 & C (T) & C    & Cmaj7 & D (T)   & D      & Dmaj7   \\
-        2 & -   & -7   &    D  & D-   & D-7   &    E    & E-     & E-7     \\
-        3 & -   & -7   &    E  & E-   & E-7   &    F\#  & F\#-   & F\#-7   \\
-        4 &     & maj7 &    F  & F    & Fmaj7 &    G    & G      & Gmaj7   \\
-        5 &     & 7    &    G  & G    & G7    &    A    & A      & A7      \\
-        6 & -   & -7   &    A  & A-   & A-7   &    B    & B-     & B-7     \\
-        7 & -b5 & -7b5 &    B  & B-b5 & B-7b5 &    C\#  & C\#-b5 & C\#-7b5 \\
-        \hline
-        \multicolumn{3}{c}{} & \multicolumn{3}{c}{\textbf{Escala menor}}  \\
-        \hline  
-        \multicolumn{1}{c|}{\textbf{Grados}} & \multicolumn{2}{c||}{\textbf{Acordes}} & \multicolumn{1}{c|}{\textbf{Notas}} & \multicolumn{2}{c||}{\textbf{Acordes}} & \multicolumn{1}{c|}{\textbf{Notas}} & \multicolumn{2}{c}{\textbf{Acordes}} \\
-           \hline 
-    1 (T)  & -   & -7   & C (T)  & C-    & C-7    & D (T) & D-   & D-7    \\
-        2  & -b5 & -7b5 &    D   & Db-b5 & Db-7b5 &    E  & E-b5 & E-7b5  \\
-        b3 &     & maj7 &    Eb  & E     & Emaj7  &    F  & F    & Fmaj7  \\
-        4  & -   & -7   &    F   & F-    & F-7    &    G  & G-   & G-7    \\
-        5  & -   & -7   &    G   & G-    & G-7    &    A  & A-   & A-7    \\
-        b6 &     & maj7 &    Ab  & Ab    & Abmaj7 &    Bb & Bb   & Bbmaj7 \\
-        b7 &     & 7    &    Bb  & Bb    & Bb7    &    C  & C    & C7     \\
-
-    \end{tabular}
-    \caption{Comparativa entre Escalas (Mayor y menor) y Tónicas (C y D)}
-    \label{tab:comparativa_scalas}
-\end{table}
-    
-
-    Todo lo mostrado hasta ahora forma parte de las bases de composición musical. Básicamente escoger una escala y una tónica, y utilizar todo el conjunto de notas y acordes que se forman a partir de estas para crear una melodía y una armonía (un acompañamiento). Sin embargo, esto es solo la punta del iceberg, ya que si se prfundiza, se podrán descubrir otros conceptos, como la modulación (cambio de tonalidad), el uso de acordes y notas de otras escalas, la libertad para salirse de las restricciones de la escala establecida, etc. 
-
-\subsection{Cuestión a resolver}
-\label{sec:arm:cuestion}      
-
-    Una vez que se conoce todo este contexto ya se puede presentar el problema que se pretende abordar en esta sección o módulo de la aplicación: dada una melodía cualquiera, encontrar la armonía que mejor se adapte a esta, es decir, buscar la mejor secuencia de acordes que acompañen y enriquezcan a la melodía. Esta secuencia de acordes sería utilizada por posteriores módulos de la aplicación.
-
-    Cabe dejar claro que, buscar 'la mejor' armonía para una melodía es algo relativo, ya que depende de la subjetividad de cada persona. Así que lo dejaremos en buscar una armonía fuertemente coherente para una melodía dada, que forme parte del espectro de soluciones razonables, ya que, por lo general, una melodía puede ser acompañada por varios conjuntos de acordes distintos.
-
-    También comentar que, al resolver este problema, se estaría construyendo de forma implícita un analizador armónico. Si la entrada a este módulo fuese, en vez de únicamente una melodía, una canción completa, la cual contiene mucha más información, la salida esperada sería la armonía de dicha canción. Esto tiene mucha utilidad, ya que el análisis armónico es fundamental para el estudio en profundidad de una obra. La armonía son los cimientos de una composición musical. 
-
-    \section{Técnicas de armonización utilizadas}
-
-    Antes de empezar con las técnicas de armonización utilizadas, falta un paso previo crucial. Y es la creación de una estructura de clases y métodos que den soporte a todo lo explicado en el apartado \ref{sec:arm:armonia}. Existen clases que abstraen lo que representa una \hyperref[arm:notas_musicales]{\textcolor{blue}{nota musical}}, un \hyperref[sec:arm:intervalos]{\textcolor{blue}{intervalo}}, una \hyperref[sec:arm:escalas]{\textcolor{blue}{escala}} y la \hyperref[arm:armonia_escala]{\textcolor{blue}{armonía de una escala}} tal como se ha explicado. Un \hyperref[sec:arm:acordes]{\textcolor{blue}{acorde}} es respresentado también como una escala. 
-    
-    También es importante mostrar las respresentaciones que se están utilizando para almacenar una canción (conjunto de notas) en este módulo de la aplicación. Existen métodos para pasar de la primera representación a la segunda:
-
-    \begin{enumerate}
-        \item \textbf{Lista de Notas}: es la representación estándar en este módulo de la aplicación. Se almacenan de forma desordenada diccionarios con la siguiente estructura:
-        \begin{enumerate}
-            \item[\textbullet] \textbf{note}: almacena el pitch MIDI (tono) de la nota. Guardar el pitch MIDI es similar a guardar la nota musical, ya que este almacena de forma implícita el nombre de la nota y su octava. Por ejemplo, calculemos a qué nota le corresponde el pitch 40:
-            \begin{enumerate}
-                    \item[\(\circ\)] \textbf{Nombre}: 40 mod 12 = 4, según la tabla \ref{tab:nota_pitch} a un 4 le corresponde E.
-                    \item[\(\circ\)] \textbf{Octava}: 40 div 12 = 3, está en la tercera octava.
-            \end{enumerate}
-                       
-\begin{table}[htbp]
-    \centering
-    \begin{tabular}{c|c}
-        \textbf{Nombre} & \textbf{Pitch} \\
-        \hline
-        C & 0 \\
-        C\# / Db & 1 \\
-        D & 2 \\
-        D\# / Eb & 3 \\
-        E & 4 \\
-        F & 5 \\
-        F\# / Gb & 6 \\
-        G & 7 \\
-        G\# / Ab & 8 \\
-        A & 9 \\
-        A\# / Bb & 10 \\
-        B & 11 \\
-    \end{tabular}
-    \caption{Relación entre cada Nota Musical y su Pitch en la Primera Octava}
-\label{tab:nota_pitch}
-\end{table}
-
-        \item[\textbullet] \textbf{start\_time}: tiempo en ticks en el que empieza a sonar una nota desde que empieza la canción en el tick 0.
-        \item[\textbullet] \textbf{duration}: tiempo en ticks desde que empieza a sonar la nota hasta que para.
-    \end{enumerate}
-    \item \textbf{Diccionario de Ticks}: se almacena en cada tick clave el evento que ha ocurrido. Los ticks clave están ordenados de menor a mayor. Como tal, solo existen dos tipos de eventos: 
-    \begin{enumerate}
-        \item[\textbullet] \textbf{note\_on}
-        \item[\textbullet] \textbf{note\_off}
-    \end{enumerate}
-    A cada evento viene asociado el pitch de la nota afectada. Esto puede suponer, a priori, un inconveniente, ya que, si hay dos notas del mismo pitch superpuestas en el mismo espacio de tiempo, existe una ambigüedad a la hora de saber qué evento \textit{note\_off} le corresponde a cada una. Sin embargo, esta representación se utiliza de forma temporal para facilitar la implementación de ciertos algoritmos a los cuales cuales este inconveniente no les afecta. 
-    
-\end{enumerate}
-
-    Falta por explicar el concepto de tick. Un tick es la unidad simbólica mínima e indivisible que puede durar una nota. En cada canción (conjunto de notas) se debe definir el número de ticks que dura un pulso. Un pulso también se puede traducir como una negra, un beat o un step. Cuanto mayor sea el número de ticks por pulso, mayor será el número de partes en el que puedes dividir el pulso. Haciendo una analogía con la representación simbólica que se utiliza en las partituras, si los ticks por pulso son iguales a 4, en nuestra canción la semicorchea sería la representación mínima que se podría utilizar, mientras que si fueran igual a 8, la fusa sería la representación mínima (una fusa es la mitad de una semicorchea). De todas formas, lo normal es que los el número de ticks por pulso sea más alto para permitir mayor número de divisiones y combinaciones.
-
-\subsection{Armonización por ventanas} 
-
-    Este fue el primer algoritmo diseñado, el cual escalará y evolucionará en posteriores subapartados. Se basa en una idea, a priori, sencilla: dividir la canción en ventanas. Una ventana es una idea propia, y se define como conjunto de pulsos consecutivos que comprenden las notas que se hallan en dicho segmento. La idea es dividir la canción en ventanas de un determinado número de pulsos y asignar a cada una, es decir, al conjunto de notas que abarca, el acorde que mejor encaje según una heurística.
-
-    Tanto la idea de las ventanas, como la heurística utilizada, están estrechamente relacionadas con cómo funcionan los compases en la música real. En castellano, se define como compás tanto a la fracción que se encuentra al principio de un pentagrama, como a cada uno de los espacios comprendidos entre las líneas (horizontales) divisorias (\ref{fig:sheet4/4}). El denominador de la fracción representa una figura musical, y cada figura musical representa un determinado número de pulsos. En este caso, el denominador es el número 4, que representa una negra, la cual dura un pulso. El numerador nos indica la cantidad de figuras, por ende, la fracción 4/4 nos está diciendo que un compás abarca 4 * 1 = 4 pulsos. 
+    Tanto la idea de las ventanas como la heurística utilizada, están estrechamente relacionadas con como funcionan los compases en la música real. En castellano, se define como compás tanto a la fracción que se encuentra al principio de un pentagrama, como a cada uno de los espacios comprendidos entre las líneas (horizontales) divisorias (Figura \ref{fig:sheet4/4}). El denominador de la fracción representa una figura musical y cada figura musical representa un determinado número de pulsos. En este caso, el denominador es el número 4, que representa una negra, la cual dura un pulso. El numerador nos indica la cantidad de figuras, por ende, la fracción 4/4 nos está diciendo que un compás abarca 4 * 1 = 4 pulsos. 
 
 \begin{figure}[h]
     \begin{center}
@@ -344,7 +24,7 @@
     \label{fig:sheet4/4}
 \end{figure}
 
-    Veamos otro ejemplo con el compás 6/8 (\ref{fig:sheet6/8}). El denominador es el número 8, que representa una corchea. La corchea dura medio pulso. El númerador nos indica que en cada compás caben 6 corcheas, es decir 6 * 0.5 = 3 pulsos.
+    Veamos otro ejemplo con el compás 6/8 (Figura \ref{fig:sheet6/8}). El denominador es el número 8, que representa una corchea. La corchea dura medio pulso. El numerador nos indica que en cada compás caben 6 corcheas, es decir 6 * 0.5 = 3 pulsos.
 
 \begin{figure}[h]
     \begin{center}
@@ -358,16 +38,189 @@
 
     La idea es rellenar una lista en la que cada índice represente cada ventana. Dependiendo de cómo de larga sea una canción y cómo de grandes sean las ventanas, el tamaño de la lista variará. Cada ventana contendrá información del peso de todos los acordes que hayan sido valorados para acompañar al conjunto de notas que abarque la ventana. Se elige finalmente el acorde de mayor peso para cada ventana. Si un acorde no aparece en la lista de acordes es porque tiene peso 0, es decir, ni siquiera se ha valorado como candidato para encajar en la ventana. El peso de los acordes se calcula a partir de la heurística que se explicará a continuación.
 
-    Sin embargo, para definir el cómo se va a valorar cada acorde, se ha de elegir antes qué acordes se van a valorar. Primero se debe elegir qué tipo de acordes se quiren detectar. Por ejemplo, el \hyperref[tab:triads]{\textcolor{blue}{conjunto de las cuatro tríadas}} definido anteriormente. Ahora bien, como existen 12 notas musicales, se van a valorar 48 acordes diferentes por cada ventana, y eso solo teniendo encuenta 4 tipos de acordes. Dicha cifra podría escalar. A pesar de esto, el problema está no tanto en el rendimiento, sino en el hecho de que se estarían valorando acordes que contienen notas que no se encuentra en el conjunto de notas de la melodía, es decir, notas fuera de la \hyperref[sec:arm:escalas]{\textcolor{blue}{escala}}, puediendo así aparecer soluciones poco deseadas. Para paliar este problema, se escogerán únicamente acordes cuyo conjunto de notas esté comprendido en la escala que forma el conjunto de notas de la melodía. Es decir, se utilizará la \hyperref[arm:armonia_escala]{\textcolor{blue}{armonía de la escala}} que forma el conjunto de notas de la melodía. Esto mitiga considerablemente el problema, pero no lo llega a solucionar, además de generar otros. Estos problemas se explicarán y se intentarán solucionar en apartados posteriores, por ahora, nos sirve esta solución, ya que esto no es más que una primera versión del algoritmo que se pretende construir.
+    \label{arm:problema_acordes}
+    Antes que nada, se debe elegir qué acordes se quieren detectar. Por ejemplo, podríamos definir como candidatos las cuatro tríadas de la Tabla \ref{tab:triads}. Ahora bien, como existen 12 notas musicales, se van a valorar 48 acordes diferentes por cada ventana, y eso solo teniendo en cuenta 4 tipos de acordes. Dicha cifra podría crecer mucho a la hora de considerar más tipos de acordes. A pesar de esto, el problema no está tanto en el rendimiento, sino en el hecho de que se estarían valorando acordes que contienen notas que no se encuentra en el conjunto de notas de la melodía, es decir, notas fuera de la escala, pudiendo así aparecer soluciones poco deseadas. Para paliar este problema, se escogerán únicamente acordes cuyo conjunto de notas esté comprendido en la escala que forma el conjunto de notas de la melodía. Es decir, se utilizará la armonía de la escala que forma el conjunto de notas de la melodía. Esto mitiga considerablemente el problema, pero no lo llega a solucionar, además de generar otros. Estos problemas se explicarán y se intentarán solucionar en apartados posteriores, por ahora, nos sirve esta solución, ya que esto no es más que una primera versión del algoritmo que se pretende construir.
 
-    A partir de ahora, se trabajará en términos relativos. De hecho, todo lo explicado anteriormente se ha implementado así, aunque en la explicación se haya querido abstraer. Toda la arquitectura del módulo ha sido pensada para trabajar en estos términos relativos. Eso significa que, en vez de con notas musicales, se trabajará con grados e intervalos. Esto se logra estableciendo cualquier nota del conjunto de notas de la melodía como tónica (al menos por ahora; esto podría cambiar en el futuro), la primera mismamente, y relativizando el resto de las notas respecto a esta, es decir, transformando las notas en grados contando el número de semitonos que hay desde la tónica hasta cada nota (\ref{tab:tabla_intervalos}). Véase que, relativizar un conjunto de notas elimina implícitamente la información de la octava. Esto podría suponer un problema, pero lejos de la realidad nos beneficia al tener en cuenta el contexto armónico en el que estamos trabajando. Realmente, no se necesita  información sobre la octava de cada grado, solamente saber a qué grado de la escala pertenece cada nota. También recalcar que el conjunto de grados que se generan a la hora de relativizar todas las notas de la canción formarían ese esqueleto o molde de la escala del que se hablaba en la sección \ref{sec:arm:escalas}. Aunque cueste más de entender, de esta manera se trabaja de forma más sencilla a la hora de ampliar funcionalidades en el módulo. Nótese que también se puede realizar el proceso inverso; es decir, a partir de una tónica y un conjunto de grados, estos se pueden absolutizar para transformarlos en notas musicales.
+    A partir de ahora, se trabajará en términos relativos. De hecho, todo lo explicado anteriormente se ha implementado así, aunque en la explicación se haya querido abstraer. Toda la arquitectura de este módulo ha sido pensada para trabajar en estos términos relativos. Eso significa que, en vez de con notas musicales, se trabajará con grados e intervalos. Esto se logra estableciendo cualquier nota del conjunto de notas de la melodía como tónica (al menos por ahora; esto podría cambiar en el futuro), la primera mismamente, y relativizando el resto de las notas respecto a esta, es decir, transformando las notas en grados contando el número de semitonos que hay desde la tónica hasta cada nota (Tabla \ref{tab:tabla_intervalos}). Véase que, relativizar un conjunto de notas elimina implícitamente la información de la octava. Esto podría suponer un problema, pero en realidad nos beneficia al tener en cuenta el contexto armónico en el que estamos trabajando. Realmente, no se necesita  información sobre la octava de cada grado, solamente saber a qué grado de la escala pertenece cada nota. También recalcar que el conjunto de grados que se generan a la hora de relativizar todas las notas de la canción formarían ese esqueleto o molde de la escala del que se hablaba en la Sección \ref{sec:arm:escalas}. Aunque cueste más de entender, de esta manera se trabaja de forma más sencilla a la hora de ampliar funcionalidades en el módulo. Nótese que también se puede realizar el proceso inverso; es decir, a partir de una tónica y un conjunto de grados, hacer la traducción a notas musicales.
 
-\subsubsection{Heurística} 
+    Terminando ya los preparativos previos a la explicación de la heurística, falta por entender el concepto de \textit{tick}. La distancia entre dos \textit{ticks} es la unidad simbólica mínima e indivisible que puede durar una nota. En cada canción se debe definir el número de \textit{ticks} que dura un pulso. Cuanto mayor sea el número de \textit{ticks} por pulso, mayor será el número de partes en el que puedes dividir el pulso. Haciendo una analogía con la representación simbólica que se utiliza en las partituras, si los \textit{ticks} por pulso son iguales a 4, en nuestra canción la semicorchea sería la representación mínima que se podría utilizar, mientras que si fueran igual a 8, la fusa sería la representación mínima (una fusa es la mitad de una semicorchea). De todas formas, lo normal es que el número de \textit{ticks} por pulso sea más alto para permitir mayor número de divisiones y combinaciones. Por lo tanto, sintetizando en lo importante, un \textit{tick} representa un instante de tiempo dentro de la canción.
 
+\subsection{Heurística}\label{sec:arm:heuristica}
+
+    Las distintas técnicas heurísticas que se han utilizado se basan en la idea de que las notas de una melodía coinciden en gran medida con las de la armonía, es decir, con las notas del acorde que le corresponden. Aunque esto puede no ser así siempre, por lo general, una melodía suele estar formada bien por notas del acorde, las cuales tienen más relevancia dentro del fragmento o por tensiones, notas fuera del acorde, que suelen utilizarse como notas de paso o adorno, con menos relevancia. Cada nota afecta a los pesos de los acordes de la ventana que comprende dicha nota. Por lo tanto, este proceso consiste en un recorrido de todas las notas de la canción. Dicho esto, lo que se ha tenido en cuenta para valorar los pesos de los acordes en cada ventana ha sido lo siguiente:
+
+\begin{enumerate}
+    \item[\textbullet] \textbf{Posición de la nota dentro del acorde:}
+
+    Partimos de la base de que si una nota no pertenece al acorde este será valorado con peso 0. En el caso contrario, el peso que la nota aporte depende de si esta pertenece al primer (tónica), tercer, quinto o  séptimo (en caso de ser una cuatriada) grado del acorde, es decir, si es la primera, segunda, tercera o cuarta nota del acorde respectivamente. Los pesos aportados por cada grado se pueden cambiar a voluntad, pero, tal y como funciona la música, lo más sensato es que sigan el siguiente orden: tónica > quinta > tercera > séptima. 
     
+    \item[\textbullet] \textbf{Posición de la nota dentro de la ventana:}
 
+    Aquí se vuelve a encontrar otra analogía con el cómo funcionan los compases en la música. El compás (fracción) no solo nos indica la duración del compás, sino que también nos da pistas de cómo se distribuyen las notas dentro del mismo. Por ejemplo, la fracción 4/4 nos está informando de que en cada compás caben cuatro negras. Aunque se pueda rellenar el compás con figuras distintas a la negra, el compás 4/4 nos dice que los pulsos 1, 2, 3 y 4 marcan el ritmo de la canción, por lo que las notas que coincidan con estos pulsos van a ser las que lleven la voz cantante dentro de la melodía. Las notas fuera de estos pulsos clave tienen más papeletas de ser tensiones del acorde. Otro ejemplo para que se entienda mejor: la fracción 2/2 nos dice que en un compás caben dos blancas (el denominador 2 corresponde a la figura blanca, la cual dura el doble que una negra). Aunque la duración del compás sea la misma que la del 4/4, es decir, 4 pulsos, esta nueva fracción nos estaría diciendo que los pulsos clave dentro de un compás son solo el 1 y el 3, difiriendo del primer ejemplo. De nuevo, aunque esto suela ser así, el compositor puede saltarse estas normas, pero tener en cuenta estos conceptos nos es beneficioso para acertar con la heurística.
+
+    Por lo tanto, a la hora de valorar los pesos de los acordes dentro de una ventana, esta se divide en \textit{ticks} clave. Si la nota coincide con un \textit{tick} clave, los acordes que contengan esa nota serán mejor valorados. Por eso la configuración de las ventanas está definida por tres parámetros: la distancia entre \textit{ticks} clave (numerador de un compás tradicional), la cantidad de \textit{ticks} clave (denominador; junto con la distancia entre \textit{ticks} clave definen el tamaño de ventana) y los pesos de cada \textit{tick} clave. De forma similar a como pasa con la posición de la nota dentro del acorde, cada \textit{tick} clave dentro de una ventana o (pulso dentro de un compás) ofrece una valoración distinta. Por ejemplo, en un compás 4/4, los pesos más sensatos atendiendo a cómo está escrita la música deberían tener el siguiente orden: Pulso 1 > Pulso 3 > Pulso 2 = Pulso 4.
+
+    El programa está pensado para poder elegir a voluntad estos tres parámetros descritos anteriormente con la configuración que se desee. Sin embargo, y debido a la incertidumbre de la melodía generada, por defecto se utiliza la configuración de ventana descrita en el ejemplo del anterior párrafo.
+
+    \item[\textbullet] \textbf{Discriminación entre notas que acaban de empezar y notas ya sonando:}
+
+    Esto tiene que ver con el anterior punto. Si la nota comienza en un \textit{tick} clave el peso que aporte será distinto a si esta pasa por \textit{tick} clave cuando ya había sido emitida anteriormente, en cuyo caso el peso que sume al acorde que la contenga se verá mermado.
+
+    \item[\textbullet] \textbf{Duración de la nota:}
+
+    Las notas que más duran otorgan más peso. Esto se logra de manera implícita por como funcionan los \textit{ticks} clave. La nota siempre modificará los pesos de los acordes en su \textit{tick} de inicio y cada vez que pase por un \textit{tick} clave. Por lo que las notas más largas pasarán por más \textit{ticks} clave, siendo entonces más relevantes a la hora de establecer cuál es el acorde ganador en cada ventana.
+
+    Este punto se podría haber implementado de otra manera (multiplicando el peso otorgado por la duración de la nota), pero entraría en conflicto con los dos puntos anteriores. Por lo que haciendo balance entre ambas soluciones se ha decidido mantener esta heurística ya que, por lógica, tendería a dar mejores resultados.
+
+    \item[\textbullet] \textbf{Velocidad de la nota:}
+
+    La velocidad de una nota es la intensidad de esta, es decir, como de fuerte o suave se toca. Por lo general, al interpretar una pieza musical, se destaca la importancia de ciertas notas tanto dentro de la melodía individual como en el contexto general de la canción. Por ello, valorar los acordes teniendo en cuenta la velocidad de las notas coincidentes es una manera sencilla de acertar con la heurística.
+
+    Sin embargo, este apartado no ha sido implementado ya que las melodías generadas no varían la velocidad de sus notas, por lo que no supondría ninguna mejora de cara a la aplicación. Si la melodía fuese grabada por un humano o generada artificialmente teniendo en cuenta las velocidades, este punto sí tendría más sentido.
+
+\end{enumerate}
+
+\subsection{Conclusiones} 
+
+    Uno de los primeros contras que ya se había mencionado en el párrafo \ref{arm:problema_acordes} era el conjunto de acordes que se querían valorar. La solución propuesta en dicho apartado era utilizar la armonía de la escala que formaba el conjunto de notas de la melodía. Esto puede generar varias situaciones las cuales giran alrededor del hecho de que en la música a la que estamos acostumbrados, tal y como la conocemos, las escalas suelen tener 7 notas. Parte de estas situaciones son favorables, pero otras generan problemas, algunos de ellos mitigables, otros asumibles y otros insalvables:
+
+\begin{enumerate}
+    \item[\textbullet] \textbf{La escala formada tiene menos de 7 notas:} en este caso se asume que la escala que forma la melodía es un subconjunto de una escala completa de 7 notas. En principio se utilizan las escalas mayor y menor (Sección \ref{tab:escalas}), pero se podrían utilizar otras escalas menos utilizadas también. Se busca la tónica de una escala mayor o menor que englobe a todas las notas que forman la melodía, priorizando aquellas tónicas que estén representadas dentro de la melodía, de forma que, la armonía de la escala encontrada será la utilizada para armonizar la canción. En caso de encontrarse varios pares tónica-escala que resuelvan el problema, se elige aquel cuya tónica sea la nota con mayor frecuencia de aparición en la melodía. En el caso de no haber solución se realizará el mismo proceso pero con las notas que no están representadas en la melodía. Esto, aunque raro, podría llegar a ocurrir. También es posible que, a pesar de todo, no haya solución. Una manera de paliar esto sería añadiendo más escalas a parte de la mayor y la menor, pero no es una solución completa. En estos casos se ignora el problema y se armoniza con la armonía de la escala que forma la melodía original, aunque el resultado pueda llegar a ser algo pobre.
+    \item[\textbullet] \textbf{La escala formada tiene 7 notas:} lo más probable en estos casos es que la escala formada sea una mayor, su relativa menor o un modo griego relativo. Se podría pensar a priori que es un problema que se elija aleatoriamente la tónica de la escala (recordemos del párrafo de la Sección \ref{arm:problema_acordes} que se establecía como tónica la primera nota de la melodía), ya que se estaría armonizando para un modo o para una escala menor cuando realmente la melodía podría estar escrita en una escala mayor, por ejemplo. Pero como esta primera versión del algoritmo no tiene en cuenta las relaciones entre los acordes, la salida esperada en estos casos es siempre la misma sea cual sea la tónica (siempre y cuando esta pertenezca a la melodía original, claro).
+
+    También puede pasar que la escala formada no sea la mayor ni ninguna relativa a esta. En estos casos no se puede optar por la solución del apartado anterior ya que esta escala no puede ser ningún subconjunto de otra escala de 7 notas. Así que simplemente se utiliza la armonía de dicha escala para armonizar la melodía de forma natural.
+
+    \item[\textbullet] \textbf{La escala formada tiene más de 7 notas:} ocurre cuando se intentan armonizar canciones más largas o en melodías más 'vanguardistas'. De nuevo, se utiliza la armonía de la escala formada de forma natural. Aunque se pueda pensar que los resultados son un tanto caóticos debido a la cantidad elevada de acordes utilizados, la heurística consigue contradecir lo mencionado en el párrafo de la Sección \ref{arm:problema_acordes}, controlando este caos y consiguiendo resultados decentes. Lo que suele ocurrir en canciones más largas es que se suele modular a otras tonalidades y escalas durante su transcurso, de ahí que en la canción puedan llegar a aparecer las 12 notas musicales. Como la heurística funciona únicamente por pesos, esta es capaz de detectar estas modulaciones 'sin querer', obteniéndose resultados interesantes. De todas formas, esto no siempre es así y a veces sí que ocurre ese caos.
+
+\end{enumerate}
+
+    El siguiente problema, el cual se erradica en la siguiente versión del algoritmo, es el hecho de que se asume que todos los acordes que acompañan a la melodía tienen la misma duración. Como se divide la canción en fragmentos uniformes, todos los acordes que se forman tienen el tamaño de una ventana.
+
+    Por último está la problemática de que no se tiene en cuenta las relaciones entre los acordes. En futuras versiones se explicará por qué esto es un problema y cómo se ha solucionado.
+
+    En conclusión, y a pesar de las críticas descritas, los resultados obtenidos son bastante decentes. Esta primera versión  supone las bases para la evolución del algoritmo y es un buen punto de partida.
+
+\section{Armonización por ventanas+}\label{arm:subsec:ventanas_plus}
+
+Como se comentó anteriormente, en esta sección se pretende arreglar el hecho de que se asume que todos los acordes que acompañan a la melodía tienen la misma duración. Esto supone un problema ya que no se ajusta a la realidad. En la mayoría de canciones dos o más acordes pueden compartir un mismo compás o un solo acorde puede abarcar varios compases, por ejemplo. Por ello, se han propuesto varias soluciones.
+
+\subsection{Armonización por ventanas de diferentes tamaños}\label{arm:subsubsec:ventanas_diferentes}
+
+La idea detrás de esta solución es armonizar la canción con diferentes configuraciones de ventana. Más concretamente, armonizar la canción con tamaños de ventana múltiplos entre sí y sumar los resultados en una estructura tan grande como la configuración de ventana que más fragmente la melodía, es decir, la que tenga el tamaño de ventana más pequeño. Esta estructura no deja de ser también una lista de ventanas, con la diferencia de que estas tienen mayor contexto de la melodía debido al sumatorio de los resultados de todas las configuraciones. Cada ventana afectará al resultado de todas las ventanas finales que abarque. 
+
+Con esta solución se consigue un resultado en el que es común que varias ventanas finales contiguas tengan el mismo acorde como el de más peso, de forma que cuando se imprima la solución los acordes idénticos contiguos se fusionarán en un solo acorde, consiguiendo así que la canción se armonice con tamaños de acordes variables. 
+
+Cabe recalcar que, a pesar de que este algoritmo esté pensado para que los tamaños de ventana utilizados sean múltiplos entre sí, este está implementado de forma que se pueden elegir las configuraciones de ventana que se deseen para ser combinadas. De todas formas, no tiene sentido utilizar tamaños de ventana que no sean múltiplos entre sí, ya que la idea de esta solución es fragmentar la melodía respetando cierta estructura. Por ejemplo, un grupo de configuraciones sensatas teniendo en cuenta cómo está escrita la música sería: 4/4 (4 pulsos de duración), 2/4 (2 pulsos), 1/4 (1 pulso; este último se podría llegar a omitir, ya que puede generar mucha fragmentación no deseada).
+
+\subsection{Armonización por desplazamiento de ventana}
+\label{arm:subsubsec:desplazamiento_ventanas}
+
+Esta otra idea consiste en utilizar una única configuración de ventana, es más, abstrayendo para que se entienda mejor, consiste en utilizar una única ventana, la cual se va desplazando una determinada distancia a la que llamaremos \textit{offset}. A medida que la ventana va recorriendo la melodía se va rellenando una estructura de ventanas finales similar a la que se habló en el anterior método. Con lo dicho, se puede sacar como conclusión que el tamaño que tendrán esas ventanas finales será el tamaño del \textit{offset}. De nuevo, lo que se busca con esta idea es que la estructura final tenga más contexto de la melodía que si hubiésemos hecho una armonización por ventanas básica con el tamaño de ventana del \textit{offset}. Al igual que con el anterior método, a la hora de imprimir la salida los acordes idénticos y contiguos se combinan.
+
+Haciendo una analogía al ejemplo descrito en el anterior algoritmo y, de nuevo, teniendo en cuenta cómo está escrita la música, una configuración sensata sería: ventanas de 4 pulsos (4/4) y tamaño del \textit{offset} a 1 pulso (negra).
+
+\subsection{Conclusiones}
     
+Sendos algoritmos consiguen resolver el problema planteado, pero las salidas de ambos para una misma melodía son diferentes. Al utilizarse la armonización por ventanas de diferentes tamaños (Sección \ref{arm:subsubsec:ventanas_diferentes}), se consigue una fragmentación dentro de cada compás, pero respetando la separación entre sus contiguos, ya que los tamaños de ventana son múltiplos entre sí y, por lo tanto, múltiplos del más grande. Mientras que, con la armonización por desplazamiento de ventana (Sección \ref{arm:subsubsec:desplazamiento_ventanas}), compases contiguos pueden 'contaminarse' entre sí. Esto no es algo malo como tal, ya que en algunas melodías esta característica es algo beneficioso, pero en general, probando ambos algoritmos, el que mejores resultados ha dado en promedio ha sido el primero.
 
+\section{Relacionando acordes}
+
+Ahora toca resolver el hecho de que no se tienen en cuenta las relaciones entre acordes. Esto supone un problema debido a que los acordes no existen en un vacío, que es lo que erróneamente se ha estado haciendo hasta ahora. Cada uno tiene una relación con los acordes que le preceden y los que le siguen. Los acordes deben relacionarse de manera lógica y orgánica entre sí para formar una estructura musical sólida y convincente. En la música, abunda la teoría sobre las funciones individuales de cada tipo de acorde, así como de su papel dentro de la tonalidad a la que pertenecen y sus relaciones con sus predecesores y sucesores. Sin embargo, no se entrará en detalle en este mundo, basta con entender el problema: hasta ahora se está eligiendo siempre el acorde con más peso de cada ventana, cuando podría haber soluciones en las que elegir un acorde con menos peso en determinados fragmentos beneficiaría a la progresión armónica sin estropear la cohesión con la melodía, obteniéndose así salidas más ricas.
+
+Las siguientes soluciones se basan en la misma idea: modificar los pesos de los acordes de cada ventana favoreciendo aquellos que encajen mejor con sus predecesores, cogiendo, de nuevo, el acorde con mayor peso después de dicha modificación. Se va adelantando que este método no ha sido el elegido para resolver este problema en la \textit{app} final, ya que los resultados obtenidos no han sido los deseados. Sin embargo, es de bien entender sus debilidades, para comprender mejor el funcionamiento del módulo y futuros apartados.
+
+\subsection{Matriz de correspondencia}\label{sec:arm:matriz_correspondencia}
+
+La idea de crear una matriz de correspondencia de acordes se basa en la de las Cadenas de Markov (Sección \ref{sec:Markov-chain}). Se utilizará una matriz cuadrada (grafo dirigido) cuyas entradas sean pares grado-tipo de acorde, indicando la probabilidad que tiene un acorde de ir a cualquiera de los demás existentes. Los datos de dicha matriz se utilizarán para modificar los pesos de los acordes de una ventana dependiendo de qué acorde es el anterior. También existe una entrada para el inicio de una canción que modifica los pesos de la primera ventana.
+
+El primer problema de este método se debe a la cuestión del cómo se va a rellenar (entrenar) dicha matriz de correspondencia. La principal idea sería utilizar el propio armonizador con canciones completas ya existentes y no solo con melodías. Como una canción completa es la unión entre melodía y armonía, el armonizador en este caso se comportaría como un analizador armónico. La salida obtenida se utilizaría para rellenar la matriz. Al haber más notas que contribuyen a los pesos de los acordes, el resultado final no es tan ambiguo como en una melodía en solitario. Es decir, la progresión armónica obtenida es la propia que la canción original tiene. Cabe mencionar que, a pesar de la información extra que te ofrece una canción completa, el algoritmo seguiría estando sujeto a producir variaciones respecto a la armonía original pensada por el propio autor de la obra. Parte de estas variaciones sí que se podrían considerar errores que enturbiarían la matriz, pero no tendrían por qué. El hecho de que existan ambigüedades a la hora de realizar un análisis armónico es más común de lo que parece y no es algo problemático como tal: dos músicos expertos pueden diferir en opiniones a la hora de analizar ciertas piezas musicales.
+
+El siguiente problema es heredado de las limitaciones que tiene el algoritmo en su estado actual: no existen métodos rigurosos para conocer ni la tónica de las canciones utilizadas para el entrenamiento, ni la tónica de la melodía que se pretende armonizar. Si recordamos, como hasta hora no se habían tenido en cuenta las relaciones entre acordes, tampoco se había prestado mucha atención a cuál era la tónica de la canción. Esto ahora sí que supone un problema, ya que, en el primer caso, si se elige como tónica una nota errónea, la canción al completo se relativizará de forma errónea también, lo que desembocaría en el hecho de que toda la información que queremos recopilar para conocer las relaciones entre los acordes se transformaría en ruido para la matriz de correspondencia, ya que, como se comentó anteriormente, los datos se almacenan en entradas representadas por pares grado-tipo de acorde. De todas formas, juega a nuestro favor el hecho de que muchos archivos MIDI contienen mensajes especiales que nos facilitan la tónica de la canción. El verdadero problema surge en el segundo caso: aunque tengamos certeza de que los datos recopilados son de calidad, como desconocemos la tónica de la propia melodía, el sesgo ofrecido por la matriz nos sirve de poco y enturbiaría el resultado más que ayudar a mejorarlo (en el caso de equivocarnos a la hora de elegir la tónica de la melodía, claro). Se podría pensar en que almacenar los datos en la matriz de correspondencia de manera absoluta, es decir, en pares tónica del acorde-tipo del acorde podría ser una solución viable. Nada más lejos de la realidad, esto supondría ignorar el contexto musical en el que se mueve la armonía de la canción analizada, enturbiándose así la matriz. Aquí un ejemplo: si estamos en un acorde de C (Do mayor) y pasamos a un acorde de G (Sol mayor), la transición no sería la misma si estuviéramos en la tonalidad de C mayor, donde la progresión en términos relativos sería de un primer grado a un quinto grado (I - V), que si estuviéramos en la tonalidad de G mayor, donde la progresión sería de un cuarto grado a un primer grado (IV - I).
+
+De este apartado se ha desarrollado parte de la infraestructura necesaria para llevarlo a cabo, por ejemplo, los métodos que transcriben los datos en diferentes formatos o el propio algoritmo que aplica el sesgo a los pesos de los acordes. Debido a la falta de tiempo y a la dificultad de llevarlo a cabo, se decidió dejarlo a mitad. El problema de la tónica se podría haber mitigado de alguna manera; de hecho, están implementados métodos que pretenden, de vaga manera, resolver este inconveniente. Por otra parte, el hecho de encontrar de forma cómoda un \textit{dataset} rico y abundante para construir la matriz bloqueó definitivamente que la idea se llevase a cabo (el \textit{dataset} de Magenta (Sección \ref{sec:dataset}), utilizado por otros módulos, solo ofrece melodías individuales). De todas formas, la matriz de correspondencia sí que se ha llegado a poner en práctica en el contexto de la armonía modal, poniendo las probabilidades de transición 'a mano', con cierta lógica, claro. Los resultados, aunque no horribles, no fueron convincentes. En definitiva, hubiese sido interesante poder escuchar los resultados que hubiese podido generar esta idea, pero por falta de tiempo se ha quedado pendiente en el tintero como posible trabajo futuro. 
+
+\subsection{Modelo de predicción de acordes}\label{sec:arm:prediccion_acordes}
+
+Una idea prometedora que consistiría en entrenar un modelo que, dado un acorde o secuencia de acordes previos, te devuelva una lista de probabilidades que afectarán a los pesos de los acordes de la siguiente ventana. A las problemáticas de la tónica y de la búsqueda de un \textit{dataset}, se le suma la dificultad de buscar y entrenar al modelo adecuado. Lo único implementado de este apartado es la transcripción de los datos a un formato adecuado para dicho modelo.
+
+Relacionado con esta sección, cabe citar la existencia de \cite{hooktheory}, una plataforma educativa diseñada para enseñar teoría musical y análisis de canciones populares. \cite{hooktheory} es una herramienta en línea que permite a los usuarios crear, analizar y explorar progresiones de acordes y melodías, proporcionando retroalimentación en tiempo real sobre la teoría musical, ayudando a los usuarios a entender cómo funcionan las diferentes progresiones y estructuras musicales. La parte interesante relacionada con este apartado es que \cite{hooktheory} cuenta con una base de datos interactiva que analiza las progresiones de acordes de miles de canciones populares. Dicha base de datos se podría utilizar para extender y profundizar en esta idea en un futuro.
+
+\section{Reconocimiento de progresiones de acordes}
+
+En esta sección exploraremos una solución alternativa al problema de las relaciones entre acordes que ataca el problema desde una perspectiva distinta: dada una lista predefinida de progresiones de acordes, se busca la secuencia de progresiones que mejor encaje con la melodía atendiendo a las restricciones establecidas por dicha lista. Esta solución es muy útil teniendo en cuenta cómo está escrita gran parte de la música: muchas de las canciones que escuchamos con regularidad comparten exactamente las mismas progresiones de acordes. Son miles y miles las canciones que utilizan los mismos clichés armónicos, normalmente de 4 acordes, aunque esto suele variar. Debido a esto, esta solución tienen bastante sentido; se busca la máxima cohesión posible con la melodía (según la heurística aplicada, claro), respetando una progresión armónica coherente, ya que, al ser el usuario quien define la lista, se sabe de antemano que dicha progresión funciona.
+
+A continuación se mostrarán dos variantes que solucionan el problema. La primera busca una secuencia de progresiones sin importar que la última está cortada por la mitad y la segunda, una secuencia de progresiones de forma que la última \textit{loopee} coherentemente con el primer acorde de la primera progresión. Previo a ambos algoritmos, se ha de definir una serie de políticas que determinen qué progresión se puede elegir en cada momento y de qué manera esta puede transicionar a otra. Aunque los resultados de ambos algoritmos puedan ser distintos, las normas utilizadas por estos son las mismas.
+
+\subsection{Política de elección de progresiones de acordes}\label{arm:sebsebsec:politica}
+
+Toca definir el formato de dicha lista y lo que representa su información. En la Tabla \ref{tab:progresiones} se muestra un pequeño ejemplo del aspecto que tiene.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c||c|c|c|c||c|c|c|c}
+        \multicolumn{1}{c}{\textbf{}} & \multicolumn{4}{c||}{\textbf{Progresión}} & \multicolumn{4}{c}{\textbf{Tran.}} \\
+        \hline
+        1 & I & VI- & IV & V & \multicolumn{2}{c|}{I} & \multicolumn{2}{c}{VI-} \\
+        \hline       
+        2 & I & IV & I & IV & \multicolumn{2}{c|}{I} & \multicolumn{2}{c}{V} \\
+        \hline
+        3 & VI- & II- & V & I & \multicolumn{2}{c|}{IV} & \multicolumn{2}{c}{V} \\
+        \hline 
+        4 & I & IV & \multicolumn{1}{c}{V} & & \multicolumn{2}{c|}{I} & \multicolumn{2}{c}{VI-} \\
+        \hline 
+        5 & V & \multicolumn{1}{c}{I} & \multicolumn{1}{c}{} & & \multicolumn{2}{c|}{VI-} & \multicolumn{2}{c}{V} \\
+
+        
+    \end{tabular}
+    \caption{Tabla de progresiones}
+    \label{tab:progresiones}
+\end{table}
+
+La lista está definida por un conjunto de progresiones conformadas por, al menos, dos acordes, definidos por un par grado-tipo de acorde. Cada progresión está ligada a una serie de acordes de transición. Podría no existir ningún acorde de transición asociado. El resultado es una secuencia de una o más progresiones definidas en la lista. Las progresiones ganadoras pueden diferir entre sí; aunque parezca obvio, con esta afirmación se quiere dejar claro que el resultado no tiene por qué ser una secuencia de la misma progresión todo el rato. Cuando una progresión termina, la siguiente progresión con la que enlace debe empezar obligatoriamente por alguno de los acordes de transición definidos o por el último acorde de la propia progresión. Por el ejemplo, desde la primera progresión de la Tabla \ref{tab:progresiones} se puede transicionar a todas las demás, ella misma incluida. Pero desde la segunda progresión, no se puede transicionar a la tercera. 
+
+Se ha elegido esta política como se podría haber elegido cualquier otra. Algunas de las otras valoradas son simplificaciones de esta. Por ejemplo, que no se tenga en cuenta el último acorde de la progresión actual para transicionar a la siguiente, que desde una progresión se pueda transicionar a cualquier otra sin ninguna restricción, que solamente se pueda utilizar una única progresión repetida en bucle hasta que la melodía termine o que, directamente, solo se pueda utilizar una única progresión una única vez, la cual abarque toda la melodía. Una vez entendido esto toca hablar de cómo se ha hecho y de las variantes que existen.
+
+\subsection{Secuencia de progresiones sin temor al corte}
+
+Esta es la primera variante creada. El título de la sección hace referencia a que el algoritmo buscará la mejor secuencia de progresiones sin importar que la última progresión elegida esté cortada por la mitad, es decir, puede caber la posibilidad de que los últimos acordes de la última progresión ganadora no formen parte de la mejor solución. Además, cabe aclarar que la duración de los acordes dentro de cada progresión es variable también, no solo para maximizar el resultado obtenido, sino también para evitar volver a convertir en problema algo que ya se había resuelto en versiones anteriores  (Sección \ref{arm:subsec:ventanas_plus}).
+
+Se parte de la base de una lista de ventanas con la información de los pesos de los acordes candidatos obtenida por alguno de los algoritmos explicados anteriormente. Se ha de mencionar que a partir de este momento el conjunto de acordes que se valoran en dichos algoritmos ya no es el de la armonía de ninguna escala, sino el conjunto de acordes diferentes que el usuario haya definido en la tabla de progresiones. Por cada ventana se elige un acorde, respetando siempre las políticas establecidas (Sección \ref{arm:sebsebsec:politica}), de forma que, la solución ganadora es aquella cuyo sumatorio de pesos entre todos los acordes sea el mayor. Este mismo proceso se repite 12 veces, una por cada posible tónica  que podría llegar a tener una canción, y se elige la solución que más peso consiga. Resumiendo, el algoritmo se basa en una búsqueda en anchura. Se crea una estructura arbórea que recorre todas las posibilidades. Se utilizan ciertos mecanismos de poda, en los que no se entrará en detalle, que alivian bastante el coste del algoritmo hasta el punto de ser prácticamente imperceptible para el uso que se le da en la aplicación final. Es posible que si se ejecutase en canciones muy largas, con muchas notas, sí que se notara un poco más. 
+
+\subsection{Secuencia de progresiones que \textit{loopea}}
+
+La razón de la creación de esta solución se basa en una necesidad natural de la propia aplicación por cómo se van a construir los arreglos. Prácticamente todas las canciones contemporáneas más famosas se basan en una progresión de acordes que se repite en bucle durante toda la canción. 
+
+Esto complica el algoritmo, ya que no solo se exige que la última progresión no esté cortada por la mitad, sino además, que esta transicione correctamente con el primer acorde de la secuencia para que el bucle sea válido. Vamos a profundizar más en lo que se considera un bucle válido, teniendo en cuenta las políticas establecidas (\ref{arm:sebsebsec:politica}), analizando las distintas situaciones posibles. Hay bucle si...
+
+\begin{enumerate}[label={}]
+    \item ...el último acorde de la secuencia es el último acorde de la última progresión y este coincide con el primero de la secuencia
+    \item ...el último acorde de la secuencia es el penúltimo de la última progresión y el último acorde de la última progresión coincide con el primero de la secuencia
+    \item ...el último acorde de la secuencia es el último acorde de la última progresión y alguno de los acordes de transición de la última progresión coincide con el primer acorde de la secuencia
+\end{enumerate}
+
+En caso contrario, no hay bucle. Cabe mencionar que existe la posibilidad de que la mejor solución sea una secuencia de una única progresión. De hecho, es muy común en melodías de corta duración las cuales son utilizadas en la aplicación. Y también recalcar que se puede dar el caso de que una progresión no pueda \textit{loopear} consigo misma, dependiendo de cómo se hayan definido los acordes de transición, siempre y cuando el primer y último acorde de la progresión no sean los mismos.
+
+Una vez explicado todo esto, la implementación se basa en descartar aquellas soluciones finales que no generen un bucle con el principio. Además, el árbol pasa a aumentar su tamaño, ya que se debe ramificar una vez más por cada acorde inicial distinto que exista entre el conjunto de progresiones definidas, ya que, la solución final con más peso no tiene por qué \textit{loopear}, siendo otra con menos peso la que sí que cumple los requisitos, limitando parte de la poda que se hacía en la anterior versión.
+
+\subsection{Conclusiones}
+
+\subsubsection{Pros}
+
+Centrándome primero en las conclusiones de este apartado, ambos algoritmos, a parte de solucionar el inconveniente por el que se idearon en un principio, consiguen resolver implícitamente otros problemas. Se desvela por fin la incógnita de la tónica de la melodía. Como el recorrido en anchura se realiza tantas veces como notas existen, relativizando la melodía 12 veces respecto a dichas tónicas, se crean evidencias lo suficientemente convincentes como para afirmar que la tónica asociada a la solución ganadora es la real. No solo eso, sino que además se puede obtener información adicional sobre la escala de la melodía. A cada progresión de acordes le corresponde implícitamente una escala, por ejemplo, todas las progresiones descritas en la Tabla \ref{tab:progresiones} pertenecen a la escala mayor, ya que dichos grados solo se pueden encontrar, en un principio, en esa escala. Si se ampliase la tabla con algunas progresiones más y se añadiesen progresiones propias de la escala menor, o incluso de otro tipo de escalas más 'vanguardistas', se podría ampliar el armonizador para detectar la escala de la melodía, que junto a la tónica, supondría la posesión de una información muy valiosa para realizar multitud de tareas.
+
+Otro punto a favor es la flexibilidad de ambos algoritmos de procesar cualquier salida de las heurísticas implementadas hasta ahora: tanto la armonización normal (Sección \ref{arm:sec:ventanas_normal}), como la armonización por ventanas diferentes (Sección \ref{arm:subsubsec:ventanas_diferentes}) y por desplazamiento (Sección \ref{arm:subsubsec:desplazamiento_ventanas}) devuelven una salida con el mismo formato, pudiéndose elegir con libertad cual procesar, explorando así con las diversas soluciones. 
+
+Por último, como ya se comentó anteriormente, la cuestión del conjunto de acordes valorados por dichas heurísticas se simplifica, pasando estos a ser  los descritos por el usuario, eliminando la necesidad de tener que calcular la armonía de ninguna escala.
+
+\subsubsection{Contras}
+
+El principal punto en contra viene en el hecho de que la salida puede variar considerablemente dependiendo de las progresiones definidas en la tabla, no solo variando los acordes, sino también la tónica detectada, incluso pudiendo no haber solución si la lista está demasiado sesgada. De todas formas esto es algo normal: si le dices a dos músicos expertos, que en teoría, haciendo una analogía, deberían tener una tabla de progresiones de acordes bastante rica en sus cabezas, que armonicen la melodía, debido a la poca información y ambigüedad que esta ofrece, la libre interpretación de dichos músicos desembocaría también en secuencias de acordes dispares, incluso variando la tónica de la canción también. Que el algoritmo sea más predecible que versiones anteriores debido a la necesidad de la tabla de progresiones no es algo malo per se: le estás dando al usuario la capacidad de crear sus propias normas con las que generar música. 
+
+El otro punto en contra sería el coste asintótico del algoritmo respecto a anteriores versiones. Si se utilizase sobre composiciones más largas, con mayor número de notas, los tiempos de ejecución sí que serían más notorios. De todas formas, como ya se ha comentado anteriormente, para el propósito que se le quiere dar en la aplicación el coste del algoritmo es prácticamente imperceptible, además de la existencia de otros métodos de poda que mejorarían su rendimiento que no se han llegado a implementar por falta de tiempo y necesidad. 
+
+\subsubsection{Conclusiones finales}
+
+Para concluir, simplemente decir que los resultados obtenidos con los métodos descritos en este apartado son más que convincentes. Se ha conseguido arreglar el último problema asociado a las relaciones entre acordes y, con ello, se ha conseguido un algoritmo que resuelve el problema planteado en este módulo con creces.
     
 
 

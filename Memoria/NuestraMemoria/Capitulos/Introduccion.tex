@@ -1,33 +1,72 @@
 \chapter{Introducción}
 \label{cap:introduccion}
 
-\chapterquote{Frase célebre dicha por alguien inteligente}{Autor}
+\chapterquote{¡Qué bonito, que chulo!}{Jaime Sánchez}
 
 
 \section{Motivación}
-Introducción al tema del TFG.
+La música ha sido desde siempre un poderoso medio de expresión, capaz de transmitir una amplia gama de emociones. En campos como el cine y los videojuegos resulta crucial, pues es capaz de provocar fuertes sentimientos al público, sumergiéndolo en mundos ficticios. Cualquier desarrollador de videojuegos que quiera cautivar al jugador necesita apoyarse en la música y en los efectos de sonido.
 
+En la actualidad hay muchas formas de abordar la composición y producción musical, pero la más común es el uso de una DAW (\textit{Digital Audio Workstation}). Una DAW es una herramienta software que permite grabar, editar y mezclar pistas de audio, así como trabajar con secuenciadores. Los secuenciadores son dispositivos físicos o software que permiten programar y reproducir eventos musicales, siendo el formato más extendido para dichos eventos el MIDI. MIDI es un estándar que define eventos básicos de inicio y fin de nota, así como otros que contienen información más específica sobre la pieza musical. Este tipo de eventos pueden ser interpretados por plugins. Los plugins reciben como entrada un archivo MIDI o audio, y devuelven otro archivo MIDI o audio. Los plugins que reciben MIDI y devuelven audio son los llamados instrumentos virtuales. Ya sea mediante síntesis digital o instrumentos reales previamente grabados, el instrumento virtual es capaz de interpretar los eventos definidos en los archivos MIDI. 
+
+La gran ventaja que tiene el MIDI es la modificación y edición de una canción de forma accesible, sin tener que volver a grabar la interpretación de la pieza. Esto se debe a que la notación musical está desligada de los instrumentos. Un archivo MIDI representa una partitura digital. Es, en definitiva, una notación musical simbólica de la música.
+
+La otra alternativa de trabajo, donde no hay separación entre la notación musical y los instrumentos, consiste en trabajar directamente con audio digital. En este enfoque, los músicos graban las interpretaciones en vivo de los instrumentos y voces, capturando las ondas sonoras generadas por estos. Las grabaciones se editan y mezclan para crear la pista final. Este método permite capturar la interpretación y el timbre único de cada músico e instrumento, proporcionando un carácter auténtico y natural a la música, pero requiere más esfuerzo para realizar cambios en la composición una vez que las grabaciones están hechas.
+
+En el campo de los videojuegos, la forma de composición de música tradicional no termina de encajar, pues una canción tradicionalmente está compuesta para ser escuchada de principio a fin y ser una experiencia completa. En los videojuegos, no sabemos a priori cuánto tiempo va a estar un jugador en una zona escuchando una canción, por lo que es crucial que esta no resulte repetitiva y cicle adecuadamente. Pero los problemas no terminan ahí, en los videojuegos, a diferencia del cine, no podemos ajustar qué canción va a sonar en cada minuto, ya que es un medio con mayor grado de libertad. Por estos motivos surge la \textit{música adaptativa}. La música adaptativa es un estilo de música que se compone específicamente para que pueda ir cambiando en función a una serie de parámetros.
+
+Al componer música adaptativa se puede trabajar con composición horizontal o vertical. La composición horizontal consiste en utilizar saltos temporales en una canción ya dividida en secciones, que se pueden ciclar. Estos saltos se definen para secciones que tengan distinta intensidad o instrumentos, para adaptarse mejor a una zona o momento específico. En la composición vertical se crean varias pistas o capas que se activan o desactivan para generar diferentes secciones. Estas capas incluyen melodía, armonía, bajo y base rítmica entre otros. La melodía es el elemento protagonista y más distintivo, normalmente es una voz o instrumento con patrones definidos que lleva el liderazgo de la canción. La armonía acompaña y complementa a la melodía, y aparece normalmente en forma de acordes tocados por uno o varios instrumentos secundarios a la melodía. El bajo se encarga de crear una base sobre la que destacarán la melodía y armonía, generando las frecuencias más graves de la canción. La base rítmica finalmente, como su nombre indica, define el ritmo de la canción que seguirán el resto de elementos de esta. Combinando todas estas capas conseguimos una composición musical completa y, en la música adaptativa, las activamos o desactivamos para poder generar variedad y hacer que la música se ajuste a lo que está sucediendo en el videojuego, introduciendo más o menos intensidad por ejemplo. Esto es solo un ejemplo típico, la música adaptativa puede componerse de muchas más capas y diferentes elementos que permiten toda gama de combinaciones. En definitiva, es un campo muy rico y abierto a la imaginación.
+
+Este trabajo busca desarrollar una herramienta que permita generar estas capas musicales para crear una composición musical con distintas temáticas para varias zonas de videojuegos diferentes.
+
+En los últimos años, ha habido muchos avances en la generación automática de música con técnicas de IA y \textit{machine learning}. Hay 2 maneras principales de generar música: la generación de audio y la generación a nivel simbólico. 
+
+La generación de audio produce la propia pieza musical en formatos como MP3 o WAV, normalmente utilizando técnicas de aprendizaje profundo o atención. Este tipo de generación no se explora en este trabajo, pero es una metodología válida que cada año no hace sino demostrar su potencial.
+
+A nivel simbólico, la generación produce las notas que componen la canción en formato MIDI o similares, de forma que esta se puede renderizar utilizando instrumentos virtuales y una DAW, como se ha mencionado anteriormente. Como ya hemos comentado, la generación simbólica, a diferencia de la generación e audio, permite poder realizar ajustes sobre la canción y variar partes o instrumentos de esta. Este es el enfoque que hemos seleccionado para nuestro trabajo.
+
+%1. Cine/videojuegos 2. Tecnologia produccion musical/DAWs/Secuenciacion 3. Avances técnicas generación automática de música / nivel audio y simbólico 4. Música adaptativa en videojuegos / nivel horizontal y vertical de la música / capas y cambios en la musica / melodia, armonia, bajo, base ritmica, ambientes
 
 \section{Objetivos}
- Nuestro objetivo en este proyecto es acercar la generación de temas musicales enfocados a videojuegos a usuarios con bajos o nulos conocimientos en composición musical a través del campo de la Inteligencia Artificial.
- De tal modo, el primer objetivo es conseguir generar melodías a través del estudio del campo de la Inteligencia Artificial.
- El siguiente objetivo es conseguir armonizar la melodía generada de forma que resulta agradable al oído humano. En lugar de usar Inteligencia Artificial, en este punto optamos por utilizar heurísticas propias.
- Nuestro tercer objetivo es sonorizar las notas musicales generadas haciendo una selección apropiada de instrumentos en base a unas temásticas predefinidas.
- Como objetivo final, nos proponemos crear una aplicación de escritorio que ofrezca las posibilidades mencionadas anteriormente de una forma amigable al usuario.
+Con nuestro propósito definido, queda concretar una serie de objetivos:
+\begin{enumerate}
+% explicar las 2 vias: herramientas existentes (Magenta) y algoritmos propios
+    \item Conseguir generar melodías a través de distintas vías. Por un lado se investigará el uso de herramientas existentes, como por ejemplo \textit{Magenta} de Google. Por otro lado se explorará el desarrollo de modelos propios de \textit{machine learning} con este objetivo.
+    \item Conseguir armonizar la melodía generada de forma que resulta agradable al oído humano, ya sea a través del uso de inteligencia artificial o heurísticas propias.
+    \item Sonorizar las notas musicales generadas haciendo una selección apropiada de instrumentos virtuales en base a unas temáticas predefinidas.
+    \item Crear una aplicación de escritorio para \textit{Windows} que integre las posibilidades mencionadas anteriormente de una forma amigable al usuario.
+\end{enumerate}
 
 \section{Plan de trabajo}
 El tener objetivos claramente separados en cuanto a funcionalidad, nos permite separar el trabajo de manera más eficiente en módulos independientes, como una cadena de producción separada en etapas que se une en la app final. 
 
-En primer lugar: Investigación y estudio del campo de la Inteligencia Artificial aplicada a la generación musical. Durante esta fase, revisaremos la literatura existente, investigaremos los enfoques y algoritmos más relevantes y nos familiarizaremos con las herramientas y recursos disponibles.
+\begin{enumerate}
+    \item Investigación y estudio del campo de la inteligencia artificial aplicada a la generación musical. Durante esta fase, revisaremos la literatura existente, investigaremos los enfoques y algoritmos más relevantes y nos familiarizaremos con las herramientas y recursos disponibles.
+    \item Desarrollo del algoritmo de generación de melodías. Utilizaremos técnicas de aprendizaje automático y modelos generativos para crear sistemas capaces de componer melodías originales y variadas. Además, se explorará la herramienta \textit{Magenta} ya existente.
+    \item Implementación de la armonización de las melodías generadas. En esta etapa, diseñaremos y desarrollaremos heurísticas y reglas musicales para armonizar las melodías de manera coherente y agradable al oído.
+    \item Selección y configuración de instrumentos. Investigaremos y seleccionaremos una variedad de instrumentos musicales virtuales que se ajusten a las temáticas predefinidas de los videojuegos. Configuraremos estos instrumentos para que reproduzcan las melodías generadas de manera convincente al oído humano.
+    \item Desarrollo de la aplicación de escritorio. Utilizaremos las tecnologías adecuadas para desarrollar una interfaz de usuario intuitiva y amigable que permita a los usuarios generar, armonizar y sonorizar sus propias composiciones musicales para videojuegos. En concreto, usaremos TKInter, la biblioteca por defecto de Python para la creación de interfaces gráficas de usuario (GUI).
+\end{enumerate}
 
-En segundo lugar: Desarrollo del algoritmo de generación de melodías. Utilizaremos técnicas de aprendizaje automático y modelado generativo para crear un sistema capaz de componer melodías originales y variadas.
+\section{Estructura de la memoria}
 
-En tercer lugar: Implementación de la armonización de las melodías generadas. En esta etapa, diseñaremos y desarrollaremos heurísticas y reglas musicales para armonizar las melodías de manera coherente y agradable al oído.
+En el capítulo 2 se presentará los conceptos preliminares que hay que conocer para profundizar posteriormente en otras secciones. Este amplía algunos conceptos presentados en este capítulo.
 
-En cuarto lugar: Selección y configuración de instrumentos. Investigaremos y seleccionaremos una variedad de instrumentos musicales virtuales que se ajusten a las temáticas predefinidas de los videojuegos. Configuraremos estos instrumentos para que reproduzcan las melodías generadas de manera convincente al oído humano.
+El capítulo 3 consiste en una guía de uso de la herramienta, explicando todos los aspectos desde su instalación y configuración hasta su uso para generar canciones.
 
-En último lugar: Desarrollo de la aplicación de escritorio. Utilizaremos las tecnologías adecuadas para desarrollar una interfaz de usuario intuitiva y amigable que permita a los usuarios generar, armonizar y sonorizar sus propias composiciones musicales para videojuegos.
+El capítulo 4 describe los modelos utilizados para generar melodías, comparando sus resultados y detallando su diseño e implementación. También se incluye la integración de \textit{Magenta} a nuestra aplicación.
 
+En el capítulo 5 se profundiza en la armonización de una melodía, aplicando conceptos de teoría musical en algoritmos propios.
+
+En el capítulo 6 se modifican las melodías y se utilizan diversas técnicas de armonización con el objetivo de obtener nuevos colores a partir de una misma generación.
+
+El capítulo 7 detalla la generación de la base de percusión que se utiliza en la composición de canciones.
+
+En el capítulo 8 se explica cómo se eligen los sonidos e instrumentos virtuales que se aplicarán a las distintas partes generadas.
+
+En el capítulo 9 se profundiza sobre el arreglo de canciones para las distintas temáticas, describiendo cada parte del proceso de producción de una canción.
+
+Finalmente, el capítulo 10 contiene unas breves conclusiones sobre los resultados obtenidos con el trabajo así como una serie de mejoras y trabajo a realizar a futuro.
 
 % Al comentar la siguiente línea, el pdf no compila
 \lipsum[0]

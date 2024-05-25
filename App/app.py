@@ -44,6 +44,7 @@ class App:
         self.root.geometry("1152x648")
         self.root.resizable(False, False)
         self.root.after(self.updateMS, self.update_)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         sv_ttk.set_theme("dark")
 
         # Creamos el notebok que manejará las pestañas
@@ -68,7 +69,7 @@ class App:
         # Creamos las clases que representan cada pestaña de la App
         self.generationTab = generationTab.GenerationTab(self.frame1)
         self.modeSelectorTab = modeSelectorTab.ModeSelectorTab(self.frame2)
-        self.advancedConfig = advancedConfigTab.AdvancedConfigTab(self.frame3)
+        self.advancedConfig = advancedConfigTab.AdvancedConfigTab(self.frame3, modeSelectorTab=self.modeSelectorTab)
         self.configTab = configurationTab.ConfigurationTab(self.frame4)
 
         self.modeSelectorTab.setUp(self.root)
@@ -82,6 +83,9 @@ class App:
 
     def onTabChanged(self, event):
         
+        if self.currentTab != None : 
+            self.currentTab.onExitTab()
+
         #curentTab = self.notebook.select()
         selectedTab = self.notebook.select()
         id = self.notebook.index(selectedTab)  
@@ -104,8 +108,11 @@ class App:
         self.currentTab.update()
         self.root.after(self.updateMS, self.update_)
 
-
-
+    def on_close(self):
+        if self.currentTab != None:
+            self.currentTab.onExitTab()
+    
+        self.root.destroy()
 
 
 

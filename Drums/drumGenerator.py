@@ -19,4 +19,5 @@ class DrumGenerator:
         DrumGenerator.generate(enums.Style.DISCO)
         DrumGenerator.generate(enums.Style.METAL)
         DrumGenerator.generate(enums.Style.LATIN)
-        DrumGenerator.generate(enums.Style.ROCK)        
+        DrumGenerator.generate(enums.Style.ROCK)      
+        DrumGenerator.generate(enums.Style.DEMBOW)        
