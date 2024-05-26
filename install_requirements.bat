@@ -1,5 +1,5 @@
 if not exist env (
-    python -m venv env
+    py -3.9 -m venv env
 )
 
 call ./env/Scripts/activate
