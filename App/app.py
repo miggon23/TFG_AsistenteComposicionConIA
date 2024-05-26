@@ -40,7 +40,7 @@ class App:
     def init(self):
         #Creación de la aplicación raíz
         self.root = Tk()
-        self.root.title("Compositor Automatico")
+        self.root.title("Vanguard Music")
         self.root.geometry("1152x648")
         self.root.resizable(False, False)
         self.root.after(self.updateMS, self.update_)
