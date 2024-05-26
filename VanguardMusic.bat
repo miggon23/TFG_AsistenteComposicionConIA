@@ -1,5 +1,5 @@
 if not exist env (
-    call instalar_dependencias.bat
+    call install_requirements.bat
 )
 
 call ./env/Scripts/activate
