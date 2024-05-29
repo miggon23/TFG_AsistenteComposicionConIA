@@ -2,7 +2,7 @@
 
 ## Autores 
 - Javier Callejo Herrero
-- Miguel González Perez
+- Miguel González Pérez
 - Víctor Manuel Estremera Herranz
 - Rodrigo Sánchez Torres
 
@@ -23,6 +23,8 @@ En el anexo A de la [memoria](Memoria/Memoria_AsistenteMusicalConIA.pdf) se pued
 En el capítulo 3 de la [memoria](Memoria/Memoria_AsistenteMusicalConIA.pdf) se detalla una guía de instalación y uso de la aplicación.
 
 Además, se proporciona el siguiente vídeo una guía de instalación paso a paso de la aplicación y sus dependencias.
+https://youtu.be/tv8yDcuK-hg?si=oBpJtSU8F1BBEYMx
 
 ## Demo de uso
 En el siguiente vídeo se enseña la funcionalidad de la aplicación, así como algunos ejemplos de canciones generadas.
+https://youtu.be/7NNvXebn5eg?si=j-PoTV20lgASqliq
