@@ -44,7 +44,7 @@ En el siguiente vídeo se enseña la funcionalidad de la aplicación, así como 
 ### Description
 **VanguardMusic** is an application for Windows 10 and Windows 11 developed in Python. With **VanguardMusic**, users can generate songs of different themes focused on video games with just one click, as well as generate and modify parts of the song such as melody, harmony, arrangements, and instruments.
 
-This project is part of a final project for the **Bachelor in Video Game Development**. The PDF with the report of this project can be found at the following link: [report](Memoria/Memoria_AsistenteMusicalConIA.pdf).
+This project is part of a final project for the **Bachelor's Degree in Video Game Development**. The PDF with the report of this project can be found at the following link: [report](Memoria/Memoria_AsistenteMusicalConIA.pdf).
 
 ### Dependencies
 In Appendix A of the [report](Memoria/Memoria_AsistenteMusicalConIA.pdf), all dependencies of the application are listed. Below are the key dependencies:
